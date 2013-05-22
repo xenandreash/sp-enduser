@@ -1,0 +1,82 @@
+<?php
+
+// migration tool from SP 2.4 series
+
+$warnings = array();
+$sql = array();
+$global_bwlist = array();
+$global_lookup = array();
+$users_lookup = array();
+
+// create all users
+
+foreach (file('users.txt') as $user)
+{
+	$user = trim($user);
+	if ($user == '') continue;
+	list($id, $mbox, $domain, $password, $lastid) = explode("\t", $user);
+
+	if ($lastid == '\N') {
+		// not a real user...
+		continue;
+	}
+
+	if ($domain == 'local') {
+		$global_lookup[] = $id;
+		continue;
+	}
+
+	$mail = $mbox . '@' . $domain;
+	$users_lookup[$id] = $mail;
+	$sql[] = "INSERT INTO users (username, password) VALUES ('$mail', '$password');";
+	$sql[] = "INSERT INTO users_relations (username, type, access) VALUES ('$mail', 'mail', '$mail');";
+}
+
+// resolve black and white list from uid relation table
+
+foreach (file('bwlist.txt') as $entry)
+{
+	$entry = trim($entry);
+	if ($entry == '') continue;
+	list($id, $mail, $type) = explode("\t", $entry);
+
+	if (in_array($id, $global_lookup)) {
+		$global_bwlist[$type][] = $mail;
+		continue;
+	}
+	
+	$type = $type == 'BLACKLIST' ? 'blacklist' : 'whitelist';
+	$access = $users_lookup[$id];
+	if (substr($mail, 0, 2) == '%@') $mail = substr($mail, 2);
+
+	if (strpos($mail, '%') !== false)
+	{
+		$warnings[] = "Wildcard format of $mail is not supported (user $access)";
+		continue;
+	}
+
+	$sql[] = "INSERT INTO bwlist (access, type, value) VALUES ('$access', '$type', '$mail');";
+}
+
+// domain / users releations are not migrated
+
+if (count(@file('domain_relations.txt')) > 0)
+	$warnings[] = 'Domain relations (alias domains) are not migrated';
+if (count(@file('users_relations.txt')) > 0)
+	$warnings[] = 'Users relations are not migrated';
+
+echo "--- RUN THESE SQL QUERIES ---\n";
+foreach($sql as $s)
+	echo $s . "\n";
+
+foreach($global_bwlist as $type => $mail) {
+	echo "--- GLOBAL $type ---\n";
+	foreach($mail as $m)
+		echo '^' . str_replace('%', '.*', preg_quote($m)) . "$\n";
+}
+
+echo "--- WARNINGS ---\n";
+foreach($warnings as $w)
+	echo $w . "\n";
+
+?>

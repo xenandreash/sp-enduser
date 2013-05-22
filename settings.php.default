@@ -1,0 +1,101 @@
+<?php
+
+/*
+ * This is the configuration file, in PHP format. In most cases, it's
+ * ok just to edit our settings, and remove the // comments.
+ */ 
+
+/* 
+ * System "nodes" are the most important directives; they specify where
+ * your Halon mail gateway(s) are, and how to access it/them. It might be
+ * a good idea to read about authentication scripts on our wiki, to create
+ * specific access rights so that if this end-user web is compromised, your
+ * gateways are not. In some cases, even read-only access is good enough for
+ * this application.
+ */
+
+//$settings['node'][] = array(
+//		'address' => 'https://10.2.0.30/',
+//		'username' => 'admin',
+//		'password' => 'admin',
+//		);
+//$settings['node'][] = array(
+//		'address' => 'https://10.2.0.31/',
+//		'username' => 'admin',
+//		'password' => 'admin',
+//		);
+
+/*
+ * The API key is used by the Halon mail gateways to communicate with
+ * this application, such as creating database users when messages are
+ * quarantined, or doing black/whitelist lookups.
+ */ 
+
+//$settings['api-key'] = 'secret';
+
+/*
+ * The "mail from" and "public-url" settings are used by this application
+ * as self identification, for example in mail such as forgot password
+ * reminders or digest lists.
+ */
+
+//$settings['mail']['from'] = 'Mail quarantine <postmaster@example.org>';
+//$settings['public-url'] = 'http://10.2.0.166/enduser/';
+
+/*
+ * It's possible to use this application completely without a database.
+ * However, features such as local users (if SMTP or LDAP authentication
+ * is not suitable) and black/whitelisting requires a database. You can use
+ * most databases, such as SQLite, MySQL and PostgreSQL. Below are a few
+ * examples. You should use PHP PDO format.
+ */
+
+//$settings['database']['dsn'] = 'sqlite:/tmp/foo.db';
+//$settings['database']['dsn'] = 'pgsql:host=localhost;port=5432;dbname=spenduser;user=halon;password=halon';
+//$settings['database']['dsn'] = 'mysql:host=localhost;port=5432;dbname=spenduser';
+//$settings['database']['user'] = 'root';
+//$settings['database']['password'] = '1';
+
+/*
+ * Authentication is probably the second most important configuration
+ * directive, as it specifies how end-users should identify themselves.
+ * You can use the following types:
+ *  - LDAP, against for example an Exchange server
+ *  - SMTP (SASL), against a mail server, if the username is an e-mail
+ *  - Database, populated by the Halon mail gateways when mail are quarantined
+ *  - Local accounts, statically configured in this file (with access rights)
+ */ 
+
+//$settings['authentication'][] = array(
+//		'type' => 'database',
+//		);
+//$settings['authentication'][] = array(
+//		'type' => 'account',
+//		'access' => array(
+//			'domain' => array('halonsecurity.com'),
+//			'mail' => array('support@halon.se')
+//			),
+//		'username' => 'foo',
+//		'password' => 'foo',
+//		);
+//$settings['authentication'][] = array(
+//		'type' => 'ldap',
+//		'uri' => 'ldap://10.2.7.2',
+//		'base_dn' => 'CN=Users,DC=dev,DC=halon,DC=local',
+//		);
+//$settings['authentication'][] = array(
+//		'type' => 'smtp',
+//		'host' => '10.2.0.30',
+//		'port' => 25,
+//		);
+
+/*
+ * The quarantine filter is used to restrict the end-user access to
+ * only certain quarantines, in case you have multiple quarantines with
+ * different purposes. 
+ */
+
+//$settings['quarantine-filter'][] = 'mailquarantine:1';
+//$settings['quarantine-filter'][] = 'mailquarantine:2';
+
+?>
