@@ -17,6 +17,8 @@ if (empty($settings['node'])) {
 if (!isset($settings['api-key'])) {
 ?>
 	<p><em>WARNING:</em> No api-key, dynamic user creation and black/whitelist lookups will not work until you specify one.</p>
+<?php } else { ?>
+	<p><em>INFO:</em> The trigger URL for this setup is <tt><?php p(self_url()); ?>api.php?api-key=<?php p($settings['api-key']); ?></tt>.</p>
 <?php } ?>
 <?php
 if (empty($settings['authentication'])) {
@@ -60,7 +62,7 @@ if (isset($settings['database']['dsn'])) {
 	</p>
 <?php if ($ok) { ?>
 	<p>
-		<strong>You may remove install.php to proceed.</strong>
+		<strong>You should now remove install.php to proceed.</strong>
 	</p>
 <?php } else { ?>
 	<p>
