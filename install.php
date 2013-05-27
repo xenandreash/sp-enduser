@@ -18,7 +18,7 @@ if (!isset($settings['api-key'])) {
 ?>
 	<p><em>WARNING:</em> No api-key, dynamic user creation and black/whitelist lookups will not work until you specify one.</p>
 <?php } else { ?>
-	<p><em>INFO:</em> The trigger URL for this setup is <tt><?php p(self_url()); ?>api.php?api-key=<?php p($settings['api-key']); ?></tt>.</p>
+	<p><em>INFO:</em> The trigger URL for this setup is <tt><?php p(self_url()); ?>api.php?api-key=<i>secret-api-key</i></tt>.</p>
 <?php } ?>
 <?php
 if (empty($settings['authentication'])) {
