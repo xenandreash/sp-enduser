@@ -6,8 +6,8 @@ require_once('core.php');
 
 $pagename = $settings['pagename'] ?: 'Halon SP for end-users';
 $title = $title ?: 'Untitled';
-$logo = file_exists('template/logo.png') ? 'template/logo.png' : 'img/logo.png';
-$styles = file_exists('template/styles.css') ? 'template/styles.css' : 'inc/styles.css';
+$logo = file_exists('template/logo.png') ? 'template/logo.png' : 'static/img/logo.png';
+$styles = file_exists('template/styles.css') ? 'template/styles.css' : 'static/styles.css';
 
 function header_active($file) {
 	if (strpos($_SERVER['SCRIPT_FILENAME'], $file) !== false)
@@ -22,7 +22,7 @@ function header_active($file) {
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title><?php echo $title ?> | <?php echo $pagename ?></title>
 		<link rel="stylesheet" href="<?php echo $styles ?>">
-		<script src="inc/jquery-1.9.1.min.js"></script>
+		<script src="static/jquery-1.9.1.min.js"></script>
 		<?php if (isset($javascript)) foreach($javascript as $js) { ?>
 		<script src="<?php echo $js; ?>"></script>
 		<?php } ?>

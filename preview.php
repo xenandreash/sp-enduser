@@ -57,7 +57,7 @@ if (preg_match("/^(.*)\n$uniq\|ATTACHMENTS\n(.*?)(?:\n)?$uniq\|(HTML|TEXT)\n(.*)
 }
 
 $title = 'Message';
-$javascript[] = 'preview.js';
+$javascript[] = 'static/preview.js';
 require_once('inc/header.php');
 ?>
 			<form>

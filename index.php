@@ -27,7 +27,7 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 }
 
 $title = 'Messages';
-$javascript[] = 'index.js';
+$javascript[] = 'static/index.js';
 require_once('inc/header.php');
 
 // Default values

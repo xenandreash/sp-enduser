@@ -1,0 +1,17 @@
+application: sp-enduser
+version: 1
+runtime: php
+api_version: 1
+
+handlers:
+- url: /(login|logout|forget|bwlist|user)\.php
+  script: \1.php
+- url: /api\.php
+  script: api.php
+- url: /static
+  static_dir: static
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon.ico
+- url: /.*
+  script: index.php
