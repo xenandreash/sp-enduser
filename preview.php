@@ -49,8 +49,9 @@ if (preg_match("/^(.*)\n$uniq\|ATTACHMENTS\n(.*?)(?:\n)?$uniq\|(HTML|TEXT)\n(.*)
 	$config->set('URI.Disable', true);
 	$purifier = new HTMLPurifier($config);
 	$header = $purifier->purify(htmlspecialchars($result[1]));
-	$body = trim($purifier->purify($result[4]));
 	$encode = $result[3];
+	$rawbody = $encode == 'TEXT' ? htmlspecialchars($result[4]) : $result[4];
+	$body = trim($purifier->purify($rawbody));
 	$attachments = array();
 	if ($result[2] != '') foreach (explode("\n", $result[2]) as $a)
 		$attachments[] = explode('|', $a);
