@@ -22,7 +22,7 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 		if (count($queue->result->item) != 1)
 			die('Invalid queueid');
 
-		$actions[$v][] = $m[1];
+		$actions[$v][] = $queueid;
 	}
 	foreach($actions as $soapid => $list)
 	{
