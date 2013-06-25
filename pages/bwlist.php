@@ -1,5 +1,5 @@
 <?php
-if(!defined('SP_ENDUSER')) die('File not included');
+if (!defined('SP_ENDUSER')) die('File not included');
 
 require_once('inc/core.php');
 
