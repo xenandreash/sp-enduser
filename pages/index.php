@@ -190,8 +190,10 @@ krsort($timesort);
 					<?php } ?>
 					</td>
 					<td>
+					<?php if ($m['type'] != 'history') { ?>
 						<a title="Preview" class="icon mail" href="?page=preview&node=<?php echo $m['id'] ?>&queueid=<?php echo $m['data']->id ?>"></a>
 						<div title="Release/retry" class="icon go"></div>
+					<?php } ?>
 					</td>
 				</tr>
 			<?php }} ?>
