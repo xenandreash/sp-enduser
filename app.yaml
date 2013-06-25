@@ -4,8 +4,6 @@ runtime: php
 api_version: 1
 
 handlers:
-- url: /(login|logout|forget|bwlist|user)\.php
-  script: \1.php
 - url: /api\.php
   script: api.php
 - url: /static

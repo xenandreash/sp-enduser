@@ -9,8 +9,8 @@ $title = $title ?: 'Untitled';
 $logo = file_exists('template/logo.png') ? 'template/logo.png' : 'static/img/logo.png';
 $styles = file_exists('template/styles.css') ? 'template/styles.css' : 'static/styles.css';
 
-function header_active($file) {
-	if (strpos($_SERVER['SCRIPT_FILENAME'], $file) !== false)
+function header_active($page) {
+	if ($_GET['page'] == $page || ($_GET['page'] == '' && $page == 'index'))
 		echo ' active';
 }
 
@@ -31,14 +31,14 @@ function header_active($file) {
 		<?php if (isset($_SESSION['username'])) { ?>
 		<div id="nav">
 			<ul id="menu">
-				<li class="mail<?php header_active('/index.php') ?>"><a href="index.php">Messages</a></li>
+				<li class="mail<?php header_active('index') ?>"><a href="?page=index">Messages</a></li>
 				<?php if (settings('database')) { ?>
-				<li class="bwlist<?php header_active('/bwlist.php') ?>"><a href="bwlist.php">Black/whitelist</a></li>
+				<li class="bwlist<?php header_active('bwlist') ?>"><a href="?page=bwlist">Black/whitelist</a></li>
 				<?php } ?>
 			</ul>
 			<ul id="taskbar">
-				<li class="user<?php header_active('/user.php') ?>"><a href="user.php"><?php echo htmlspecialchars($_SESSION['username']) ?></a></li>
-				<li class="logout"><a href="logout.php">Logout</a></li>
+				<li class="user<?php header_active('user') ?>"><a href="?page=user"><?php echo htmlspecialchars($_SESSION['username']) ?></a></li>
+				<li class="logout"><a href="?page=logout">Logout</a></li>
 			</ul>
 		</div>
 		<?php } ?>

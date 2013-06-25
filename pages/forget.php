@@ -1,4 +1,5 @@
 <?php
+if(!defined('SP_ENDUSER')) die('File not included');
 
 require_once('inc/core.php');
 require_once('inc/utils.php');
@@ -19,7 +20,7 @@ if (isset($_GET['forget']) && !isset($_GET['token'])) {
 		$publictoken = hash_hmac('sha256', $row['password'], $token);
 		$statement = $dbh->prepare("UPDATE users SET reset_password_token = :token, reset_password_timestamp = :timestamp WHERE username = :username;");
 		$statement->execute(array(':username' => $_GET['forget'], ':token' => $token, ':timestamp' => time()));
-		mail2($_GET['forget'], 'Reset password', wordwrap("Someone (hopefully you) have requested a password reset (from IP {$_SERVER['REMOTE_ADDR']}).\r\n\r\nThe token is:\r\n$publictoken \r\n\r\nDirect URL:\r\n{$settings['public-url']}/forget.php?forget={$_GET['forget']}&token=$publictoken", 70, "\r\n"));
+		mail2($_GET['forget'], 'Reset password', wordwrap("Someone (hopefully you) have requested a password reset (from IP {$_SERVER['REMOTE_ADDR']}).\r\n\r\nThe token is:\r\n$publictoken \r\n\r\nDirect URL:\r\n{$settings['public-url']}/?page=forget&forget={$_GET['forget']}&token=$publictoken", 70, "\r\n"));
 	}
 }
 
@@ -70,7 +71,7 @@ require_once('inc/header.php');
 				<fieldset>
 					<legend>Reset</legend>
 					<?php if (isset($_GET['forget']) && !isset($error)) { ?>
-					<form method="post" action="forget.php">
+					<form method="post" action="?page=forget">
 						<input type="hidden" name="reset" value="<?php p($_GET['forget']) ?>">
 						<?php if (isset($_GET['token'])) { ?>
 						<p>Choose a new password.</p>
@@ -97,9 +98,10 @@ require_once('inc/header.php');
 					
 					</form>
 					<?php } else if (isset($reset)) { ?>
-					<p>Your password has been reset, now <a href="login.php">sign in</a>.</p>
+					<p>Your password has been reset, now <a href="?page=login">sign in</a>.</p>
 					<?php } else { ?>
 					<form method="get">
+						<input type="hidden" name="page" value="forget">
 						<p>Enter your e-mail address and a reset request will be sent to your inbox.</p>
 						<div>
 							<label for="forget">E-mail</label>

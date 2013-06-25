@@ -1,4 +1,5 @@
 <?php
+if(!defined('SP_ENDUSER')) die('File not included');
 
 if (file_exists('install.php')) {
 	require_once('install.php');
@@ -113,7 +114,7 @@ require_once('inc/header.php');
 			<div class="halfpage">
 				<fieldset>
 					<legend>Sign in</legend>
-					<form method="post">
+					<form method="post" action="?page=login">
 						<div>
 							<label for="username">Username</label>
 							<input name="username" type="text">
@@ -128,7 +129,7 @@ require_once('inc/header.php');
 						</div>
 					</form>
 					<?php if (isset($settings['database']['dsn'])) { ?>
-						<p><a href=forget.php>Forgot password?</a></p>
+						<p><a href="?page=forget">Forgot password?</a></p>
 					<?php } ?>
 				</fieldset>
 			</div>

@@ -1,4 +1,6 @@
 <?php
+if(!defined('SP_ENDUSER')) die('File not included');
+
 require_once('inc/session.php');
 require_once('inc/core.php');
 require_once('inc/utils.php');
@@ -54,7 +56,7 @@ require_once('inc/header.php');
 				<fieldset>
 					<legend>Change password</legend>
 			<?php if ($_SESSION['source'] == 'database') { ?>
-					<form method="post">
+					<form method="post" action="?page=user">
 						<div>
 							<label>Password</label>
 							<input type="password" name="password">

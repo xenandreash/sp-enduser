@@ -1,4 +1,6 @@
 <?php
+if(!defined('SP_ENDUSER')) die('File not included');
+
 require_once('inc/session.php');
 require_once('inc/core.php');
 
@@ -23,7 +25,7 @@ if ($_GET['list'] == 'delete') {
 		$statement = $dbh->prepare("DELETE FROM bwlist WHERE access = :access AND bwlist.type = :type AND bwlist.value = :value;");
 		$statement->execute(array(':access' => $_GET['access'], ':type' => $_GET['type'], ':value' => $_GET['value']));
 	}
-	header("Location: bwlist.php");
+	header("Location: ?page=bwlist");
 	die();
 }
 
@@ -32,7 +34,7 @@ if ($_GET['list'] == 'add') {
 		$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
 		$statement->execute(array(':access' => $_POST['access'], ':type' => $_POST['type'], ':value' => $_POST['value']));
 	}
-	header("Location: bwlist.php");
+	header("Location: ?page=bwlist");
 	die();
 }
 
@@ -78,7 +80,7 @@ require_once('inc/header.php');
 							<td><?php p($row['value']); ?></td>
 							<td><?php p($row['access']); ?></td>
 							<td>
-								<a title="Remove" class="icon close" href=?list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>></a>
+								<a title="Remove" class="icon close" href=?page=bwlist&list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>></a>
 							</td>
 						</tr>
 						<?php
@@ -92,7 +94,7 @@ require_once('inc/header.php');
 			<div class="halfpage">
 				<fieldset>
 					<legend>Black/whitelist</legend>
-					<form action="?list=add" method="post">
+					<form action="?page=bwlist&list=add" method="post">
 						<div>
 							<label>Action</label>
 							<select name="type">

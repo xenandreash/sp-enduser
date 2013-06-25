@@ -1,4 +1,5 @@
 <?php
+if(!defined('SP_ENDUSER')) die('File not included');
 
 require_once('inc/session.php');
 require_once('inc/core.php');
@@ -66,7 +67,7 @@ require_once('inc/header.php');
 					<div class="button back" onclick="history.back()">Back</div>
 				</div>
 				<div class="item">
-					<a href="download.php?queueid=<?php echo $queueid?>&node=<?php echo $node?>"><div class="button down">Download</div></a>
+					<a href="?page=download&queueid=<?php echo $queueid?>&node=<?php echo $node?>"><div class="button down">Download</div></a>
 				</div>
 				<div class="item">
 					<div class="button start tracking-actions">Actions...</div>
@@ -132,7 +133,7 @@ require_once('inc/header.php');
 			</table>
 			<?php } ?>
 
-			<form id="actionform" method="post">
+			<form id="actionform" method="post" action="?page=preview">
 				<input type="hidden" name="action" id="action" value="">
 			</form>
 
