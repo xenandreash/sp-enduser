@@ -38,7 +38,9 @@ function header_active($page) {
 			</ul>
 			<ul id="taskbar">
 				<li class="user<?php header_active('user') ?>"><a href="?page=user"><?php echo htmlspecialchars(Session::Get()->getUsername()) ?></a></li>
+				<?php if (Session::Get()->getSource() != 'cpanel') { ?>
 				<li class="logout"><a href="?page=logout">Logout</a></li>
+				<?php } ?>
 			</ul>
 		</div>
 		<?php } ?>
