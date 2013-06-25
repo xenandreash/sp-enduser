@@ -1,4 +1,6 @@
 <?php
+if(!defined('SP_ENDUSER')) die('File not included');
+
 $title = 'Install';
 require_once('inc/header.php');
 require_once('inc/core.php');

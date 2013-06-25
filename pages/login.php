@@ -1,11 +1,6 @@
 <?php
 if(!defined('SP_ENDUSER')) die('File not included');
 
-if (file_exists('install.php')) {
-	require_once('install.php');
-	die();
-}
-
 require_once('inc/core.php');
 session_start();
 
