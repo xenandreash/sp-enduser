@@ -167,7 +167,7 @@ krsort($timesort);
 				?>
 				<tr>
 					<td><span class="semitrans">
-						<?php echo strftime('%F %T', $m['data']->msgts) ?>
+						<?php echo strftime('%Y-%m-%d %H:%M:%S', $m['data']->msgts) ?>
 					</span></td>
 					<td class="action <?php echo $m['data']->msgaction.' '.$m['type'] ?>" title="<?php p($m['data']->msgaction) ?>">
 					<?php if ($m['type'] == 'queue') { // queue or quarantine ?>
