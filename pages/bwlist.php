@@ -1,20 +1,22 @@
 <?php
 if(!defined('SP_ENDUSER')) die('File not included');
 
-require_once('inc/session.php');
 require_once('inc/core.php');
 
 if (!isset($settings['database']['dsn']))
 	die('No database configured');
 
-function checkAccess($access)
+function checkAccess($perm)
 {
-	if (count($_SESSION['access']) == 0)
+	$access = Session::Get()->getAccess();
+	if (count($access) == 0)
 		return true;
-	foreach($_SESSION['access'] as $type)
-		foreach($type as $item)
-		if ($item == $access)
-			return true;
+	foreach($access as $type) {
+		foreach($type as $item) {
+			if ($item == $perm)
+				return true;
+		}
+	}
 	return false;
 }
 
@@ -57,14 +59,15 @@ require_once('inc/header.php');
 					<?php
 					$result = array();
 
-					if (count($_SESSION['access']) == 0) {
+					$access = Session::Get()->getAccess();
+					if (count($access) == 0) {
 						$statement = $dbh->prepare("SELECT * FROM bwlist ORDER BY type DESC;");
 						$statement->execute();
 						while ($row = $statement->fetch())
 							$result[] = $row;
 					}
 
-					foreach($_SESSION['access'] as $type) {
+					foreach($access as $type) {
 						foreach($type as $item) {
 							$statement = $dbh->prepare("SELECT * FROM bwlist WHERE access = :access ORDER BY type DESC;");
 							$statement->execute(array(':access' => $item));
@@ -109,16 +112,16 @@ require_once('inc/header.php');
 						<div>
 							<label>For recipient</label>
 							<?php
-								$access = array();
-								foreach($_SESSION['access'] as $a) {
+								$_access = array();
+								foreach($access as $a) {
 									foreach($a as $type) {
-										$access[] = $type;
+										$_access[] = $type;
 									}
 								}
-								if (count($access) > 0) {
+								if (count($_access) > 0) {
 							?>
 							<select name="access">
-							<?php foreach($access as $a) { ?>
+							<?php foreach($_access as $a) { ?>
 								<option><?php echo $a; ?></option>
 							<?php } ?>
 							</select>

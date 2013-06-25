@@ -2,51 +2,6 @@
 
 require_once('core.php');
 
-class LDAPDatabase {
-	private $uri = '';
-	private $basedn = '';
-
-	public function __construct($uri, $basedn) {
-		$this->uri = $uri;
-		$this->basedn = $basedn;
-	}
-	public function check($username, $password) {
-		// If username and password are not specified,
-		// an anonymous bind is attempted. 
-		if ($username == "" || $password == "")
-			return false;
-
-		if (!function_exists('ldap_connect'))
-			die('PHP module LDAP missing (install php5-ldap)');
-
-		$ds = ldap_connect($this->uri);
-		if (!$ds)
-			return false;
-
-		$bind = @ldap_bind($ds, $username, $password);
-		if (!$bind)
-			return false;
-
-		$_SESSION['username'] = $username;
-		$_SESSION['source'] = 'ldap';
-		$_SESSION['access'] = array();
-
-		$ldapuser = ldap_escape($username);
-		//$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(proxyAddresses=smtp:*))", array('proxyAddresses'));
-		$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(mail=*))", array('mail'));
-		$entry = ldap_first_entry($ds, $rs);
-		if ($entry) {
-			//foreach(ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
-			foreach(ldap_get_values($ds, $entry, 'mail') as $mail) {
-				if (!is_string($mail))
-					continue;
-				$_SESSION['access']['mail'][] = $mail;
-			}
-		}
-		return true;
-	}
-}
-
 function build_query_restrict($type = 'queue')
 {
 	$globalfilter = "";
@@ -63,16 +18,17 @@ function build_query_restrict($type = 'queue')
 	}
 
 	$filter = "";
-	if (is_array($_SESSION['access']['domain'])) {
-		foreach($_SESSION['access']['domain'] as $domain) {
+	$access = Session::Get()->getAccess();
+	if (is_array($access['domain'])) {
+		foreach($access['domain'] as $domain) {
 			if ($filter != "")
 				$filter .= " or ";
 			$filter .= "from~%@$domain or to~%@$domain";
 		} 
 	}
 
-	if (is_array($_SESSION['access']['mail'])) {
-		foreach($_SESSION['access']['mail'] as $mail) {
+	if (is_array($access['mail'])) {
+		foreach($access['mail'] as $mail) {
 			if ($filter != "")
 				$filter .= " or ";
 			$filter .= "from=$mail or to=$mail";

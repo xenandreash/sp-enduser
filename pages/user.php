@@ -1,17 +1,17 @@
 <?php
 if(!defined('SP_ENDUSER')) die('File not included');
 
-require_once('inc/session.php');
 require_once('inc/core.php');
 require_once('inc/utils.php');
 
+$source = Session::Get()->getSource();
 $changedPassword = false;
-if ($_SESSION['source'] == 'database' && isset($_POST['password']) && $_POST['password'] == $_POST['password2']) {
+if ($source == 'database' && isset($_POST['password']) && $_POST['password'] == $_POST['password2']) {
 	if (!isset($settings['database']['dsn']))
 		die('No database configured');
 	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
 	$statement = $dbh->prepare("UPDATE users SET password = :password WHERE username = :username;");
-	$statement->execute(array(':username' => $_SESSION['username'], ':password' => crypt($_POST['password'])));
+	$statement->execute(array(':username' => Session::Get()->getUsername(), ':password' => crypt($_POST['password'])));
 	$changedPassword = true;
 }
 
@@ -30,17 +30,18 @@ require_once('inc/header.php');
 					<ul>
 					<?php
 						$r = 0;
-						if (is_array($_SESSION['access']['mail'])) { ?>
+						$access = Session::Get()->getAccess();
+						if (is_array($access['mail'])) { ?>
 							<?php
-							foreach($_SESSION['access']['mail'] as $mail) {
+							foreach($access['mail'] as $mail) {
 								++$r;
 								echo "<li>";
 								p($mail);
 							}
 						}
-						if (is_array($_SESSION['access']['domain'])) { ?>
+						if (is_array($access['domain'])) { ?>
 							<?php
-							foreach($_SESSION['access']['domain'] as $domain) {
+							foreach($access['domain'] as $domain) {
 								++$r;
 								echo "<li>";
 								p($domain);
@@ -55,7 +56,7 @@ require_once('inc/header.php');
 			<div class="halfpage">
 				<fieldset>
 					<legend>Change password</legend>
-			<?php if ($_SESSION['source'] == 'database') { ?>
+			<?php if ($source == 'database') { ?>
 					<form method="post" action="?page=user">
 						<div>
 							<label>Password</label>
@@ -73,7 +74,7 @@ require_once('inc/header.php');
 				</p>
 			<?php } else { ?>
 				<p>
-					User authenticated using <?php p($_SESSION['source']); ?> and can not change the password from this page.
+					User authenticated using <?php p($source); ?> and can not change the password from this page.
 				</p>
 			<?php } ?>
 			</fieldset>

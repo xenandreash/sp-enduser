@@ -28,7 +28,7 @@ function header_active($page) {
 		<?php } ?>
 	</head>
 	<body>
-		<?php if (isset($_SESSION['username'])) { ?>
+		<?php if (class_exists('Session')) { ?>
 		<div id="nav">
 			<ul id="menu">
 				<li class="mail<?php header_active('index') ?>"><a href="?page=index">Messages</a></li>
@@ -37,7 +37,7 @@ function header_active($page) {
 				<?php } ?>
 			</ul>
 			<ul id="taskbar">
-				<li class="user<?php header_active('user') ?>"><a href="?page=user"><?php echo htmlspecialchars($_SESSION['username']) ?></a></li>
+				<li class="user<?php header_active('user') ?>"><a href="?page=user"><?php echo htmlspecialchars(Session::Get()->getUsername()) ?></a></li>
 				<li class="logout"><a href="?page=logout">Logout</a></li>
 			</ul>
 		</div>

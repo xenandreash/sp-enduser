@@ -1,7 +1,6 @@
 <?php
 if(!defined('SP_ENDUSER')) die('File not included');
 
-require_once('inc/session.php');
 require_once('inc/core.php');
 require_once('inc/utils.php');
 
@@ -10,8 +9,19 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 	foreach ($_POST as $k => $v) {
 		if (!preg_match('/^multiselect-(\d+)$/', $k, $m))
 			continue;
-		if ($_SESSION['message_access'][$v][$m[1]] != true)
-			die('Message permission denied');
+
+		$node = $v;
+		$queueid = intval($m[1]);
+		$client = soap_client($node);
+
+		// Access permission
+		$query['filter'] = build_query_restrict().' && queueid='.$queueid;
+		$query['offset'] = 0;
+		$query['limit'] = 1;
+		$queue = $client->mailQueue($query);
+		if (count($queue->result->item) != 1)
+			die('Invalid queueid');
+
 		$actions[$v][] = $m[1];
 	}
 	foreach($actions as $soapid => $list)
@@ -162,7 +172,6 @@ krsort($timesort);
 					<td class="action <?php echo $m['data']->msgaction.' '.$m['type'] ?>" title="<?php p($m['data']->msgaction) ?>">
 					<?php if ($m['type'] == 'queue') { // queue or quarantine ?>
 						<input type="checkbox" name="multiselect-<?php echo $m['data']->id ?>" value="<?php echo $m['id'] ?>">
-						<?php $_SESSION['message_access'][$m['id']][$m['data']->id] = true; // cache ID in "access" session ?>
 					<?php } else { // history ?>
 						<strong><?php echo $m['data']->msgaction[0] ?></strong>
 					<?php } ?>

@@ -9,6 +9,52 @@ if (file_exists('install.php')) {
 require_once('inc/core.php');
 session_start();
 
+class LDAPDatabase {
+	private $uri = '';
+	private $basedn = '';
+
+	public function __construct($uri, $basedn) {
+		$this->uri = $uri;
+		$this->basedn = $basedn;
+	}
+	public function check($username, $password) {
+		// If username and password are not specified,
+		// an anonymous bind is attempted. 
+		if ($username == "" || $password == "")
+			return false;
+
+		if (!function_exists('ldap_connect'))
+			die('PHP module LDAP missing (install php5-ldap)');
+
+		$ds = ldap_connect($this->uri);
+		if (!$ds)
+			return false;
+
+		$bind = @ldap_bind($ds, $username, $password);
+		if (!$bind)
+			return false;
+
+		$_SESSION['username'] = $username;
+		$_SESSION['source'] = 'ldap';
+		$_SESSION['access'] = array();
+
+		$ldapuser = ldap_escape($username);
+		//$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(proxyAddresses=smtp:*))", array('proxyAddresses'));
+		$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(mail=*))", array('mail'));
+		$entry = ldap_first_entry($ds, $rs);
+		if ($entry) {
+			//foreach(ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
+			foreach(ldap_get_values($ds, $entry, 'mail') as $mail) {
+				if (!is_string($mail))
+					continue;
+				$_SESSION['access']['mail'][] = $mail;
+			}
+		}
+		return true;
+	}
+}
+
+
 if (isset($_POST['username']) && isset($_POST['password'])) {
 	$username = $_POST['username'];
 	$password = $_POST['password'];
