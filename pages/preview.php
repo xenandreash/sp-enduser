@@ -75,7 +75,7 @@ require_once('inc/header.php');
 			</form>
 		</div>
 		<div class="fullpage">
-			<div class="preview-header">Date</div> <?php p(strftime('%F %T', $mail->msgts)) ?><br>
+			<div class="preview-header">Date</div> <?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts)) ?><br>
 			<div class="preview-header">Server</div> <?php p($mail->msgfromserver) ?><br>
 			<div class="preview-header">From</div> <?php p($mail->msgfrom) ?><br>
 			<div class="preview-header">To</div> <?php p($mail->msgto) ?><br>
