@@ -17,13 +17,17 @@ function build_query_restrict($type = 'queue')
 		$globalfilter .= ' or not action=QUARANTINE ';
 	}
 
+	$pattern = "{from} or {to}";
+	if (isset($settings['filter-pattern']))
+		$pattern = $settings['filter-pattern'];
+
 	$filter = "";
 	$access = Session::Get()->getAccess();
 	if (is_array($access['domain'])) {
 		foreach($access['domain'] as $domain) {
 			if ($filter != "")
 				$filter .= " or ";
-			$filter .= "from~%@$domain or to~%@$domain";
+			$filter .= str_replace(array('{from}', '{to}'), array("from~%@$domain", "to~%@$domain"), $pattern);
 		} 
 	}
 
@@ -31,7 +35,7 @@ function build_query_restrict($type = 'queue')
 		foreach($access['mail'] as $mail) {
 			if ($filter != "")
 				$filter .= " or ";
-			$filter .= "from=$mail or to=$mail";
+			$filter .= str_replace(array('{from}', '{to}'), array("from=$mail", "to=$mail"), $pattern);
 		} 
 	}
 	return $globalfilter.($globalfilter?" && ":"").$filter;
