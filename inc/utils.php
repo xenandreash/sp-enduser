@@ -130,13 +130,16 @@ function generate_random_password()
 	return $pass;
 }
 
-function mail2($recipient, $subject, $message)
+function mail2($recipient, $subject, $message, $in_headers = null)
 {
 	$settings = settings();
-	$headers = "";
+	$headers = array();
+	$headers[] = 'Message-ID: <'.uniqid().'@halon.se>';
 	if (isset($settings['mail']['from']))
-		$headers = "From: " . $settings['mail']['from'];
-	mail($recipient, $subject, $message, $headers);
+		$headers[] = "From: ".$settings['mail']['from'];
+	if ($in_headers !== null)
+		$headers = array_merge($headers, $in_headers);
+	mail($recipient, $subject, $message, implode("\r\n", $headers));
 }
 
 function self_url()

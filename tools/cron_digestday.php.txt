@@ -84,7 +84,8 @@ foreach ($users as $u) {
 	$data = '<p>You have '.$i.' message(s) received to your <a href="'.$settings['public-url'].'">quarantine</a> during the last 24 hours.</p>'.$data.'</table>';
 	$data = chunk_split(base64_encode($data));
 	echo "digest to {$u['email']} with $i msgs\n";
-	$headers = "Content-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n";
+	$headers[] = 'Content-Type: text/html; charset=UTF-8';
+	$headers[] = 'Content-Transfer-Encoding: base64';
 	mail2($u['email'], "Quarantine digest, $i new messages", $data, $headers);
 }
 ?>
