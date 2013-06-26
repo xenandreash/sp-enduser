@@ -179,7 +179,11 @@ krsort($timesort);
 					<td><?php p($m['data']->msgfrom) ?></td>
 					<td><?php p($m['data']->msgto) ?></td>
 					<td>
+					<?php if ($m['type'] != 'history') { ?>
 						<a href="?page=preview&node=<?php echo $m['id'] ?>&queueid=<?php echo $m['data']->id ?>"><?php p($m['data']->msgsubject) ?></a>
+					<?php } else { // history ?>
+						<?php p($m['data']->msgsubject) ?>
+					<?php } ?>
 					</td>
 					<td>
 					<?php if ($m['type'] == 'queue' && $m['datd']->msgaction == 'DELIVER') { // queue ?>
