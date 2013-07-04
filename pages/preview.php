@@ -52,6 +52,9 @@ if (preg_match("/^(.*)\n$uniq\|ATTACHMENTS\n(.*?)(?:\n)?$uniq\|(HTML|TEXT)\n(.*)
 	$attachments = array();
 	if ($result[2] != '') foreach (explode("\n", $result[2]) as $a)
 		$attachments[] = explode('|', $a);
+} else {
+	$encode = 'TEXT';
+	$body = 'Preview not available';
 }
 
 $title = 'Message';
@@ -85,17 +88,21 @@ require_once('inc/header.php');
 				echo $body;
 			?>
 
+			<?php if (count($attachment) > 0) { ?>
 			<div class="preview-attachments">
 			<?php foreach($attachments as $a) { ?>
 				<div class="preview-attachment"><?php p($a[2]) ?> (<?php echo round($a[1]/1024, 0) ?> KiB)</div>
 			<?php } ?>
 			</div>
+			<?php } ?>
 
+			<?php if ($header != '') { ?>
 			<div class="preview-headers">
 			<?php foreach(explode("\n", $header) as $line) { ?>
 				<pre class="indent"><?php echo $line; ?></pre>
 			<?php } ?>
 			</div>
+			<?php } ?>
 
 			<?php if (count($mail->msgscore->item) > 0) { ?>
 			<table class="list pad">
