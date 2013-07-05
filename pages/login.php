@@ -2,7 +2,9 @@
 if (!defined('SP_ENDUSER')) die('File not included');
 
 require_once('inc/core.php');
+
 session_start();
+session_regenerate_id(true);
 
 class LDAPDatabase {
 	private $uri = '';
