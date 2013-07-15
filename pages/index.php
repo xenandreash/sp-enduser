@@ -139,8 +139,9 @@ krsort($timesort);
 		<table class="list pad fixed">
 			<thead>
 				<tr>
-					<th style="width: 125px">Date and time</th>
+					<th style="width: 17px; padding: 0"></th>
 					<th style="width: 20px" class="action"><input type="checkbox" id="select-all"></th>
+					<th style="width: 125px">Date and time</th>
 					<th>From</th>
 					<th>To</th>
 					<th>Subject</th>
@@ -166,9 +167,7 @@ krsort($timesort);
 					$param[$m['type']][$m['id']]['offset']++;
 				?>
 				<tr>
-					<td><span class="semitrans">
-						<?php echo strftime('%Y-%m-%d %H:%M:%S', $m['data']->msgts) ?>
-					</span></td>
+					<td style="width: 17px; padding: 0"></td>
 					<td class="action <?php echo $m['data']->msgaction.' '.$m['type'] ?>" title="<?php p($m['data']->msgaction) ?>">
 					<?php if ($m['type'] == 'queue') { // queue or quarantine ?>
 						<input type="checkbox" name="multiselect-<?php echo $m['data']->id ?>" value="<?php echo $m['id'] ?>">
@@ -176,6 +175,9 @@ krsort($timesort);
 						<strong><?php echo $m['data']->msgaction[0] ?></strong>
 					<?php } ?>
 					</td>
+					<td><span class="semitrans">
+						<?php echo strftime('%Y-%m-%d %H:%M:%S', $m['data']->msgts) ?>
+					</span></td>
 					<td><?php p($m['data']->msgfrom) ?></td>
 					<td><?php p($m['data']->msgto) ?></td>
 					<td>
@@ -186,7 +188,7 @@ krsort($timesort);
 					<?php } ?>
 					</td>
 					<td>
-					<?php if ($m['type'] == 'queue' && $m['datd']->msgaction == 'DELIVER') { // queue ?>
+					<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
 						In queue (retry <?php echo $m['data']->msgretries ?>)
 						<span class="semitrans"><?php p($m['data']->msgerror) ?></span>
 					<?php } else { // history or quarantine ?>
@@ -203,14 +205,14 @@ krsort($timesort);
 			<?php }} ?>
 			<?php if (empty($timesort)) { ?>
 				<tr>
-					<td colspan="7"><span class="semitrans">No matches</span></td>
+					<td colspan="8"><span class="semitrans">No matches</span></td>
 				</tr>
 			<?php } ?>
 			</form>
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="7" style="text-align: center">
+					<td colspan="8" style="text-align: center">
 						<form>
 							<button type="button" name="prev" <?php echo $prev_button ?> style="float: left" onclick="history.go(-1)">Previous</button>
 							<button type="submit" name="next" <?php echo $next_button ?> style="float: right">Next</button>
