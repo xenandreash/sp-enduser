@@ -68,13 +68,33 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 			break;
 			case 'smtp':
 				$fp = fsockopen($method['host'], $method['port'] ?: '25');
-				while($line = fgets($fp))
-					if (substr($line, 3, 1) != '-')
+				while($line = fgets($fp)) {
+					if (substr($line, 0, 1) != '2')
+						goto smtp_fail;
+					if (substr($line, 3, 1) == ' ')
 						break;
-				if (substr($line, 0, 1) != '2')
-					goto smtp_fail;
-				$plain = base64_encode($username . "\0" . $username . "\0" . $password);
-				fwrite($fp, "AUTH PLAIN $plain\n");
+				}
+				fwrite($fp, "EHLO halon-sp-enduser\n");
+				$method = 'plain';
+				while($line = fgets($fp)) {
+					if (substr($line, 0, 1) != '2')
+						goto smtp_fail;
+					if (substr($line, 4, 5) == 'AUTH ' && strpos($line, 'CRAM-MD5') !== false)
+						$method = 'md5';
+					if (substr($line, 3, 1) == ' ')
+						break;
+				}
+				if ($method == 'md5') {
+					fwrite($fp, "AUTH CRAM-MD5\n");
+					$line = fgets($fp);
+					$chall = substr($line, 4);
+					$data = $username.' '.hash_hmac('md5', base64_decode($chall), $password);
+					$data = base64_encode($data);
+					fwrite($fp, "$data\n");
+				} else {
+					$plain = base64_encode($username . "\0" . $username . "\0" . $password);
+					fwrite($fp, "AUTH PLAIN $plain\n");
+				}
 				while($line = fgets($fp))
 					if (substr($line, 3, 1) != '-')
 						break;
