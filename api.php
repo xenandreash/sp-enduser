@@ -9,6 +9,12 @@ if (!isset($settings['api-key']) || !isset($_GET['api-key']) || $settings['api-k
 
 // add recipient (user) to local database, send password by mail
 if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'] !== '') {
+	$uses_database = false;
+	foreach ($settings['authentication'] as $a)
+		if ($a['type'] == 'database')
+			$uses_database = true;
+	if (!$uses_database)
+		die('No database authentication source');
 
 	if (!isset($settings['database']['dsn']))
 		die('No database configured');
