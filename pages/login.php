@@ -74,7 +74,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 					if (substr($line, 3, 1) == ' ')
 						break;
 				}
-				fwrite($fp, "EHLO halon-sp-enduser\n");
+				fwrite($fp, "EHLO halon-sp-enduser\r\n");
 				$method = 'plain';
 				while($line = fgets($fp)) {
 					if (substr($line, 0, 1) != '2')
@@ -85,28 +85,28 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 						break;
 				}
 				if ($method == 'md5') {
-					fwrite($fp, "AUTH CRAM-MD5\n");
+					fwrite($fp, "AUTH CRAM-MD5\r\n");
 					$line = fgets($fp);
 					$chall = substr($line, 4);
 					$data = $username.' '.hash_hmac('md5', base64_decode($chall), $password);
 					$data = base64_encode($data);
-					fwrite($fp, "$data\n");
+					fwrite($fp, "$data\r\n");
 				} else {
 					$plain = base64_encode($username . "\0" . $username . "\0" . $password);
-					fwrite($fp, "AUTH PLAIN $plain\n");
+					fwrite($fp, "AUTH PLAIN $plain\r\n");
 				}
 				while($line = fgets($fp))
 					if (substr($line, 3, 1) != '-')
 						break;
 				if (substr($line, 0, 3) != '235')
 					goto smtp_fail;
-				fwrite($fp, "QUIT\n");
+				fwrite($fp, "QUIT\r\n");
 				$_SESSION['username'] = $username;
 				$_SESSION['source'] = 'smtp';
 				$_SESSION['access'] = array('mail' => array($username));
 				break 2;
 				smtp_fail:
-					fwrite($fp, "QUIT\n");
+					fwrite($fp, "QUIT\r\n");
 			break;
 			case 'ldap':
 				$method = new LDAPDatabase($method['uri'], $method['base_dn']);
