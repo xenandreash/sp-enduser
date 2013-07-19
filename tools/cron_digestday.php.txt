@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Don't invoke directly. Run as:
+ * php cron.php.txt digestday
+ */
+
 if (!isset($_SERVER['argc']))
 	die('this file can only be run from command line');
 
@@ -44,10 +49,16 @@ if (empty($timesort))
 	die("No quarantined messages within one day\n");
 
 $users = array();
-// Currently, only support statically configured users
+// Send to statically configured users with e-mail address
 foreach ($settings['authentication'] as $a)
 	if ($a['type'] == 'account' && isset($a['email']))
 		$users[] = array('email' => $a['email'], 'access' => $a['access']);
+
+// Send to everyone in quarantine, if enabled in settings
+if ($settings['digest']['to-all'] == true)
+	foreach($timesort as $t)
+		foreach($t as $m)
+			$users[] = array('email' => $m['data']->msgto, 'access' => array('mail' => array($m['data']->msgto)));
 
 $size = 500;
 echo "Sending to ".count($users)." users\n";

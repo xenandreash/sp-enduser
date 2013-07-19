@@ -1,0 +1,7 @@
+<?php
+
+if (!isset($_SERVER['argc']))
+	die('this file can only be run from command line');
+
+if ($argv[1] == 'digestday') include('tools/cron_digestday.php.txt');
+?>
