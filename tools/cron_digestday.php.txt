@@ -55,10 +55,13 @@ foreach ($settings['authentication'] as $a)
 		$users[] = array('email' => $a['email'], 'access' => $a['access']);
 
 // Send to everyone in quarantine, if enabled in settings
+$allusers = array();
 if ($settings['digest']['to-all'] == true)
 	foreach($timesort as $t)
 		foreach($t as $m)
-			$users[] = array('email' => $m['data']->msgto, 'access' => array('mail' => array($m['data']->msgto)));
+			$allusers[$m['data']->msgto] = true;
+foreach ($allusers as $email => $tmp)
+	$users[] = array('email' => $email, 'access' => array('mail' => array($email)));
 
 $size = 500;
 echo "Sending to ".count($users)." users\n";
