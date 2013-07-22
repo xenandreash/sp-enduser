@@ -42,7 +42,7 @@ class LDAPDatabase {
 				$entry = ldap_first_entry($ds, $rs);
 				if ($entry) {
 					foreach (ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
-						if (!is_string($mail))
+						if (!is_string($mail) || strcasecmp(substr($mail, 0, 5), 'smtp:') !== 0)
 							continue;
 						$_SESSION['access']['mail'][] = substr($mail, 5);
 					}
