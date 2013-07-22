@@ -37,7 +37,7 @@ class LDAPDatabase {
 
 		$ldapuser = ldap_escape($username);
 		switch ($this->schema) {
-			case 'activedirectory':
+			case 'msexchange':
 				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(proxyAddresses=smtp:*))", array('proxyAddresses'));
 				$entry = ldap_first_entry($ds, $rs);
 				if ($entry) {

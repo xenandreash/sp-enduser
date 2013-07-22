@@ -82,7 +82,7 @@
 //		'type' => 'ldap',
 //		'uri' => 'ldap://10.2.7.2',
 //		'base_dn' => 'CN=Users,DC=dev,DC=halon,DC=local',
-//		'schema' => 'activedirectory',
+//		'schema' => 'msexchange',
 //		);
 //$settings['authentication'][] = array(
 //		'type' => 'smtp',
