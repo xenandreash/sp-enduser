@@ -9,10 +9,12 @@ session_regenerate_id(true);
 class LDAPDatabase {
 	private $uri = '';
 	private $basedn = '';
+	private $schema = '';
 
-	public function __construct($uri, $basedn) {
+	public function __construct($uri, $basedn, $schema) {
 		$this->uri = $uri;
 		$this->basedn = $basedn;
+		$this->schema = $schema;
 	}
 	public function check($username, $password) {
 		// If username and password are not specified,
@@ -31,22 +33,40 @@ class LDAPDatabase {
 		if (!$bind)
 			return false;
 
-		$_SESSION['username'] = $username;
-		$_SESSION['source'] = 'ldap';
 		$_SESSION['access'] = array();
 
 		$ldapuser = ldap_escape($username);
-		//$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(proxyAddresses=smtp:*))", array('proxyAddresses'));
-		$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(mail=*))", array('mail'));
-		$entry = ldap_first_entry($ds, $rs);
-		if ($entry) {
-			//foreach(ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
-			foreach(ldap_get_values($ds, $entry, 'mail') as $mail) {
-				if (!is_string($mail))
-					continue;
-				$_SESSION['access']['mail'][] = $mail;
-			}
+		switch ($this->schema) {
+			case 'activedirectory':
+				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(proxyAddresses=smtp:*))", array('proxyAddresses'));
+				$entry = ldap_first_entry($ds, $rs);
+				if ($entry) {
+					foreach (ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
+						if (!is_string($mail))
+							continue;
+						$_SESSION['access']['mail'][] = substr($mail, 5);
+					}
+				}
+			break;
+			default:
+				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(mail=*))", array('mail'));
+				$entry = ldap_first_entry($ds, $rs);
+				if ($entry) {
+					foreach(ldap_get_values($ds, $entry, 'mail') as $mail) {
+						if (!is_string($mail))
+							continue;
+						$_SESSION['access']['mail'][] = $mail;
+					}
+				}
+			break;
 		}
+
+		if (count($_SESSION['access']['mail']) == 0)
+			die('No access levels');
+	
+		$_SESSION['username'] = $username;
+		$_SESSION['source'] = 'ldap';
+
 		return true;
 	}
 }
@@ -109,7 +129,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 					fwrite($fp, "QUIT\r\n");
 			break;
 			case 'ldap':
-				$method = new LDAPDatabase($method['uri'], $method['base_dn']);
+				$method = new LDAPDatabase($method['uri'], $method['base_dn'], $method['schema']);
 				if ($method->check($username, $password))
 					break 2;
 			break;
