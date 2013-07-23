@@ -138,7 +138,7 @@ function mail2($recipient, $subject, $message, $in_headers = null)
 {
 	$settings = settings();
 	$headers = array();
-	$headers[] = 'Message-ID: <'.uniqid().'@halon.se>';
+	$headers[] = 'Message-ID: <'.uniqid().'@sp-enduser>';
 	if (isset($settings['mail']['from']))
 		$headers[] = "From: ".$settings['mail']['from'];
 	if ($in_headers !== null)
