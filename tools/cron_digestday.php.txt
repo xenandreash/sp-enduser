@@ -49,11 +49,48 @@ if (empty($timesort))
 	die("No quarantined messages within one day\n");
 
 $users = array();
-// Send to statically configured users with e-mail address
-foreach ($settings['authentication'] as $a)
+foreach ($settings['authentication'] as $a) {
+	// Send to statically configured users with e-mail address
 	if ($a['type'] == 'account' && isset($a['email']))
 		$users[] = array('email' => $a['email'], 'access' => $a['access']);
-
+	// Send to LDAP users if a bind_dn is specified
+	if ($a['type'] == 'ldap') {
+		if (!isset($a['bind_dn']) || !isset($a['bind_password'])) {
+			echo "LDAP source without bind_dn or bind_password, skipping\n";
+			continue;
+		}
+		$ds = ldap_connect($a['uri']);
+		if (!$ds) continue;
+		$bind = ldap_bind($ds, $a['bind_dn'], $a['bind_password']);
+		if (!$bind) continue;
+		ldap_set_option($ds, LDAP_OPT_SIZELIMIT, 10000); // Increase and/or sync with AD if getting "Sizelimit exceeded"
+		if ($a['schema'] == 'msexchange') {
+			$rs = ldap_search($ds, $a['base_dn'], '(proxyAddresses=smtp:*)', array('proxyAddresses'));
+			for ($entry = ldap_first_entry($ds, $rs); $entry; $entry = ldap_next_entry($ds, $entry)) {
+				$aliases = array();
+				foreach (ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
+					if (substr($mail, 0, 5) == 'SMTP:')
+						array_unshift($aliases, substr($mail, 5));
+					if (substr($mail, 0, 5) == 'smtp:')
+						array_push($aliases, substr($mail, 5));
+				}
+				if (count($aliases))
+					$users[] = array('email' => $aliases[0], 'access' => array('mail' => $aliases));
+			}
+		} else {
+			$rs = ldap_search($ds, $a['base_dn'], '(mail=*)', array('mail'));
+			for ($entry = ldap_first_entry($ds, $rs); $entry; $entry = ldap_next_entry($ds, $entry)) {
+				$aliases = array();
+				// Non-Exchange, assume 'mail' without prefix
+				foreach (ldap_get_values($ds, $entry, 'mail') as $mail)
+					if (is_string($mail))
+						$aliases[] = $mail;
+				if (count($aliases))
+					$users[] = array('email' => $aliases[0], 'access' => array('mail' => $aliases));
+			}
+		}
+	}
+}
 // Send to everyone in quarantine, if enabled in settings
 $allusers = array();
 if ($settings['digest']['to-all'] == true)
@@ -64,7 +101,7 @@ foreach ($allusers as $email => $tmp)
 	$users[] = array('email' => $email, 'access' => array('mail' => array($email)));
 
 $size = 500;
-echo "Sending to ".count($users)." users\n";
+echo "Found ".count($users)." users\n";
 foreach ($users as $u) {
 	$i = 0;
 	$data = '<table><tr><th>Date</th><th>From</th><th>To</th><th>Subject</th></tr>';
