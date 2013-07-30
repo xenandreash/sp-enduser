@@ -26,7 +26,7 @@ if (isset($_POST['action'])) {
 	$title = 'Message';
 	require_once('inc/header.php'); ?>
 				<div class="item">
-					<div class="button back" onclick="history.back()">Back</div>
+					<div class="button back" onclick="location.href='<?php p($_POST['referer']) ?>';">Back</div>
 				</div>
 			</div>
 			<div class="pad message ok">The requested action has been performed</div>
@@ -136,8 +136,9 @@ require_once('inc/header.php');
 			</table>
 			<?php } ?>
 
-			<form id="actionform" method="post" action="?page=preview">
+			<form id="actionform" method="post" action="?page=preview&node=<?php p($node) ?>&queueid=<?php p($queueid) ?>">
 				<input type="hidden" name="action" id="action" value="">
+				<input type="hidden" name="referer" id="referer" value="<?php p(isset($_POST['referer']) ? $_POST['referer'] : $_SERVER['HTTP_REFERER']); ?>">
 			</form>
 
 <?php require_once('inc/footer.php'); ?>
