@@ -211,7 +211,7 @@ require_once('inc/header.php');
 							<button type="submit">Sign in</button>
 						</div>
 					</form>
-					<?php if (isset($settings['database']['dsn'])) { ?>
+					<?php if (has_auth_database()) { ?>
 						<p><a href="?page=forget">Forgot password?</a></p>
 					<?php } ?>
 				</fieldset>
