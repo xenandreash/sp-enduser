@@ -133,6 +133,10 @@ require_once('inc/header.php');
 							<label></label>
 							<button type="submit">Add</button>
 						</div>
+						<br>
+						<div>
+							Sender may be an IP address, an e-mail address, a domain name or a wildcard domain name starting with a dot (eg. .co.uk).
+						</div>
 					</form>
 				</fieldset>
 			</div>

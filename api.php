@@ -52,7 +52,16 @@ if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sende
 	$recipient = $_GET['recipient'];
 	@list($tmp, $recipientdomain) = explode('@', $_GET['recipient']);
 
-	$statement = $dbh->prepare("SELECT * FROM bwlist WHERE (access = :recipient OR access = :recipientdomain) AND (value = :senderip OR value = :senderdomain OR value = :sender);");
+	$statement = $dbh->prepare("SELECT * FROM bwlist WHERE (".
+			"access = :recipient OR ".
+			"access = :recipientdomain OR ".
+			"access = ''".
+			") AND (".
+			"value = :senderip OR ".
+			"value = :senderdomain OR ".
+			"value = :sender OR ".
+			"(CASE WHEN SUBSTR(value, 1, 1) = '.' AND SUBSTR(:senderdomain, LENGTH(:senderdomain) - LENTH(value) + 1) = value THEN 1 ELSE 0 END) = 1)".
+		");");
 	$statement->execute(array(':recipient' => $recipient, ':recipientdomain' => $recipientdomain, ':senderip' => $senderip, ':senderdomain' => $senderdomain, ':sender' => $sender));
 	$blacklist = array();
 	$whitelist = array();
