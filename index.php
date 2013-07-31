@@ -35,6 +35,9 @@ switch (@$_GET['page'])
 		require_once 'inc/session.php';
 		require_once 'pages/preview.php';
 	break;
+	case 'digest':
+		require_once 'pages/digest.php';
+	break;
 	default:
 	case 'index':
 		require_once 'inc/session.php';

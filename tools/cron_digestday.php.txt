@@ -104,7 +104,7 @@ $size = 500;
 echo "Found ".count($users)." users\n";
 foreach ($users as $u) {
 	$i = 0;
-	$data = '<table><tr><th>Date</th><th>From</th><th>To</th><th>Subject</th></tr>';
+	$data = '<table><tr><th>Date</th><th>From</th><th>To</th><th>Subject</th><th></th></tr>';
 	foreach($timesort as $t) {
 		if ($i > $size)
 			break;
@@ -126,7 +126,17 @@ foreach ($users as $u) {
 						$match = true;
 			if (!$match)
 				continue;
-			$data .= '<tr><td>'.strftime('%F %T', $m['data']->msgts).'</td><td>'.$m['data']->msgfrom.'</td><td>'.$m['data']->msgto.'</td><td>'.$m['data']->msgsubject.'</td></tr>';
+			// Make direct release link
+			$extra = '';
+			if (isset($settings['digest']['secret'])) {
+				// Sign the "message"
+				$time = time();
+				$message = $m['id'].$m['data']->id.$time.$m['data']->msgid;
+				$hash = hash_hmac('sha256', $message, $settings['digest']['secret']);
+				$extra .= '<a href="'.$settings['public-url'].'/index.php?page=digest&queueid='.$m['data']->id.
+					'&node='.$m['id'].'&time='.$time.'&sign='.$hash.'">Release</a>';
+			}
+			$data .= '<tr><td>'.strftime('%F %T', $m['data']->msgts).'</td><td>'.$m['data']->msgfrom.'</td><td>'.$m['data']->msgto.'</td><td>'.$m['data']->msgsubject.'</td><td>'.$extra.'</td></tr>';
 			$i++;
 		}
 	}
