@@ -60,7 +60,7 @@ if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sende
 			"value = :senderip OR ".
 			"value = :senderdomain OR ".
 			"value = :sender OR ".
-			"(CASE WHEN SUBSTR(value, 1, 1) = '.' AND SUBSTR(:senderdomain, LENGTH(:senderdomain) - LENTH(value) + 1) = value THEN 1 ELSE 0 END) = 1)".
+			"(CASE WHEN SUBSTR(value, 1, 1) = '.' AND SUBSTR(:senderdomain, LENGTH(:senderdomain) - LENGTH(value) + 1) = value THEN 1 ELSE 0 END) = 1".
 		");");
 	$statement->execute(array(':recipient' => $recipient, ':recipientdomain' => $recipientdomain, ':senderip' => $senderip, ':senderdomain' => $senderdomain, ':sender' => $sender));
 	$blacklist = array();
