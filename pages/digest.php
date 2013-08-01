@@ -5,6 +5,9 @@ require_once('inc/core.php');
 require_once('inc/utils.php');
 
 $settings = settings();
+if (!isset($settings['digest']['secret']))
+	die('No digest secret');
+
 $node = intval($_GET['node']);
 $queueid = intval($_GET['queueid']);
 $time = intval($_GET['time']);
