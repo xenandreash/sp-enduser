@@ -33,7 +33,7 @@ class LDAPDatabase {
 		if (!$bind)
 			return false;
 
-		$_SESSION['access'] = array();
+		$_SESSION['access'] = array('mail' => array());
 
 		$ldapuser = ldap_escape($username);
 		switch ($this->schema) {
@@ -44,7 +44,10 @@ class LDAPDatabase {
 					foreach (ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
 						if (!is_string($mail) || strcasecmp(substr($mail, 0, 5), 'smtp:') !== 0)
 							continue;
-						$_SESSION['access']['mail'][] = substr($mail, 5);
+						if (substr($mail, 0, 5) == 'SMTP:')
+							array_unshift($_SESSION['access']['mail'], substr($mail, 5));
+						else
+							array_push($_SESSION['access']['mail'], substr($mail, 5));
 					}
 				}
 			break;
