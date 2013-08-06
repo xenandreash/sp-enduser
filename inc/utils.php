@@ -102,7 +102,7 @@ function hql_transform($string)
 	if (@inet_pton($string) !== false)
 		return "ip=$string";
 	if (!preg_match("/[=~><]/", $string)) {
-		/* contain a @ either in the begining or somewhere within */
+		/* contain a @ either in the beginning or somewhere within */
 		$mail = strpos($string, "@");
 		if ($mail !== false)
 		{
