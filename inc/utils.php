@@ -44,6 +44,8 @@ function build_query_restrict($type = 'queue')
 
 function soap_client($n) {
 	$r = settings('node', $n);
+	if (!$r)
+		throw new Exception("Node not configured");
 	return new SoapClient($r['address'].'/remote/?wsdl', array(
 		'location' => $r['address'].'/remote/',
 		'uri' => 'urn:halon',
