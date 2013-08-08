@@ -33,7 +33,7 @@ class LDAPDatabase {
 		if (!$bind)
 			return false;
 
-		$_SESSION['access'] = array();
+		$_SESSION['access'] = array('mail' => array());
 
 		$ldapuser = ldap_escape($username);
 		switch ($this->schema) {
@@ -44,7 +44,10 @@ class LDAPDatabase {
 					foreach (ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
 						if (!is_string($mail) || strcasecmp(substr($mail, 0, 5), 'smtp:') !== 0)
 							continue;
-						$_SESSION['access']['mail'][] = substr($mail, 5);
+						if (substr($mail, 0, 5) == 'SMTP:')
+							array_unshift($_SESSION['access']['mail'], strtolower(substr($mail, 5)));
+						else
+							array_push($_SESSION['access']['mail'], strtolower(substr($mail, 5)));
 					}
 				}
 			break;
@@ -55,7 +58,7 @@ class LDAPDatabase {
 					foreach(ldap_get_values($ds, $entry, 'mail') as $mail) {
 						if (!is_string($mail))
 							continue;
-						$_SESSION['access']['mail'][] = $mail;
+						$_SESSION['access']['mail'][] = strtolower($mail);
 					}
 				}
 			break;
@@ -123,7 +126,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 				fwrite($fp, "QUIT\r\n");
 				$_SESSION['username'] = $username;
 				$_SESSION['source'] = 'smtp';
-				$_SESSION['access'] = array('mail' => array($username));
+				$_SESSION['access'] = array('mail' => array(strtolower($username)));
 				break 2;
 				smtp_fail:
 					fwrite($fp, "QUIT\r\n");

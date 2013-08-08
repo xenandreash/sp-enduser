@@ -63,7 +63,8 @@
  *  - LDAP, against for example an Exchange server
  *  - SMTP (SASL), against a mail server, if the username is an e-mail
  *  - Database, populated by the Halon mail gateways when mail are quarantined
- *  - Local accounts, statically configured in this file (with access rights)
+ *  - Local accounts, statically configured in this file (with access rights).
+ *    Use lower case letters when manually adding an access level.
  */
 
 //$settings['authentication'][] = array(

@@ -34,7 +34,7 @@ if ($_GET['list'] == 'delete') {
 if ($_GET['list'] == 'add') {
 	if (checkAccess($_POST['access']) && ($_POST['type'] == 'whitelist' || $_POST['type'] == 'blacklist')) {
 		$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
-		$statement->execute(array(':access' => $_POST['access'], ':type' => $_POST['type'], ':value' => $_POST['value']));
+		$statement->execute(array(':access' => $_POST['access'], ':type' => $_POST['type'], ':value' => strtolower($_POST['value'])));
 	}
 	header("Location: ?page=bwlist");
 	die();

@@ -44,6 +44,8 @@ function build_query_restrict($type = 'queue')
 
 function soap_client($n) {
 	$r = settings('node', $n);
+	if (!$r)
+		throw new Exception("Node not configured");
 	return new SoapClient($r['address'].'/remote/?wsdl', array(
 		'location' => $r['address'].'/remote/',
 		'uri' => 'urn:halon',
@@ -102,7 +104,7 @@ function hql_transform($string)
 	if (@inet_pton($string) !== false)
 		return "ip=$string";
 	if (!preg_match("/[=~><]/", $string)) {
-		/* contain a @ either in the begining or somewhere within */
+		/* contain a @ either in the beginning or somewhere within */
 		$mail = strpos($string, "@");
 		if ($mail !== false)
 		{

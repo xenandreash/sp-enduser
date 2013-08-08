@@ -73,14 +73,19 @@ $prev_button = ' disabled';
 $next_button = ' disabled';
 $param = array();
 $clients = array();
+$errors = array();
 foreach ($settings['node'] as $n => $r) {
-	$param['queue'][$n]['limit'] = $size + 1;
-	$param['history'][$n]['limit'] = $size + 1;
-	$param['queue'][$n]['filter'] = $real_search;
-	$param['history'][$n]['filter'] = $real_search;
-	$param['queue'][$n]['offset'] = 0;
-	$param['history'][$n]['offset'] = 0;
-	$clients[$n] = soap_client($n);
+	try {
+		$clients[$n] = soap_client($n);
+		$param['queue'][$n]['limit'] = $size + 1;
+		$param['history'][$n]['limit'] = $size + 1;
+		$param['queue'][$n]['filter'] = $real_search;
+		$param['history'][$n]['filter'] = $real_search;
+		$param['queue'][$n]['offset'] = 0;
+		$param['history'][$n]['offset'] = 0;
+	} catch (SoapFault $f) {
+		$errors[$n] = $f->faultstring;
+	}
 }
 
 // Override with GET
@@ -95,27 +100,36 @@ foreach ($_GET as $k => $v) {
 
 // Perform actual requests
 if ($source == 'all' || $source == 'history') {
-	foreach ($settings['node'] as $n => $r) {
-		$data = $clients[$n]->mailHistory($param['history'][$n]);
-		if (is_array($data->result->item)) foreach($data->result->item as $item)
-			$timesort[$item->msgts][] = array('id' => $n, 'type' => 'history', 'data' => $item);
-		$total += $data->totalHits;
+	foreach ($clients as $n => &$c) {
+		try {
+			$data = $c->mailHistory($param['history'][$n]);
+			if (is_array($data->result->item)) foreach($data->result->item as $item)
+				$timesort[$item->msgts][] = array('id' => $n, 'type' => 'history', 'data' => $item);
+			$total += $data->totalHits;
+		} catch (SoapFault $f) {
+			$errors[$n] = $f->faultstring;
+		}
 	}
 }
 if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
-	foreach ($settings['node'] as $n => $r) {
-		$data = $clients[$n]->mailQueue($param['queue'][$n]);
-		if (is_array($data->result->item)) foreach($data->result->item as $item)
-			$timesort[$item->msgts][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
-		$total += $data->totalHits;
+	foreach ($clients as $n => &$c) {
+		try {
+			$data = $c->mailQueue($param['queue'][$n]);
+			if (is_array($data->result->item)) foreach($data->result->item as $item)
+				$timesort[$item->msgts][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
+			$total += $data->totalHits;
+		} catch (SoapFault $f) {
+			$errors[$n] = $f->faultstring;
+		}
 	}
 }
 krsort($timesort);
+ksort($errors);
 ?>
 			<form>
 				<div class="item">
 					<input type="search" size="40" placeholder="any" name="search" value="<?php echo htmlspecialchars($search) ?>">
-					<label>Search query</label>
+					<label>Search</label>
 				</div>
 				<div class="item">
 					<?php p_select('size', $size, $pagesize) ?>
@@ -136,6 +150,13 @@ krsort($timesort);
 				</div>
 			</form>
 		</div>
+		<?php if (count($errors)) { ?>
+		<p style="padding-left: 17px; padding-top: 17px;">
+			<span class="semitrans">
+				Some messages might not be available at the moment due to maintenance.	
+			</span>
+		</p>
+		<?php } ?>
 		<table class="list pad fixed">
 			<thead>
 				<tr>
@@ -230,4 +251,16 @@ krsort($timesort);
 				</tr>
 			</tfoot>
 		</table>
+		<?php if (count($errors)) { ?>
+		<div style="padding-left: 17px;">
+			<span class="semitrans">
+				Diagnostic information:
+				<ul>
+				<?php foreach($errors as $n => $error) { ?>
+					<li><?php p($n.': '.$error); ?>
+				<?php } ?>
+				</ul>
+			</span>
+		</div>
+		<?php } ?>
 <?php require_once('inc/footer.php'); ?>
