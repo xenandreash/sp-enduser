@@ -173,6 +173,11 @@ require_once('inc/header.php');
 		<?php if (isset($error)) { ?>
 		<div class="message pad error"><?php p($error) ?></div>
 		<?php } ?>
+		<script>
+			window.onload = function() {
+				document.getElementById("username").focus();
+			};
+		</script>
 		<div class="halfpages">
 			<div class="halfpage">
 				<fieldset>
@@ -203,7 +208,7 @@ require_once('inc/header.php');
 					<form method="post" action="?page=login">
 						<div>
 							<label for="username">Username</label>
-							<input name="username" type="text">
+							<input name="username" id="username" type="text">
 						</div>
 						<div>
 							<label for="password">Password</label>
