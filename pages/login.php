@@ -220,7 +220,7 @@ require_once('inc/header.php');
 						</div>
 					</form>
 					<?php if (has_auth_database()) { ?>
-						<p><a href="?page=forget">Forgot password?</a></p>
+						<p><a href="?page=forgot">Forgot password?</a></p>
 					<?php } ?>
 				</fieldset>
 			</div>

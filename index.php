@@ -10,8 +10,8 @@ if (file_exists('install.php')) {
 
 switch (@$_GET['page'])
 {
-	case 'forget':
-		require_once 'pages/forget.php';
+	case 'forgot':
+		require_once 'pages/forgot.php';
 	break;
 	case 'login':
 		require_once 'pages/login.php';
