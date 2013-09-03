@@ -168,11 +168,11 @@
 }
 
 #header button::-moz-focus-inner {
-        border: 0;
+	border: 0;
 }
 
 #header button:focus {
-        outline: none; /* IE8 */
+	outline: none; /* IE8 */
 }
 
 #header .search {
@@ -180,7 +180,7 @@
 }
 
 #header .start {
-        background-image: url(img/start-22-blue.png);
+	background-image: url(img/start-22-blue.png);
 }
 
 #header .back {
