@@ -106,7 +106,7 @@ if ($settings['digest']['to-all'] == true)
 		foreach($t as $m)
 			$allusers[$m['data']->msgto] = true;
 foreach ($allusers as $email => $tmp)
-	$users[$email] = access_level_merge($users[$email], array('mail' => $email));
+	$users[$email] = access_level_merge($users[$email], array('mail' => array($email)));
 
 $size = 500;
 echo "Found ".count($users)." users\n";
