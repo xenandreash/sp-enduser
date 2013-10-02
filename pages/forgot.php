@@ -7,10 +7,10 @@ require_once('inc/utils.php');
 if (!isset($settings['database']['dsn']))
 	die('No database configured');
 
-if (isset($_GET['forget']) && !isset($_GET['token'])) {
+if (isset($_GET['forgot']) && !isset($_GET['token'])) {
 	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
 	$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
-	$statement->execute(array(':username' => $_GET['forget']));
+	$statement->execute(array(':username' => $_GET['forgot']));
 	if (!($row = $statement->fetch()))
 		$error = 'That e-mail is not registered in the local database';
 	else if (abs($row['reset_password_timestamp'] - time()) < 300)
@@ -19,8 +19,8 @@ if (isset($_GET['forget']) && !isset($_GET['token'])) {
 		$token = uniqid();
 		$publictoken = hash_hmac('sha256', $row['password'], $token);
 		$statement = $dbh->prepare("UPDATE users SET reset_password_token = :token, reset_password_timestamp = :timestamp WHERE username = :username;");
-		$statement->execute(array(':username' => $_GET['forget'], ':token' => $token, ':timestamp' => time()));
-		mail2($_GET['forget'], 'Reset password', wordwrap("Someone (hopefully you) have requested a password reset (from IP {$_SERVER['REMOTE_ADDR']}).\r\n\r\nThe token is:\r\n$publictoken \r\n\r\nDirect URL:\r\n{$settings['public-url']}/?page=forget&forget={$_GET['forget']}&token=$publictoken", 70, "\r\n"));
+		$statement->execute(array(':username' => $_GET['forgot'], ':token' => $token, ':timestamp' => time()));
+		mail2($_GET['forgot'], 'Reset password', wordwrap("Someone (hopefully you) have requested a password reset (from IP {$_SERVER['REMOTE_ADDR']}).\r\n\r\nThe token is:\r\n$publictoken \r\n\r\nDirect URL:\r\n{$settings['public-url']}/?page=forgot&forgot={$_GET['forgot']}&token=$publictoken", 70, "\r\n"));
 	}
 }
 
@@ -70,9 +70,9 @@ require_once('inc/header.php');
 			<div class="halfpage">
 				<fieldset>
 					<legend>Reset</legend>
-					<?php if (isset($_GET['forget']) && !isset($error)) { ?>
-					<form method="post" action="?page=forget">
-						<input type="hidden" name="reset" value="<?php p($_GET['forget']) ?>">
+					<?php if (isset($_GET['forgot']) && !isset($error)) { ?>
+					<form method="post" action="?page=forgot">
+						<input type="hidden" name="reset" value="<?php p($_GET['forgot']) ?>">
 						<?php if (isset($_GET['token'])) { ?>
 						<p>Choose a new password.</p>
 						<input type="hidden" name="token" value="<?php p($_GET['token']) ?>">
@@ -101,11 +101,11 @@ require_once('inc/header.php');
 					<p>Your password has been reset, now <a href="?page=login">sign in</a>.</p>
 					<?php } else { ?>
 					<form method="get">
-						<input type="hidden" name="page" value="forget">
+						<input type="hidden" name="page" value="forgot">
 						<p>Enter your e-mail address and a reset request will be sent to your inbox.</p>
 						<div>
-							<label for="forget">E-mail</label>
-							<input type="text" name="forget">
+							<label for="forgot">E-mail</label>
+							<input type="text" name="forgot">
 						</div>
 						<div>
 							<label></label>
