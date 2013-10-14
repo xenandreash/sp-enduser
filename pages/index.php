@@ -243,9 +243,11 @@ ksort($errors);
 							<?php foreach ($param as $type => $nodes) { foreach ($nodes as $node => $args) { ?>
 								<input type="hidden" name="<?php echo $type ?>offset<?php echo $node ?>" value="<?php p($args['offset']) ?>">
 							<?php }} ?>
+							<?php if ($total > 0) { ?>
 							<span class="semitrans">
 								<?php p(number_format($total)); ?> match<?php $total != 1 ? p('es') : ''; ?> found
 							</span>
+							<?php } ?>
 						</form>
 					</td>
 				</tr>
