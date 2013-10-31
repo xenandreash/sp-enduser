@@ -3,9 +3,6 @@ if (!defined('SP_ENDUSER')) die('File not included');
 
 require_once('inc/core.php');
 
-session_start();
-session_regenerate_id(true);
-
 class LDAPDatabase {
 	private $uri = '';
 	private $basedn = '';
@@ -74,8 +71,9 @@ class LDAPDatabase {
 	}
 }
 
-
 if (isset($_POST['username']) && isset($_POST['password'])) {
+	session_start();
+	session_regenerate_id(true);
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	foreach ($settings['authentication'] as $method) {
@@ -164,6 +162,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 		die();
 	}
 	$error = 'Login failed';
+	session_destroy();
 }
 
 $title = 'Sign in';

@@ -34,6 +34,7 @@ class Session
 }
 
 if (Session::Get()->getUsername() === null) {
+	session_destroy();
 	header("Location: ?page=login");
 	die();
 }
