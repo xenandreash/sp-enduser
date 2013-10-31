@@ -83,7 +83,7 @@ require_once('inc/header.php');
 							<td><?php p($row['value']); ?></td>
 							<td><?php p($row['access']); ?></td>
 							<td>
-								<a title="Remove" class="icon close" href=?page=bwlist&list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>></a>
+								<a title="Remove" class="icon close" href="?page=bwlist&list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>"></a>
 							</td>
 						</tr>
 						<?php

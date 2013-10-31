@@ -107,8 +107,10 @@ require_once('inc/header.php');
 			<?php if (count($mail->msgscore->item) > 0) { ?>
 			<table class="list pad">
 				<thead>
-					<th>Scanner</th>
-					<th>Result</th>
+					<tr>
+						<th>Scanner</th>
+						<th>Result</th>
+					</tr>
 				</thead>
 				<tbody>
 				<?php foreach($mail->msgscore->item as $score) {
@@ -140,5 +142,5 @@ require_once('inc/header.php');
 				<input type="hidden" name="action" id="action" value="">
 				<input type="hidden" name="referer" id="referer" value="<?php p(isset($_POST['referer']) ? $_POST['referer'] : $_SERVER['HTTP_REFERER']); ?>">
 			</form>
-
+	</div>
 <?php require_once('inc/footer.php'); ?>
