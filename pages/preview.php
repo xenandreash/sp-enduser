@@ -90,7 +90,7 @@ require_once('inc/header.php');
 
 			<?php if (count($attachment) > 0) { ?>
 			<div class="preview-attachments">
-			<?php foreach($attachments as $a) { ?>
+			<?php foreach ($attachments as $a) { ?>
 				<div class="preview-attachment"><?php p($a[2]) ?> (<?php echo round($a[1]/1024, 0) ?> KiB)</div>
 			<?php } ?>
 			</div>
@@ -98,7 +98,7 @@ require_once('inc/header.php');
 
 			<?php if ($header != '') { ?>
 			<div class="preview-headers">
-			<?php foreach(explode("\n", $header) as $line) { ?>
+			<?php foreach (explode("\n", $header) as $line) { ?>
 				<pre class="indent"><?php echo $line; ?></pre>
 			<?php } ?>
 			</div>
@@ -113,7 +113,7 @@ require_once('inc/header.php');
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach($mail->msgscore->item as $score) {
+				<?php foreach ($mail->msgscore->item as $score) {
 					list($num, $text) = explode("|", $score->second);
 					echo '<tr>';
 					switch ($score->first) {

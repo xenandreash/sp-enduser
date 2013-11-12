@@ -66,17 +66,17 @@ if (count(@file('users_relations.txt')) > 0)
 	$warnings[] = 'Users relations are not migrated';
 
 echo "--- RUN THESE SQL QUERIES ---\n";
-foreach($sql as $s)
+foreach ($sql as $s)
 	echo $s . "\n";
 
-foreach($global_bwlist as $type => $mail) {
+foreach ($global_bwlist as $type => $mail) {
 	echo "--- GLOBAL $type ---\n";
-	foreach($mail as $m)
+	foreach ($mail as $m)
 		echo '^' . str_replace('%', '.*', preg_quote($m)) . "$\n";
 }
 
 echo "--- WARNINGS ---\n";
-foreach($warnings as $w)
+foreach ($warnings as $w)
 	echo $w . "\n";
 
 ?>

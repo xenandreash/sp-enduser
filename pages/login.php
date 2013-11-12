@@ -52,7 +52,7 @@ class LDAPDatabase {
 				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(mail=*))", array('mail'));
 				$entry = ldap_first_entry($ds, $rs);
 				if ($entry) {
-					foreach(ldap_get_values($ds, $entry, 'mail') as $mail) {
+					foreach (ldap_get_values($ds, $entry, 'mail') as $mail) {
 						if (!is_string($mail))
 							continue;
 						$_SESSION['access']['mail'][] = strtolower($mail);
@@ -89,7 +89,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 			break;
 			case 'smtp':
 				$fp = fsockopen($method['host'], $method['port'] ?: '25');
-				while($line = fgets($fp)) {
+				while ($line = fgets($fp)) {
 					if (substr($line, 0, 1) != '2')
 						goto smtp_fail;
 					if (substr($line, 3, 1) == ' ')
@@ -97,7 +97,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 				}
 				fwrite($fp, "EHLO halon-sp-enduser\r\n");
 				$method = 'plain';
-				while($line = fgets($fp)) {
+				while ($line = fgets($fp)) {
 					if (substr($line, 0, 1) != '2')
 						goto smtp_fail;
 					if (substr($line, 4, 5) == 'AUTH ' && strpos($line, 'CRAM-MD5') !== false)
@@ -116,7 +116,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 					$plain = base64_encode($username . "\0" . $username . "\0" . $password);
 					fwrite($fp, "AUTH PLAIN $plain\r\n");
 				}
-				while($line = fgets($fp))
+				while ($line = fgets($fp))
 					if (substr($line, 3, 1) != '-')
 						break;
 				if (substr($line, 0, 3) != '235')
@@ -150,7 +150,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 				$_SESSION['access'] = array();
 				$statement = $dbh->prepare("SELECT * FROM users_relations WHERE username = :username;");
 				$statement->execute(array(':username' => $row['username']));
-				while($row = $statement->fetch()) {
+				while ($row = $statement->fetch()) {
 					$_SESSION['access'][$row['type']][] = $row['access'];
 				}
 				break 2;

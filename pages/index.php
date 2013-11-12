@@ -24,7 +24,7 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 
 		$actions[$v][] = $queueid;
 	}
-	foreach($actions as $soapid => $list)
+	foreach ($actions as $soapid => $list)
 	{
 		$id = implode(',', $list);
 		if (isset($_POST['bounce']))
@@ -103,7 +103,7 @@ if ($source == 'all' || $source == 'history') {
 	foreach ($clients as $n => &$c) {
 		try {
 			$data = $c->mailHistory($param['history'][$n]);
-			if (is_array($data->result->item)) foreach($data->result->item as $item)
+			if (is_array($data->result->item)) foreach ($data->result->item as $item)
 				$timesort[$item->msgts][] = array('id' => $n, 'type' => 'history', 'data' => $item);
 			$total += $data->totalHits;
 		} catch (SoapFault $f) {
@@ -115,7 +115,7 @@ if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
 	foreach ($clients as $n => &$c) {
 		try {
 			$data = $c->mailQueue($param['queue'][$n]);
-			if (is_array($data->result->item)) foreach($data->result->item as $item)
+			if (is_array($data->result->item)) foreach ($data->result->item as $item)
 				$timesort[$item->msgts][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
 			$total += $data->totalHits;
 		} catch (SoapFault $f) {
@@ -174,12 +174,12 @@ ksort($errors);
 			<form method="post" id="multiform">
 			<?php
 			$i = 1;
-			foreach($timesort as $t) {
+			foreach ($timesort as $t) {
 				if ($i > $size) {
 					$next_button = ''; // enable "next" page button
 					break;
 				}
-				foreach($t as $m) {
+				foreach ($t as $m) {
 					if ($i > $size) {
 						$next_button = ''; // enable "next" page button
 						break;
@@ -258,7 +258,7 @@ ksort($errors);
 			<span class="semitrans">
 				Diagnostic information:
 				<ul>
-				<?php foreach($errors as $n => $error) { ?>
+				<?php foreach ($errors as $n => $error) { ?>
 					<li><?php p($n.': '.$error); ?>
 				<?php } ?>
 				</ul>
