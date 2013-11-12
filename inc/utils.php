@@ -67,7 +67,7 @@ function soap_exec($argv, $c)
 			if ($result && @$result->item)
 				$data .= implode("", $result->item);
 		} while (true);
-	} catch(SoapFault $f) {
+	} catch (SoapFault $f) {
 		if (!$id)
 			return false;
 	}

@@ -77,7 +77,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	foreach ($settings['authentication'] as $method) {
-		switch($method['type']) {
+		switch ($method['type']) {
 			case 'account':
 				if ($username === $method['username'] && $password === $method['password'])
 				{

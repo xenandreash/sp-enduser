@@ -31,7 +31,7 @@ try {
 			break;
 		$offset = $result->offset;
 	}
-} catch(SoapFault $f) {
+} catch (SoapFault $f) {
 	echo "Error: ".$f->faultstring;
 }
 
