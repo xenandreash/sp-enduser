@@ -1,6 +1,5 @@
 $(document).ready(function() {
 	$('.tracking-actions').each(function() {
-		var b = $(this);
 		var f = function() {
 			$("#action").val($(this).data("action"));
 			$("#actionform").submit();
