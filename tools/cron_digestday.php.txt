@@ -16,9 +16,15 @@ $limit = 50000; // Need limit, because of memory
 
 // Build query
 $settings = settings();
-if (isset($settings['quarantine-filter']))
+if (isset($settings['quarantine-filter'])) {
+	$qf = array();
 	foreach ($settings['quarantine-filter'] as $q)
-		$restrict[] = 'quarantine='.$q;
+		$qf[] = 'quarantine='.$q;
+	if (!empty($qf)) {
+		 $restrict[] = implode(' or ', $qf);
+		 $restrict[] = '&&';
+	}
+}
 $restrict[] = 'action=QUARANTINE';
 $restrict[] = 'time>'.strtotime('-24hour');
 $real_search = implode(' ', $restrict);
