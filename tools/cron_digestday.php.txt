@@ -21,8 +21,8 @@ if (isset($settings['quarantine-filter'])) {
 	foreach ($settings['quarantine-filter'] as $q)
 		$qf[] = 'quarantine='.$q;
 	if (!empty($qf)) {
-		 $restrict[] = implode(' or ', $qf);
-		 $restrict[] = '&&';
+		$restrict[] = implode(' or ', $qf);
+		$restrict[] = '&&';
 	}
 }
 $restrict[] = 'action=QUARANTINE';
