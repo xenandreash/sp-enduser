@@ -72,8 +72,12 @@ class LDAPDatabase {
 }
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
+	$session_name = settings('session-name');
+	if ($session_name)
+		session_name($session_name);
 	session_start();
 	session_regenerate_id(true);
+
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	foreach ($settings['authentication'] as $method) {

@@ -46,7 +46,8 @@ require_once('inc/header.php');
 $search = isset($_GET['search']) ? hql_transform($_GET['search']) : '';
 $size = isset($_GET['size']) ? $_GET['size'] : 50;
 $size = $size > 5000 ? 5000 : $size;
-$source = isset($_GET['source']) ? $_GET['source'] : 'quarantine';
+$source = isset($settings['default-source']) ? $settings['default-source'] : 'history';
+$source = isset($_GET['source']) ? $_GET['source'] : $source;
 
 // Select box arrays
 foreach (array(10, 50, 100, 500, 1000, 5000) as $n)
