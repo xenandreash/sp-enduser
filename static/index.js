@@ -43,4 +43,19 @@ $(document).ready(function() {
 		$("#multiform").append("<input type='hidden' name='retry' value='yes'>");
 		$("#multiform").submit();
 	});
+	// Add tooltip if table overflows
+	$("table.list tbody td").on('mouseenter', global_reg_tooltip);
 });
+
+function global_reg_tooltip() {
+	// WebKit already has tooltip
+	if (/WebKit/.test(navigator.userAgent))
+		return;
+	// Firefox cannot detect overflow
+	if (!(window.mozInnerScreenX == null))
+		if (!$(this).attr('title'))
+			$(this).attr('title', $.trim($(this).text()));
+	// Everyone else, add tooltip if overflow
+	if (this.offsetWidth < this.scrollWidth && !$(this).attr('title'))
+		$(this).attr('title', $.trim($(this).text()));
+}
