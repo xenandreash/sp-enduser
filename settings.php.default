@@ -36,11 +36,13 @@
 /*
  * The "mail from" and "public-url" settings are used by this application
  * as self identification, for example in mail such as forgot password
- * reminders or digest lists.
+ * reminders or digest lists. The default source determine what's shown
+ * on the first page, or when pressing "messages" in the menu.
  */
 
 //$settings['mail']['from'] = 'Mail quarantine <postmaster@example.org>';
 //$settings['public-url'] = 'http://10.2.0.166/enduser/';
+//$settings['default-source'] = 'history';
 
 /*
  * It's possible to use this application completely without a database.
@@ -123,5 +125,12 @@
 
 //$settings['digest']['to-all'] = true;
 //$settings['digest']['secret'] = 'badsecret';
+
+/*
+ * If hosting multiple websites on the same server, it's important to use
+ * different session names for each site.
+ */
+
+//$settings['session-name'] = 'spenduser';
 
 ?>
