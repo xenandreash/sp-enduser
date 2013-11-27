@@ -8,7 +8,7 @@ function build_query_restrict($type = 'queue')
 	$settings = settings();
 	if (isset($settings['quarantine-filter']) && $type != 'history')
 	{
-		foreach($settings['quarantine-filter'] as $q)
+		foreach ($settings['quarantine-filter'] as $q)
 		{
 			if ($globalfilter != "")
 				$globalfilter .= " or ";
@@ -24,7 +24,7 @@ function build_query_restrict($type = 'queue')
 	$filter = "";
 	$access = Session::Get()->getAccess();
 	if (is_array($access['domain'])) {
-		foreach($access['domain'] as $domain) {
+		foreach ($access['domain'] as $domain) {
 			if ($filter != "")
 				$filter .= " or ";
 			$filter .= str_replace(array('{from}', '{to}'), array("from~%@$domain", "to~%@$domain"), $pattern);
@@ -32,7 +32,7 @@ function build_query_restrict($type = 'queue')
 	}
 
 	if (is_array($access['mail'])) {
-		foreach($access['mail'] as $mail) {
+		foreach ($access['mail'] as $mail) {
 			if ($filter != "")
 				$filter .= " or ";
 			$filter .= str_replace(array('{from}', '{to}'), array("from=$mail", "to=$mail"), $pattern);
@@ -66,8 +66,8 @@ function soap_exec($argv, $c)
 			$result = $c->commandPoll(array('commandid' => $id))->result;
 			if ($result && @$result->item)
 				$data .= implode("", $result->item);
-		} while(1);
-	} catch(SoapFault $f) {
+		} while (true);
+	} catch (SoapFault $f) {
 		if (!$id)
 			return false;
 	}

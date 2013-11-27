@@ -11,8 +11,8 @@ function checkAccess($perm)
 	$access = Session::Get()->getAccess();
 	if (count($access) == 0)
 		return true;
-	foreach($access as $type) {
-		foreach($type as $item) {
+	foreach ($access as $type) {
+		foreach ($type as $item) {
 			if ($item == $perm)
 				return true;
 		}
@@ -67,8 +67,8 @@ require_once('inc/header.php');
 							$result[] = $row;
 					}
 
-					foreach($access as $type) {
-						foreach($type as $item) {
+					foreach ($access as $type) {
+						foreach ($type as $item) {
 							$statement = $dbh->prepare("SELECT * FROM bwlist WHERE access = :access ORDER BY type DESC;");
 							$statement->execute(array(':access' => $item));
 							while ($row = $statement->fetch())
@@ -76,14 +76,14 @@ require_once('inc/header.php');
 						}
 					}
 
-					foreach($result as $row) {
+					foreach ($result as $row) {
 						?>
 						<tr>
 							<td><?php p($row['type']); ?> </td>
 							<td><?php p($row['value']); ?></td>
 							<td><?php p($row['access']); ?></td>
 							<td>
-								<a title="Remove" class="icon close" href=?page=bwlist&list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>></a>
+								<a title="Remove" class="icon close" href="?page=bwlist&list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>"></a>
 							</td>
 						</tr>
 						<?php
@@ -113,15 +113,15 @@ require_once('inc/header.php');
 							<label>For recipient</label>
 							<?php
 								$_access = array();
-								foreach($access as $a) {
-									foreach($a as $type) {
+								foreach ($access as $a) {
+									foreach ($a as $type) {
 										$_access[] = $type;
 									}
 								}
 								if (count($_access) > 0) {
 							?>
 							<select name="access">
-							<?php foreach($_access as $a) { ?>
+							<?php foreach ($_access as $a) { ?>
 								<option><?php echo $a; ?></option>
 							<?php } ?>
 							</select>

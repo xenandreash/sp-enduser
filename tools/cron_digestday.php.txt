@@ -16,9 +16,15 @@ $limit = 50000; // Need limit, because of memory
 
 // Build query
 $settings = settings();
-if (isset($settings['quarantine-filter']))
-	foreach($settings['quarantine-filter'] as $q)
-		$restrict[] = 'quarantine='.$q;
+if (isset($settings['quarantine-filter'])) {
+	$qf = array();
+	foreach ($settings['quarantine-filter'] as $q)
+		$qf[] = 'quarantine='.$q;
+	if (!empty($qf)) {
+		$restrict[] = implode(' or ', $qf);
+		$restrict[] = '&&';
+	}
+}
 $restrict[] = 'action=QUARANTINE';
 $restrict[] = 'time>'.strtotime('-24hour');
 $real_search = implode(' ', $restrict);
@@ -48,7 +54,7 @@ function access_level_merge($a, $b)
 echo "Making query $real_search\n";
 foreach ($settings['node'] as $n => $r) {
 	$data = $clients[$n]->mailQueue($param[$n]);
-	if (is_array($data->result->item)) foreach($data->result->item as $item)
+	if (is_array($data->result->item)) foreach ($data->result->item as $item)
 		$timesort[$item->msgts][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
 	$total += $data->totalHits;
 }
@@ -102,8 +108,8 @@ foreach ($settings['authentication'] as $a) {
 // Send to everyone in quarantine, if enabled in settings
 $allusers = array();
 if ($settings['digest']['to-all'] == true)
-	foreach($timesort as $t)
-		foreach($t as $m)
+	foreach ($timesort as $t)
+		foreach ($t as $m)
 			$allusers[$m['data']->msgto] = true;
 foreach ($allusers as $email => $tmp)
 	$users[$email] = access_level_merge($users[$email], array('mail' => array($email)));
@@ -113,10 +119,10 @@ echo "Found ".count($users)." users\n";
 foreach ($users as $email => $access) {
 	$i = 0;
 	$data = '<table><tr><th>Date</th><th>From</th><th>To</th><th>Subject</th><th></th></tr>';
-	foreach($timesort as $t) {
+	foreach ($timesort as $t) {
 		if ($i > $size)
 			break;
-		foreach($t as $m) {
+		foreach ($t as $m) {
 			if ($i > $size)
 				break;
 			// Only show messages they have access to

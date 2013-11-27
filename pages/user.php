@@ -33,7 +33,7 @@ require_once('inc/header.php');
 						$access = Session::Get()->getAccess();
 						if (is_array($access['mail'])) { ?>
 							<?php
-							foreach($access['mail'] as $mail) {
+							foreach ($access['mail'] as $mail) {
 								++$r;
 								echo "<li>";
 								p($mail);
@@ -41,7 +41,7 @@ require_once('inc/header.php');
 						}
 						if (is_array($access['domain'])) { ?>
 							<?php
-							foreach($access['domain'] as $domain) {
+							foreach ($access['domain'] as $domain) {
 								++$r;
 								echo "<li>";
 								p($domain);
