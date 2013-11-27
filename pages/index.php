@@ -76,7 +76,7 @@ $clients = array();
 $errors = array();
 foreach ($settings['node'] as $n => $r) {
 	try {
-		$clients[$n] = soap_client($n);
+		$clients[$n] = soap_client($n, true);
 		$param['queue'][$n]['limit'] = $size + 1;
 		$param['history'][$n]['limit'] = $size + 1;
 		$param['queue'][$n]['filter'] = $real_search;
@@ -98,7 +98,19 @@ foreach ($_GET as $k => $v) {
 	$prev_button = '';
 }
 
-// Perform actual requests
+// $clients are asynchronous
+// - run functions, add to queue
+// - run soap_dispatch();
+// - run functions, fetch result
+if ($source == 'all' || $source == 'history') {
+	foreach ($clients as $n => &$c)
+		$c->mailHistory($param['history'][$n]);
+}
+if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
+	foreach ($clients as $n => &$c)
+		$c->mailQueue($param['queue'][$n]);
+}
+soap_dispatch();
 if ($source == 'all' || $source == 'history') {
 	foreach ($clients as $n => &$c) {
 		try {

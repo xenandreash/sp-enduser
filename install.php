@@ -16,6 +16,11 @@ if (empty($settings['node'])) {
 	<p><strong>ERROR:</strong> No system node(s)</p>
 <?php } ?>
 <?php
+if (!in_array('curl', get_loaded_extensions())) {
+?>
+	<p><em>WARNING:</em> cURL extension is missing. Without it, the UI will run slower (not being able to run searches in parallel).</p>
+<?php
+}
 if (!isset($settings['api-key'])) {
 ?>
 	<p><em>WARNING:</em> No api-key, dynamic user creation and black/whitelist lookups will not work until you specify one.</p>

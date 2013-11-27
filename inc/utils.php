@@ -1,6 +1,7 @@
 <?php
 
 require_once('core.php');
+require_once('soap.php');
 
 function build_query_restrict($type = 'queue')
 {
@@ -42,19 +43,22 @@ function build_query_restrict($type = 'queue')
 }
 
 
-function soap_client($n) {
+function soap_client($n, $async = false) {
 	$r = settings('node', $n);
 	if (!$r)
 		throw new Exception("Node not configured");
-	return new SoapClient($r['address'].'/remote/?wsdl', array(
+	$options = array(
 		'location' => $r['address'].'/remote/',
 		'uri' => 'urn:halon',
 		'login' => $r['username'],
 		'password' => $r['password'],
 		'connection_timeout' => 15,
-		'trace' => true,
-		'features' => SOAP_SINGLE_ELEMENT_ARRAYS
-		));
+		'features' => SOAP_SINGLE_ELEMENT_ARRAYS,
+		'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP
+		);
+	if ($async)
+		return new SoapClientAsync($r['address'].'/remote/?wsdl', $options);
+	return new SoapClient($r['address'].'/remote/?wsdl', $options);
 }
 
 function soap_exec($argv, $c)
