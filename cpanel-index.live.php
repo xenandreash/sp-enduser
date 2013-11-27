@@ -56,6 +56,9 @@ define('SP_ENDUSER', true);
 
 switch (@$_GET['page'])
 {
+	case 'bwlist':
+		require_once 'pages/bwlist.php';
+	break;
 	case 'download':
 		require_once 'pages/download.php';
 	break;
@@ -64,6 +67,9 @@ switch (@$_GET['page'])
 	break;
 	case 'preview':
 		require_once 'pages/preview.php';
+	break;
+	case 'digest':
+		require_once 'pages/digest.php';
 	break;
 	default:
 	case 'index':
