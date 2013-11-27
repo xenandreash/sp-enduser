@@ -45,6 +45,7 @@ require_once('inc/header.php');
 // Default values
 $search = isset($_GET['search']) ? hql_transform($_GET['search']) : '';
 $size = isset($_GET['size']) ? $_GET['size'] : 50;
+$size = $size > 5000 ? 5000 : $size;
 $source = isset($_GET['source']) ? $_GET['source'] : 'quarantine';
 
 // Select box arrays
