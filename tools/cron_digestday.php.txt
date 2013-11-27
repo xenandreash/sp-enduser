@@ -150,7 +150,7 @@ foreach ($users as $email => $access) {
 	}
 	if ($i == 0)
 		continue;
-	$data = '<p>You have '.$i.' message(s) received to your <a href="'.$settings['public-url'].'">quarantine</a> during the last 24 hours.</p>'.$data.'</table>';
+	$data = '<p>You have '.$i.' message(s) received to your <a href="'.$settings['public-url'].'/?page=index&source=quarantine">quarantine</a> during the last 24 hours.</p>'.$data.'</table>';
 	$data = chunk_split(base64_encode($data));
 	echo "digest to $email with $i msgs\n";
 	$headers[] = 'Content-Type: text/html; charset=UTF-8';
