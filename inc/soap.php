@@ -22,6 +22,8 @@ class SoapClientAsync extends SoapClient {
 		if (isset($_soapResponses[$id])) {
 			$data = $_soapResponses[$id];
 			unset($_soapResponses[$id]);
+			if ($data instanceof SoapFault)
+				throw $data;
 			return $data;
 		}
 
@@ -68,24 +70,12 @@ function soap_dispatch() {
 	foreach ($_soapRequests as $id => $ch) {
 		$_soapResponses[$id] = curl_multi_getcontent($ch);
 		if ($_soapResponses[$id] === NULL)
-			$_soapResponses[$id] = soapFault(curl_error($ch));
+			$_soapResponses[$id] = new SoapFault("HTTP", curl_error($ch));
 		curl_multi_remove_handle($mh, $ch);
 		curl_close($ch);
 	}
 	curl_multi_close($mh);
 	$_soapRequests = array();
-}
-
-function soapFault($message) {
-	$message = htmlspecialchars($message);
-	$fault =<<<EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-<SOAP-ENV:Body SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-<SOAP-ENV:Fault><faultcode>SOAP-ENV:Server</faultcode><faultstring>$message</faultstring></SOAP-ENV:Fault>
-</SOAP-ENV:Body></SOAP-ENV:Envelope>
-EOF;
-	return $fault;
 }
 
 ?>
