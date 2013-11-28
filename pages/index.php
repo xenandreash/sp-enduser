@@ -70,7 +70,6 @@ $real_search = implode(' && ', $queries);
 // Initial settings
 $timesort = array();
 $tasks = array();
-$total = 0;
 $prev_button = ' disabled';
 $next_button = ' disabled';
 $param = array();
@@ -91,12 +90,14 @@ foreach ($settings['node'] as $n => $r) {
 }
 
 // Override with GET
+$totaloffset = 0;
 foreach ($_GET as $k => $v) {
 	if (!preg_match('/^(history|queue)offset(\d+)$/', $k, $m))
 		continue;
 	if ($v < 1)
 		continue;
 	$param[$m[1]][$m[2]]['offset'] = $v;
+	$totaloffset += $v;
 	$prev_button = '';
 }
 
@@ -113,6 +114,9 @@ if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
 		$c->mailQueue($param['queue'][$n]);
 }
 soap_dispatch();
+$total = 0;
+$totalget = $totaloffset;
+$totalknown = true;
 if ($source == 'all' || $source == 'history') {
 	foreach ($clients as $n => &$c) {
 		try {
@@ -120,6 +124,9 @@ if ($source == 'all' || $source == 'history') {
 			if (is_array($data->result->item)) foreach ($data->result->item as $item)
 				$timesort[$item->msgts][] = array('id' => $n, 'type' => 'history', 'data' => $item);
 			$total += $data->totalHits;
+			if (count($data->result->item) > $size)
+				$totalknown = false;
+			$totalget += count($data->result->item);
 		} catch (SoapFault $f) {
 			$errors[$n] = $f->faultstring;
 		}
@@ -132,6 +139,9 @@ if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
 			if (is_array($data->result->item)) foreach ($data->result->item as $item)
 				$timesort[$item->msgts][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
 			$total += $data->totalHits;
+			if (count($data->result->item) > $size)
+				$totalknown = false;
+			$totalget += count($data->result->item);
 		} catch (SoapFault $f) {
 			$errors[$n] = $f->faultstring;
 		}
@@ -167,7 +177,7 @@ ksort($errors);
 		<?php if (count($errors)) { ?>
 		<p style="padding-left: 17px; padding-top: 17px;">
 			<span class="semitrans">
-				Some messages might not be available at the moment due to maintenance.	
+				Some messages might not be available at the moment due to maintenance.
 			</span>
 		</p>
 		<?php } ?>
@@ -260,6 +270,10 @@ ksort($errors);
 							<?php if ($total > 0) { ?>
 							<span class="semitrans">
 								<?php p(number_format($total)); ?> match<?php $total != 1 ? p('es') : ''; ?> found
+							</span>
+							<?php } else if ($totalget > 0 && $totalknown) { ?>
+							<span class="semitrans">
+								<?php p(number_format($totalget)); ?> match<?php $totalget != 1 ? p('es') : ''; ?> found
 							</span>
 							<?php } ?>
 						</form>
