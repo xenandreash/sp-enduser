@@ -1,7 +1,11 @@
 $(document).ready(function() {
 	$('.tracking-actions').each(function() {
 		var f = function() {
-			$("#action").val($(this).data("action"));
+			var action = $(this).data("action");
+			if (action == "delete" || action == "bounce")
+				if (!confirm("Really " + action + " this message?"))
+					return;
+			$("#action").val(action);
 			$("#actionform").submit();
 		};
 		$(this).click(function() {
