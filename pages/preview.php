@@ -40,7 +40,7 @@ $uniq = uniqid();
 $data = soap_exec(array('previewmessage', $mail->msgpath, $uniq), $client);
 $data = str_replace("\r\n", "\n", $data);
 if (preg_match("/^(.*)\n$uniq\|ATTACHMENTS\n(.*?)(?:\n)?$uniq\|(HTML|TEXT)\n(.*)$/sm", $data, $result)) {
-	require_once('inc/htmlpurifier-4.5.0-lite/library/HTMLPurifier.auto.php');
+	require_once('inc/htmlpurifier-4.6.0-lite/library/HTMLPurifier.auto.php');
 	$config = HTMLPurifier_Config::createDefault();
 	$config->set('Cache.DefinitionImpl', null);
 	$config->set('URI.Disable', true);
