@@ -25,7 +25,7 @@ class Session
 		$result = $cpanel->api2('DomainLookup', 'getdocroots');
 
 		$domains = array();
-		foreach($result['cpanelresult']['data'] as $domain)
+		foreach ($result['cpanelresult']['data'] as $domain)
 			$domains[] = $domain['domain'];
 		if (empty($domains))
 			die('No domains');
@@ -52,10 +52,13 @@ if (Session::Get()->getUsername() === null) {
 	die();
 }
 
-define('SP_ENDUSER', TRUE);
+define('SP_ENDUSER', true);
 
 switch (@$_GET['page'])
 {
+	case 'bwlist':
+		require_once 'pages/bwlist.php';
+	break;
 	case 'download':
 		require_once 'pages/download.php';
 	break;
@@ -64,6 +67,9 @@ switch (@$_GET['page'])
 	break;
 	case 'preview':
 		require_once 'pages/preview.php';
+	break;
+	case 'digest':
+		require_once 'pages/digest.php';
 	break;
 	default:
 	case 'index':

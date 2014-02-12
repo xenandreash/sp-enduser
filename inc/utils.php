@@ -1,6 +1,7 @@
 <?php
 
 require_once('core.php');
+require_once('soap.php');
 
 function build_query_restrict($type = 'queue')
 {
@@ -8,7 +9,7 @@ function build_query_restrict($type = 'queue')
 	$settings = settings();
 	if (isset($settings['quarantine-filter']) && $type != 'history')
 	{
-		foreach($settings['quarantine-filter'] as $q)
+		foreach ($settings['quarantine-filter'] as $q)
 		{
 			if ($globalfilter != "")
 				$globalfilter .= " or ";
@@ -24,7 +25,7 @@ function build_query_restrict($type = 'queue')
 	$filter = "";
 	$access = Session::Get()->getAccess();
 	if (is_array($access['domain'])) {
-		foreach($access['domain'] as $domain) {
+		foreach ($access['domain'] as $domain) {
 			if ($filter != "")
 				$filter .= " or ";
 			$filter .= str_replace(array('{from}', '{to}'), array("from~%@$domain", "to~%@$domain"), $pattern);
@@ -32,7 +33,7 @@ function build_query_restrict($type = 'queue')
 	}
 
 	if (is_array($access['mail'])) {
-		foreach($access['mail'] as $mail) {
+		foreach ($access['mail'] as $mail) {
 			if ($filter != "")
 				$filter .= " or ";
 			$filter .= str_replace(array('{from}', '{to}'), array("from=$mail", "to=$mail"), $pattern);
@@ -42,19 +43,22 @@ function build_query_restrict($type = 'queue')
 }
 
 
-function soap_client($n) {
+function soap_client($n, $async = false) {
 	$r = settings('node', $n);
 	if (!$r)
 		throw new Exception("Node not configured");
-	return new SoapClient($r['address'].'/remote/?wsdl', array(
+	$options = array(
 		'location' => $r['address'].'/remote/',
 		'uri' => 'urn:halon',
 		'login' => $r['username'],
 		'password' => $r['password'],
 		'connection_timeout' => 15,
-		'trace' => true,
-		'features' => SOAP_SINGLE_ELEMENT_ARRAYS
-		));
+		'features' => SOAP_SINGLE_ELEMENT_ARRAYS,
+		'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP
+		);
+	if ($async)
+		return new SoapClientAsync($r['address'].'/remote/?wsdl', $options);
+	return new SoapClient($r['address'].'/remote/?wsdl', $options);
 }
 
 function soap_exec($argv, $c)
@@ -66,8 +70,8 @@ function soap_exec($argv, $c)
 			$result = $c->commandPoll(array('commandid' => $id))->result;
 			if ($result && @$result->item)
 				$data .= implode("", $result->item);
-		} while(1);
-	} catch(SoapFault $f) {
+		} while (true);
+	} catch (SoapFault $f) {
 		if (!$id)
 			return false;
 	}

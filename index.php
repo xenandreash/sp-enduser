@@ -1,7 +1,7 @@
 <?php
 
 error_reporting(E_ALL ^ E_NOTICE);
-define('SP_ENDUSER', TRUE);
+define('SP_ENDUSER', true);
 
 if (file_exists('install.php')) {
 	require_once('install.php');

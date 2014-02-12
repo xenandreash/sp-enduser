@@ -1,5 +1,7 @@
 <?php
 
+require_once('core.php');
+
 class Session
 {
 	private $username = null;
@@ -14,6 +16,9 @@ class Session
 	}
 	private function __construct()
 	{
+		$session_name = settings('session-name');
+		if ($session_name)
+			session_name($session_name);
 		session_start();
 		$this->username = $_SESSION['username'];
 		$this->source = $_SESSION['source'];
@@ -34,6 +39,7 @@ class Session
 }
 
 if (Session::Get()->getUsername() === null) {
+	session_destroy();
 	header("Location: ?page=login");
 	die();
 }

@@ -23,7 +23,7 @@ function header_active($page) {
 		<title><?php echo $title ?> | <?php echo $pagename ?></title>
 		<link rel="stylesheet" href="<?php echo $styles ?>">
 		<script src="static/jquery-1.9.1.min.js"></script>
-		<?php if (isset($javascript)) foreach($javascript as $js) { ?>
+		<?php if (isset($javascript)) foreach ($javascript as $js) { ?>
 		<script src="<?php echo $js; ?>"></script>
 		<?php } ?>
 	</head>

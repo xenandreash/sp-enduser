@@ -24,7 +24,7 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 
 		$actions[$v][] = $queueid;
 	}
-	foreach($actions as $soapid => $list)
+	foreach ($actions as $soapid => $list)
 	{
 		$id = implode(',', $list);
 		if (isset($_POST['bounce']))
@@ -45,7 +45,9 @@ require_once('inc/header.php');
 // Default values
 $search = isset($_GET['search']) ? hql_transform($_GET['search']) : '';
 $size = isset($_GET['size']) ? $_GET['size'] : 50;
-$source = isset($_GET['source']) ? $_GET['source'] : 'quarantine';
+$size = $size > 5000 ? 5000 : $size;
+$source = isset($settings['default-source']) ? $settings['default-source'] : 'history';
+$source = isset($_GET['source']) ? $_GET['source'] : $source;
 
 // Select box arrays
 foreach (array(10, 50, 100, 500, 1000, 5000) as $n)
@@ -68,7 +70,6 @@ $real_search = implode(' && ', $queries);
 // Initial settings
 $timesort = array();
 $tasks = array();
-$total = 0;
 $prev_button = ' disabled';
 $next_button = ' disabled';
 $param = array();
@@ -76,7 +77,7 @@ $clients = array();
 $errors = array();
 foreach ($settings['node'] as $n => $r) {
 	try {
-		$clients[$n] = soap_client($n);
+		$clients[$n] = soap_client($n, true);
 		$param['queue'][$n]['limit'] = $size + 1;
 		$param['history'][$n]['limit'] = $size + 1;
 		$param['queue'][$n]['filter'] = $real_search;
@@ -89,23 +90,43 @@ foreach ($settings['node'] as $n => $r) {
 }
 
 // Override with GET
+$totaloffset = 0;
 foreach ($_GET as $k => $v) {
 	if (!preg_match('/^(history|queue)offset(\d+)$/', $k, $m))
 		continue;
 	if ($v < 1)
 		continue;
 	$param[$m[1]][$m[2]]['offset'] = $v;
+	$totaloffset += $v;
 	$prev_button = '';
 }
 
-// Perform actual requests
+// $clients are asynchronous
+// - run functions, add to queue
+// - run soap_dispatch();
+// - run functions, fetch result
+if ($source == 'all' || $source == 'history') {
+	foreach ($clients as $n => &$c)
+		$c->mailHistory($param['history'][$n]);
+}
+if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
+	foreach ($clients as $n => &$c)
+		$c->mailQueue($param['queue'][$n]);
+}
+soap_dispatch();
+$total = 0;
+$totalget = $totaloffset;
+$totalknown = true;
 if ($source == 'all' || $source == 'history') {
 	foreach ($clients as $n => &$c) {
 		try {
 			$data = $c->mailHistory($param['history'][$n]);
-			if (is_array($data->result->item)) foreach($data->result->item as $item)
+			if (is_array($data->result->item)) foreach ($data->result->item as $item)
 				$timesort[$item->msgts][] = array('id' => $n, 'type' => 'history', 'data' => $item);
 			$total += $data->totalHits;
+			if (count($data->result->item) > $size)
+				$totalknown = false;
+			$totalget += count($data->result->item);
 		} catch (SoapFault $f) {
 			$errors[$n] = $f->faultstring;
 		}
@@ -115,9 +136,12 @@ if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
 	foreach ($clients as $n => &$c) {
 		try {
 			$data = $c->mailQueue($param['queue'][$n]);
-			if (is_array($data->result->item)) foreach($data->result->item as $item)
+			if (is_array($data->result->item)) foreach ($data->result->item as $item)
 				$timesort[$item->msgts][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
 			$total += $data->totalHits;
+			if (count($data->result->item) > $size)
+				$totalknown = false;
+			$totalget += count($data->result->item);
 		} catch (SoapFault $f) {
 			$errors[$n] = $f->faultstring;
 		}
@@ -153,7 +177,7 @@ ksort($errors);
 		<?php if (count($errors)) { ?>
 		<p style="padding-left: 17px; padding-top: 17px;">
 			<span class="semitrans">
-				Some messages might not be available at the moment due to maintenance.	
+				Some messages might not be available at the moment due to maintenance.
 			</span>
 		</p>
 		<?php } ?>
@@ -174,12 +198,12 @@ ksort($errors);
 			<form method="post" id="multiform">
 			<?php
 			$i = 1;
-			foreach($timesort as $t) {
+			foreach ($timesort as $t) {
 				if ($i > $size) {
 					$next_button = ''; // enable "next" page button
 					break;
 				}
-				foreach($t as $m) {
+				foreach ($t as $m) {
 					if ($i > $size) {
 						$next_button = ''; // enable "next" page button
 						break;
@@ -243,9 +267,15 @@ ksort($errors);
 							<?php foreach ($param as $type => $nodes) { foreach ($nodes as $node => $args) { ?>
 								<input type="hidden" name="<?php echo $type ?>offset<?php echo $node ?>" value="<?php p($args['offset']) ?>">
 							<?php }} ?>
+							<?php if ($total > 0) { ?>
 							<span class="semitrans">
 								<?php p(number_format($total)); ?> match<?php $total != 1 ? p('es') : ''; ?> found
 							</span>
+							<?php } else if ($totalget > 0 && $totalknown) { ?>
+							<span class="semitrans">
+								<?php p(number_format($totalget)); ?> match<?php $totalget != 1 ? p('es') : ''; ?> found
+							</span>
+							<?php } ?>
 						</form>
 					</td>
 				</tr>
@@ -256,7 +286,7 @@ ksort($errors);
 			<span class="semitrans">
 				Diagnostic information:
 				<ul>
-				<?php foreach($errors as $n => $error) { ?>
+				<?php foreach ($errors as $n => $error) { ?>
 					<li><?php p($n.': '.$error); ?>
 				<?php } ?>
 				</ul>
