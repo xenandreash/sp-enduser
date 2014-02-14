@@ -88,7 +88,7 @@ require_once('inc/header.php');
 							<input type="password" name="password">
 						</div>
 						<div>
-							<label for="password2">Reset password</label>
+							<label for="password2">Repeat password</label>
 							<input type="password" name="password2">
 						</div>
 						<div>
