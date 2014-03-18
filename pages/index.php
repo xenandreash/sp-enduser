@@ -122,7 +122,7 @@ if ($source == 'all' || $source == 'history') {
 		try {
 			$data = $c->mailHistory($param['history'][$n]);
 			if (is_array($data->result->item)) foreach ($data->result->item as $item)
-				$timesort[$item->msgts][] = array('id' => $n, 'type' => 'history', 'data' => $item);
+				$timesort[$item->msgts0][] = array('id' => $n, 'type' => 'history', 'data' => $item);
 			$total += $data->totalHits;
 			if (count($data->result->item) > $size)
 				$totalknown = false;
@@ -137,7 +137,7 @@ if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
 		try {
 			$data = $c->mailQueue($param['queue'][$n]);
 			if (is_array($data->result->item)) foreach ($data->result->item as $item)
-				$timesort[$item->msgts][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
+				$timesort[$item->msgts0][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
 			$total += $data->totalHits;
 			if (count($data->result->item) > $size)
 				$totalknown = false;
@@ -221,7 +221,7 @@ ksort($errors);
 					<?php } ?>
 					</td>
 					<td><span class="semitrans">
-						<?php echo strftime('%Y-%m-%d %H:%M:%S', $m['data']->msgts) ?>
+						<?php echo strftime('%Y-%m-%d %H:%M:%S', $m['data']->msgts0 - $_SESSION['timezone'] * 60) ?>
 					</span></td>
 					<td><?php p($m['data']->msgfrom) ?></td>
 					<td><?php p($m['data']->msgto) ?></td>

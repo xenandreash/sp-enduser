@@ -78,6 +78,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 	session_start();
 	session_regenerate_id(true);
 
+	$_SESSION['timezone'] = $_POST['timezone'];
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	foreach ($settings['authentication'] as $method) {
@@ -221,6 +222,7 @@ require_once('inc/header.php');
 							<label></label>
 							<button type="submit">Sign in</button>
 						</div>
+						<input type="hidden" id="timezone" name="timezone">
 					</form>
 					<?php if (has_auth_database()) { ?>
 						<p><a href="?page=forgot">Forgot password?</a></p>
@@ -228,4 +230,7 @@ require_once('inc/header.php');
 				</fieldset>
 			</div>
 		</div>
+		<script>
+			$("#timezone").val(new Date().getTimezoneOffset());
+		</script>
 <?php require_once('inc/footer.php') ?>
