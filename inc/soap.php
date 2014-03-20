@@ -61,11 +61,10 @@ function soap_dispatch() {
 		$mrc = curl_multi_exec($mh, $active);
 	} while ($mrc == CURLM_CALL_MULTI_PERFORM);
 	while ($active && $mrc == CURLM_OK) {
-		if (curl_multi_select($mh) != -1) {
-			do {
-				$mrc = curl_multi_exec($mh, $active);
-			} while ($mrc == CURLM_CALL_MULTI_PERFORM);
-		}
+		if (curl_multi_select($mh) == -1) usleep(100000);
+		do {
+			$mrc = curl_multi_exec($mh, $active);
+		} while ($mrc == CURLM_CALL_MULTI_PERFORM);
 	}
 	foreach ($_soapRequests as $id => $ch) {
 		$_soapResponses[$id] = curl_multi_getcontent($ch);
