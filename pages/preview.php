@@ -37,21 +37,31 @@ if (isset($_POST['action'])) {
 // Prepare data
 $mail = $queue->result->item[0];
 $uniq = uniqid();
-$data = soap_exec(array('previewmessage', $mail->msgpath, $uniq), $client);
+$command = array('previewmessage', $mail->msgpath, $uniq);
+if ($mail->msgdeltapath)
+	$command[] = $mail->msgdeltapath;
+$data = soap_exec($command, $client);
 $data = str_replace("\r\n", "\n", $data);
-if (preg_match("/^(.*)\n$uniq\|ATTACHMENTS\n(.*?)(?:\n)?$uniq\|(HTML|TEXT)\n(.*)$/sm", $data, $result)) {
+$data = explode("$uniq|", $data);
+$result = array();
+$result['HEADERS'] = trim($data[0]);
+for ($i = 1; $i < count($data); ++$i) {
+	list($type, $content) = explode("\n", $data[$i], 2);
+	$result[$type] = trim($content);
+}
+if (isset($result['TEXT']) || isset($result['HTML'])) {
 	require_once('inc/htmlpurifier-4.6.0-lite/library/HTMLPurifier.auto.php');
 	$config = HTMLPurifier_Config::createDefault();
 	$config->set('Cache.DefinitionImpl', null);
 	$config->set('URI.Disable', true);
 	$purifier = new HTMLPurifier($config);
-	$header = $purifier->purify(htmlspecialchars($result[1]));
-	$encode = $result[3];
-	$rawbody = $encode == 'TEXT' ? htmlspecialchars($result[4]) : $result[4];
-	$body = trim($purifier->purify($rawbody));
-	$attachments = array();
-	if ($result[2] != '') foreach (explode("\n", $result[2]) as $a)
-		$attachments[] = explode('|', $a);
+        $header = $result['HEADERS'];
+        $headerdelta = $result['HEADERS-DELTA'];
+        $attachments = $result['ATTACHMENTS'] != "" ? array_map(function ($k) { return explode('|', $k); }, explode("\n", $result['ATTACHMENTS'])) : array();
+
+        $body = isset($result['TEXT']) ? htmlspecialchars($result['TEXT']) : $result['HTML'];
+        $body = trim($purifier->purify($body));
+        $encode = isset($result['TEXT']) ? 'TEXT' : 'HTML';
 } else {
 	$encode = 'TEXT';
 	$body = 'Preview not available';
@@ -59,6 +69,8 @@ if (preg_match("/^(.*)\n$uniq\|ATTACHMENTS\n(.*?)(?:\n)?$uniq\|(HTML|TEXT)\n(.*)
 
 $title = 'Message';
 $javascript[] = 'static/preview.js';
+$javascript[] = 'static/diff_match_patch.js';
+$javascript[] = 'static/diff.js';
 require_once('inc/header.php');
 ?>
 			<form>
@@ -88,22 +100,28 @@ require_once('inc/header.php');
 				echo $body;
 			?>
 
-			<?php if (count($attachment) > 0) { ?>
+			<?php if (count($attachments) > 0) { ?>
 			<div class="preview-attachments">
 			<?php foreach ($attachments as $a) { ?>
 				<div class="preview-attachment"><?php p($a[2]) ?> (<?php echo round($a[1]/1024, 0) ?> KiB)</div>
 			<?php } ?>
 			</div>
 			<?php } ?>
-
 			<?php if ($header != '') { ?>
-			<div class="preview-headers">
-			<?php foreach (explode("\n", $header) as $line) { ?>
-				<pre class="indent"><?php echo $line; ?></pre>
-			<?php } ?>
+			<div style="clear:both;margin-top:5px;">
+				<div style="float:left;margin:5px;height:8px;width:8px;background-color:#ddffdd;border: 1px solid #ccc;"></div>
+				<div style="float:left;font-size:10px;padding-top:5px;color:green;margin-right:10px;">Added</div>
+				<div style="float:left;margin:5px;height:8px;width:8px;background-color:#ffdddd;border: 1px solid #ccc;"></div>
+				<div style="float:left;font-size:10px;padding-top:5px;color:red;">Removed</div>
+				<div class="preview-headers"></div>
 			</div>
+			<script>
+				var headers_original = <?php echo json_encode($header); ?>;
+				var headers_modified = <?php echo json_encode($headerdelta); ?>;
+				$(".preview-headers").html(diff_lineMode(headers_original,
+					headers_modified ? headers_modified : headers_original, true));
+			</script>
 			<?php } ?>
-
 			<?php if (count($mail->msgscore->item) > 0) { ?>
 			<table class="list pad">
 				<thead>

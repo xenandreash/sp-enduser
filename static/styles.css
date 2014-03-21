@@ -507,6 +507,27 @@ pre.indent {
 	padding: 5px;
 }
 
+.preview-headers span, .preview-headers ins, .preview-headers del {
+	display: block;
+	font-family: monospace;
+	white-space: normal;
+	text-indent: -40px;
+	padding-left: 42px;
+	padding-top: 1px;
+}
+
+.preview-headers ins {
+	text-decoration: none;
+	color: green;
+	background-color: #ddffdd;
+}
+
+.preview-headers del {
+	text-decoration: none;
+	color: red;
+	background-color: #ffdddd;
+}
+
 .preview-attachments {
 	clear: both;
 	margin-bottom: 3px;
