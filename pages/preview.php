@@ -55,13 +55,13 @@ if (isset($result['TEXT']) || isset($result['HTML'])) {
 	$config->set('Cache.DefinitionImpl', null);
 	$config->set('URI.Disable', true);
 	$purifier = new HTMLPurifier($config);
-        $header = $result['HEADERS'];
-        $headerdelta = $result['HEADERS-DELTA'];
-        $attachments = $result['ATTACHMENTS'] != "" ? array_map(function ($k) { return explode('|', $k); }, explode("\n", $result['ATTACHMENTS'])) : array();
+	$header = $result['HEADERS'];
+	$headerdelta = $result['HEADERS-DELTA'];
+	$attachments = $result['ATTACHMENTS'] != "" ? array_map(function ($k) { return explode('|', $k); }, explode("\n", $result['ATTACHMENTS'])) : array();
 
-        $body = isset($result['TEXT']) ? htmlspecialchars($result['TEXT']) : $result['HTML'];
-        $body = trim($purifier->purify($body));
-        $encode = isset($result['TEXT']) ? 'TEXT' : 'HTML';
+	$body = isset($result['TEXT']) ? htmlspecialchars($result['TEXT']) : $result['HTML'];
+	$body = trim($purifier->purify($body));
+	$encode = isset($result['TEXT']) ? 'TEXT' : 'HTML';
 } else {
 	$encode = 'TEXT';
 	$body = 'Preview not available';
