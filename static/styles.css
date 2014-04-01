@@ -502,9 +502,8 @@ pre.indent {
 .preview-headers {
 	clear: both;
 	border: 1px solid #ccc;
-	background-color: #eee;
+	background-color: #fafafa;
 	color: #999;
-	padding: 5px;
 }
 
 .preview-headers span, .preview-headers ins, .preview-headers del {

@@ -11,7 +11,7 @@ if (!isset($_SERVER['argc']))
 require_once('inc/core.php');
 require_once('inc/utils.php');
 
-$limit = 50000; // Need limit, because of memory
+$limit = 10000; // Need limit, because of memory
 //$restrict[] = 'quarantine=mailquarantine:1';
 
 // Build query

@@ -48,6 +48,7 @@ $size = isset($_GET['size']) ? $_GET['size'] : 50;
 $size = $size > 5000 ? 5000 : $size;
 $source = isset($settings['default-source']) ? $settings['default-source'] : 'history';
 $source = isset($_GET['source']) ? $_GET['source'] : $source;
+$scores = isset($settings['display-scores']) ? $settings['display-scores'] : false;
 
 // Select box arrays
 foreach (array(10, 50, 100, 500, 1000, 5000) as $n)
@@ -114,6 +115,7 @@ if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
 		$c->mailQueue($param['queue'][$n]);
 }
 soap_dispatch();
+$cols = 8;
 $total = 0;
 $totalget = $totaloffset;
 $totalknown = true;
@@ -190,7 +192,8 @@ ksort($errors);
 					<th>From</th>
 					<th>To</th>
 					<th>Subject</th>
-					<th></th>
+					<?php if ($scores) { $cols++ ?><th>Scores</th><?php } ?>
+					<th>Details</th>
 					<th style="width: 40px"></th>
 				</tr>
 			</thead>
@@ -210,6 +213,13 @@ ksort($errors);
 					}
 					$i++;
 					$param[$m['type']][$m['id']]['offset']++;
+					$preview = http_build_query(array(
+						'page' => 'preview',
+						'node' => $m['id'],
+						'queueid' => $m['data']->id,
+						'type' => $m['type'],
+						'to' => $m['data']->msgto,
+						'id' => $m['data']->msgid));
 				?>
 				<tr>
 					<td style="width: 17px; padding: 0"></td>
@@ -226,12 +236,28 @@ ksort($errors);
 					<td><?php p($m['data']->msgfrom) ?></td>
 					<td><?php p($m['data']->msgto) ?></td>
 					<td>
-					<?php if ($m['type'] != 'history') { ?>
-						<a href="?page=preview&node=<?php echo $m['id'] ?>&queueid=<?php echo $m['data']->id ?>"><?php p($m['data']->msgsubject) ?></a>
-					<?php } else { // history ?>
-						<?php p($m['data']->msgsubject) ?>
-					<?php } ?>
+						<a href="?<?php echo $preview ?>"><?php p($m['data']->msgsubject) ?></a>
 					</td>
+					<?php if ($scores) {
+					$tmp = array();
+					$rpd[10] = 'suspect';
+					$rpd[40] = 'valid bulk';
+					$rpd[50] = 'bulk';
+					$rpd[100] = 'spam';
+					if (is_array($m['data']->msgscore->item)) foreach($m['data']->msgscore->item as $score) {
+						$data = explode('|', $score->second);
+						if ($score->first == 0)
+							$tmp[] = $data[0];
+						if ($score->first == 1 && $data[1])
+							$tmp[] = 'virus';
+						if ($score->first == 3 && $data[0] > 0)
+							$tmp[] = $rpd[$data[0]];
+						if ($score->first == 4 && $data[1])
+							$tmp[] = 'virus';
+					}
+					?>
+					<td><?php echo implode(', ', array_unique($tmp)) ?></td>
+					<?php } ?>
 					<td>
 					<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
 						In queue (retry <?php echo $m['data']->msgretries ?>)
@@ -241,8 +267,8 @@ ksort($errors);
 					<?php } ?>
 					</td>
 					<td>
+						<a title="Details" class="icon mail" href="?<?php echo $preview?>"></a>
 					<?php if ($m['type'] != 'history') { ?>
-						<a title="Preview" class="icon mail" href="?page=preview&node=<?php echo $m['id'] ?>&queueid=<?php echo $m['data']->id ?>"></a>
 						<div title="Release/retry" class="icon go"></div>
 					<?php } ?>
 					</td>
@@ -250,14 +276,14 @@ ksort($errors);
 			<?php }} ?>
 			<?php if (empty($timesort)) { ?>
 				<tr>
-					<td colspan="8"><span class="semitrans">No matches</span></td>
+					<td colspan="<?php echo $cols ?>"><span class="semitrans">No matches</span></td>
 				</tr>
 			<?php } ?>
 			</form>
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="8" style="text-align: center">
+					<td colspan="<?php echo $cols ?>" style="text-align: center">
 						<form>
 							<button type="button" name="prev" <?php echo $prev_button ?> style="float: left" onclick="history.go(-1)">Previous</button>
 							<button type="submit" name="next" <?php echo $next_button ?> style="float: right">Next</button>

@@ -31,6 +31,10 @@ switch (@$_GET['page'])
 		require_once 'inc/session.php';
 		require_once 'pages/user.php';
 	break;
+	case 'log':
+		require_once 'inc/session.php';
+		require_once 'pages/log.php';
+	break;
 	case 'preview':
 		require_once 'inc/session.php';
 		require_once 'pages/preview.php';

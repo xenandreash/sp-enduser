@@ -10,9 +10,14 @@ $client = soap_client($node);
 
 // Access permission
 $query['filter'] = build_query_restrict().' && queueid='.$queueid;
+if (isset($_GET['id']) && isset($_GET['to']))
+	$query['filter'] .= ' to='.$_GET['to'].' messageid='.$_GET['id'];
 $query['offset'] = 0;
 $query['limit'] = 1;
-$queue = $client->mailQueue($query);
+if ($_GET['type'] == 'history')
+	$queue = $client->mailHistory($query);
+else
+	$queue = $client->mailQueue($query);
 if (count($queue->result->item) != 1)
 	die('Invalid queueid');
 
@@ -35,36 +40,46 @@ if (isset($_POST['action'])) {
 }
 
 // Prepare data
+$scores = isset($settings['display-scores']) ? $settings['display-scores'] : false;
+$logs = isset($settings['display-textlog']) ? $settings['display-textlog'] : false;
 $mail = $queue->result->item[0];
-$uniq = uniqid();
-$command = array('previewmessage', $mail->msgpath, $uniq);
-if ($mail->msgdeltapath)
-	$command[] = $mail->msgdeltapath;
-$data = soap_exec($command, $client);
-$data = str_replace("\r\n", "\n", $data);
-$data = explode("$uniq|", $data);
-$result = array();
-$result['HEADERS'] = trim($data[0]);
-for ($i = 1; $i < count($data); ++$i) {
-	list($type, $content) = explode("\n", $data[$i], 2);
-	$result[$type] = trim($content);
-}
-if (isset($result['TEXT']) || isset($result['HTML'])) {
-	require_once('inc/htmlpurifier-4.6.0-lite/library/HTMLPurifier.auto.php');
-	$config = HTMLPurifier_Config::createDefault();
-	$config->set('Cache.DefinitionImpl', null);
-	$config->set('URI.Disable', true);
-	$purifier = new HTMLPurifier($config);
-	$header = $result['HEADERS'];
-	$headerdelta = $result['HEADERS-DELTA'];
-	$attachments = $result['ATTACHMENTS'] != "" ? array_map(function ($k) { return explode('|', $k); }, explode("\n", $result['ATTACHMENTS'])) : array();
+if (isset($settings['display-transport'][$mail->msgtransport])) $transport = $settings['display-transport'][$mail->msgtransport];
+if (isset($settings['display-listener'][$mail->msglistener])) $listener = $settings['display-listener'][$mail->msglistener];
+if ($_GET['type'] == 'queue' && $mail->msgaction == 'DELIVER')
+	$desc = 'In queue (retry '.$mail->msgretries.') <span class="semitrans">'.htmlspecialchars($mail->msgerror).'</span>';
+else
+	$desc = htmlspecialchars($mail->msgdescription);
+if ($_GET['type'] == 'queue') {
+	$uniq = uniqid();
+	$command = array('previewmessage', $mail->msgpath, $uniq);
+	if ($mail->msgdeltapath)
+		$command[] = $mail->msgdeltapath;
+	$data = soap_exec($command, $client);
+	$data = str_replace("\r\n", "\n", $data);
+	$data = explode("$uniq|", $data);
+	$result = array();
+	$result['HEADERS'] = trim($data[0]);
+	for ($i = 1; $i < count($data); ++$i) {
+		list($type, $content) = explode("\n", $data[$i], 2);
+		$result[$type] = trim($content);
+	}
+	if (isset($result['TEXT']) || isset($result['HTML'])) {
+		require_once('inc/htmlpurifier-4.6.0-lite/library/HTMLPurifier.auto.php');
+		$config = HTMLPurifier_Config::createDefault();
+		$config->set('Cache.DefinitionImpl', null);
+		$config->set('URI.Disable', true);
+		$purifier = new HTMLPurifier($config);
+		$header = $result['HEADERS'];
+		$headerdelta = $result['HEADERS-DELTA'];
+		$attachments = $result['ATTACHMENTS'] != "" ? array_map(function ($k) { return explode('|', $k); }, explode("\n", $result['ATTACHMENTS'])) : array();
 
-	$body = isset($result['TEXT']) ? htmlspecialchars($result['TEXT']) : $result['HTML'];
-	$body = trim($purifier->purify($body));
-	$encode = isset($result['TEXT']) ? 'TEXT' : 'HTML';
-} else {
-	$encode = 'TEXT';
-	$body = 'Preview not available';
+		$body = isset($result['TEXT']) ? htmlspecialchars($result['TEXT']) : $result['HTML'];
+		$body = trim($purifier->purify($body));
+		$encode = isset($result['TEXT']) ? 'TEXT' : 'HTML';
+	} else {
+		$encode = 'TEXT';
+		$body = 'Preview not available';
+	}
 }
 
 $title = 'Message';
@@ -77,20 +92,33 @@ require_once('inc/header.php');
 				<div class="item">
 					<div class="button back" onclick="history.back()">Back</div>
 				</div>
+				<?php if ($logs) { ?>
+				<div class="item">
+					<a href="?page=log&queueid=<?php echo $queueid?>&node=<?php echo $node?>&type=<?php p($_GET['type']) ?>&id=<?php echo $mail->msgid ?>"><div class="button search">Text log</div></a>
+				</div>
+				<?php } ?>
+				<?php if ($_GET['type'] == 'queue') { ?>
 				<div class="item">
 					<a href="?page=download&queueid=<?php echo $queueid?>&node=<?php echo $node?>"><div class="button down">Download</div></a>
 				</div>
 				<div class="item">
 					<div class="button start tracking-actions">Actions...</div>
 				</div>
+				<?php } ?>
 			</form>
 		</div>
 		<div class="fullpage">
+			<?php if ($listener) { ?><div class="preview-header">Received by</div> <?php echo $listener ?><br><?php } ?>
 			<div class="preview-header">Date</div> <?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?><br>
 			<div class="preview-header">Server</div> <?php p($mail->msgfromserver) ?><br>
+			<?php if ($mail->msgsasl) { ?><div class="preview-header">User</div> <?php p($mail->msgsasl) ?><br><?php } ?>
 			<div class="preview-header">From</div> <?php p($mail->msgfrom) ?><br>
 			<div class="preview-header">To</div> <?php p($mail->msgto) ?><br>
 			<div class="preview-header">Subject</div> <?php p($mail->msgsubject) ?><br>
+			<div class="preview-header">Action</div> <?php p(ucfirst(strtolower($mail->msgaction))) ?><br>
+			<?php if ($desc) { ?><div class="preview-header">Details</div> <?php echo $desc ?><br><?php } ?>
+			<?php if ($transport) { ?><div class="preview-header">Destination</div> <?php echo $transport ?><br><?php } ?>
+			<div class="preview-header">ID</div> <?php p($mail->msgid.':'.$mail->id) ?><br>
 			<div class="hr"></div>
 
 			<?php
@@ -115,6 +143,7 @@ require_once('inc/header.php');
 				<div style="float:left;font-size:10px;padding-top:5px;color:red;">Removed</div>
 				<div class="preview-headers"></div>
 			</div>
+			<br>
 			<script>
 				var headers_original = <?php echo json_encode($header); ?>;
 				var headers_modified = <?php echo json_encode($headerdelta); ?>;
@@ -122,32 +151,43 @@ require_once('inc/header.php');
 					headers_modified ? headers_modified : headers_original, true));
 			</script>
 			<?php } ?>
-			<?php if (count($mail->msgscore->item) > 0) { ?>
-			<table class="list pad">
+			<?php if ($scores && count($mail->msgscore->item) > 0) { ?>
+			<table class="list">
 				<thead>
 					<tr>
-						<th>Scanner</th>
+						<th>Engine</th>
 						<th>Result</th>
+						<th>Signature</th>
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach ($mail->msgscore->item as $score) {
+				<?php
+				$rpd[0] = 'Unknown';
+				$rpd[10] = 'Suspect';
+				$rpd[40] = 'Valid bulk';
+				$rpd[50] = 'Bulk';
+				$rpd[100] = 'Spam';
+				foreach ($mail->msgscore->item as $score) {
 					list($num, $text) = explode("|", $score->second);
 					echo '<tr>';
 					switch ($score->first) {
 						case 0;
-							echo "<td>SpamAssassin</td><td>$num".($text != ""?" (".str_replace(",", ", ", $text).")":"")."</td>";
+							echo '<td>SpamAssassin</td><td>'.$num.'</td><td class="semitrans">'.str_replace(',', ', ', $text).'</td>';
 						break;
 						case 1;
-							$text = $text ?: "OK";
-							echo "<td>Kaspersky</td><td>$text</td>";
+							$res = 'Ok';
+							if ($text)
+								$res = 'Virus';
+							echo '<td>Kaspersky</td><td>'.$res.'</td><td class="semitrans">'.$text.'</td>';
 						break;
 						case 3;
-							echo "<td>Commtouch</td><td>$num ($text)</td>";
+							echo '<td>CYREN</td><td>'.$rpd[$num].'</td><td class="semitrans">'.$text.'</td>';
 						break;
 						case 4;
-							$text = $text ?: "OK";
-							echo "<td>ClamAV</td><td>$text</td>";
+							$res = 'Ok';
+							if ($text)
+								$res = 'Virus';
+							echo '<td>ClamAV</td><td>'.$res.'</td><td class="semitrans">'.$text.'</td>';
 						break;
 					}
 					echo "</tr>";

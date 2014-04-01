@@ -43,6 +43,10 @@
 //$settings['mail']['from'] = 'Mail quarantine <postmaster@example.org>';
 //$settings['public-url'] = 'http://10.2.0.166/enduser/';
 //$settings['default-source'] = 'history';
+//$settings['display-scores'] = false;
+//$settings['display-textlog'] = false;
+//$settings['display-listener']['mailserver:1'] = 'Inbound';
+//$settings['display-transport']['mailtransport:2'] = 'Internet';
 
 /*
  * It's possible to use this application completely without a database.
