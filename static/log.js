@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	if (window.history.length == 1)
+		$(".back").parent().hide();
 	poll();
 });
 

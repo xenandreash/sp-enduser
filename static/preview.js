@@ -21,4 +21,6 @@ $(document).ready(function() {
 			$("body").append($(drop).offset(p));
 		});
 	});
+	if (window.history.length == 1)
+		$(".back").parent().hide();
 });
