@@ -8,8 +8,8 @@
 if (!isset($_SERVER['argc']))
 	die('this file can only be run from command line');
 
-require_once('inc/core.php');
-require_once('inc/utils.php');
+require_once 'inc/core.php';
+require_once 'inc/utils.php';
 
 $limit = 10000; // Need limit, because of memory
 //$restrict[] = 'quarantine=mailquarantine:1';

@@ -1,8 +1,8 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once('inc/core.php');
-require_once('inc/utils.php');
+require_once 'inc/core.php';
+require_once 'inc/utils.php';
 
 if (!isset($settings['database']['dsn']))
 	die('No database configured');
@@ -44,7 +44,7 @@ if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password']
 }
 
 $title = 'Reset password';
-require_once('inc/header.php');
+require_once 'inc/header.php';
 ?>
 		</div>
 		<?php if (isset($error)) { ?>
@@ -116,4 +116,4 @@ require_once('inc/header.php');
 				</fieldset>
 			</div>
 		</div>
-<?php require_once('inc/footer.php') ?>
+<?php require_once 'inc/footer.php'; ?>

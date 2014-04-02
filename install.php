@@ -2,8 +2,8 @@
 if (!defined('SP_ENDUSER')) die('File not included');
 
 $title = 'Install';
-require_once('inc/header.php');
-require_once('inc/core.php');
+require_once 'inc/header.php';
+require_once 'inc/core.php';
 
 $ok = true;
 ?>
@@ -78,5 +78,5 @@ if (isset($settings['database']['dsn'])) {
 <?php } ?>
 	</div>
 <?php
-require_once('inc/footer.php');
+require_once 'inc/footer.php';
 ?>

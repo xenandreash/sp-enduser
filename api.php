@@ -1,7 +1,7 @@
 <?php
 
-require_once('inc/core.php');
-require_once('inc/utils.php');
+require_once 'inc/core.php';
+require_once 'inc/utils.php';
 
 // verify API key
 if (!isset($settings['api-key']) || !isset($_GET['api-key']) || $settings['api-key'] !== $_GET['api-key'])

@@ -7,7 +7,7 @@
 
 error_reporting(E_ALL ^ E_NOTICE);
 
-require_once('utils.php');
+require_once 'utils.php';
 
 function settings() {
 	$base = dirname($_SERVER['SCRIPT_FILENAME']);
@@ -16,7 +16,7 @@ function settings() {
 	$settings['public-url'] = self_url();
 	if (!file_exists($base.'/settings.php'))
 		die('Missing '.$base.'/settings.php; edit settings.php.default and rename it');
-	require($base.'/settings.php');
+	require $base.'/settings.php';
 	$tmp = $settings;
 	foreach (func_get_args() as $arg)
 		$tmp = $tmp[$arg];

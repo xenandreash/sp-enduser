@@ -1,8 +1,8 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once('inc/core.php');
-require_once('inc/utils.php');
+require_once 'inc/core.php';
+require_once 'inc/utils.php';
 
 $source = Session::Get()->getSource();
 $changedPassword = false;
@@ -16,7 +16,7 @@ if ($source == 'database' && isset($_POST['password']) && $_POST['password'] == 
 }
 
 $title = 'Account';
-require_once('inc/header.php');
+require_once 'inc/header.php';
 ?>
 		</div>
 		<?php if ($changedPassword) { ?>
@@ -80,4 +80,4 @@ require_once('inc/header.php');
 			</fieldset>
 			</div>
 		</div>
-<?php require_once('inc/footer.php'); ?>
+<?php require_once 'inc/footer.php'; ?>

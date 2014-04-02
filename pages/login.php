@@ -1,7 +1,7 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once('inc/core.php');
+require_once 'inc/core.php';
 
 class LDAPDatabase {
 	private $uri = '';
@@ -171,7 +171,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 }
 
 $title = 'Sign in';
-require_once('inc/header.php');
+require_once 'inc/header.php';
 ?>
 		</div>
 		<?php if (isset($error)) { ?>
@@ -233,4 +233,4 @@ require_once('inc/header.php');
 		<script>
 			$("#timezone").val(new Date().getTimezoneOffset());
 		</script>
-<?php require_once('inc/footer.php') ?>
+<?php require_once 'inc/footer.php'; ?>

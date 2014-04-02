@@ -1,7 +1,7 @@
 <?php
 
-require_once('core.php');
-require_once('soap.php');
+require_once 'core.php';
+require_once 'soap.php';
 
 function build_query_restrict($type = 'queue')
 {

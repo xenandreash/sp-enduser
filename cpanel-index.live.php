@@ -19,7 +19,7 @@ class Session
 	}
 	private function __construct()
 	{
-		require_once('/usr/local/cpanel/php/cpanel.php');
+		require_once '/usr/local/cpanel/php/cpanel.php';
 
 		$cpanel = &new CPANEL();
 		$result = $cpanel->api2('DomainLookup', 'getdocroots');

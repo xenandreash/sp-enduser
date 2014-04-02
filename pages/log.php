@@ -1,8 +1,8 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once('inc/core.php');
-require_once('inc/utils.php');
+require_once 'inc/core.php';
+require_once 'inc/utils.php';
 
 $node = intval($_GET['node']);
 $queueid = intval($_GET['queueid']);
@@ -54,7 +54,7 @@ $_SESSION['logs_id'][] = $cmd_id->result;
 
 $title = 'Text log';
 $javascript[] = 'static/log.js';
-require_once('inc/header.php');
+require_once 'inc/header.php';
 ?>
 			<form>
 				<div class="item">
@@ -65,4 +65,4 @@ require_once('inc/header.php');
 		<div class="fullpage"><input id="cmd_id" value="<?php echo $cmd_id->result ?>" style="display:none">
 <pre id="log"></pre>
 	</div>
-<?php require_once('inc/footer.php'); ?>
+<?php require_once 'inc/footer.php'; ?>

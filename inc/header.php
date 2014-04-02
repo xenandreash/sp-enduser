@@ -2,7 +2,7 @@
 
 // XXX this file is included from login.php as well
 
-require_once('core.php');
+require_once 'core.php';
 
 $pagename = $settings['pagename'] ?: 'Halon SP for end-users';
 $title = $title ?: 'Untitled';

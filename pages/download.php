@@ -1,7 +1,7 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once('inc/utils.php');
+require_once 'inc/utils.php';
 
 $node = intval($_GET['node']);
 $queueid = intval($_GET['queueid']);
