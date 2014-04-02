@@ -244,7 +244,7 @@ ksort($errors);
 					$rpd[40] = 'valid bulk';
 					$rpd[50] = 'bulk';
 					$rpd[100] = 'spam';
-					if (is_array($m['data']->msgscore->item)) foreach($m['data']->msgscore->item as $score) {
+					if (is_array($m['data']->msgscore->item)) foreach ($m['data']->msgscore->item as $score) {
 						$data = explode('|', $score->second);
 						if ($score->first == 0)
 							$tmp[] = $data[0];
