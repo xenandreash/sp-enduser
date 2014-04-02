@@ -39,7 +39,7 @@ diff_match_patch.prototype.diff_prettyHalonHtml = function(diffs, splitlines)
 
 function diff_lineMode(text1, text2, splitlines)
 {
-	if (typeof(splitlines) === 'splitlines') splitlines = false; 
+	if (typeof(splitlines) === 'undefined') splitlines = false; 
 	var dmp = new diff_match_patch();
 	var a = dmp.diff_linesToChars_(text1, text2);
 	var lineText1 = a.chars1;
