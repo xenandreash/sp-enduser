@@ -1,6 +1,6 @@
 <?php
 
-$_soapRequest = array();
+$_soapRequests = array();
 $_soapResponses = array();
 
 class SoapClientAsync extends SoapClient {
