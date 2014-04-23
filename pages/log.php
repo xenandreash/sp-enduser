@@ -62,7 +62,10 @@ require_once 'inc/header.php';
 				</div>
 			</form>
 		</div>
-		<div class="fullpage"><input id="cmd_id" value="<?php echo $cmd_id->result ?>" style="display:none">
-<pre id="log"></pre>
-	</div>
+		<div class="fullpage">
+			<pre id="log"></pre>
+		</div>
+		<script>
+			cmd_id = <?php echo json_encode($cmd_id->result); ?>;
+		</script>
 <?php require_once 'inc/footer.php'; ?>
