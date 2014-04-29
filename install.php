@@ -56,6 +56,23 @@ if (isset($settings['database']['dsn'])) {
 			$notes[] = 'Adding table bwlist';
 			$dbh->exec('CREATE TABLE bwlist (access VARCHAR(128), type VARCHAR(32), value VARCHAR(128), PRIMARY KEY(access, type, value));');
 		}
+		if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
+			$statement = $dbh->prepare('SELECT * FROM messagelog LIMIT 1;');
+			if (!$statement || $statement->execute() === false) {
+				$notes[] = 'Adding table messagelog';
+				$dbh->exec('CREATE TABLE messagelog (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, owner VARCHAR(300), owner_domain VARCHAR(300), msgts0 TIMESTAMP DEFAULT CURRENT_TIMESTAMP, msgts INT, msgid VARCHAR(100), msgaction VARCHAR(50), msglistener VARCHAR(100), msgtransport VARCHAR(100), msgsasl VARCHAR(300), msgfromserver VARCHAR(300), msgfrom VARCHAR(300), msgfrom_domain VARCHAR(300), msgto VARCHAR(300), msgto_domain VARCHAR(300), msgsubject TEXT, score_rpd NUMERIC(10,5), score_sa NUMERIC(10,5), scores TEXT, msgdescription TEXT, serialno VARCHAR(100));');
+				$dbh->exec('CREATE INDEX ind_owner               ON messagelog(owner);');
+				$dbh->exec('CREATE INDEX ind_owner_domain        ON messagelog(owner_domain);');
+				$dbh->exec('CREATE INDEX ind_msgfromserver       ON messagelog(msgfromserver);');
+				$dbh->exec('CREATE INDEX ind_msgfrom             ON messagelog(msgfrom);');
+				$dbh->exec('CREATE INDEX ind_msgfrom_domain      ON messagelog(msgfrom_domain);');
+				$dbh->exec('CREATE INDEX ind_msgto               ON messagelog(msgto);');
+				$dbh->exec('CREATE INDEX ind_msgto_domain        ON messagelog(msgto_domain);');
+				$dbh->exec('CREATE FULLTEXT INDEX ind_msgsubject ON messagelog(msgsubject);');
+			}
+		} else {
+			$notes[] = 'Did not add messagelog because other database than MySQL was used';
+		}
 		if (!empty($notes))
 			echo 'Database<ul><li>'.implode($notes, '<li>').'</ul>';
 	} catch (PDOException $e) {

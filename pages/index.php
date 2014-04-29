@@ -11,18 +11,12 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 			continue;
 
 		$node = $v;
-		$queueid = intval($m[1]);
+		$id = intval($m[1]);
 		$client = soap_client($node);
 
 		// Access permission
-		$query['filter'] = build_query_restrict().' && queueid='.$queueid;
-		$query['offset'] = 0;
-		$query['limit'] = 1;
-		$queue = $client->mailQueue($query);
-		if (count($queue->result->item) != 1)
-			die('Invalid queueid');
-
-		$actions[$v][] = $queueid;
+		restrict_mail('queue', $node, $id); // Dies if access is denied
+		$actions[$v][] = $id;
 	}
 	foreach ($actions as $soapid => $list)
 	{
@@ -48,14 +42,14 @@ $size = isset($_GET['size']) ? $_GET['size'] : 50;
 $size = $size > 5000 ? 5000 : $size;
 $source = isset($settings['default-source']) ? $settings['default-source'] : 'history';
 $source = isset($_GET['source']) ? $_GET['source'] : $source;
-$scores = isset($settings['display-scores']) ? $settings['display-scores'] : false;
+$display_scores = isset($settings['display-scores']) ? $settings['display-scores'] : false;
 
 // Select box arrays
 foreach (array(10, 50, 100, 500, 1000, 5000) as $n)
 	$pagesize[$n] = $n.' results';
-$sources = array('all' => 'All', 'history' => 'History', 'queue' => 'Queue', 'quarantine' => 'Quarantine');
+$sources = array('all' => 'All', 'history' => 'History', 'queue' => 'Queue', 'quarantine' => 'Quarantine', 'log' => 'Log');
 
-// Create actual search query, in order, of importance
+// Create actual search query for SOAP, in order of importance (for security)
 $queries = array();
 $restrict = build_query_restrict();
 if ($restrict != '')
@@ -90,10 +84,10 @@ foreach ($settings['node'] as $n => $r) {
 	}
 }
 
-// Override with GET
+// Override offset with GET
 $totaloffset = 0;
 foreach ($_GET as $k => $v) {
-	if (!preg_match('/^(history|queue)offset(\d+)$/', $k, $m))
+	if (!preg_match('/^(history|queue|log)offset(\d+)$/', $k, $m))
 		continue;
 	if ($v < 1)
 		continue;
@@ -101,6 +95,12 @@ foreach ($_GET as $k => $v) {
 	$totaloffset += $v;
 	$prev_button = '';
 }
+
+// Create search/restrict query for SQL
+$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
+$sql_where = hql_to_sql($search);
+$real_sql = build_query_restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param['log']);
+$real_sql['sql'] .= ' ORDER BY id DESC LIMIT '.intval($size + 1); // don't send unnecessary
 
 // $clients are asynchronous
 // - run functions, add to queue
@@ -119,6 +119,16 @@ $cols = 8;
 $total = 0;
 $totalget = $totaloffset;
 $totalknown = true;
+if ($source == 'all' || $source == 'log') {
+	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+	$statement = $dbh->prepare($real_sql['sql']);
+	$statement->execute($real_sql['params']);
+	while ($item = $statement->fetchObject())
+		$timesort[$item->msgts0][] = array('id' => $item->union_id, 'type' => 'log', 'data' => $item);
+	if ($statement->rowCount() > $size)
+		$totalknown = false;
+	$totalget += $statement->rowCount();
+}
 if ($source == 'all' || $source == 'history') {
 	foreach ($clients as $n => &$c) {
 		try {
@@ -154,7 +164,7 @@ ksort($errors);
 ?>
 			<form>
 				<div class="item">
-					<input type="search" size="40" placeholder="any" name="search" value="<?php echo htmlspecialchars($search) ?>">
+					<input type="search" size="40" placeholder="any" name="search" value="<?php p($search) ?>">
 					<label>Search</label>
 				</div>
 				<div class="item">
@@ -192,7 +202,7 @@ ksort($errors);
 					<th>From</th>
 					<th>To</th>
 					<th>Subject</th>
-					<?php if ($scores) { $cols++ ?><th>Scores</th><?php } ?>
+					<?php if ($display_scores) { $cols++ ?><th>Scores</th><?php } ?>
 					<th>Details</th>
 					<th style="width: 40px"></th>
 				</tr>
@@ -216,51 +226,47 @@ ksort($errors);
 					$preview = http_build_query(array(
 						'page' => 'preview',
 						'node' => $m['id'],
-						'queueid' => $m['data']->id,
-						'type' => $m['type'],
-						'to' => $m['data']->msgto,
-						'id' => $m['data']->msgid));
+						'id' => $m['data']->id,
+						'type' => $m['type']));
 				?>
 				<tr>
 					<td style="width: 17px; padding: 0"></td>
-					<td class="action <?php echo $m['data']->msgaction.' '.$m['type'] ?>" title="<?php p($m['data']->msgaction) ?>">
+					<td class="action <?php p($m['data']->msgaction.' '.$m['type']) ?>" title="<?php p($m['data']->msgaction) ?>">
 					<?php if ($m['type'] == 'queue') { // queue or quarantine ?>
-						<input type="checkbox" name="multiselect-<?php echo $m['data']->id ?>" value="<?php echo $m['id'] ?>">
+						<input type="checkbox" name="multiselect-<?php p($m['data']->id) ?>" value="<?php p($m['id']) ?>">
 					<?php } else { // history ?>
-						<strong><?php echo $m['data']->msgaction[0] ?></strong>
+						<strong><?php p($m['data']->msgaction[0]) ?></strong>
 					<?php } ?>
 					</td>
 					<td><span class="semitrans">
-						<?php echo strftime('%Y-%m-%d %H:%M:%S', $m['data']->msgts0 - $_SESSION['timezone'] * 60) ?>
+						<?php p(strftime('%Y-%m-%d %H:%M:%S', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
 					</span></td>
 					<td><?php p($m['data']->msgfrom) ?></td>
 					<td><?php p($m['data']->msgto) ?></td>
 					<td>
 						<a href="?<?php echo $preview ?>"><?php p($m['data']->msgsubject) ?></a>
 					</td>
-					<?php if ($scores) {
-					$tmp = array();
-					$rpd[10] = 'suspect';
-					$rpd[40] = 'valid bulk';
-					$rpd[50] = 'bulk';
-					$rpd[100] = 'spam';
-					if (is_array($m['data']->msgscore->item)) foreach ($m['data']->msgscore->item as $score) {
-						$data = explode('|', $score->second);
-						if ($score->first == 0)
-							$tmp[] = $data[0];
-						if ($score->first == 1 && $data[1])
-							$tmp[] = 'virus';
-						if ($score->first == 3 && $data[0] > 0)
-							$tmp[] = $rpd[$data[0]];
-						if ($score->first == 4 && $data[1])
-							$tmp[] = 'virus';
-					}
+					<?php if ($display_scores) {
+						$printscores = array();
+						$scores = history_parse_scores($m['data']);
+						foreach ($scores as $engine => $s) {
+							if ($engine == 'rpd' && $s['score'] != 'Unknown')
+								$printscores[] = strtolower($s['score']);
+							if ($engine == 'kav' && $s['score'] != 'Ok')
+								$printscores[] = 'virus';
+							if ($engine == 'clam' && $s['score'] != 'Ok')
+								$printscores[] = 'virus';
+							if ($engine == 'rpdav' && $s['score'] != 'Ok')
+								$printscores[] = 'virus';
+							if ($engine == 'sa')
+								$printscores[] = $s['score'];
+						}
 					?>
-					<td><?php echo implode(', ', array_unique($tmp)) ?></td>
+					<td><?php p(implode(', ', array_unique($printscores))) ?></td>
 					<?php } ?>
 					<td>
 					<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
-						In queue (retry <?php echo $m['data']->msgretries ?>)
+						In queue (retry <?php p($m['data']->msgretries) ?>)
 						<span class="semitrans"><?php p($m['data']->msgerror) ?></span>
 					<?php } else { // history or quarantine ?>
 						<span class="semitrans"><?php p($m['data']->msgdescription) ?></span>
@@ -268,7 +274,7 @@ ksort($errors);
 					</td>
 					<td>
 						<a title="Details" class="icon mail" href="?<?php echo $preview?>"></a>
-					<?php if ($m['type'] != 'history') { ?>
+					<?php if ($m['type'] != 'history' && $m['type'] != 'log') { ?>
 						<div title="Release/retry" class="icon go"></div>
 					<?php } ?>
 					</td>
@@ -276,23 +282,23 @@ ksort($errors);
 			<?php }} ?>
 			<?php if (empty($timesort)) { ?>
 				<tr>
-					<td colspan="<?php echo $cols ?>"><span class="semitrans">No matches</span></td>
+					<td colspan="<?php p($cols) ?>"><span class="semitrans">No matches</span></td>
 				</tr>
 			<?php } ?>
 			</form>
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="<?php echo $cols ?>" style="text-align: center">
+					<td colspan="<?php p($cols) ?>" style="text-align: center">
 						<form>
 							<button type="button" name="prev" <?php echo $prev_button ?> style="float: left" onclick="history.go(-1)">Previous</button>
 							<button type="submit" name="next" <?php echo $next_button ?> style="float: right">Next</button>
 							<input type="hidden" name="size" value="<?php p($size) ?>">
 							<input type="hidden" name="search" value="<?php p($search) ?>">
 							<input type="hidden" name="source" value="<?php p($source) ?>">
-							<?php foreach ($param as $type => $nodes) { foreach ($nodes as $node => $args) { ?>
-								<input type="hidden" name="<?php echo $type ?>offset<?php echo $node ?>" value="<?php p($args['offset']) ?>">
-							<?php }} ?>
+							<?php foreach ($param as $type => $nodes) foreach ($nodes as $node => $args) if ($args['offset'] > 0) { ?>
+								<input type="hidden" name="<?php p($type) ?>offset<?php p($node) ?>" value="<?php p($args['offset']) ?>">
+							<?php } ?>
 							<?php if ($total > 0) { ?>
 							<span class="semitrans">
 								<?php p(number_format($total)); ?> match<?php $total != 1 ? p('es') : ''; ?> found

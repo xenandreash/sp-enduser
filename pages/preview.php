@@ -4,30 +4,26 @@ if (!defined('SP_ENDUSER')) die('File not included');
 require_once 'inc/core.php';
 require_once 'inc/utils.php';
 
-$node = intval($_GET['node']);
-$queueid = intval($_GET['queueid']);
-$client = soap_client($node);
+$id = intval($_GET['id']);
 
-// Access permission
-$query['filter'] = build_query_restrict().' && queueid='.$queueid;
-if (isset($_GET['id']) && isset($_GET['to']))
-	$query['filter'] .= ' to='.$_GET['to'].' messageid='.$_GET['id'];
-$query['offset'] = 0;
-$query['limit'] = 1;
-if ($_GET['type'] == 'history')
-	$queue = $client->mailHistory($query);
-else
-	$queue = $client->mailQueue($query);
-if (count($queue->result->item) != 1)
-	die('Invalid queueid');
+if ($_GET['type'] == 'log') {
+	// Fetch data from local SQL log
+	$node = 'local';
+	$mail = restrict_local_mail($id);
+} else {
+	// Fetch data from SOAP
+	$node = intval($_GET['node']);
+	$mail = restrict_mail($_GET['type'], $node, $id);
+	$client = soap_client($node);
+}
 
 if (isset($_POST['action'])) {
 	if ($_POST['action'] == 'bounce')
-		$client->mailQueueBounce(array('id' => $queueid));
+		$client->mailQueueBounce(array('id' => $id));
 	if ($_POST['action'] == 'delete')
-		$client->mailQueueDelete(array('id' => $queueid));
+		$client->mailQueueDelete(array('id' => $id));
 	if ($_POST['action'] == 'retry')
-		$client->mailQueueRetry(array('id' => $queueid));
+		$client->mailQueueRetry(array('id' => $id));
 	$title = 'Message';
 	require_once 'inc/header.php'; ?>
 				<div class="item">
@@ -42,7 +38,6 @@ if (isset($_POST['action'])) {
 // Prepare data
 $scores = isset($settings['display-scores']) ? $settings['display-scores'] : false;
 $logs = isset($settings['display-textlog']) ? $settings['display-textlog'] : false;
-$mail = $queue->result->item[0];
 if (isset($settings['display-transport'][$mail->msgtransport])) $transport = $settings['display-transport'][$mail->msgtransport];
 if (isset($settings['display-listener'][$mail->msglistener])) $listener = $settings['display-listener'][$mail->msglistener];
 if ($_GET['type'] == 'queue' && $mail->msgaction == 'DELIVER')
@@ -94,12 +89,12 @@ require_once 'inc/header.php';
 				</div>
 				<?php if ($logs) { ?>
 				<div class="item">
-					<a href="?page=log&queueid=<?php echo $queueid?>&node=<?php echo $node?>&type=<?php p($_GET['type']) ?>&id=<?php echo $mail->msgid ?>"><div class="button search">Text log</div></a>
+					<a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>"><div class="button search">Text log</div></a>
 				</div>
 				<?php } ?>
 				<?php if ($_GET['type'] == 'queue') { ?>
 				<div class="item">
-					<a href="?page=download&queueid=<?php echo $queueid?>&node=<?php echo $node?>"><div class="button down">Download</div></a>
+					<a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><div class="button down">Download</div></a>
 				</div>
 				<div class="item">
 					<div class="button start tracking-actions">Actions...</div>
@@ -118,7 +113,7 @@ require_once 'inc/header.php';
 			<div class="preview-header">Action</div> <?php p(ucfirst(strtolower($mail->msgaction))) ?><br>
 			<?php if ($desc) { ?><div class="preview-header">Details</div> <?php echo $desc ?><br><?php } ?>
 			<?php if ($transport) { ?><div class="preview-header">Destination</div> <?php echo $transport ?><br><?php } ?>
-			<div class="preview-header">ID</div> <?php p($mail->msgid.':'.$mail->id) ?><br>
+			<div class="preview-header">ID</div> <?php p($mail->msgid) ?><br>
 			<div class="hr"></div>
 
 			<?php
@@ -151,7 +146,7 @@ require_once 'inc/header.php';
 					headers_modified ? headers_modified : headers_original, true));
 			</script>
 			<?php } ?>
-			<?php if ($scores && count($mail->msgscore->item) > 0) { ?>
+			<?php if ($scores) { ?>
 			<table class="list">
 				<thead>
 					<tr>
@@ -162,41 +157,19 @@ require_once 'inc/header.php';
 				</thead>
 				<tbody>
 				<?php
-				$rpd[0] = 'Unknown';
-				$rpd[10] = 'Suspect';
-				$rpd[40] = 'Valid bulk';
-				$rpd[50] = 'Bulk';
-				$rpd[100] = 'Spam';
-				foreach ($mail->msgscore->item as $score) {
-					list($num, $text) = explode("|", $score->second);
-					echo '<tr>';
-					switch ($score->first) {
-						case 0;
-							echo '<td>SpamAssassin</td><td>'.$num.'</td><td class="semitrans">'.str_replace(',', ', ', $text).'</td>';
-						break;
-						case 1;
-							$res = 'Ok';
-							if ($text)
-								$res = 'Virus';
-							echo '<td>Kaspersky</td><td>'.$res.'</td><td class="semitrans">'.$text.'</td>';
-						break;
-						case 3;
-							echo '<td>CYREN</td><td>'.$rpd[$num].'</td><td class="semitrans">'.$text.'</td>';
-						break;
-						case 4;
-							$res = 'Ok';
-							if ($text)
-								$res = 'Virus';
-							echo '<td>ClamAV</td><td>'.$res.'</td><td class="semitrans">'.$text.'</td>';
-						break;
-					}
-					echo "</tr>";
-				} ?>
+				$scores = history_parse_scores($mail);
+				foreach ($scores as $score) { ?>
+					<tr>
+					<td><?php p($score['name']) ?></td>
+					<td><?php p($score['score']) ?></td>
+					<td class="semitrans"><?php p($score['text']) ?></td>
+					</tr>
+				<?php } ?>
 				</tbody>
 			</table>
 			<?php } ?>
 
-			<form id="actionform" method="post" action="?page=preview&node=<?php p($node) ?>&queueid=<?php p($queueid) ?>">
+			<form id="actionform" method="post" action="?page=preview&node=<?php p($node) ?>&id=<?php p($id) ?>">
 				<input type="hidden" name="action" id="action" value="">
 				<input type="hidden" name="referer" id="referer" value="<?php p(isset($_POST['referer']) ? $_POST['referer'] : $_SERVER['HTTP_REFERER']); ?>">
 			</form>

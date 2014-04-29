@@ -11,7 +11,8 @@ $(window).unload(function() {
 		url: document.URL,
 		dataType: "json",
 		data: {
-			cmd_id: $("#cmd_id").val(),
+			cmd_id: cmd_id,
+			cmd_node: cmd_node,
 			ajax: 1,
 			action: "stop"
 		}
@@ -24,7 +25,8 @@ function poll() {
 		url: document.URL,
 		dataType: "json",
 		data: {
-			cmd_id: $("#cmd_id").val(),
+			cmd_id: cmd_id,
+			cmd_node: cmd_node,
 			ajax: 1,
 			action: "poll"
 		},

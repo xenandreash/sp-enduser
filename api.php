@@ -38,6 +38,48 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 	die('ok');
 }
 
+// add message to local (SQL) history log
+if ($_GET['type'] == 'log') {
+	if (!isset($settings['database']['dsn']))
+		die('No database configured');
+
+	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+	$statement = $dbh->prepare('INSERT INTO messagelog (owner, owner_domain, msgts, msgid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
+	$statement->bindValue(':owner', $_POST['owner']);
+	$statement->bindValue(':ownerdomain', array_pop(explode('@', $_POST['owner'])));
+	$statement->bindValue(':msgts', $_POST['msgts']);
+	$statement->bindValue(':msgid', $_POST['msgid']);
+	$statement->bindValue(':msgaction', $_POST['msgaction']);
+	$statement->bindValue(':msglistener', $_POST['msglistener']);
+	$statement->bindValue(':msgtransport', $_POST['msgtransport']);
+	$statement->bindValue(':msgsasl', $_POST['msgsasl']);
+	$statement->bindValue(':msgfromserver', $_POST['msgfromserver']);
+	$statement->bindValue(':msgfrom', $_POST['msgfrom']);
+	$statement->bindValue(':msgfromdomain', array_pop(explode('@', $_POST['msgfrom'])));
+	$statement->bindValue(':msgto', $_POST['msgto']);
+	$statement->bindValue(':msgtodomain', array_pop(explode('@', $_POST['msgto'])));
+	$statement->bindValue(':msgsubject', $_POST['msgsubject']);
+	$statement->bindValue(':msgdescription', $_POST['msgdescription']);
+	$statement->bindValue(':serialno', $_POST['serialno']);
+	if (isset($_POST['score_rpd']))
+		$statement->bindValue(':score_rpd', $_POST['score_rpd']);
+	else
+		$statement->bindValue(':score_rpd', null, PDO::PARAM_INT);
+	if (isset($_POST['score_sa']))
+		$statement->bindValue(':score_sa', $_POST['score_sa']);
+	else
+		$statement->bindValue(':score_sa', null, PDO::PARAM_INT);
+	$scores = array();
+	$scores['sa'] = $_POST['score_sa_rules'];
+	$scores['rpd'] = $_POST['score_rpd_refid'];
+	$scores['rpdav'] = $_POST['score_rpdav'];
+	$scores['kav'] = $_POST['score_kav'];
+	$scores['clam'] = $_POST['score_clam'];
+	$statement->bindValue(':scores', json_encode($scores));
+	$statement->execute();
+	die('ok');
+}
+
 // check bwlist
 if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sender']) || isset($_GET['recipient'])) {
 
