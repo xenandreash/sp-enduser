@@ -80,6 +80,22 @@ if ($_GET['type'] == 'log') {
 	die('ok');
 }
 
+// Update message in local (SQL) history log
+if ($_GET['type'] == 'logupdate') {
+	if (!isset($settings['database']['dsn']))
+		die('No database configured');
+
+	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+	$statement = $dbh->prepare('UPDATE messagelog SET msgaction = :msgaction, msgdescription = :msgdescription WHERE msgid = :msgid AND msgto = :msgto AND serialno = :serialno;');
+	$statement->bindValue(':msgid', $_POST['msgid']);
+	$statement->bindValue(':msgaction', $_POST['msgaction']);
+	$statement->bindValue(':msgdescription', $_POST['msgdescription']);
+	$statement->bindValue(':serialno', $_POST['serialno']);
+	$statement->bindValue(':msgto', $_POST['msgto']);
+	$statement->execute();
+	die('ok');
+}
+
 // check bwlist
 if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sender']) || isset($_GET['recipient'])) {
 
