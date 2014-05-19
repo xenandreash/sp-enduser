@@ -25,6 +25,7 @@ class LDAPDatabase {
 		$ds = ldap_connect($this->uri);
 		if (!$ds)
 			return false;
+		ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
 
 		$bind = @ldap_bind($ds, $username, $password);
 		if (!$bind)
