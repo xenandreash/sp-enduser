@@ -88,7 +88,7 @@
 //$settings['authentication'][] = array(
 //		'type' => 'ldap',
 //		'uri' => 'ldap://10.2.7.2',
-//		'base_dn' => 'CN=Users,DC=dev,DC=halon,DC=local', // Should include a CN, OU or similar
+//		'base_dn' => 'CN=Users,DC=dev,DC=halon,DC=local',
 //		'schema' => 'msexchange',
 //		);
 //$settings['authentication'][] = array(
