@@ -268,11 +268,13 @@ function hql_to_sql($str, $prefix = 'hql')
 	$filter = '';
 	$params = array();
 	$i = 0;
+	$ftok = 0; // filter token
 	foreach ($parts as $p) {
-		if ($p == 'and') $filter .= 'AND ';
-		else if ($p == 'or') $filter .= 'OR ';
-		else if ($p == 'not') $filter .= 'NOT ';
+		if ($p == 'and') { if ($ftok != 1) die('no filter condition before and'); $filter .= 'AND '; $ftok = 0; }
+		else if ($p == 'or') { if ($ftok != 1) die('no filter condition before or'); $filter .= 'OR '; $ftok = 0; }
+		else if ($p == 'not') { if ($ftok == 1) $filter .= 'AND '; $filter .= 'NOT '; $ftok = 0; }
 		else if (preg_match('/^([a-z]+)([=~><])(.*?)$/', $p, $m)) {
+			if ($ftok == 1) $filter .= 'AND ';
 			$i++;
 			list($tmp, $field, $type, $value) = $m;
 			// unescape
@@ -307,6 +309,7 @@ function hql_to_sql($str, $prefix = 'hql')
 				$filter .= $field.' '.$type.' :'.$prefix.$i.' ';
 			}
 			$params[':'.$prefix.$i] = $value;
+			$ftok = 1;
 		} else die('unexpected token '.htmlspecialchars($p));
 	}
 	if ($str && !$filter) die('invalid query');
