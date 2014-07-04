@@ -31,8 +31,15 @@ if ($_GET['type'] == 'log') {
 	// Resolv SOAP node
 	$node = null;
 	foreach (settings('node') as $n => $tmpnode)
-		if ($tmpnode['serialno'] == $mail->serialno)
-			$node = $n;
+	{
+		if (isset($tmpnode['serialno'])) {
+			if ($tmpnode['serialno'] == $mail->serialno)
+				$node = $n;
+		} else {
+			if (soap_client($n)->getSerial()->result == $mail->serialno)
+				$node = $n;
+		}
+	}
 	if ($node === null) die('Unable to find SOAP node');
 	$args = array('searchlog', $mail->msgid, '-'.$mail->msgts);
 } else {
