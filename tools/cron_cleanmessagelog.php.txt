@@ -1,0 +1,23 @@
+<?php
+
+/*
+ * Don't invoke directly. Run as:
+ * php cron.php.txt cleanmessagelog
+ */
+
+if (!isset($_SERVER['argc']))
+        die('this file can only be run from command line');
+
+require_once 'inc/core.php';
+
+$max = 5000000;
+
+$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+$statement = $dbh->prepare('SELECT id FROM messagelog ORDER BY id DESC LIMIT 1;');
+$statement->execute();
+$item = $statement->fetchObject();
+echo 'Delete older IDs than '.$item->id."\n";
+$statement = $dbh->prepare('DELETE FROM messagelog WHERE ID < :id - :max;');
+$statement->execute(array(':id' => $item->id, ':max' => $max));
+echo 'Deleted '.$statement->rowCount()."\n";
+?>
