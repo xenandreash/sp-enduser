@@ -32,6 +32,7 @@ if ($_GET['list'] == 'delete') {
 }
 
 if ($_GET['list'] == 'add') {
+	if (strpos($_POST['value'], ' ') !== false) die('Invalid email address, domain name or IP address.');
 	if (checkAccess($_POST['access']) && ($_POST['type'] == 'whitelist' || $_POST['type'] == 'blacklist')) {
 		$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
 		$statement->execute(array(':access' => $_POST['access'], ':type' => $_POST['type'], ':value' => strtolower($_POST['value'])));
