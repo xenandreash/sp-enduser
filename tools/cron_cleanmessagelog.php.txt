@@ -17,7 +17,20 @@ $statement = $dbh->prepare('SELECT id FROM messagelog ORDER BY id DESC LIMIT 1;'
 $statement->execute();
 $item = $statement->fetchObject();
 echo 'Delete older IDs than '.$item->id."\n";
-$statement = $dbh->prepare('DELETE FROM messagelog WHERE ID < :id - :max;');
-$statement->execute(array(':id' => $item->id, ':max' => $max));
-echo 'Deleted '.$statement->rowCount()."\n";
+
+// Delete in chunks up to 5000*1000 in total, important not to leave gaps
+for ($i = 0; $i < 5000; $i++) {
+        $newest = $item->id - $max - ($i * 1000);
+        $oldest = $newest - 1000;
+        echo "Delete between $newest and $oldest\n";
+        $statement = $dbh->prepare('DELETE FROM messagelog WHERE id < :newest AND id >= :oldest;');
+        $statement->execute(array(':newest' => $newest, ':oldest' => $oldest));
+        $deleted = $statement->rowCount();
+        echo "Chunk $i deleted ".$deleted."\n";
+        if ($deleted == 0)
+                break;
+}
+echo "Done\n";
+
+
 ?>
