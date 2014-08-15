@@ -44,11 +44,12 @@ if ($_GET['type'] == 'log') {
 		die('No database configured');
 
 	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
-	$statement = $dbh->prepare('INSERT INTO messagelog (owner, owner_domain, msgts, msgid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
+	$statement = $dbh->prepare('INSERT INTO messagelog (owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
 	$statement->bindValue(':owner', $_POST['owner']);
 	$statement->bindValue(':ownerdomain', array_pop(explode('@', $_POST['owner'])));
 	$statement->bindValue(':msgts', $_POST['msgts']);
 	$statement->bindValue(':msgid', $_POST['msgid']);
+	$statement->bindValue(':msgactionid', $_POST['msgactionid']);
 	$statement->bindValue(':msgaction', $_POST['msgaction']);
 	$statement->bindValue(':msglistener', $_POST['msglistener']);
 	$statement->bindValue(':msgtransport', $_POST['msgtransport']);
@@ -86,12 +87,12 @@ if ($_GET['type'] == 'logupdate') {
 		die('No database configured');
 
 	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
-	$statement = $dbh->prepare('UPDATE messagelog SET msgaction = :msgaction, msgdescription = :msgdescription WHERE msgid = :msgid AND msgto = :msgto AND serialno = :serialno;');
+	$statement = $dbh->prepare('UPDATE messagelog SET msgaction = :msgaction, msgdescription = :msgdescription WHERE msgid = :msgid AND msgactionid = :msgactionid AND serialno = :serialno;');
 	$statement->bindValue(':msgid', $_POST['msgid']);
 	$statement->bindValue(':msgaction', $_POST['msgaction']);
 	$statement->bindValue(':msgdescription', $_POST['msgdescription']);
 	$statement->bindValue(':serialno', $_POST['serialno']);
-	$statement->bindValue(':msgto', $_POST['msgto']);
+	$statement->bindValue(':msgactionid', $_POST['msgactionid']);
 	$statement->execute();
 	die('ok');
 }

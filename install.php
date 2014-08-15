@@ -60,7 +60,7 @@ if (isset($settings['database']['dsn'])) {
 			$statement = $dbh->prepare('SELECT * FROM messagelog LIMIT 1;');
 			if (!$statement || $statement->execute() === false) {
 				$notes[] = 'Adding table messagelog';
-				$dbh->exec('CREATE TABLE messagelog (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, owner VARCHAR(300), owner_domain VARCHAR(300), msgts0 TIMESTAMP DEFAULT CURRENT_TIMESTAMP, msgts INT, msgid VARCHAR(100), msgaction VARCHAR(50), msglistener VARCHAR(100), msgtransport VARCHAR(100), msgsasl VARCHAR(300), msgfromserver VARCHAR(300), msgfrom VARCHAR(300), msgfrom_domain VARCHAR(300), msgto VARCHAR(300), msgto_domain VARCHAR(300), msgsubject TEXT, score_rpd NUMERIC(10,5), score_sa NUMERIC(10,5), scores TEXT, msgdescription TEXT, serialno VARCHAR(100));');
+				$dbh->exec('CREATE TABLE messagelog (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, owner VARCHAR(300), owner_domain VARCHAR(300), msgts0 TIMESTAMP DEFAULT CURRENT_TIMESTAMP, msgts INT, msgid VARCHAR(100), msgactionid INT, msgaction VARCHAR(50), msglistener VARCHAR(100), msgtransport VARCHAR(100), msgsasl VARCHAR(300), msgfromserver VARCHAR(300), msgfrom VARCHAR(300), msgfrom_domain VARCHAR(300), msgto VARCHAR(300), msgto_domain VARCHAR(300), msgsubject TEXT, score_rpd NUMERIC(10,5), score_sa NUMERIC(10,5), scores TEXT, msgdescription TEXT, serialno VARCHAR(100));');
 				$dbh->exec('CREATE INDEX ind_owner               ON messagelog(owner);');
 				$dbh->exec('CREATE INDEX ind_owner_domain        ON messagelog(owner_domain);');
 				$dbh->exec('CREATE INDEX ind_msgfromserver       ON messagelog(msgfromserver);');

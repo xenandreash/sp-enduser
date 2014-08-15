@@ -276,7 +276,7 @@ table.list tr td.green, td.action.DELIVER {
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#44bb22', endColorstr='#ccdd00')";
 }
 
-table.list tr td.blue, td.action.queue.DELIVER {
+table.list tr td.blue, td.action.queue.DELIVER, td.action.QUEUE {
 	color: #035;
 	background-color: #3bd;
 	background: linear-gradient(#08d, #3bd);
