@@ -4,7 +4,7 @@ $_soapRequests = array();
 $_soapResponses = array();
 
 class SoapClientAsync extends SoapClient {
-	function __doRequest($request, $location, $action, $version) {
+	function __doRequest($request, $location, $action, $version, $one_way = 0) {
 		global $_soapResponses;
 		global $_soapRequests;
 
@@ -12,7 +12,7 @@ class SoapClientAsync extends SoapClient {
 			$id = sha1($location.$request);
 			if (isset($_soapResponses[$id])) {
 				unset($_soapResponses[$id]);
-				return parent::__doRequest($request, $location, $action, $version);
+				return parent::__doRequest($request, $location, $action, $version, $one_way);
 			}
 			$_soapRequests[$id] = true;
 			return "";
