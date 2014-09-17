@@ -79,18 +79,34 @@ foreach ($settings['authentication'] as $a) {
 		if (!$bind) continue;
 		ldap_set_option($ds, LDAP_OPT_SIZELIMIT, 10000); // Increase and/or sync with AD if getting "Sizelimit exceeded"
 		if ($a['schema'] == 'msexchange') {
-			$rs = ldap_search($ds, $a['base_dn'], '(proxyAddresses=smtp:*)', array('proxyAddresses'));
-			for ($entry = ldap_first_entry($ds, $rs); $entry; $entry = ldap_next_entry($ds, $entry)) {
-				$aliases = array();
-				foreach (ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
-					if (substr($mail, 0, 5) == 'SMTP:')
-						array_unshift($aliases, strtolower(substr($mail, 5)));
-					if (substr($mail, 0, 5) == 'smtp:')
-						array_push($aliases, strtolower(substr($mail, 5)));
+			$try_paged = false;
+			if (function_exists('ldap_control_paged_result') &&
+				ldap_get_option($ds, LDAP_OPT_PROTOCOL_VERSION, $version) &&
+				$version >= 3)
+				$try_paged = true;
+			$cookie = '';
+			do {
+				if ($try_paged)
+					ldap_control_paged_result($ds, 1000, true, $cookie);
+
+				$rs = ldap_search($ds, $a['base_dn'], '(proxyAddresses=smtp:*)', array('proxyAddresses'));
+				for ($entry = ldap_first_entry($ds, $rs); $entry; $entry = ldap_next_entry($ds, $entry)) {
+					$aliases = array();
+					foreach (ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
+						if (substr($mail, 0, 5) == 'SMTP:')
+							array_unshift($aliases, strtolower(substr($mail, 5)));
+						if (substr($mail, 0, 5) == 'smtp:')
+							array_push($aliases, strtolower(substr($mail, 5)));
+					}
+					if (count($aliases))
+						$users[$aliases[0]] = access_level_merge($users[$aliases[0]], array('mail' => $aliases));
 				}
-				if (count($aliases))
-					$users[$aliases[0]] = access_level_merge($users[$aliases[0]], array('mail' => $aliases));
-			}
+
+				if ($try_paged)
+					ldap_control_paged_result_response($ds, $rs, $cookie);
+				else
+					break;
+			} while($cookie !== null && $cookie != '');
 		} else {
 			$rs = ldap_search($ds, $a['base_dn'], '(mail=*)', array('mail'));
 			for ($entry = ldap_first_entry($ds, $rs); $entry; $entry = ldap_next_entry($ds, $entry)) {
