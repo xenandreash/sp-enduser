@@ -52,6 +52,11 @@ if (Session::Get()->getUsername() === null) {
 	die();
 }
 
+if (isset($_GET['timezone'])) setcookie('timezone', intval($_GET['timezone']));
+if (!isset($_COOKIE['timezone']))
+	die('<script>window.location.href = "?timezone=" + new Date().getTimezoneOffset();</script>');
+$_SESSION['timezone'] = $_COOKIE['timezone'];
+
 define('SP_ENDUSER', true);
 
 switch (@$_GET['page'])
