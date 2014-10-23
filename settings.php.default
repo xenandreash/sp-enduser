@@ -7,17 +7,21 @@
 
 /*
  * System "nodes" are the most important directives; they specify where
- * your Halon mail gateway(s) are, and how to access it/them. It might be
- * a good idea to read about authentication scripts on our wiki, to create
- * specific access rights so that if this end-user web is compromised, your
- * gateways are not. In some cases, even read-only access is good enough for
- * this application.
+ * your Halon mail gateway(s) are, and how to access it/them.
+ * 
+ * If you are planning on using authentication methods other than the default
+ * 'server' mode (which authenticates users directly against the server), you
+ * need to specify a username and password that will be used to access the
+ * server for non-server users. Otherwise, this can and should be omitted.
+ * 
+ * It might be a good idea to read about authentication scripts on our wiki, to
+ * create specific access rights so that if this end-user web is compromised,
+ * your gateways are not. In some cases, even read-only access is good enough
+ * for this application.
  */
 
 //$settings['node'][] = array(
 //		'address' => 'https://10.2.0.30/',
-//		'username' => 'admin',
-//		'password' => 'admin',
 //		);
 //$settings['node'][] = array(
 //		'address' => 'https://10.2.0.31/',
