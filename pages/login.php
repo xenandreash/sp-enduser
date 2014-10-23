@@ -2,75 +2,7 @@
 if (!defined('SP_ENDUSER')) die('File not included');
 
 require_once 'inc/core.php';
-
-class LDAPDatabase {
-	private $uri = '';
-	private $basedn = '';
-	private $schema = '';
-
-	public function __construct($uri, $basedn, $schema) {
-		$this->uri = $uri;
-		$this->basedn = $basedn;
-		$this->schema = $schema;
-	}
-	public function check($username, $password) {
-		// If username and password are not specified,
-		// an anonymous bind is attempted. 
-		if ($username == "" || $password == "")
-			return false;
-
-		if (!function_exists('ldap_connect'))
-			die('PHP module LDAP missing (install php5-ldap)');
-
-		$ds = ldap_connect($this->uri);
-		if (!$ds)
-			return false;
-		ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
-
-		$bind = @ldap_bind($ds, $username, $password);
-		if (!$bind)
-			return false;
-
-		$_SESSION['access'] = array('mail' => array());
-
-		$ldapuser = ldap_escape($username);
-		switch ($this->schema) {
-			case 'msexchange':
-				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(proxyAddresses=smtp:*))", array('proxyAddresses'));
-				$entry = ldap_first_entry($ds, $rs);
-				if ($entry) {
-					foreach (ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
-						if (!is_string($mail) || strcasecmp(substr($mail, 0, 5), 'smtp:') !== 0)
-							continue;
-						if (substr($mail, 0, 5) == 'SMTP:')
-							array_unshift($_SESSION['access']['mail'], strtolower(substr($mail, 5)));
-						else
-							array_push($_SESSION['access']['mail'], strtolower(substr($mail, 5)));
-					}
-				}
-			break;
-			default:
-				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(mail=*))", array('mail'));
-				$entry = ldap_first_entry($ds, $rs);
-				if ($entry) {
-					foreach (ldap_get_values($ds, $entry, 'mail') as $mail) {
-						if (!is_string($mail))
-							continue;
-						$_SESSION['access']['mail'][] = strtolower($mail);
-					}
-				}
-			break;
-		}
-
-		if (count($_SESSION['access']['mail']) == 0)
-			die('No access levels');
-	
-		$_SESSION['username'] = $username;
-		$_SESSION['source'] = 'ldap';
-
-		return true;
-	}
-}
+require_once 'inc/ldap.php';
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
 	$session_name = settings('session-name');
