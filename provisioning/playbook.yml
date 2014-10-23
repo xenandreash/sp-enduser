@@ -22,7 +22,8 @@
       with_items:
         - apache2
         - libapache2-mod-php5
-        - php5-mysqlnd
+        - php5-sqlite
+        - php5-curl
       notify:
         - restart apache
 
@@ -33,6 +34,11 @@
     - name: symlink apache config
       file: state=link src=/vagrant/provisioning/apache-vhost.conf dest=/etc/apache2/sites-enabled/sp-enduser
       notify: restart apache
+
+
+
+    - name: copy the prepared settings.php file
+      command: cp /vagrant/provisioning/settings.php /vagrant/settings.php creates=/vagrant/settings.php
 
   handlers:
     - name: restart apache
