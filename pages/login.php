@@ -101,8 +101,12 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 						// Attempt to connect to the node
 						soap_client($i, false, $username, $password)->login();
 						
+						// Set the client to be logged in
 						$_SESSION['username'] = $username;
 						$_SESSION['source'] = 'server';
+						$_SESSION['access'] = array();
+						
+						// Use the user's credentials instead of the config's
 						$_SESSION['soap_username'] = $username;
 						$_SESSION['soap_password'] = $password;
 					} catch (SoapFault $e) {
