@@ -76,5 +76,3 @@ function soap_dispatch() {
 	curl_multi_close($mh);
 	$_soapRequests = array();
 }
-
-?>

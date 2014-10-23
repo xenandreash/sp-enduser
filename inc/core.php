@@ -27,5 +27,3 @@ $settings = settings();
 
 // Always use UTC timezone
 date_default_timezone_set('UTC');
-
-?>

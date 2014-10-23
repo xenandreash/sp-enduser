@@ -452,5 +452,3 @@ function has_auth_database() {
 			return true;
 	return false;
 }
-
-?>

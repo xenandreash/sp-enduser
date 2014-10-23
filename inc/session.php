@@ -43,5 +43,3 @@ if (Session::Get()->getUsername() === null) {
 	header("Location: ?page=login");
 	die();
 }
-
-?>
