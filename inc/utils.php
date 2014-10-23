@@ -159,15 +159,21 @@ function restrict_local_mail($id)
 	return $mail;
 }
 
-function soap_client($n, $async = false) {
+function soap_client($n, $async = false, $username = null, $password = null) {
 	$r = settings('node', $n);
 	if (!$r)
 		throw new Exception("Node not configured");
+	
+	if(!$username)
+		$username = isset($_SESSION['soap_username']) ? $_SESSION['soap_username'] : $r['username'];
+	if(!$password)
+		$password = isset($_SESSION['soap_password']) ? $_SESSION['soap_password'] : $r['password'];
+	
 	$options = array(
 		'location' => $r['address'].'/remote/',
 		'uri' => 'urn:halon',
-		'login' => $r['username'],
-		'password' => $r['password'],
+		'login' => $username,
+		'password' => $password,
 		'connection_timeout' => 15,
 		'features' => SOAP_SINGLE_ELEMENT_ARRAYS,
 		'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP

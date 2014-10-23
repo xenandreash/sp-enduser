@@ -25,6 +25,7 @@ function settings() {
 	
 	// default values
 	set_default($settings, 'public-url', self_url());
+	set_default($settings, 'authentication', array( array( 'type' => 'server' ) ));
 	
 	$tmp = $settings;
 	foreach (func_get_args() as $arg)

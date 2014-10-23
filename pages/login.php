@@ -93,6 +93,27 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 				}
 				break 2;
 			break;
+			case 'server':
+				// Loop through all the configured nodes; the primary node going
+				// down shouldn't take all auth down with it, merely slow it
+				for ($i = 0; $i < count($settings['node']); $i++) {
+					try {
+						// Attempt to connect to the node
+						soap_client($i, false, $username, $password)->login();
+						
+						$_SESSION['username'] = $username;
+						$_SESSION['source'] = 'server';
+						$_SESSION['soap_username'] = $username;
+						$_SESSION['soap_password'] = $password;
+					} catch (SoapFault $e) {
+						// If the node is unavailable, skip to the next one
+						if($e->getMessage() != "Unauthorized")
+							continue;
+					}
+					
+					break;
+				}
+			break;
 		}
 	}
 	if (isset($_SESSION['username'])) {
