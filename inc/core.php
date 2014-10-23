@@ -20,7 +20,7 @@ function settings() {
 	$settings = array();
 	
 	if (!file_exists($base.'/settings.php'))
-		die('Missing '.$base.'/settings.php; edit settings.php.default and rename it');
+		die('Missing '.$base.'/settings.php; edit settings-default.php and rename it');
 	require $base.'/settings.php';
 	
 	// default values

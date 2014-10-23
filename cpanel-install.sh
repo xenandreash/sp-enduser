@@ -9,7 +9,7 @@ fi
 rm -rf /usr/local/cpanel/base/3rdparty/sp-enduser
 cp -R . /usr/local/cpanel/base/3rdparty/sp-enduser
 rm -f /usr/local/cpanel/base/3rdparty/sp-enduser/install.php
-mv /usr/local/cpanel/base/3rdparty/sp-enduser/settings.php.default \
+mv /usr/local/cpanel/base/3rdparty/sp-enduser/settings-default.php \
 	/usr/local/cpanel/base/3rdparty/sp-enduser/settings.php
 
 /usr/local/cpanel/bin/register_cpanelplugin cpanel-sp-enduser.cpanelplugin
