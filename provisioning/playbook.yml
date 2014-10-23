@@ -35,6 +35,13 @@
       file: state=link src=/vagrant/provisioning/apache-vhost.conf dest=/etc/apache2/sites-enabled/sp-enduser
       notify: restart apache
 
+    - name: make php report errors to the browser
+      lineinfile:
+        dest: /etc/php5/apache2/php.ini
+        line: display_errors = On
+        regexp: ^display_errors =
+      notify: restart apache
+
 
 
     - name: copy the prepared settings.php file
