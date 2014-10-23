@@ -66,22 +66,26 @@ $settings['database']['dsn'] = 'sqlite:/vagrant/enduser.db';
 /*
  * Authentication is probably the second most important configuration
  * directive, as it specifies how end-users should identify themselves.
+ * 
  * You can use the following types:
  *  - LDAP, against for example an Exchange server
  *  - SMTP (SASL), against a mail server, if the username is an e-mail
  *  - Database, populated by the Halon mail gateways when mail are quarantined
  *  - Local accounts, statically configured in this file (with access rights).
  *    Use lower case letters when manually adding an access level.
+ *  - Server account, authorized against an account on the nodes themselves.
+ * 
+ * If no authorization methods are specified, 'server' is assumed.
  */
 
 //$settings['authentication'][] = array(
 //		'type' => 'database',
 //		);
-$settings['authentication'][] = array(
-		'type' => 'account',
-		'username' => 'foo',
-		'password' => 'foo',
-		);
+// $settings['authentication'][] = array(
+// 		'type' => 'account',
+// 		'username' => 'foo',
+// 		'password' => 'foo',
+// 		);
 //$settings['authentication'][] = array(
 //		'type' => 'ldap',
 //		'uri' => 'ldap://10.2.7.2',
@@ -92,6 +96,9 @@ $settings['authentication'][] = array(
 //		'type' => 'smtp',
 //		'host' => '10.2.0.30',
 //		'port' => 25,
+//		);
+//$settings['authentication'][] = array(
+//		'type' => 'server',
 //		);
 
 /*
