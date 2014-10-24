@@ -143,5 +143,3 @@
  */
 
 //$settings['session-name'] = 'spenduser';
-
-?>

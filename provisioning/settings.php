@@ -144,5 +144,3 @@ $settings['database']['dsn'] = 'sqlite:/vagrant/enduser.db';
  */
 
 //$settings['session-name'] = 'spenduser';
-
-?>
