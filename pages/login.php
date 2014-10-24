@@ -121,7 +121,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 		}
 	}
 	if (isset($_SESSION['username'])) {
-		header("Location: index.php");
+		header("Location: .");
 		die();
 	}
 	$error = 'Login failed';
