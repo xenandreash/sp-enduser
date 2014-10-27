@@ -21,8 +21,7 @@ fi
 
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-DEST="/usr/local/cpanel/base/3rdparty/sp-enduser"
-FDEST="/usr/local/cpanel/base/frontend/default"
+DEST="/usr/local/cpanel/base/frontend/default/sp-enduser"
 
 if [[ ! -d $DEST ]]; then
 	echo "The SP-Enduser cPanel plugin is not installed!"
@@ -36,32 +35,23 @@ if /usr/local/cpanel/bin/unregister_cpanelplugin $DIR/cpanel-sp-enduser.cpanelpl
 	rm $DIR/unregister_cpanelplugin.log
 else
 	echo " -> Couldn't unregister the plugin!"
-	echo "    Output has been written to unregister_cpanelplugin.log"
+	echo "    Output has been written to:"
+	echo "    $DIR/unregister_cpanelplugin.log"
 	exit 1
 fi
-echo ""
-
-echo "Removing frontend LivePHP..."
-rm -f $FDEST/cpanel-sp-enduser.live.php
 
 echo ""
-if [[ -L $DEST ]]; then
-	echo "Removing link, your SP-Enduser installation will remain at:"
-	echo "    `readlink $DEST`"
-	rm -f $DEST
-else
-	echo "Plugin unregistered, what would you like to do with your SP-Enduser install?"
-	echo ""
-	select action in "Leave it" "Delete it"; do
-		case $action in
-			"Leave it")
-				echo "Your installation has been left intact at:"
-				echo "    $DEST"
-				break;;
-			"Delete it")
-				rm -rf $DEST
-				echo "SP-Enduser has been deleted."
-				break;;
-		esac
-	done
-fi
+echo "Plugin unregistered, what would you like to do with your SP-Enduser install?"
+echo ""
+select action in "Leave it" "Delete it"; do
+	case $action in
+		"Leave it")
+			echo "Your installation has been left intact at:"
+			echo "    $DEST"
+			break;;
+		"Delete it")
+			rm -rf $DEST
+			echo "SP-Enduser has been deleted."
+			break;;
+	esac
+done

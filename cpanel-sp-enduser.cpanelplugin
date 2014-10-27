@@ -3,7 +3,7 @@ version: 1.0
 name:sp-enduser
 description:Halon SP cPanel Plugin
 featuremanager:1
-url:/3rdparty/sp-enduser/cpanel-index.live.php
+url:/frontend/x3/sp-enduser/cpanel-sp-enduser.live.php
 acontent:target="_blank"
 onclick:
 if:
@@ -27,4 +27,3 @@ x+V+u1TrxQiXXB7CjRE2uuG0JfmGm2rOFAAgYwgryH1l8qboLYihmzKDQesy/6IQHe2mK6dL28Ls
 124dAHQbOlUBUIx174x6FpRSh34gY2ioYtXeKVX7owDeWimNtPnX0tWX0s2VbCoA26vkmJ+8qemn
 dDt2KVNcX1sYJDc+DSjkjWNLmYxP1nuLUEWAwrGPvQpxMRetms4awrI0GW0rBO2u8dQF6cRz0VCk
 Dbie4mnXRJUztKJc8kvgFuB9mq7/A1YGagIszZg6AAAAAElFTkSuQmCC
-
