@@ -48,5 +48,3 @@ switch (@$_GET['page'])
 		require_once 'pages/index.php';
 	break;
 }
-
-?>
