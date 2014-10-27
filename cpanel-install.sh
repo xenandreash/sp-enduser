@@ -22,6 +22,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Destination path, because nobody likes repeating themselves
 DEST="/usr/local/cpanel/base/3rdparty/sp-enduser"
+FDEST="/usr/local/cpanel/base/frontend/default"
+
+# Has something been installed? (For showing messages)
+INSTALLED=false
 
 
 
@@ -94,22 +98,29 @@ if [[ "$DIR" != "$DEST" ]]; then
 			exit 1
 		fi
 		
-		echo ""
-		echo "Halon SP-Enduser has been successfully installed!"
-		echo ""
-		
-		if $keep_around; then
-			echo "Remember to keep this directory around - the installation is a link, and will"
-			echo "cease to function if this is moved or deleted."
-			echo ""
-			echo "If you want to move or rename it, remember to re-run this script to relink it."
-		else
-			echo "You can safely delete this directory, it has been copied to:"
-			echo "$DEST"
-		fi
-		
-		echo ""
-		echo "To configure SP-Enduser, copy settings-default.php to settings.php and edit it."
-		echo "Check the Wiki for installation instructions: http://wiki.halon.se/End-user"
+		INSTALLED=true
 	fi
+fi
+
+echo "Copying LivePHP file to frontend... (default theme)"
+cp $DIR/cpanel-sp-enduser.live.php $FDEST
+		
+if $INSTALLED; then
+	echo ""
+	echo "Halon SP-Enduser has been successfully installed!"
+	echo ""
+	
+	if $keep_around; then
+		echo "Remember to keep this directory around - the installation is a link, and will"
+		echo "cease to function if this is moved or deleted."
+		echo ""
+		echo "If you want to move or rename it, remember to re-run this script to relink it."
+	else
+		echo "You can safely delete this directory, it has been copied to:"
+		echo "$DEST"
+	fi
+	
+	echo ""
+	echo "To configure SP-Enduser, copy settings-default.php to settings.php and edit it."
+	echo "Check the Wiki for installation instructions: http://wiki.halon.se/End-user"
 fi

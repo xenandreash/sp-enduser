@@ -22,6 +22,7 @@ fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DEST="/usr/local/cpanel/base/3rdparty/sp-enduser"
+FDEST="/usr/local/cpanel/base/frontend/default"
 
 if [[ ! -d $DEST ]]; then
 	echo "The SP-Enduser cPanel plugin is not installed!"
@@ -40,10 +41,14 @@ else
 fi
 echo ""
 
+echo "Removing frontend LivePHP..."
+rm -f $FDEST/cpanel-sp-enduser.live.php
+
+echo ""
 if [[ -L $DEST ]]; then
 	echo "Removing link, your SP-Enduser installation will remain at:"
 	echo "    `readlink $DEST`"
-	rm $DEST
+	rm -f $DEST
 else
 	echo "Plugin unregistered, what would you like to do with your SP-Enduser install?"
 	echo ""
