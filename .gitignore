@@ -1,4 +1,7 @@
 .vagrant
 *.sublime-workspace
+*.log
+*.tmp
 enduser.db
 settings.php
+
