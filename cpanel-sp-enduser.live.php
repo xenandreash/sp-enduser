@@ -1,5 +1,4 @@
 <?php
-
 if ($_SERVER['CPANEL'] != 'active')
 	die();
 
@@ -81,5 +80,3 @@ switch (@$_GET['page'])
 		require_once 'pages/index.php';
 	break;
 }
-
-?>
