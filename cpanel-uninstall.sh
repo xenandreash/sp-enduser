@@ -30,7 +30,7 @@ fi
 
 
 
-echo "Unregistering the plugin with cPanel..."
+echo "Unregistering the plugin with cPanel... (this may take a while)"
 if /usr/local/cpanel/bin/unregister_cpanelplugin $DIR/cpanel-sp-enduser.cpanelplugin > $DIR/unregister_cpanelplugin.log; then
 	rm $DIR/unregister_cpanelplugin.log
 else
@@ -40,27 +40,23 @@ else
 fi
 echo ""
 
-echo "Plugin unregistered, what would you like to do with your SP-Enduser install?"
 if [[ -L $DEST ]]; then
-	echo ""
-	echo "Your installation is linked, so choosing 'Delete it' will only delete the link."
-	echo "To permanently get rid of it, manually delete the source folder:"
-	echo "    `readlink -f $DEST`"
+	echo "Removing link, your SP-Enduser installation will remain at:"
+	echo "    `readlink $DEST`"
+	rm $DEST
 else
-	echo "Warning: Deletion is final, and can't be undone!"
+	echo "Plugin unregistered, what would you like to do with your SP-Enduser install?"
+	echo ""
+	select action in "Leave it" "Delete it"; do
+		case $action in
+			"Leave it")
+				echo "Your installation has been left intact at:"
+				echo "    $DEST"
+				break;;
+			"Delete it")
+				rm -rf $DEST
+				echo "SP-Enduser has been deleted."
+				break;;
+		esac
+	done
 fi
-
-echo ""
-select action in "Leave it" "Delete it"; do
-	case $action in
-		"Leave it")
-			echo "Your installation has been left intact."
-			echo "You can find it at:"
-			echo "    $DEST"
-			break;;
-		"Delete it")
-			rm -rf $DEST
-			echo "SP-Enduser has been deleted."
-			break;;
-	esac
-done

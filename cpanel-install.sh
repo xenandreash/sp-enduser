@@ -76,7 +76,7 @@ if [[ "$DIR" != "$DEST" ]]; then
 					break;;
 				"Link")
 					echo ""
-					echo "Link installed, installing..."
+					echo "Link selected, installing..."
 					ln -s "$DIR" "$DEST"
 					keep_around=true
 					break;;
