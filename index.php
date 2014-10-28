@@ -11,7 +11,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 define('SP_ENDUSER', true);
 define('BASE', dirname(__FILE__));
 
-if (file_exists(BASE.'/install.php')) {
+if (file_exists(BASE.'/install.php') and !file_exists(BASE.'/installed.txt')) {
 	require_once BASE.'/install.php';
 	die();
 }
