@@ -3,6 +3,7 @@ if ($_SERVER['CPANEL'] != 'active')
 	die();
 
 error_reporting(E_ALL ^ E_NOTICE);
+// header("Content-Type: text/plain");
 
 class Session
 {
@@ -19,19 +20,34 @@ class Session
 	private function __construct()
 	{
 		require_once '/usr/local/cpanel/php/cpanel.php';
-
+		
 		$cpanel = &new CPANEL();
-		$result = $cpanel->api2('DomainLookup', 'getdocroots');
-
-		$domains = array();
-		foreach ($result['cpanelresult']['data'] as $domain)
-			$domains[] = $domain['domain'];
-		if (empty($domains))
-			die('No domains');
-
+		
 		$this->username = $_SERVER['REMOTE_USER'];
 		$this->source = 'cpanel';
-		$this->access = array('domain' => $domains);
+		
+		$addresses_res = $cpanel->api2('Email', 'listpops');
+		$domains_res = $cpanel->api2('Email', 'listmaildomains');
+		
+		// For some reason, querying 'listpops' when signed in as a domain
+		// owner returns only the username, while logging in as a specific
+		// email address returns that address (and likely aliases as well)
+		if(strpos($_SERVER['REMOTE_USER'], '@') === false)
+		{
+			// It's the domain owner, give them access to everything
+			$domains = array();
+			foreach($domains_res['cpanelresult']['data'] as $data)
+				$domains[] = $data['domain'];
+			$this->access = array('domain' => $domains);
+		}
+		else
+		{
+			// It's an email user, give them access to their own account
+			$addresses = array();
+			foreach($addresses_res['cpanelresult']['data'] as $data)
+				$addresses[] = $data['email'];
+			$this->access = array('mail' => $addresses);
+		}
 	}
 	public function getUsername()
 	{
@@ -57,26 +73,27 @@ if (!isset($_COOKIE['timezone']))
 $_SESSION['timezone'] = $_COOKIE['timezone'];
 
 define('SP_ENDUSER', true);
+define('BASE', dirname(__FILE__));
 
 switch (@$_GET['page'])
 {
 	case 'bwlist':
-		require_once 'pages/bwlist.php';
+		require_once BASE.'/pages/bwlist.php';
 	break;
 	case 'download':
-		require_once 'pages/download.php';
+		require_once BASE.'/pages/download.php';
 	break;
 	case 'user':
-		require_once 'pages/user.php';
+		require_once BASE.'/pages/user.php';
 	break;
 	case 'preview':
-		require_once 'pages/preview.php';
+		require_once BASE.'/pages/preview.php';
 	break;
 	case 'digest':
-		require_once 'pages/digest.php';
+		require_once BASE.'/pages/digest.php';
 	break;
 	default:
 	case 'index':
-		require_once 'pages/index.php';
+		require_once BASE.'/pages/index.php';
 	break;
 }

@@ -7,7 +7,7 @@
 
 error_reporting(E_ALL ^ E_NOTICE);
 
-require_once 'utils.php';
+require_once BASE.'/inc/utils.php';
 
 function set_default(&$settings, $key, $value) {
 	// Assign a default value if the value is absent, or if it's an empty array
@@ -16,12 +16,11 @@ function set_default(&$settings, $key, $value) {
 }
 
 function settings() {
-	$base = dirname($_SERVER['SCRIPT_FILENAME']);
 	$settings = array();
 	
-	if (!file_exists($base.'/settings.php'))
-		die('Missing '.$base.'/settings.php; edit settings-default.php and rename it');
-	require $base.'/settings.php';
+	if (!file_exists(BASE.'/settings.php'))
+		die('Missing '.BASE.'/settings.php; edit settings-default.php and rename it');
+	require BASE.'/settings.php';
 	
 	// default values
 	set_default($settings, 'public-url', self_url());

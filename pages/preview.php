@@ -1,8 +1,8 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once 'inc/core.php';
-require_once 'inc/utils.php';
+require_once BASE.'/inc/core.php';
+require_once BASE.'/inc/utils.php';
 
 $id = intval($_GET['id']);
 
@@ -25,13 +25,13 @@ if (isset($_POST['action'])) {
 	if ($_POST['action'] == 'retry')
 		$client->mailQueueRetry(array('id' => $id));
 	$title = 'Message';
-	require_once 'inc/header.php'; ?>
+	require_once BASE.'/inc/header.php'; ?>
 				<div class="item">
 					<div class="button back" onclick="location.href='<?php p($_POST['referer']) ?>';">Back</div>
 				</div>
 			</div>
 			<div class="pad message ok">The requested action has been performed</div>
-	<?php require_once 'inc/footer.php';
+	<?php require_once BASE.'/inc/footer.php';
 	die();
 }
 
@@ -59,7 +59,7 @@ if ($_GET['type'] == 'queue') {
 		$result[$type] = trim($content);
 	}
 	if (isset($result['TEXT']) || isset($result['HTML'])) {
-		require_once 'inc/htmlpurifier-4.6.0-lite/library/HTMLPurifier.auto.php';
+		require_once BASE.'/inc/htmlpurifier-4.6.0-lite/library/HTMLPurifier.auto.php';
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Cache.DefinitionImpl', null);
 		$config->set('URI.Disable', true);
@@ -81,7 +81,7 @@ $title = 'Message';
 $javascript[] = 'static/preview.js';
 $javascript[] = 'static/diff_match_patch.js';
 $javascript[] = 'static/diff.js';
-require_once 'inc/header.php';
+require_once BASE.'/inc/header.php';
 ?>
 			<form>
 				<div class="item">
@@ -174,4 +174,4 @@ require_once 'inc/header.php';
 				<input type="hidden" name="referer" id="referer" value="<?php p(isset($_POST['referer']) ? $_POST['referer'] : $_SERVER['HTTP_REFERER']); ?>">
 			</form>
 	</div>
-<?php require_once 'inc/footer.php'; ?>
+<?php require_once BASE.'/inc/footer.php'; ?>

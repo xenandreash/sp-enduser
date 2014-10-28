@@ -1,8 +1,8 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once 'inc/core.php';
-require_once 'inc/utils.php';
+require_once BASE.'/inc/core.php';
+require_once BASE.'/inc/utils.php';
 
 if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])) {
 	$actions = array();
@@ -34,7 +34,7 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 
 $title = 'Messages';
 $javascript[] = 'static/index.js';
-require_once 'inc/header.php';
+require_once BASE.'/inc/header.php';
 
 // Default values
 $search = isset($_GET['search']) ? hql_transform($_GET['search']) : '';
@@ -325,4 +325,4 @@ ksort($errors);
 			</span>
 		</div>
 		<?php } ?>
-<?php require_once 'inc/footer.php'; ?>
+<?php require_once BASE.'/inc/footer.php'; ?>

@@ -1,4 +1,10 @@
+*.log
+*.tmp
+._*
+
 .vagrant
 *.sublime-workspace
+
 enduser.db
 settings.php
+
