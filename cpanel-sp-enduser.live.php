@@ -32,7 +32,7 @@ class Session
 		// For some reason, querying 'listpops' when signed in as a domain
 		// owner returns only the username, while logging in as a specific
 		// email address returns that address (and likely aliases as well)
-		if(strpos($addresses_res['cpanelresult']['data'][0]['email'], '@') === false)
+		if(strpos($_SERVER['REMOTE_USER'], '@') === false)
 		{
 			// It's the domain owner, give them access to everything
 			$domains = array();
