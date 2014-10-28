@@ -44,6 +44,14 @@
 
 
 
+    - name: install composer
+      command: "/bin/bash -c 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin' creates=/usr/local/bin/composer"
+
+    - name: rename composer binary
+      command: /bin/mv /usr/local/bin/composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer
+
+
+
     - name: copy the prepared settings.php file
       command: cp /vagrant/provisioning/settings.php /vagrant/settings.php creates=/vagrant/settings.php
 
