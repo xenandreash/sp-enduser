@@ -1,4 +1,10 @@
 <?php
+// cPanel users should use the cPanel LivePHP version instead
+if (isset($_SERVER['CPANEL']))
+{
+	header("Location: cpanel-sp-enduser.live.php");
+	die();
+}
 
 error_reporting(E_ALL ^ E_NOTICE);
 define('SP_ENDUSER', true);
