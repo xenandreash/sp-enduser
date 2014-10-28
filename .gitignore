@@ -5,6 +5,5 @@
 .vagrant
 *.sublime-workspace
 
-enduser.db
-settings.php
-
+/enduser.db
+/settings.php
