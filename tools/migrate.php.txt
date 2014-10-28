@@ -78,5 +78,3 @@ foreach ($global_bwlist as $type => $mail) {
 echo "--- WARNINGS ---\n";
 foreach ($warnings as $w)
 	echo $w . "\n";
-
-?>

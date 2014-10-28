@@ -138,5 +138,3 @@ if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sende
 }
 
 die('ok');
-
-?>

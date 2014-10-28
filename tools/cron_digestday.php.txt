@@ -180,4 +180,3 @@ foreach ($users as $email => $access) {
 	$headers[] = 'Content-Transfer-Encoding: base64';
 	mail2($email, "Quarantine digest, $i new messages", $data, $headers);
 }
-?>

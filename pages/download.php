@@ -28,5 +28,3 @@ try {
 } catch (SoapFault $f) {
 	echo "Error: ".$f->faultstring;
 }
-
-?>
