@@ -55,3 +55,8 @@ select action in "Leave it" "Delete it"; do
 			break;;
 	esac
 done
+
+echo "Halon SP Enduser cPanel Plugin has been successfully uninstalled."
+echo "If you modified /usr/local/cpanel/base/webmail/x3/index.html when you installed"
+echo "it, remember to undo your modifications; delete the block that starts with"
+echo "\"<cpanelfeature sp-enduser>\" and ends with \"</cpanelfeature>\"."

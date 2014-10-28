@@ -77,6 +77,21 @@ if $INSTALLED; then
 	echo "You can safely delete this directory, it has been copied to:"
 	echo "$DEST"
 	echo ""
+	echo "If you want to show a logo for Halon Antispam on the webmail login page:"
+	echo ""
+	echo "1. Open /usr/local/cpanel/base/webmail/x3/index.html"
+	echo "2. Locate the block that starts with <cpanelfeature emailtrace> and ends with"
+	echo "   </cpanelfeature>"
+	echo "3. Add the following below said block, but before the </cpanelif>:"
+	echo ""
+	echo '<cpanelfeature sp-enduser>'
+    echo '	<td>'
+    echo '		<div valign="top" align="center">'
+    echo '			<a href="../../3rdparty/sp-enduser/cpanel-sp-enduser.live.php" target="_blank"><img src="../../3rdparty/sp-enduser/static/img/sp-logo-small.png" border="0" /></a><br /><a href="../../3rdparty/sp-enduser/cpanel-sp-enduser.live.php" target="_blank"><cpanel langprint="Halon Antispam"></a>'
+    echo '		</div>'
+	echo '	</td>'
+	echo '</cpanelfeature>'
+	echo ""
 	echo "To configure SP-Enduser, copy settings-default.php to settings.php and edit it."
 	echo "Check the Wiki for installation instructions: http://wiki.halon.se/End-user"
 fi
