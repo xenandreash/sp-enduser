@@ -1,7 +1,7 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once 'inc/core.php';
+require_once BASE.'/inc/core.php';
 
 if (!isset($settings['database']['dsn']))
 	die('No database configured');
@@ -42,7 +42,7 @@ if ($_GET['list'] == 'add') {
 }
 
 $title = 'Black/whitelist';
-require_once 'inc/header.php';
+require_once BASE.'/inc/header.php';
 ?>
 			</div>
 			<div class="halfpages">
@@ -142,4 +142,4 @@ require_once 'inc/header.php';
 				</fieldset>
 			</div>
 		</div>
-<?php require_once 'inc/footer.php'; ?>
+<?php require_once BASE.'/inc/footer.php'; ?>

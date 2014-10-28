@@ -1,8 +1,8 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once 'inc/core.php';
-require_once 'inc/utils.php';
+require_once BASE.'/inc/core.php';
+require_once BASE.'/inc/utils.php';
 
 // Poll, has it's own permission system
 if (isset($_GET['ajax'])) {
@@ -64,7 +64,7 @@ $_SESSION['logs_id'][] = $cmd_id->result;
 
 $title = 'Text log';
 $javascript[] = 'static/log.js';
-require_once 'inc/header.php';
+require_once BASE.'/inc/header.php';
 ?>
 			<form>
 				<div class="item">
@@ -79,4 +79,4 @@ require_once 'inc/header.php';
 			cmd_id = <?php echo json_encode($cmd_id->result); ?>;
 			cmd_node = <?php echo json_encode($node); ?>;
 		</script>
-<?php require_once 'inc/footer.php'; ?>
+<?php require_once BASE.'/inc/footer.php'; ?>

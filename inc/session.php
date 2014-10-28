@@ -1,6 +1,6 @@
 <?php
 
-require_once 'core.php';
+require_once BASE.'/inc/core.php';
 
 class Session
 {

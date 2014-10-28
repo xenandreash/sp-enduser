@@ -1,8 +1,8 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once 'inc/core.php';
-require_once 'inc/utils.php';
+require_once BASE.'/inc/core.php';
+require_once BASE.'/inc/utils.php';
 
 $settings = settings();
 if (!isset($settings['digest']['secret']))

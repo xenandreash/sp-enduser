@@ -1,8 +1,8 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once 'inc/core.php';
-require_once 'inc/ldap.php';
+require_once BASE.'/inc/core.php';
+require_once BASE.'/inc/ldap.php';
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
 	$session_name = settings('session-name');
@@ -129,7 +129,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 }
 
 $title = 'Sign in';
-require_once 'inc/header.php';
+require_once BASE.'/inc/header.php';
 ?>
 		</div>
 		<?php if (isset($error)) { ?>
@@ -191,4 +191,4 @@ require_once 'inc/header.php';
 		<script>
 			$("#timezone").val(new Date().getTimezoneOffset());
 		</script>
-<?php require_once 'inc/footer.php'; ?>
+<?php require_once BASE.'/inc/footer.php'; ?>
