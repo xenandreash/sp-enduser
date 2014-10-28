@@ -21,7 +21,7 @@ fi
 
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-DEST="/usr/local/cpanel/base/frontend/default/sp-enduser"
+DEST="/usr/local/cpanel/base/3rdparty/sp-enduser"
 
 if [[ ! -d $DEST ]]; then
 	echo "The SP-Enduser cPanel plugin is not installed!"

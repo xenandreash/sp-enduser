@@ -20,8 +20,8 @@ fi
 # Figure out where we are; relative paths are evil
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Destination path, because nobody likes repeating themselves
-DEST="/usr/local/cpanel/base/frontend/default/sp-enduser"
+# Destination paths, because nobody likes repeating themselves
+DEST="/usr/local/cpanel/base/3rdparty/sp-enduser"
 
 
 
@@ -58,7 +58,7 @@ if [[ "$DIR" != "$DEST" ]]; then
 		echo "Halon SP-Enduser's cPanel plugin has been successfully installed!"
 		echo ""
 		echo "You can safely delete this directory, it has been copied to:"
-		echo "    $DEST/sp-enduser"
+		echo "$DEST"
 		echo ""
 		echo "To configure SP-Enduser, copy settings-default.php to settings.php and edit it."
 		echo "Check the Wiki for installation instructions: http://wiki.halon.se/End-user"
