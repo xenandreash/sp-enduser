@@ -59,7 +59,6 @@ if ($_GET['type'] == 'queue') {
 		$result[$type] = trim($content);
 	}
 	if (isset($result['TEXT']) || isset($result['HTML'])) {
-		require_once BASE.'/inc/htmlpurifier-4.6.0-lite/library/HTMLPurifier.auto.php';
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Cache.DefinitionImpl', null);
 		$config->set('URI.Disable', true);

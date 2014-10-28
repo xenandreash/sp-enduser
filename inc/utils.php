@@ -1,5 +1,5 @@
 <?php
-
+require_once BASE.'/vendor/autoload.php';
 require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/soap.php';
 
