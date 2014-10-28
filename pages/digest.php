@@ -44,4 +44,3 @@ window.close();
 The message was successfully released.
 </body>
 </html>
-test
