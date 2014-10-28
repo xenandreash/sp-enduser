@@ -26,26 +26,29 @@ class Session
 		$this->username = $_SERVER['REMOTE_USER'];
 		$this->source = 'cpanel';
 		
-		$addresses_res = $cpanel->api2('Email', 'listpops');
-		$domains_res = $cpanel->api2('Email', 'listmaildomains');
-		
 		// For some reason, querying 'listpops' when signed in as a domain
 		// owner returns only the username, while logging in as a specific
 		// email address returns that address (and likely aliases as well)
 		if(strpos($_SERVER['REMOTE_USER'], '@') === false)
 		{
 			// It's the domain owner, give them access to everything
+			$domains_res = $cpanel->api2('Email', 'listmaildomains');
 			$domains = array();
 			foreach($domains_res['cpanelresult']['data'] as $data)
 				$domains[] = $data['domain'];
+			if(empty($domains))
+				die("No Domains");
 			$this->access = array('domain' => $domains);
 		}
 		else
 		{
 			// It's an email user, give them access to their own account
+			$addresses_res = $cpanel->api2('Email', 'listpops');
 			$addresses = array();
 			foreach($addresses_res['cpanelresult']['data'] as $data)
 				$addresses[] = $data['email'];
+			if(empty($addresses))
+				die("No Addresses");
 			$this->access = array('mail' => $addresses);
 		}
 	}
