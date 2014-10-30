@@ -435,16 +435,6 @@ function mail2($recipient, $subject, $message, $in_headers = null)
 	mail($recipient, $subject, $message, implode("\r\n", $headers));
 }
 
-function self_url()
-{
-	if (isset($_SERVER['HTTPS']))
-		$protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
-	else
-		$protocol = 'http';
-	$url = $protocol . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-	return preg_replace("#[^/]*$#", "", $url);
-}
-
 function ldap_escape($data)
 {
 	return str_replace(array('\\', '*', '(', ')', '\0'), array('\\5c', '\\2a', '\\28', '\\29', '\\00'), $data);

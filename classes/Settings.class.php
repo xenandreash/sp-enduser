@@ -47,8 +47,6 @@ class Settings
 	 */
 	private function __construct()
 	{
-		$this->publicURL = self_url();
-		
 		$settings = array();
 		require BASE.'/settings.php';
 		
@@ -72,6 +70,13 @@ class Settings
 		$this->extract($this->filterPattern, 'filter-pattern');
 		$this->extract($this->digestToAll, 'digest.to-all');
 		$this->extract($this->digestSecret, 'digest.secret');
+		
+		if(!$this->publicURL)
+		{
+			$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? "https" : "http";
+			$url = $protocol."://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			$this->publicURL = preg_replace("#[^/]*$#", "", $url);
+		}
 	}
 	
 	/**
