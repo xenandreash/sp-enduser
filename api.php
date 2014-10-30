@@ -4,7 +4,7 @@ require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
 // verify API key
-if (!isset($settings['api-key']) || !isset($_GET['api-key']) || $settings['api-key'] !== $_GET['api-key'])
+if (!isset($_GET['api-key']) || $settings->getAPIKey() !== $_GET['api-key'])
 	die('Invalid API-key');
 
 // add recipient (user) to local database, send password by mail
@@ -12,17 +12,17 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 	if (!has_auth_database())
 		die('No database authentication source');
 
-	if (!isset($settings['database']['dsn']))
+	if (!$settings->getDBCredentials()['dsn'])
 		die('No database configured');
 
 	$recipient = $_GET['recipient'];
-	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+	$dbh = new Database();
 	$statement = $dbh->prepare("SELECT 1 FROM users WHERE username = :username;");
 	$statement->execute(array(':username' => $recipient));
 	if (!$statement->fetch()) {
 
 		$password = generate_random_password();
-		$url = $settings['public-url'];
+		$url = $settings->getPublicURL();
 
 		$dbh->beginTransaction();
 		$statement = $dbh->prepare("INSERT INTO users (username, password) VALUES (:username, :password);");
@@ -40,10 +40,10 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 
 // add message to local (SQL) history log
 if ($_GET['type'] == 'log') {
-	if (!isset($settings['database']['dsn']))
+	if (!$settings->getDBCredentials()['dsn'])
 		die('No database configured');
 
-	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+	$dbh = new Database();
 	$statement = $dbh->prepare('INSERT INTO messagelog (owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
 	$statement->bindValue(':owner', $_POST['owner']);
 	$statement->bindValue(':ownerdomain', array_pop(explode('@', $_POST['owner'])));
@@ -83,10 +83,10 @@ if ($_GET['type'] == 'log') {
 
 // Update message in local (SQL) history log
 if ($_GET['type'] == 'logupdate') {
-	if (!isset($settings['database']['dsn']))
+	if (!$settings->getDBCredentials()['dsn'])
 		die('No database configured');
 
-	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+	$dbh = new Database();
 	$statement = $dbh->prepare('UPDATE messagelog SET msgaction = :msgaction, msgdescription = :msgdescription WHERE msgid = :msgid AND msgactionid = :msgactionid AND serialno = :serialno;');
 	$statement->bindValue(':msgid', $_POST['msgid']);
 	$statement->bindValue(':msgaction', $_POST['msgaction']);
@@ -100,10 +100,10 @@ if ($_GET['type'] == 'logupdate') {
 // check bwlist
 if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sender']) || isset($_GET['recipient'])) {
 
-	if (!isset($settings['database']['dsn']))
+	if (!$settings->getDBCredentials()['dsn'])
 		die('No database configured');
 
-	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+	$dbh = new Database();
 
 	$senderip = $_GET['senderip'];
 	$sender = $_GET['sender'];
