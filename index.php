@@ -28,23 +28,18 @@ switch (@$_GET['page'])
 		require_once BASE.'/pages/logout.php';
 	break;
 	case 'bwlist':
-		require_once BASE.'/inc/session.php';
 		require_once BASE.'/pages/bwlist.php';
 	break;
 	case 'download':
-		require_once BASE.'/inc/session.php';
 		require_once BASE.'/pages/download.php';
 	break;
 	case 'user':
-		require_once BASE.'/inc/session.php';
 		require_once BASE.'/pages/user.php';
 	break;
 	case 'log':
-		require_once BASE.'/inc/session.php';
 		require_once BASE.'/pages/log.php';
 	break;
 	case 'preview':
-		require_once BASE.'/inc/session.php';
 		require_once BASE.'/pages/preview.php';
 	break;
 	case 'digest':
@@ -52,7 +47,6 @@ switch (@$_GET['page'])
 	break;
 	default:
 	case 'index':
-		require_once BASE.'/inc/session.php';
 		require_once BASE.'/pages/index.php';
 	break;
 }

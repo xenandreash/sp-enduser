@@ -9,6 +9,11 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 require_once BASE.'/inc/utils.php';
 
+function halon_autoloader($class) {
+	require BASE.'/classes/'.$class.'.class.php';
+}
+spl_autoload_register('halon_autoloader');
+
 function set_default(&$settings, $key, $value) {
 	// Assign a default value if the value is absent, or if it's an empty array
 	if(!isset($settings[$key]) || (is_array($settings[$key]) && empty($settings[$key])))
