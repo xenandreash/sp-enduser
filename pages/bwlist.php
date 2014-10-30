@@ -3,7 +3,7 @@ if (!defined('SP_ENDUSER')) die('File not included');
 
 require_once BASE.'/inc/core.php';
 
-if (!isset($settings['database']['dsn']))
+if (!$settings->getDBCredentials()['dsn'])
 	die('No database configured');
 
 function checkAccess($perm)
@@ -20,7 +20,7 @@ function checkAccess($perm)
 	return false;
 }
 
-$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+$dbh = new Database();
 
 if ($_GET['list'] == 'delete') {
 	if (checkAccess($_GET['access'])) {
