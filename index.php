@@ -18,7 +18,7 @@ if (file_exists(BASE.'/install.php') and !file_exists(BASE.'/installed.txt')) {
 
 require BASE."/inc/core.php";
 
-if (Session::Get()->getUsername() === null && isset($_GET['page']) && $_GET['page'] != 'login') {
+if (Session::Get()->getUsername() === null && (!isset($_GET['page']) || $_GET['page'] != 'login')) {
 	session_destroy();
 	header("Location: ?page=login");
 	die();
