@@ -6,8 +6,6 @@ if (isset($_SERVER['CPANEL']))
 	die();
 }
 
-error_reporting(E_ALL ^ E_NOTICE);
-
 define('SP_ENDUSER', true);
 define('BASE', dirname(__FILE__));
 

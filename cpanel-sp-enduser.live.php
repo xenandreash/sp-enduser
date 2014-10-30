@@ -1,9 +1,7 @@
 <?php
-if ($_SERVER['CPANEL'] != 'active')
+// Non-cPanel users should use the regular version instead
+if (!isset($_SERVER['CPANEL']) || $_SERVER['CPANEL'] != 'active')
 	die();
-
-error_reporting(E_ALL ^ E_NOTICE);
-// header("Content-Type: text/plain");
 
 class Session
 {
@@ -75,6 +73,8 @@ class Session
 		return null;
 	}
 }
+
+require BASE."/inc/core.php";
 
 if (Session::Get()->getUsername() === null) {
 	die();
