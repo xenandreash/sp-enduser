@@ -158,15 +158,14 @@ function restrict_local_mail($id)
 }
 
 function soap_client($n, $async = false, $username = null, $password = null) {
+	$session = Session::Get();
 	$settings = Settings::Get();
 	$r = $settings->getNodes()[$n];
 	if (!$r)
 		throw new Exception("Node not configured");
 	
-	if(!$username)
-		$username = isset($_SESSION['soap_username']) ? $_SESSION['soap_username'] : $r['username'];
-	if(!$password)
-		$password = isset($_SESSION['soap_password']) ? $_SESSION['soap_password'] : $r['password'];
+	$username = $session->getSOAPUsername() ?: $r['username'];
+	$password = $session->getSOAPPassword() ?: $r['password'];
 	
 	$options = array(
 		'location' => $r['address'].'/remote/',

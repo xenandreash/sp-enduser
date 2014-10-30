@@ -12,6 +12,8 @@ class Session
 	private $username = null;
 	private $source = null;
 	private $access = null;
+	private $soap_username = null;
+	private $soap_password = null;
 	
 	/**
 	 * Returns a shared Session instance.
@@ -38,6 +40,11 @@ class Session
 		$this->username = $_SESSION['username'];
 		$this->source = $_SESSION['source'];
 		$this->access = $_SESSION['access'];
+		
+		if(isset($_SESSION['soap_username']))
+			$this->soap_username = $_SESSION['soap_username'];
+		if(isset($_SESSION['soap_password']))
+			$this->soap_password = $_SESSION['soap_password'];
 	}
 	
 	/**
@@ -82,5 +89,25 @@ class Session
 	public function getAccess()
 	{
 		return $this->access;
+	}
+	
+	/**
+	 * Returns the user's own SOAP username, if there is one.
+	 * 
+	 * This is currently only used with server authentication.
+	 */
+	public function getSOAPUsername()
+	{
+		return $this->soap_username;
+	}
+	
+	/**
+	 * Returns the user's own SOAP password, if there is one.
+	 * 
+	 * This is currently only used with server authentication.
+	 */
+	public function getSOAPPassword()
+	{
+		return $this->soap_password;
 	}
 }

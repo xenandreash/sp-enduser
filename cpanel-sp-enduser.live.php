@@ -64,6 +64,16 @@ class Session
 	{
 		return $this->access;
 	}
+	
+	// Not supported in cPanel mode; server auth is not possible
+	public function getSOAPUsername()
+	{
+		return null;
+	}
+	public function getSOAPPassword()
+	{
+		return null;
+	}
 }
 
 if (Session::Get()->getUsername() === null) {
