@@ -17,6 +17,7 @@ class Settings
 	
 	private $pageName = "Halon SP for end-users";
 	private $loginText = null;
+	private $forgotText = null;
 	private $defaultSource = 'history';
 	private $displayScores = false;
 	private $displayTextlog = false;
@@ -58,6 +59,7 @@ class Settings
 		$this->extract($this->publicURL, 'public-url');
 		$this->extract($this->pageName, 'pagename');
 		$this->extract($this->loginText, 'logintext');
+		$this->extract($this->forgotText, 'forgottext');
 		$this->extract($this->defaultSource, 'default-source');
 		$this->extract($this->displayScores, 'display-scores');
 		$this->extract($this->displayTextlog, 'display-textlog');
@@ -148,6 +150,14 @@ class Settings
 	public function getLoginText()
 	{
 		return $this->loginText;
+	}
+	
+	/**
+	 * Returns some text to do display at the top of the forgot form, or null.
+	 */
+	public function getForgotText()
+	{
+		return $this->forgotText;
 	}
 	
 	/**

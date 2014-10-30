@@ -150,3 +150,4 @@
 
 //$settings['pagename'] = "Halon SP for end-users";
 //$settings['logintext'] = "Some text you'd like to display on the login form";
+//$settings['forgottext'] = "Some text you'd like to display on the forgot form";
