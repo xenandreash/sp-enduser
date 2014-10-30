@@ -5,7 +5,7 @@ require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/ldap.php';
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
-	$session_name = settings('session-name');
+	$session_name = $settings->getSessionName();
 	if ($session_name)
 		session_name($session_name);
 	session_start();
@@ -14,7 +14,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 	$_SESSION['timezone'] = $_POST['timezone'];
 	$username = $_POST['username'];
 	$password = $_POST['password'];
-	foreach ($settings['authentication'] as $method) {
+	foreach ($settings->getAuthSources() as $method) {
 		switch ($method['type']) {
 			case 'account':
 				if ($username === $method['username'] && $password === $method['password'])
@@ -96,7 +96,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 			case 'server':
 				// Loop through all the configured nodes; the primary node going
 				// down shouldn't take all auth down with it, merely slow it
-				for ($i = 0; $i < count($settings['node']); $i++) {
+				for ($i = 0; $i < count($settings->getNodes()); $i++) {
 					try {
 						// Attempt to connect to the node
 						soap_client($i, false, $username, $password)->login();
@@ -145,8 +145,8 @@ require_once BASE.'/inc/header.php';
 				<fieldset>
 					<legend><?php p($pagename) ?></legend>
 					<?php
-					if (isset($settings['logintext']))
-						echo $settings['logintext'];
+					if ($settings->getLoginText() !== null)
+						echo $settings->getLoginText();
 					else { ?>
 					<p>
 						This site allows end-user access of e-mail security

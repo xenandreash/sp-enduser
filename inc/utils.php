@@ -6,7 +6,6 @@ require_once BASE.'/inc/soap.php';
 function build_query_restrict($type = 'queue')
 {
 	$globalfilter = "";
-	$settings = settings();
 	if (isset($settings['quarantine-filter']) && $type != 'history')
 	{
 		foreach ($settings['quarantine-filter'] as $q)
@@ -65,8 +64,8 @@ function restrict_mail($type, $node, $id)
 // Currently only used by pages/index, exists because UNION/LIMIT is needed for OR query performance
 function build_query_restrict_select($select, $where, $order, $limit, $offsets)
 {
-	$settings = settings();
-	if (isset($settings['filter-pattern']))
+	$settings = Settings::Get();
+	if ($settings->getFilterPattern() === null)
 		die('you cannot combine filter-pattern and local sql history');
 
 	$params = $where['params'];
@@ -113,7 +112,7 @@ function build_query_restrict_select($select, $where, $order, $limit, $offsets)
 
 function build_query_restrict_local()
 {
-	$settings = settings();
+	$settings = Settings::Get();
 	if (isset($settings['filter-pattern']))
 		die('you cannot combine filter-pattern and local history');
 	$filter = array();
@@ -139,7 +138,7 @@ function build_query_restrict_local()
 
 function restrict_local_mail($id)
 {
-	$settings = settings();
+	$settings = Settings::Get();
 	$filters = array();
 	$real_sql = 'SELECT *, UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
 	$restrict_sql = build_query_restrict_local();
@@ -160,7 +159,8 @@ function restrict_local_mail($id)
 }
 
 function soap_client($n, $async = false, $username = null, $password = null) {
-	$r = settings('node', $n);
+	$settings = Settings::Get();
+	$r = $settings->getNodes()[$n];
 	if (!$r)
 		throw new Exception("Node not configured");
 	
@@ -426,7 +426,7 @@ function generate_random_password()
 
 function mail2($recipient, $subject, $message, $in_headers = null)
 {
-	$settings = settings();
+	$settings = Settings::Get();
 	$headers = array();
 	$headers[] = 'Message-ID: <'.uniqid().'@sp-enduser>';
 	if (isset($settings['mail']['from']))
@@ -452,8 +452,8 @@ function ldap_escape($data)
 }
 
 function has_auth_database() {
-	$settings = settings();
-	foreach ($settings['authentication'] as $a)
+	$settings = Settings::Get();
+	foreach ($settings->getAuthSources() as $a)
 		if ($a['type'] == 'database')
 			return true;
 	return false;

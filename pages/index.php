@@ -40,9 +40,8 @@ require_once BASE.'/inc/header.php';
 $search = isset($_GET['search']) ? hql_transform($_GET['search']) : '';
 $size = isset($_GET['size']) ? $_GET['size'] : 50;
 $size = $size > 5000 ? 5000 : $size;
-$source = isset($settings['default-source']) ? $settings['default-source'] : 'history';
-$source = isset($_GET['source']) ? $_GET['source'] : $source;
-$display_scores = isset($settings['display-scores']) ? $settings['display-scores'] : false;
+$source = isset($_GET['source']) ? $_GET['source'] : $settings->getDefaultSource();
+$display_scores = $settings->getDisplayScores();
 
 // Select box arrays
 foreach (array(10, 50, 100, 500, 1000, 5000) as $n)
@@ -70,7 +69,7 @@ $next_button = ' disabled';
 $param = array();
 $clients = array();
 $errors = array();
-foreach ($settings['node'] as $n => $r) {
+foreach ($settings->getNodes() as $n => $r) {
 	try {
 		$clients[$n] = soap_client($n, true);
 		$param['queue'][$n]['limit'] = $size + 1;
