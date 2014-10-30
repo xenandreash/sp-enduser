@@ -399,7 +399,7 @@ function history_parse_scores($mail)
 function generate_random_password()
 {
 	$pass = '';
-	if(function_exists(openssl_random_pseudo_bytes))
+	if (function_exists('openssl_random_pseudo_bytes'))
 	{
 		$pass = bin2hex(openssl_random_pseudo_bytes(32));
 	}
