@@ -73,13 +73,10 @@ class Settings
 	private function extract(&$out, $key)
 	{
 		$parts = explode('.', $key);
-		$tmp = $settings;
+		$tmp = $this->settings;
 		foreach ($parts as $part) {
-			if(isset($tmp[$part])) {
-				$tmp = $tmp[$part];
-			} else {
-				return;
-			}
+			$tmp = isset($tmp[$part]) ? $tmp[$part] : null;
+			if($tmp === null) return;
 		}
 		
 		$out = $tmp;
