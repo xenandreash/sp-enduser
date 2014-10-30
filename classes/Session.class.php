@@ -1,5 +1,4 @@
 <?php
-require_once BASE.'/inc/core.php';
 
 /**
  * Singleton wrapper for the user's session.
