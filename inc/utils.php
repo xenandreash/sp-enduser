@@ -1,6 +1,6 @@
 <?php
 require_once BASE.'/inc/core.php';
-require_once BASE.'/inc/soap.php';
+require_once BASE.'/inc/async_soap.php';
 
 function build_query_restrict($type = 'queue')
 {
