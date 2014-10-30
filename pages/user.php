@@ -14,7 +14,7 @@ if ($source == 'database' && isset($_POST['password']) && $_POST['password'] == 
 }
 
 $title = 'Account';
-require_once BASE.'/inc/header.php';
+require_once BASE.'/partials/header.php';
 ?>
 		</div>
 		<?php if ($changedPassword) { ?>
@@ -78,4 +78,4 @@ require_once BASE.'/inc/header.php';
 			</fieldset>
 			</div>
 		</div>
-<?php require_once BASE.'/inc/footer.php'; ?>
+<?php require_once BASE.'/partials/footer.php'; ?>

@@ -64,7 +64,7 @@ $_SESSION['logs_id'][] = $cmd_id->result;
 
 $title = 'Text log';
 $javascript[] = 'static/log.js';
-require_once BASE.'/inc/header.php';
+require_once BASE.'/partials/header.php';
 ?>
 			<form>
 				<div class="item">
@@ -79,4 +79,4 @@ require_once BASE.'/inc/header.php';
 			cmd_id = <?php echo json_encode($cmd_id->result); ?>;
 			cmd_node = <?php echo json_encode($node); ?>;
 		</script>
-<?php require_once BASE.'/inc/footer.php'; ?>
+<?php require_once BASE.'/partials/footer.php'; ?>

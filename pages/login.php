@@ -126,7 +126,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 }
 
 $title = 'Sign in';
-require_once BASE.'/inc/header.php';
+require_once BASE.'/partials/header.php';
 ?>
 		</div>
 		<?php if (isset($error)) { ?>
@@ -188,4 +188,4 @@ require_once BASE.'/inc/header.php';
 		<script>
 			$("#timezone").val(new Date().getTimezoneOffset());
 		</script>
-<?php require_once BASE.'/inc/footer.php'; ?>
+<?php require_once BASE.'/partials/footer.php'; ?>

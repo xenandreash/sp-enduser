@@ -41,7 +41,7 @@ if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password']
 }
 
 $title = 'Reset password';
-require_once BASE.'/inc/header.php';
+require_once BASE.'/partials/header.php';
 ?>
 		</div>
 		<?php if (isset($error)) { ?>
@@ -113,4 +113,4 @@ require_once BASE.'/inc/header.php';
 				</fieldset>
 			</div>
 		</div>
-<?php require_once BASE.'/inc/footer.php'; ?>
+<?php require_once BASE.'/partials/footer.php'; ?>

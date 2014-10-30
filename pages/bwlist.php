@@ -39,7 +39,7 @@ if ($_GET['list'] == 'add') {
 }
 
 $title = 'Black/whitelist';
-require_once BASE.'/inc/header.php';
+require_once BASE.'/partials/header.php';
 ?>
 			</div>
 			<div class="halfpages">
@@ -139,4 +139,4 @@ require_once BASE.'/inc/header.php';
 				</fieldset>
 			</div>
 		</div>
-<?php require_once BASE.'/inc/footer.php'; ?>
+<?php require_once BASE.'/partials/footer.php'; ?>

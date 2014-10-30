@@ -25,13 +25,13 @@ if (isset($_POST['action'])) {
 	if ($_POST['action'] == 'retry')
 		$client->mailQueueRetry(array('id' => $id));
 	$title = 'Message';
-	require_once BASE.'/inc/header.php'; ?>
+	require_once BASE.'/partials/header.php'; ?>
 				<div class="item">
 					<div class="button back" onclick="location.href='<?php p($_POST['referer']) ?>';">Back</div>
 				</div>
 			</div>
 			<div class="pad message ok">The requested action has been performed</div>
-	<?php require_once BASE.'/inc/footer.php';
+	<?php require_once BASE.'/partials/footer.php';
 	die();
 }
 
@@ -80,7 +80,7 @@ $title = 'Message';
 $javascript[] = 'static/preview.js';
 $javascript[] = 'static/diff_match_patch.js';
 $javascript[] = 'static/diff.js';
-require_once BASE.'/inc/header.php';
+require_once BASE.'/partials/header.php';
 ?>
 			<form>
 				<div class="item">
@@ -173,4 +173,4 @@ require_once BASE.'/inc/header.php';
 				<input type="hidden" name="referer" id="referer" value="<?php p(isset($_POST['referer']) ? $_POST['referer'] : $_SERVER['HTTP_REFERER']); ?>">
 			</form>
 	</div>
-<?php require_once BASE.'/inc/footer.php'; ?>
+<?php require_once BASE.'/partials/footer.php'; ?>
