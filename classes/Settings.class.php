@@ -15,6 +15,7 @@ class Settings
 	private $mailSender = null;
 	private $publicURL = null;
 	
+	private $pageName = "Halon SP for end-users";
 	private $defaultSource = 'history';
 	private $displayScores = false;
 	private $displayTextlog = false;
@@ -54,6 +55,7 @@ class Settings
 		$this->extract($this->apiKey, 'api-key');
 		$this->extract($this->mailSender, 'mail.from');
 		$this->extract($this->publicURL, 'public-url');
+		$this->extract($this->pageName, 'pagename');
 		$this->extract($this->defaultSource, 'default-source');
 		$this->extract($this->displayScores, 'display-scores');
 		$this->extract($this->displayTextlog, 'display-textlog');
@@ -128,6 +130,14 @@ class Settings
 	public function getPublicURL()
 	{
 		return $this->publicURL;
+	}
+	
+	/**
+	 * Returns the page name.
+	 */
+	public function getPageName()
+	{
+		return $this->pageName;
 	}
 	
 	/**

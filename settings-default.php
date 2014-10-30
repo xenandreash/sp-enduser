@@ -143,3 +143,9 @@
  */
 
 //$settings['session-name'] = 'spenduser';
+
+/*
+ * Use this to set a custom title, defaults to "Halon SP for end-users".
+ */
+
+//$settings['pagename'] = "Halon SP for end-users";
