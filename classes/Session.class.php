@@ -29,7 +29,7 @@ class Session
 	 */
 	private function __construct()
 	{
-		$session_name = settings('session-name');
+		$session_name = Settings::Get()->getSessionName();
 		if ($session_name)
 			session_name($session_name);
 		
