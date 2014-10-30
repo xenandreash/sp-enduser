@@ -10,7 +10,7 @@ $ok = true;
 	</div>
 	<div style="padding: 10px;"> 
 <?php
-if (empty($settings['node'])) {
+if (count($settings->getNodes()) == 0) {
 	$ok = false;
 ?>
 	<p><strong>ERROR:</strong> No system node(s)</p>
@@ -21,26 +21,26 @@ if (!in_array('curl', get_loaded_extensions())) {
 	<p><em>WARNING:</em> cURL extension is missing. Without it, the UI will run slower (not being able to run searches in parallel).</p>
 <?php
 }
-if (!isset($settings['api-key'])) {
+if ($settings->getAPIKey() === null) {
 ?>
 	<p><em>WARNING:</em> No api-key, dynamic user creation and black/whitelist lookups will not work until you specify one.</p>
 <?php } else { ?>
 	<p><em>INFO:</em> The trigger URL for this setup is <tt><?php p(self_url()); ?>api.php?api-key=<i>secret-api-key</i></tt>.</p>
 <?php } ?>
 <?php
-if (empty($settings['authentication'])) {
+if (count($settings->getAuthSources()) == 0) {
 	$ok = false;
 ?>
 	<p><strong>ERROR:</strong> No authentication sources</p>
 <?php } ?>
 <?php
-if (isset($settings['database']['dsn'])) {
+if (isset($settings->getDBCredentials()['dsn'])) {
 ?>
 	<p>
 <?php
 	$notes = array();
 	try {
-		$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+		$dbh = new Database();
 		$statement = $dbh->prepare('SELECT * FROM users LIMIT 1;');
 		if (!$statement || $statement->execute() === false) {
 			$notes[] = 'Adding table users';
