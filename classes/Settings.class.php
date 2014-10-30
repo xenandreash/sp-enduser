@@ -16,6 +16,7 @@ class Settings
 	private $publicURL = null;
 	
 	private $pageName = "Halon SP for end-users";
+	private $loginText = null;
 	private $defaultSource = 'history';
 	private $displayScores = false;
 	private $displayTextlog = false;
@@ -56,6 +57,7 @@ class Settings
 		$this->extract($this->mailSender, 'mail.from');
 		$this->extract($this->publicURL, 'public-url');
 		$this->extract($this->pageName, 'pagename');
+		$this->extract($this->loginText, 'logintext');
 		$this->extract($this->defaultSource, 'default-source');
 		$this->extract($this->displayScores, 'display-scores');
 		$this->extract($this->displayTextlog, 'display-textlog');
@@ -138,6 +140,14 @@ class Settings
 	public function getPageName()
 	{
 		return $this->pageName;
+	}
+	
+	/**
+	 * Returns some text to display at the top of the login form, or null.
+	 */
+	public function getLoginText()
+	{
+		return $this->loginText;
 	}
 	
 	/**

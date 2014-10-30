@@ -145,7 +145,8 @@
 //$settings['session-name'] = 'spenduser';
 
 /*
- * Use this to set a custom title, defaults to "Halon SP for end-users".
+ * Customizable text in the interface.
  */
 
 //$settings['pagename'] = "Halon SP for end-users";
+//$settings['logintext'] = "Some text you'd like to display on the login form";
