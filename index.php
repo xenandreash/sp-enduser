@@ -16,6 +16,14 @@ if (file_exists(BASE.'/install.php') and !file_exists(BASE.'/installed.txt')) {
 	die();
 }
 
+require BASE."/inc/core.php";
+
+if (Session::Get()->getUsername() === null) {
+	session_destroy();
+	header("Location: ?page=login");
+	die();
+}
+
 switch (@$_GET['page'])
 {
 	case 'forgot':
