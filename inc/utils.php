@@ -398,12 +398,22 @@ function history_parse_scores($mail)
 
 function generate_random_password()
 {
-	$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 	$pass = '';
-	srand((float) microtime() * 10000000);
-	for ($i = 0; $i < rand(10, 12); $i++) {
-		$pass .= $chars[rand(0, strlen($chars)-1)];
+	if(function_exists(openssl_random_pseudo_bytes))
+	{
+		$pass = bin2hex(openssl_random_pseudo_bytes(32));
 	}
+	else
+	{
+		// The effective security of this is horrid, but unfortunately we can't
+		// depend on OpenSSL being available on Windows
+		$chars = '0123456789abcdef';
+		srand((float) microtime() * 10000000);
+		for ($i = 0; $i < 64; $i++) {
+			$pass .= $chars[rand(0, strlen($chars)-1)];
+		}
+	}
+	
 	return $pass;
 }
 
