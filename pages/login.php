@@ -73,7 +73,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 					break 2;
 			break;
 			case 'database':
-				$dbh = new Database();
+				$dbh = $settings->getDatabase();
 				$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
 					$statement->execute(array(':username' => $username));
 				$row = $statement->fetch();

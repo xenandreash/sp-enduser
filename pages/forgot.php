@@ -5,7 +5,7 @@ require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
 if (isset($_GET['forgot']) && !isset($_GET['token'])) {
-	$dbh = new Database();
+	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
 	$statement->execute(array(':username' => $_GET['forgot']));
 	if (!($row = $statement->fetch()))
@@ -22,7 +22,7 @@ if (isset($_GET['forgot']) && !isset($_GET['token'])) {
 }
 
 if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password'])) {
-	$dbh = new Database();
+	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
 	$statement->execute(array(':username' => $_POST['reset']));
 	if (!($row = $statement->fetch()))

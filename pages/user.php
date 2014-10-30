@@ -7,7 +7,7 @@ require_once BASE.'/inc/utils.php';
 $source = Session::Get()->getSource();
 $changedPassword = false;
 if ($source == 'database' && isset($_POST['password']) && $_POST['password'] == $_POST['password2']) {
-	$dbh = new Database();
+	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare("UPDATE users SET password = :password WHERE username = :username;");
 	$statement->execute(array(':username' => Session::Get()->getUsername(), ':password' => crypt($_POST['password'])));
 	$changedPassword = true;

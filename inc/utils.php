@@ -149,7 +149,7 @@ function restrict_local_mail($id)
 	// extremely important to use "(...) AND (...)" for access control
 	if (count($filters))
 		$real_sql .= ' WHERE ('.implode(') AND (', $filters).')';
-	$dbh = new Database();
+	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare($real_sql);
 	$statement->execute($real_sql_params);
 	$mail = $statement->fetchObject();

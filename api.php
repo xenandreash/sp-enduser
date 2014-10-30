@@ -13,7 +13,7 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 		die('No database authentication source');
 
 	$recipient = $_GET['recipient'];
-	$dbh = new Database();
+	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare("SELECT 1 FROM users WHERE username = :username;");
 	$statement->execute(array(':username' => $recipient));
 	if (!$statement->fetch()) {
@@ -37,7 +37,7 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 
 // add message to local (SQL) history log
 if ($_GET['type'] == 'log') {
-	$dbh = new Database();
+	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare('INSERT INTO messagelog (owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
 	$statement->bindValue(':owner', $_POST['owner']);
 	$statement->bindValue(':ownerdomain', array_pop(explode('@', $_POST['owner'])));
@@ -77,7 +77,7 @@ if ($_GET['type'] == 'log') {
 
 // Update message in local (SQL) history log
 if ($_GET['type'] == 'logupdate') {
-	$dbh = new Database();
+	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare('UPDATE messagelog SET msgaction = :msgaction, msgdescription = :msgdescription WHERE msgid = :msgid AND msgactionid = :msgactionid AND serialno = :serialno;');
 	$statement->bindValue(':msgid', $_POST['msgid']);
 	$statement->bindValue(':msgaction', $_POST['msgaction']);
@@ -90,7 +90,7 @@ if ($_GET['type'] == 'logupdate') {
 
 // check bwlist
 if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sender']) || isset($_GET['recipient'])) {
-	$dbh = new Database();
+	$dbh = $settings->getDatabase();
 
 	$senderip = $_GET['senderip'];
 	$sender = $_GET['sender'];

@@ -119,7 +119,7 @@ $total = 0;
 $totalget = $totaloffset;
 $totalknown = true;
 if ($source == 'all' || $source == 'log') {
-	$dbh = new Database();
+	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare($real_sql['sql']);
 	$statement->execute($real_sql['params']);
 	while ($item = $statement->fetchObject())

@@ -6,6 +6,7 @@
 class Settings
 {
 	private $settings = array();
+	private $database = null;
 	
 	private $nodes = array();
 	private $apiKey = null;
@@ -86,6 +87,27 @@ class Settings
 		}
 		
 		$out = $tmp;
+	}
+	
+	/**
+	 * Returns a database wrapper object.
+	 */
+	public function getDatabase()
+	{
+		if(!$this->database)
+		{
+			$credentials = $this->getDBCredentials();
+			
+			if(!$credentials['dsn'])
+				die("No database configured");
+			
+			$dsn = $credentials['dsn'];
+			$username = isset($credentials['user']) ? $credentials['user'] : null;
+			$password = isset($credentials['password']) ? $credentials['password'] : null;
+			$this->database = new PDO($dsn, $username, $password);
+		}
+		
+		return $this->database;
 	}
 	
 	/**

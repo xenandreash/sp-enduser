@@ -40,7 +40,7 @@ if (isset($settings->getDBCredentials()['dsn'])) {
 <?php
 	$notes = array();
 	try {
-		$dbh = new Database();
+		$dbh = $settings->getDatabase();
 		$statement = $dbh->prepare('SELECT * FROM users LIMIT 1;');
 		if (!$statement || $statement->execute() === false) {
 			$notes[] = 'Adding table users';

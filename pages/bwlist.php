@@ -17,7 +17,7 @@ function checkAccess($perm)
 	return false;
 }
 
-$dbh = new Database();
+$dbh = $settings->getDatabase();
 
 if ($_GET['list'] == 'delete') {
 	if (checkAccess($_GET['access'])) {
