@@ -159,7 +159,7 @@ function restrict_local_mail($id)
 
 function soap_client($n, $async = false, $username = null, $password = null) {
 	$settings = Settings::Get();
-	$r = $settings->getNodes()[$n];
+	$r = $settings->getNode($n);
 	if (!$r)
 		throw new Exception("Node not configured");
 	

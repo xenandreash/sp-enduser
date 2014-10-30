@@ -139,6 +139,16 @@ class Settings
 	}
 	
 	/**
+	 * Returns a specific node from the list, or null if there's no such node.
+	 */
+	public function getNode($i)
+	{
+		if($i < count($this->nodes))
+			return $this->nodes[$i];
+		return null;
+	}
+	
+	/**
 	 * Returns the nodes' API key.
 	 */
 	public function getAPIKey()
