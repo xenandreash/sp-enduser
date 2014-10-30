@@ -164,8 +164,8 @@ function soap_client($n, $async = false, $username = null, $password = null) {
 	if (!$r)
 		throw new Exception("Node not configured");
 	
-	$username = $session->getSOAPUsername() ?: $r['username'];
-	$password = $session->getSOAPPassword() ?: $r['password'];
+	if(!$username) $username = $session->getSOAPUsername() ?: $r['username'];
+	if(!$password) $password = $session->getSOAPPassword() ?: $r['password'];
 	
 	$options = array(
 		'location' => $r['address'].'/remote/',
