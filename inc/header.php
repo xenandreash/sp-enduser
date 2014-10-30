@@ -4,7 +4,7 @@
 
 require_once 'core.php';
 
-$pagename = $settings['pagename'] ?: 'Halon SP for end-users';
+$pagename = $settings->getPageName();
 $title = $title ?: 'Untitled';
 $logo = file_exists('template/logo.png') ? 'template/logo.png' : 'static/img/logo.png';
 $styles = file_exists('template/styles.css') ? 'template/styles.css' : 'static/styles.css';
@@ -32,7 +32,7 @@ function header_active($page) {
 		<div id="nav">
 			<ul id="menu">
 				<li class="mail<?php header_active('index') ?>"><a href="?page=index">Messages</a></li>
-				<?php if (settings('database')) { ?>
+				<?php if ($settings->getDBCredentials()['dsn']) { ?>
 				<li class="bwlist<?php header_active('bwlist') ?>"><a href="?page=bwlist">Black/whitelist</a></li>
 				<?php } ?>
 			</ul>
