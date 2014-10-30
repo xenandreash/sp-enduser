@@ -3,9 +3,6 @@ if (!defined('SP_ENDUSER')) die('File not included');
 
 require_once BASE.'/inc/core.php';
 
-if (!$settings->getDBCredentials()['dsn'])
-	die('No database configured');
-
 function checkAccess($perm)
 {
 	$access = Session::Get()->getAccess();

@@ -12,9 +12,6 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 	if (!has_auth_database())
 		die('No database authentication source');
 
-	if (!$settings->getDBCredentials()['dsn'])
-		die('No database configured');
-
 	$recipient = $_GET['recipient'];
 	$dbh = new Database();
 	$statement = $dbh->prepare("SELECT 1 FROM users WHERE username = :username;");
@@ -40,9 +37,6 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 
 // add message to local (SQL) history log
 if ($_GET['type'] == 'log') {
-	if (!$settings->getDBCredentials()['dsn'])
-		die('No database configured');
-
 	$dbh = new Database();
 	$statement = $dbh->prepare('INSERT INTO messagelog (owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
 	$statement->bindValue(':owner', $_POST['owner']);
@@ -83,9 +77,6 @@ if ($_GET['type'] == 'log') {
 
 // Update message in local (SQL) history log
 if ($_GET['type'] == 'logupdate') {
-	if (!$settings->getDBCredentials()['dsn'])
-		die('No database configured');
-
 	$dbh = new Database();
 	$statement = $dbh->prepare('UPDATE messagelog SET msgaction = :msgaction, msgdescription = :msgdescription WHERE msgid = :msgid AND msgactionid = :msgactionid AND serialno = :serialno;');
 	$statement->bindValue(':msgid', $_POST['msgid']);
@@ -99,10 +90,6 @@ if ($_GET['type'] == 'logupdate') {
 
 // check bwlist
 if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sender']) || isset($_GET['recipient'])) {
-
-	if (!$settings->getDBCredentials()['dsn'])
-		die('No database configured');
-
 	$dbh = new Database();
 
 	$senderip = $_GET['senderip'];

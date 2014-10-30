@@ -7,9 +7,7 @@ require_once BASE.'/inc/utils.php';
 $source = Session::Get()->getSource();
 $changedPassword = false;
 if ($source == 'database' && isset($_POST['password']) && $_POST['password'] == $_POST['password2']) {
-	if (!isset($settings['database']['dsn']))
-		die('No database configured');
-	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+	$dbh = new Database();
 	$statement = $dbh->prepare("UPDATE users SET password = :password WHERE username = :username;");
 	$statement->execute(array(':username' => Session::Get()->getUsername(), ':password' => crypt($_POST['password'])));
 	$changedPassword = true;

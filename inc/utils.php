@@ -5,10 +5,11 @@ require_once BASE.'/inc/soap.php';
 
 function build_query_restrict($type = 'queue')
 {
+	$settings = Settings::Get();
 	$globalfilter = "";
-	if (isset($settings['quarantine-filter']) && $type != 'history')
+	if (count($settings->getQuarantineFilter()) > 0 && $type != 'history')
 	{
-		foreach ($settings['quarantine-filter'] as $q)
+		foreach ($settings->getQuarantineFilter() as $q)
 		{
 			if ($globalfilter != "")
 				$globalfilter .= " or ";
@@ -17,9 +18,7 @@ function build_query_restrict($type = 'queue')
 		$globalfilter .= ' or not action=QUARANTINE ';
 	}
 
-	$pattern = "{from} or {to}";
-	if (isset($settings['filter-pattern']))
-		$pattern = $settings['filter-pattern'];
+	$pattern = $settings->getFilterPattern();
 
 	$filter = "";
 	$access = Session::Get()->getAccess();
@@ -113,7 +112,7 @@ function build_query_restrict_select($select, $where, $order, $limit, $offsets)
 function build_query_restrict_local()
 {
 	$settings = Settings::Get();
-	if (isset($settings['filter-pattern']))
+	if (count($settings->getQuarantineFilter()) > 0)
 		die('you cannot combine filter-pattern and local history');
 	$filter = array();
 	$params = array();
@@ -150,7 +149,7 @@ function restrict_local_mail($id)
 	// extremely important to use "(...) AND (...)" for access control
 	if (count($filters))
 		$real_sql .= ' WHERE ('.implode(') AND (', $filters).')';
-	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+	$dbh = new Database();
 	$statement = $dbh->prepare($real_sql);
 	$statement->execute($real_sql_params);
 	$mail = $statement->fetchObject();
@@ -429,8 +428,8 @@ function mail2($recipient, $subject, $message, $in_headers = null)
 	$settings = Settings::Get();
 	$headers = array();
 	$headers[] = 'Message-ID: <'.uniqid().'@sp-enduser>';
-	if (isset($settings['mail']['from']))
-		$headers[] = "From: ".$settings['mail']['from'];
+	if ($settings->getMailSender())
+		$headers[] = "From: ".$settings->getMailSender();
 	if ($in_headers !== null)
 		$headers = array_merge($headers, $in_headers);
 	mail($recipient, $subject, $message, implode("\r\n", $headers));

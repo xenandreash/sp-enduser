@@ -15,10 +15,10 @@ $limit = 10000; // Need limit, because of memory
 //$restrict[] = 'quarantine=mailquarantine:1';
 
 // Build query
-$settings = settings();
-if (isset($settings['quarantine-filter'])) {
+$settings = Settings::Get();
+if ($settings->getQuarantineFilter()) {
 	$qf = array();
-	foreach ($settings['quarantine-filter'] as $q)
+	foreach ($settings->getQuarantineFilter() as $q)
 		$qf[] = 'quarantine='.$q;
 	if (!empty($qf)) {
 		$restrict[] = implode(' or ', $qf);
@@ -35,7 +35,7 @@ $tasks = array();
 $total = 0;
 $param = array();
 $clients = array();
-foreach ($settings['node'] as $n => $r) {
+foreach ($settings->getNodes() as $n => $r) {
 	$param[$n]['limit'] = $limit;
 	$param[$n]['filter'] = $real_search;
 	$param[$n]['offset'] = 0;
@@ -52,7 +52,7 @@ function access_level_merge($a, $b)
 
 // Perform actual requests
 echo "Making query $real_search\n";
-foreach ($settings['node'] as $n => $r) {
+foreach ($settings->getNodes() as $n => $r) {
 	$data = $clients[$n]->mailQueue($param[$n]);
 	if (is_array($data->result->item)) foreach ($data->result->item as $item)
 		$timesort[$item->msgts][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
@@ -63,7 +63,7 @@ if (empty($timesort))
 	die("No quarantined messages within one day\n");
 
 $users = array();
-foreach ($settings['authentication'] as $a) {
+foreach ($settings->getAuthSources() as $a) {
 	// Send to statically configured users with e-mail address
 	if ($a['type'] == 'account' && isset($a['email']))
 		$users[$a['email']] = access_level_merge($users[$a['email']], $a['access']);
@@ -123,7 +123,7 @@ foreach ($settings['authentication'] as $a) {
 }
 // Send to everyone in quarantine, if enabled in settings
 $allusers = array();
-if ($settings['digest']['to-all'] == true)
+if ($settings->getDigestToAll())
 	foreach ($timesort as $t)
 		foreach ($t as $m)
 			$allusers[$m['data']->msgto] = true;
@@ -158,12 +158,12 @@ foreach ($users as $email => $access) {
 				continue;
 			// Make direct release link
 			$extra = '';
-			if (isset($settings['digest']['secret'])) {
+			if ($settings->getDigestSecret()) {
 				// Sign the "message"
 				$time = time();
 				$message = $m['id'].$m['data']->id.$time.$m['data']->msgid;
-				$hash = hash_hmac('sha256', $message, $settings['digest']['secret']);
-				$extra .= '<a href="'.$settings['public-url'].'/?page=digest&queueid='.$m['data']->id.
+				$hash = hash_hmac('sha256', $message, $settings->getDigestSecret());
+				$extra .= '<a href="'.$settings->getPublicURL().'/?page=digest&queueid='.$m['data']->id.
 					'&node='.$m['id'].'&time='.$time.'&sign='.$hash.'">Release</a>';
 			}
 			$data .= '<tr><td>'.strftime('%F %T', $m['data']->msgts).'</td><td>'.$m['data']->msgfrom.'</td><td>'.$m['data']->msgto.'</td><td>'.$m['data']->msgsubject.'</td><td>'.$extra.'</td></tr>';
@@ -172,7 +172,7 @@ foreach ($users as $email => $access) {
 	}
 	if ($i == 0)
 		continue;
-	$data = '<p>You have '.$i.' message(s) received to your <a href="'.$settings['public-url'].'/?page=index&source=quarantine">quarantine</a> during the last 24 hours.</p>'.$data.'</table>';
+	$data = '<p>You have '.$i.' message(s) received to your <a href="'.$settings->getPublicURL().'/?page=index&source=quarantine">quarantine</a> during the last 24 hours.</p>'.$data.'</table>';
 	$data = chunk_split(base64_encode($data));
 	echo "digest to $email with $i msgs\n";
 	$headers = array();

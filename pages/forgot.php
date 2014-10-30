@@ -4,11 +4,8 @@ if (!defined('SP_ENDUSER')) die('File not included');
 require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
-if (!isset($settings['database']['dsn']))
-	die('No database configured');
-
 if (isset($_GET['forgot']) && !isset($_GET['token'])) {
-	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+	$dbh = new Database();
 	$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
 	$statement->execute(array(':username' => $_GET['forgot']));
 	if (!($row = $statement->fetch()))
@@ -20,12 +17,12 @@ if (isset($_GET['forgot']) && !isset($_GET['token'])) {
 		$publictoken = hash_hmac('sha256', $row['password'], $token);
 		$statement = $dbh->prepare("UPDATE users SET reset_password_token = :token, reset_password_timestamp = :timestamp WHERE username = :username;");
 		$statement->execute(array(':username' => $_GET['forgot'], ':token' => $token, ':timestamp' => time()));
-		mail2($_GET['forgot'], 'Reset password', wordwrap("Someone (hopefully you) have requested a password reset (from IP {$_SERVER['REMOTE_ADDR']}).\r\n\r\nThe token is:\r\n$publictoken \r\n\r\nDirect URL:\r\n{$settings['public-url']}/?page=forgot&forgot={$_GET['forgot']}&token=$publictoken", 70, "\r\n"));
+		mail2($_GET['forgot'], 'Reset password', wordwrap("Someone (hopefully you) have requested a password reset (from IP {$_SERVER['REMOTE_ADDR']}).\r\n\r\nThe token is:\r\n$publictoken \r\n\r\nDirect URL:\r\n".$settings->getPublicURL()."}/?page=forgot&forgot={$_GET['forgot']}&token=$publictoken", 70, "\r\n"));
 	}
 }
 
 if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password'])) {
-	$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+	$dbh = new Database();
 	$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
 	$statement->execute(array(':username' => $_POST['reset']));
 	if (!($row = $statement->fetch()))
@@ -55,8 +52,8 @@ require_once BASE.'/inc/header.php';
 				<fieldset>
 					<legend>Help</legend>
 					<?php
-					if (isset($settings['forgottext']))
-						echo $settings['forgottext'];
+					if ($settings->getForgotText())
+						echo $settings->getForgotText();
 					else { ?>
 					<p>
 						If your user exists in the local

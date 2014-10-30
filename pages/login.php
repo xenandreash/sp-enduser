@@ -73,10 +73,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 					break 2;
 			break;
 			case 'database':
-				if (!isset($settings['database']['dsn']))
-					die('No database configured');
-
-				$dbh = new PDO($settings['database']['dsn'], $settings['database']['user'], $settings['database']['password']);
+				$dbh = new Database();
 				$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
 					$statement->execute(array(':username' => $username));
 				$row = $statement->fetch();

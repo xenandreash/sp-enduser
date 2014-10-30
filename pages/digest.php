@@ -4,8 +4,8 @@ if (!defined('SP_ENDUSER')) die('File not included');
 require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
-$settings = settings();
-if (!isset($settings['digest']['secret']))
+$settings = Settings::Get();
+if (!$settings->getDigestSecret())
 	die('No digest secret');
 
 $node = intval($_GET['node']);
@@ -27,7 +27,7 @@ if (count($queue->result->item) == 1)
 
 // Validate signature
 $message = $node.$queueid.$time.$msgid;
-$hash = hash_hmac('sha256', $message, $settings['digest']['secret']);
+$hash = hash_hmac('sha256', $message, $settings->getDigestSecret());
 if ($hash !== $sign) die('Failed to release message');
 
 // Perform action and close window

@@ -50,7 +50,7 @@ if ($_GET['type'] == 'log') {
 	$args = array('searchlog', $mail->msgid.':'.$id, '-'.$mail->msgts);
 }
 
-$logs = isset($settings['display-textlog']) ? $settings['display-textlog'] : false;
+$logs = $settings->displayTextlog();
 if (!$logs) die('logs disabled');
 
 $client = soap_client($node);
