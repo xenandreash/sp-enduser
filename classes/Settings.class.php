@@ -50,7 +50,7 @@ class Settings
 		
 		$this->settings = $settings;
 		
-		$this->extract($this->nodes, 'nodes');
+		$this->extract($this->nodes, 'node');
 		$this->extract($this->apiKey, 'api-key');
 		$this->extract($this->mailSender, 'mail.from');
 		$this->extract($this->publicURL, 'public-url');
