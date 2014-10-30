@@ -20,7 +20,7 @@ function set_default(&$settings, $key, $value) {
 		$settings[$key] = $value;
 }
 
-function settings() {
+/*function settings() {
 	$settings = array();
 	
 	if (!file_exists(BASE.'/settings.php'))
@@ -38,7 +38,9 @@ function settings() {
 	return $tmp;
 }
 
-$settings = settings();
+$settings = settings();*/
+
+$settings = Settings::Get();
 
 // Always use UTC timezone
 date_default_timezone_set('UTC');
