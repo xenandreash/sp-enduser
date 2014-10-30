@@ -2,7 +2,7 @@
 
 // XXX this file is included from login.php as well
 
-require_once 'core.php';
+require_once BASE.'/inc/core.php';
 
 $pagename = $settings->getPageName();
 $title = $title ?: 'Untitled';
