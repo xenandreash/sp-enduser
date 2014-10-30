@@ -158,27 +158,12 @@ function restrict_local_mail($id)
 }
 
 function soap_client($n, $async = false, $username = null, $password = null) {
-	$session = Session::Get();
 	$settings = Settings::Get();
 	$r = $settings->getNodes()[$n];
 	if (!$r)
 		throw new Exception("Node not configured");
 	
-	if(!$username) $username = $session->getSOAPUsername() ?: $r['username'];
-	if(!$password) $password = $session->getSOAPPassword() ?: $r['password'];
-	
-	$options = array(
-		'location' => $r['address'].'/remote/',
-		'uri' => 'urn:halon',
-		'login' => $username,
-		'password' => $password,
-		'connection_timeout' => 15,
-		'features' => SOAP_SINGLE_ELEMENT_ARRAYS,
-		'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP
-		);
-	if ($async)
-		return new SoapClientAsync($r['address'].'/remote/?wsdl', $options);
-	return new SoapClient($r['address'].'/remote/?wsdl', $options);
+	return $r->soap($async, $username, $password);
 }
 
 function soap_exec($argv, $c)

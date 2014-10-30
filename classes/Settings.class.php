@@ -8,6 +8,7 @@ class Settings
 	private $settings = array();
 	private $database = null;
 	
+	private $nodeCredentials = array();
 	private $nodes = array();
 	private $apiKey = null;
 	private $dbCredentials = array('dns' => null);
@@ -52,7 +53,7 @@ class Settings
 		
 		$this->settings = $settings;
 		
-		$this->extract($this->nodes, 'node');
+		$this->extract($this->nodeCredentials, 'node');
 		$this->extract($this->apiKey, 'api-key');
 		$this->extract($this->mailSender, 'mail.from');
 		$this->extract($this->publicURL, 'public-url');
@@ -70,6 +71,12 @@ class Settings
 		$this->extract($this->filterPattern, 'filter-pattern');
 		$this->extract($this->digestToAll, 'digest.to-all');
 		$this->extract($this->digestSecret, 'digest.secret');
+		
+		foreach ($this->nodeCredentials as $cred) {
+			$username = isset($cred['username']) ? $cred['username'] : null;
+			$password = isset($cred['password']) ? $cred['password'] : null;
+			$this->nodes[] = new Node($cred['address'], $username, $password);
+		}
 		
 		if(!$this->publicURL)
 		{
@@ -113,6 +120,14 @@ class Settings
 		}
 		
 		return $this->database;
+	}
+	
+	/**
+	 * Returns the credentials for all configured nodes.
+	 */
+	public function getNodeCredentials()
+	{
+		return $this->nodeCredentials;
 	}
 	
 	/**
