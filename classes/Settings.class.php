@@ -116,7 +116,7 @@ class Settings
 			$dsn = $credentials['dsn'];
 			$username = isset($credentials['user']) ? $credentials['user'] : null;
 			$password = isset($credentials['password']) ? $credentials['password'] : null;
-			$this->database = new PDO($dsn, $username, $password);
+			$this->database = new Database($dsn, $username, $password);
 		}
 		
 		return $this->database;
