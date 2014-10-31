@@ -2,7 +2,6 @@
 if (!defined('SP_ENDUSER')) die('File not included');
 
 require_once BASE.'/inc/core.php';
-require_once BASE.'/inc/ldap.php';
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
 	$session_name = $settings->getSessionName();
