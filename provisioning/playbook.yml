@@ -44,6 +44,29 @@
 
 
 
+    - name: add mariadb signing key
+      apt_key: keyserver=keyserver.ubuntu.com id=0xcbcb082a1bb943db
+
+    - name: add mariadb repository
+      apt_repository: state=present repo='deb http://ftp.ddg.lth.se/mariadb/repo/10.1/debian wheezy main'
+
+    - name: install mariadb + libs
+      apt: state=latest update_cache=yes name={{item}}
+      with_items:
+        - mariadb-server
+        - mariadb-client
+        - libmariadbclient-dev
+        # Not actually used by the app, but needed for Ansible's mysql modules
+        - python-mysqldb
+
+    - name: create the database
+      mysql_db: name=spenduser state=present
+
+    - name: set up the database user
+      mysql_user: state=present name=spenduser password=spenduser priv=spenduser.*:ALL
+
+
+
     - name: install composer
       command: "/bin/bash -c 'curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin' creates=/usr/local/bin/composer"
 

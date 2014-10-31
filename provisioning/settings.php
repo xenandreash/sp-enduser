@@ -12,7 +12,7 @@
  * If you are planning on using authentication methods other than the default
  * 'server' mode (which authenticates users directly against the server), you
  * need to specify a username and password that will be used to access the
- * server for non-server users. Otherwise, this can and should be omitted.
+ * server for non-server users.
  * 
  * It might be a good idea to read about authentication scripts on our wiki, to
  * create specific access rights so that if this end-user web is compromised,
@@ -21,13 +21,15 @@
  */
 
 $settings['node'][] = array(
-		'address' => 'http://10.2.0.30/',
+		'address' => 'http://10.2.0.30',
+		'username' => 'admin',
+		'password' => 'admin',
 		);
-//$settings['node'][] = array(
-//		'address' => 'https://10.2.0.31/',
-//		'username' => 'admin',
-//		'password' => 'admin',
-//		);
+$settings['node'][] = array(
+		'address' => 'http://10.2.0.31/',
+		'username' => 'admin',
+		'password' => 'admin',
+		);
 
 /*
  * The API key is used by the Halon mail gateways to communicate with
@@ -62,10 +64,10 @@ $settings['api-key'] = 'secret';
 
 //$settings['database']['dsn'] = 'sqlite:/tmp/foo.db';
 //$settings['database']['dsn'] = 'pgsql:host=localhost;port=5432;dbname=spenduser;user=halon;password=halon';
-//$settings['database']['dsn'] = 'mysql:host=localhost;port=5432;dbname=spenduser';
-//$settings['database']['user'] = 'root';
-//$settings['database']['password'] = '1';
-$settings['database']['dsn'] = 'sqlite:/vagrant/enduser.db';
+$settings['database']['dsn'] = 'mysql:host=localhost;port=5432;dbname=spenduser';
+$settings['database']['user'] = 'spenduser';
+$settings['database']['password'] = 'spenduser';
+//$settings['database']['dsn'] = 'sqlite:/vagrant/enduser.db';
 
 /*
  * Authentication is probably the second most important configuration
@@ -85,11 +87,11 @@ $settings['database']['dsn'] = 'sqlite:/vagrant/enduser.db';
 //$settings['authentication'][] = array(
 //		'type' => 'database',
 //		);
-// $settings['authentication'][] = array(
-// 		'type' => 'account',
-// 		'username' => 'foo',
-// 		'password' => 'foo',
-// 		);
+$settings['authentication'][] = array(
+		'type' => 'account',
+		'username' => 'foo',
+		'password' => 'foo',
+		);
 //$settings['authentication'][] = array(
 //		'type' => 'ldap',
 //		'uri' => 'ldap://10.2.7.2',
@@ -101,9 +103,9 @@ $settings['database']['dsn'] = 'sqlite:/vagrant/enduser.db';
 //		'host' => '10.2.0.30',
 //		'port' => 25,
 //		);
-//$settings['authentication'][] = array(
-//		'type' => 'server',
-//		);
+$settings['authentication'][] = array(
+		'type' => 'server',
+		);
 
 /*
  * The quarantine filter is used to restrict the end-user access to
@@ -144,3 +146,10 @@ $settings['database']['dsn'] = 'sqlite:/vagrant/enduser.db';
  */
 
 //$settings['session-name'] = 'spenduser';
+
+/*
+ * Customizable text in the interface.
+ */
+
+//$settings['pagename'] = "Halon SP for end-users";
+//$settings['logintext'] = "Some text you'd like to display on the login form";
