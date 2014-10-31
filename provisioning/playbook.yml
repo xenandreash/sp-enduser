@@ -65,6 +65,9 @@
     - name: set up the database user
       mysql_user: state=present name=spenduser password=spenduser priv=spenduser.*:ALL
 
+    - name: import the database dump
+      mysql_db: name=spenduser state=import target=/vagrant/provisioning/spenduser.sql
+
 
 
     - name: install composer
