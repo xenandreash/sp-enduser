@@ -2,9 +2,6 @@
 
 class NodeBackend extends Backend
 {
-	// TODO: Asynchronous calls!
-	// TODO: Less repetition!
-	
 	private $nodes = null;
 	
 	public function __construct($nodes)
@@ -12,61 +9,87 @@ class NodeBackend extends Backend
 		$this->nodes = $nodes;
 	}
 	
+	
+	
 	// Node backends support everything
 	public function supportsHistory() { return true; }
 	public function supportsQueue() { return true; }
 	public function supportsQuarantine() { return true; }
 	
-	public function loadMailHistory($search, $size, &$errors = array())
+	
+	
+	/**
+	 * Send an asynchronous SOAP request to all nodes.
+	 */
+	public function soapCall($fname, $args, &$errors = array())
 	{
-		$timesort = array();
-		
-		foreach ($this->nodes as $n => &$c)
+		// Create an async SOAP client and stage an API call, note that
+		// SoapFault exceptions can be thrown by either this call or the
+		// retrieving one, so we have to handle either case.
+		$clients = array();
+		foreach ($this->nodes as $n => &$node)
 		{
-			try
-			{
-				$params = array(
-					'limit' => $size + 1,
-					'filter' => $search,
-					'offset' => 0
-				);
-				$data = $c->soap()->mailHistory($params);
-				
-				if (is_array($data->result->item))
-					foreach ($data->result->item as $item)
-						$timesort[$item->msgts0][] = array('id' => $n, 'type' => 'history', 'data' => $item);
-			}
-			catch (SoapFault $f)
-			{
+			$clients[$n] = $node->soap(true);
+			
+			try {
+				call_user_func(array($clients[$n], $fname), $args);
+			} catch (SoapFault $f) {
 				$errors[] = $f->faultstring;
 			}
 		}
+		
+		// Dispatch all pending calls; if the curl extension is available, this
+		// will be asynchronous, and will only take as long as the slowest node
+		soap_dispatch();
+		
+		// Run the API call again to retrieve the resulting data
+		$results = array();
+		foreach ($clients as $n => &$c)
+		{
+			try {
+				$results[$n] = call_user_func(array($clients[$n], $fname), $args);
+			} catch (SoapFault $f) {
+				$errors[] = $f->faultstring;
+			}
+		}
+		
+		return $results;
+	}
+	
+	
+	
+	public function loadMailHistory($search, $size, &$errors = array())
+	{
+		$params = array(
+			'limit' => $size + 1,
+			'filter' => $search,
+			'offset' => 0
+		);
+		$results = $this->soapCall('mailHistory', $params, $errors);
+		
+		$timesort = array();
+		foreach ($results as $n => $data)
+			if (is_array($data->result->item))
+				foreach ($data->result->item as $item)
+					$timesort[$item->msgts0][] = array('id' => $n, 'type' => 'history', 'data' => $item);
 		
 		return $timesort;
 	}
 	
 	public function loadMailQueue($search, $size, &$errors = array())
 	{
-		foreach ($this->nodes as $n => &$c)
-		{
-			try
-			{
-				$params = array(
-					'limit' => $size + 1,
-					'filter' => $search,
-					'offset' => 0
-				);
-				$data = $c->soap()->mailQueue($params);
-				
-				if (is_array($data->result->item))
-					foreach ($data->result->item as $item)
-						$timesort[$item->msgts0][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
-			}
-			catch (SoapFault $f)
-			{
-				$errors[] = $f->faultstring;
-			}
-		}
+		$params = array(
+			'limit' => $size + 1,
+			'filter' => $search,
+			'offset' => 0
+		);
+		$results = $this->soapCall('mailQueue', $params, $errors);
+		
+		$timesort = array();
+		foreach ($results as $n => $data)
+			if (is_array($data->result->item))
+				foreach ($data->result->item as $item)
+					$timesort[$item->msgts0][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
 		
 		return $timesort;
 	}
