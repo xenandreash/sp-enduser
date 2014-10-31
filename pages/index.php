@@ -67,9 +67,13 @@ $tasks = array();
 $prev_button = ' disabled';
 $next_button = ' disabled';
 $param = array();
-$clients = array();
+//$clients = array();
 $errors = array();
-foreach ($settings->getNodes() as $n => $r) {
+
+$dbBackend = new DatabaseBackend($settings->getDatabase());
+$nodeBackend = new NodeBackend($settings->getNodes());
+
+/*foreach ($settings->getNodes() as $n => $r) {
 	try {
 		$clients[$n] = soap_client($n, true);
 		$param['queue'][$n]['limit'] = $size + 1;
@@ -81,11 +85,11 @@ foreach ($settings->getNodes() as $n => $r) {
 	} catch (SoapFault $f) {
 		$errors[$n] = $f->faultstring;
 	}
-}
+}*/
 
 // Override offset with GET
 $totaloffset = 0;
-foreach ($_GET as $k => $v) {
+/*foreach ($_GET as $k => $v) {
 	if (!preg_match('/^(history|queue|log)offset(\d+)$/', $k, $m))
 		continue;
 	if ($v < 1)
@@ -93,19 +97,19 @@ foreach ($_GET as $k => $v) {
 	$param[$m[1]][$m[2]]['offset'] = $v;
 	$totaloffset += $v;
 	$prev_button = '';
-}
+}*/
 
 // Create search/restrict query for SQL
-$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
+/*$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
 $sql_where = hql_to_sql($search);
 $real_sql = build_query_restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param['log']);
-$real_sql['sql'] .= ' ORDER BY id DESC LIMIT '.intval($size + 1); // don't send unnecessary
+$real_sql['sql'] .= ' ORDER BY id DESC LIMIT '.intval($size + 1); // don't send unnecessary*/
 
 // $clients are asynchronous
 // - run functions, add to queue
 // - run soap_dispatch();
 // - run functions, fetch result
-if ($source == 'all' || $source == 'history') {
+/*if ($source == 'all' || $source == 'history') {
 	foreach ($clients as $n => &$c)
 		$c->mailHistory($param['history'][$n]);
 }
@@ -113,23 +117,30 @@ if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
 	foreach ($clients as $n => &$c)
 		$c->mailQueue($param['queue'][$n]);
 }
-soap_dispatch();
+soap_dispatch();*/
+
 $cols = 8;
 $total = 0;
 $totalget = $totaloffset;
 $totalknown = true;
-if ($source == 'all' || $source == 'log') {
-	$dbh = $settings->getDatabase();
-	$statement = $dbh->prepare($real_sql['sql']);
-	$statement->execute($real_sql['params']);
-	while ($item = $statement->fetchObject())
-		$timesort[$item->msgts0][] = array('id' => $item->union_id, 'type' => 'log', 'data' => $item);
-	if ($statement->rowCount() > $size)
+
+function process_results($results, $err = []) {
+	global $timesort, $totalget, $totalknown, $errors;
+	
+	$timesort = array_merge($timesort, $results);
+	$totalget += count($results);
+	if(count($results) > $size)
 		$totalknown = false;
-	$totalget += $statement->rowCount();
+}
+
+if ($source == 'all' || $source == 'log') {
+	$results = $dbBackend->loadMailHistory($real_search, $size, $errors);
+	$timesort = array_merge($timesort, $results);
 }
 if ($source == 'all' || $source == 'history') {
-	foreach ($clients as $n => &$c) {
+	$results = $nodeBackend->loadMailHistory($real_search, $size, $errors);
+	$timesort = array_merge($timesort, $results);
+	/*foreach ($clients as $n => &$c) {
 		try {
 			$data = $c->mailHistory($param['history'][$n]);
 			if (is_array($data->result->item)) foreach ($data->result->item as $item)
@@ -141,10 +152,12 @@ if ($source == 'all' || $source == 'history') {
 		} catch (SoapFault $f) {
 			$errors[$n] = $f->faultstring;
 		}
-	}
+	}*/
 }
 if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
-	foreach ($clients as $n => &$c) {
+	$results = $nodeBackend->loadMailQueue($real_search, $size, $errors);
+	$timesort = array_merge($timesort, $results);
+	/*foreach ($clients as $n => &$c) {
 		try {
 			$data = $c->mailQueue($param['queue'][$n]);
 			if (is_array($data->result->item)) foreach ($data->result->item as $item)
@@ -156,7 +169,7 @@ if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
 		} catch (SoapFault $f) {
 			$errors[$n] = $f->faultstring;
 		}
-	}
+	}*/
 }
 krsort($timesort);
 ksort($errors);
