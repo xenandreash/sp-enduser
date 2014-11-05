@@ -46,7 +46,7 @@ $display_scores = $settings->getDisplayScores();
 // Select box arrays
 foreach (array(10, 50, 100, 500, 1000, 5000) as $n)
 	$pagesize[$n] = $n.' results';
-$sources = array('all' => 'All', 'history' => 'History', 'queue' => 'Queue', 'quarantine' => 'Quarantine', 'log' => 'Log');
+$sources = array('history' => 'History', 'queue' => 'Queue', 'quarantine' => 'Quarantine', 'log' => 'Log');
 
 // Create actual search query for SOAP, in order of importance (for security)
 $queries = array();
@@ -86,15 +86,15 @@ foreach ($_GET as $k => $v) {
 
 $cols = 8;
 
-if ($source == 'all' || $source == 'log') {
+if ($source == 'log') {
 	$results = $dbBackend->loadMailHistory($real_search, $size, $errors);
 	$timesort = array_merge($timesort, $results);
 }
-if ($source == 'all' || $source == 'history') {
+if ($source == 'history') {
 	$results = $nodeBackend->loadMailHistory($real_search, $size, $errors);
 	$timesort = array_merge($timesort, $results);
 }
-if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
+if ($source == 'queue' || $source == 'quarantine') {
 	$results = $nodeBackend->loadMailQueue($real_search, $size, $errors);
 	$timesort = array_merge($timesort, $results);
 }
