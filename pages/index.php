@@ -46,7 +46,7 @@ $display_scores = $settings->getDisplayScores();
 // Select box arrays
 foreach (array(10, 50, 100, 500, 1000, 5000) as $n)
 	$pagesize[$n] = $n.' results';
-$sources = array('all' => 'All', 'history' => 'History', 'queue' => 'Queue', 'quarantine' => 'Quarantine', 'log' => 'Log');
+$sources = array('history' => 'History', 'queue' => 'Queue', 'quarantine' => 'Quarantine', 'log' => 'Log');
 
 // Create actual search query for SOAP, in order of importance (for security)
 $queries = array();
@@ -67,21 +67,10 @@ $tasks = array();
 $prev_button = ' disabled';
 $next_button = ' disabled';
 $param = array();
-$clients = array();
 $errors = array();
-foreach ($settings->getNodes() as $n => $r) {
-	try {
-		$clients[$n] = soap_client($n, true);
-		$param['queue'][$n]['limit'] = $size + 1;
-		$param['history'][$n]['limit'] = $size + 1;
-		$param['queue'][$n]['filter'] = $real_search;
-		$param['history'][$n]['filter'] = $real_search;
-		$param['queue'][$n]['offset'] = 0;
-		$param['history'][$n]['offset'] = 0;
-	} catch (SoapFault $f) {
-		$errors[$n] = $f->faultstring;
-	}
-}
+
+$dbBackend = new DatabaseBackend($settings->getDatabase());
+$nodeBackend = new NodeBackend($settings->getNodes());
 
 // Override offset with GET
 $totaloffset = 0;
@@ -95,69 +84,21 @@ foreach ($_GET as $k => $v) {
 	$prev_button = '';
 }
 
-// Create search/restrict query for SQL
-$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
-$sql_where = hql_to_sql($search);
-$real_sql = build_query_restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param['log']);
-$real_sql['sql'] .= ' ORDER BY id DESC LIMIT '.intval($size + 1); // don't send unnecessary
-
-// $clients are asynchronous
-// - run functions, add to queue
-// - run soap_dispatch();
-// - run functions, fetch result
-if ($source == 'all' || $source == 'history') {
-	foreach ($clients as $n => &$c)
-		$c->mailHistory($param['history'][$n]);
-}
-if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
-	foreach ($clients as $n => &$c)
-		$c->mailQueue($param['queue'][$n]);
-}
-soap_dispatch();
 $cols = 8;
-$total = 0;
-$totalget = $totaloffset;
-$totalknown = true;
-if ($source == 'all' || $source == 'log') {
-	$dbh = $settings->getDatabase();
-	$statement = $dbh->prepare($real_sql['sql']);
-	$statement->execute($real_sql['params']);
-	while ($item = $statement->fetchObject())
-		$timesort[$item->msgts0][] = array('id' => $item->union_id, 'type' => 'log', 'data' => $item);
-	if ($statement->rowCount() > $size)
-		$totalknown = false;
-	$totalget += $statement->rowCount();
+
+if ($source == 'log') {
+	$results = $dbBackend->loadMailHistory($real_search, $size, $errors);
+	$timesort = array_merge($timesort, $results);
 }
-if ($source == 'all' || $source == 'history') {
-	foreach ($clients as $n => &$c) {
-		try {
-			$data = $c->mailHistory($param['history'][$n]);
-			if (is_array($data->result->item)) foreach ($data->result->item as $item)
-				$timesort[$item->msgts0][] = array('id' => $n, 'type' => 'history', 'data' => $item);
-			$total += $data->totalHits;
-			if (count($data->result->item) > $size)
-				$totalknown = false;
-			$totalget += count($data->result->item);
-		} catch (SoapFault $f) {
-			$errors[$n] = $f->faultstring;
-		}
-	}
+if ($source == 'history') {
+	$results = $nodeBackend->loadMailHistory($real_search, $size, $errors);
+	$timesort = array_merge($timesort, $results);
 }
-if ($source == 'all' || $source == 'queue' || $source == 'quarantine') {
-	foreach ($clients as $n => &$c) {
-		try {
-			$data = $c->mailQueue($param['queue'][$n]);
-			if (is_array($data->result->item)) foreach ($data->result->item as $item)
-				$timesort[$item->msgts0][] = array('id' => $n, 'type' => 'queue', 'data' => $item);
-			$total += $data->totalHits;
-			if (count($data->result->item) > $size)
-				$totalknown = false;
-			$totalget += count($data->result->item);
-		} catch (SoapFault $f) {
-			$errors[$n] = $f->faultstring;
-		}
-	}
+if ($source == 'queue' || $source == 'quarantine') {
+	$results = $nodeBackend->loadMailQueue($real_search, $size, $errors);
+	$timesort = array_merge($timesort, $results);
 }
+
 krsort($timesort);
 ksort($errors);
 ?>
@@ -297,15 +238,6 @@ ksort($errors);
 							<input type="hidden" name="source" value="<?php p($source) ?>">
 							<?php foreach ($param as $type => $nodes) foreach ($nodes as $node => $args) if ($args['offset'] > 0) { ?>
 								<input type="hidden" name="<?php p($type) ?>offset<?php p($node) ?>" value="<?php p($args['offset']) ?>">
-							<?php } ?>
-							<?php if ($total > 0) { ?>
-							<span class="semitrans">
-								<?php p(number_format($total)); ?> match<?php $total != 1 ? p('es') : ''; ?> found
-							</span>
-							<?php } else if ($totalget > 0 && $totalknown) { ?>
-							<span class="semitrans">
-								<?php p(number_format($totalget)); ?> match<?php $totalget != 1 ? p('es') : ''; ?> found
-							</span>
 							<?php } ?>
 						</form>
 					</td>
