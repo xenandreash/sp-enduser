@@ -31,7 +31,7 @@ function header_active($page) {
 		<?php if (class_exists('Session')) { ?>
 		<div id="nav">
 			<ul id="menu">
-				<li class="mail<?php header_active('index') ?>"><a href="?page=index">Messages</a></li>
+				<li class="mail<?php header_active('index') ?>"><a href=".">Messages</a></li>
 				<?php if ($settings->getDBCredentials()['dsn']) { ?>
 				<li class="bwlist<?php header_active('bwlist') ?>"><a href="?page=bwlist">Black/whitelist</a></li>
 				<?php } ?>
