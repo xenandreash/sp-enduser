@@ -5,6 +5,7 @@ class Node
 	private $address;
 	private $username;
 	private $password;
+	private $serial;
 	
 	public function __construct($address, $username = null, $password = null)
 	{
@@ -13,7 +14,7 @@ class Node
 		$this->password = $password;
 	}
 	
-	public function soap($async = false, $username = null, $password = null)
+	public function soap($async = false, $username = null, $password = null, $serial = null)
 	{
 		$session = Session::Get();
 		
@@ -48,5 +49,12 @@ class Node
 	public function getPassword()
 	{
 		return $this->password;
+	}
+	
+	public function getSerial($autoload = false)
+	{
+		if(!$this->serial && $autoload)
+			$this->serial = $this->soap()->getSerial()->result;
+		return $this->serial;
 	}
 }

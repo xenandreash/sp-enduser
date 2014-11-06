@@ -30,15 +30,10 @@ if ($_GET['type'] == 'log') {
 	$mail = restrict_local_mail(intval($_GET['id']));
 	// Resolv SOAP node
 	$node = null;
-	foreach (settings('node') as $n => $tmpnode)
+	foreach ($settings->getNodes() as $n => $tmpnode)
 	{
-		if (isset($tmpnode['serialno'])) {
-			if ($tmpnode['serialno'] == $mail->serialno)
-				$node = $n;
-		} else {
-			if (soap_client($n)->getSerial()->result == $mail->serialno)
-				$node = $n;
-		}
+		if($tmpnode->getSerial(true) == $mail->serialno)
+			$node = $n;
 	}
 	if ($node === null) die('Unable to find SOAP node');
 	$args = array('searchlog', $mail->msgid, '-'.$mail->msgts);
@@ -50,7 +45,7 @@ if ($_GET['type'] == 'log') {
 	$args = array('searchlog', $mail->msgid.':'.$id, '-'.$mail->msgts);
 }
 
-$logs = $settings->displayTextlog();
+$logs = $settings->getDisplayTextlog();
 if (!$logs) die('logs disabled');
 
 $client = soap_client($node);

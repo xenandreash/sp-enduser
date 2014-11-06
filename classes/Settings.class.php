@@ -75,7 +75,8 @@ class Settings
 		foreach ($this->nodeCredentials as $cred) {
 			$username = isset($cred['username']) ? $cred['username'] : null;
 			$password = isset($cred['password']) ? $cred['password'] : null;
-			$this->nodes[] = new Node($cred['address'], $username, $password);
+			$serial = isset($cred['serialno']) ? $cred['serialno'] : null;
+			$this->nodes[] = new Node($cred['address'], $username, $password, $serial);
 		}
 		
 		if(!$this->publicURL)
