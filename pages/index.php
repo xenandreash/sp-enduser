@@ -99,7 +99,7 @@ if ($source == 'queue' || $source == 'quarantine') {
 	$timesort = array_merge($timesort, $results);
 }
 
-krsort($timesort);
+ksort($timesort);
 ksort($errors);
 ?>
 			<form>
