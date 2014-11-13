@@ -12,8 +12,8 @@ class Backend
 	public function supportsQuarantine() { return false; }
 	
 	/// Loads the mail history
-	public function loadMailHistory($search, $size, &$errors = array()) { return null; }
+	public function loadMailHistory($search, $size, $param, &$errors = array()) { return null; }
 	
 	/// Loads the mail queue
-	public function loadMailQueue($search, $size, &$errors = array()) { return null; }
+	public function loadMailQueue($search, $size, $param, &$errors = array()) { return null; }
 }

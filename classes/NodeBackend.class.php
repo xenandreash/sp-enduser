@@ -58,12 +58,12 @@ class NodeBackend extends Backend
 	
 	
 	
-	public function loadMailHistory($search, $size, &$errors = array())
+	public function loadMailHistory($search, $size, $param, &$errors = array())
 	{
 		$params = array(
 			'limit' => $size + 1,
 			'filter' => $search,
-			'offset' => 0
+			'offset' => $param[1]['offset']
 		);
 		$results = $this->soapCall('mailHistory', $params, $errors);
 		
@@ -76,12 +76,12 @@ class NodeBackend extends Backend
 		return $timesort;
 	}
 	
-	public function loadMailQueue($search, $size, &$errors = array())
+	public function loadMailQueue($search, $size, $param, &$errors = array())
 	{
 		$params = array(
 			'limit' => $size + 1,
 			'filter' => $search,
-			'offset' => 0
+			'offset' => $param[1]['offset']
 		);
 		$results = $this->soapCall('mailQueue', $params, $errors);
 		

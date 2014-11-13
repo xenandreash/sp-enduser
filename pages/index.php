@@ -91,11 +91,11 @@ if ($source == 'log') {
 	$timesort = array_merge($timesort, $results);
 }
 if ($source == 'history') {
-	$results = $nodeBackend->loadMailHistory($real_search, $size, $param['history'][0], $errors);
+	$results = $nodeBackend->loadMailHistory($real_search, $size, $param['history'], $errors);
 	$timesort = array_merge($timesort, $results);
 }
 if ($source == 'queue' || $source == 'quarantine') {
-	$results = $nodeBackend->loadMailQueue($real_search, $size, $param['queue'][0], $errors);
+	$results = $nodeBackend->loadMailQueue($real_search, $size, $param['queue'], $errors);
 	$timesort = array_merge($timesort, $results);
 }
 
