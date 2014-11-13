@@ -20,8 +20,8 @@ class DatabaseBackend extends Backend
 		// Create search/restrict query for SQL
 		$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
 		$sql_where = hql_to_sql($search);
-		$real_sql = build_query_restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size), $param);
-		$real_sql['sql'] .= ' ORDER BY id DESC LIMIT '.intval($size); // don't send unnecessary
+		$real_sql = build_query_restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param);
+		$real_sql['sql'] .= ' ORDER BY id DESC LIMIT '.intval($size + 1); // don't send unnecessary
 		
 		// Fetch stuff
 		try {
