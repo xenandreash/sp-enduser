@@ -12,7 +12,7 @@ class DatabaseBackend extends Backend
 	// Database backends support history; it's literally all they do
 	public function supportsHistory() { return true; }
 	
-	public function loadMailHistory($search, $size, &$errors = array())
+	public function loadMailHistory($search, $size, $param, &$errors = array())
 	{
 		// Note: this is ported straight out of index.php, improvements to come
 		$results = array();
@@ -20,7 +20,7 @@ class DatabaseBackend extends Backend
 		// Create search/restrict query for SQL
 		$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
 		$sql_where = hql_to_sql($search);
-		$real_sql = build_query_restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param['log']);
+		$real_sql = build_query_restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param);
 		$real_sql['sql'] .= ' ORDER BY id DESC LIMIT '.intval($size + 1); // don't send unnecessary
 		
 		// Fetch stuff
