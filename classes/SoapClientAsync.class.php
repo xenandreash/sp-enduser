@@ -34,6 +34,7 @@ class SoapClientAsync extends SoapClient {
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_login.':'.$this->_password);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 		$_soapRequests[$id] = $ch;
 		return "";
 	}
