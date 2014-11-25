@@ -30,9 +30,12 @@ if ($_GET['list'] == 'delete') {
 
 if ($_GET['list'] == 'add') {
 	if (strpos($_POST['value'], ' ') !== false) die('Invalid email address, domain name or IP address.');
+	if (strpos($_POST['access'], ' ') !== false) die('Invalid email address or domain name.');
+	if ($_POST['value'][0] == '@') $_POST['value'] = substr($_POST['value'], 1);
+	if ($_POST['access'][0] == '@') $_POST['access'] = substr($_POST['access'], 1);
 	if (checkAccess($_POST['access']) && ($_POST['type'] == 'whitelist' || $_POST['type'] == 'blacklist')) {
 		$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
-		$statement->execute(array(':access' => $_POST['access'], ':type' => $_POST['type'], ':value' => strtolower($_POST['value'])));
+		$statement->execute(array(':access' => strtolower($_POST['access']), ':type' => $_POST['type'], ':value' => strtolower($_POST['value'])));
 	}
 	header("Location: ?page=bwlist");
 	die();
