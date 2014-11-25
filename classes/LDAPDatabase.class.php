@@ -28,7 +28,7 @@ class LDAPDatabase {
 		if (!$bind)
 			return false;
 
-		$_SESSION['access'] = array('mail' => array());
+		$access = array('mail' => array());
 
 		$ldapuser = ldap_escape($username);
 		switch ($this->schema) {
@@ -40,9 +40,9 @@ class LDAPDatabase {
 						if (!is_string($mail) || strcasecmp(substr($mail, 0, 5), 'smtp:') !== 0)
 							continue;
 						if (substr($mail, 0, 5) == 'SMTP:')
-							array_unshift($_SESSION['access']['mail'], strtolower(substr($mail, 5)));
+							array_unshift($access['mail'], strtolower(substr($mail, 5)));
 						else
-							array_push($_SESSION['access']['mail'], strtolower(substr($mail, 5)));
+							array_push($access['mail'], strtolower(substr($mail, 5)));
 					}
 				}
 			break;
@@ -53,17 +53,18 @@ class LDAPDatabase {
 					foreach (ldap_get_values($ds, $entry, 'mail') as $mail) {
 						if (!is_string($mail))
 							continue;
-						$_SESSION['access']['mail'][] = strtolower($mail);
+						$access['mail'][] = strtolower($mail);
 					}
 				}
 			break;
 		}
 
-		if (count($_SESSION['access']['mail']) == 0)
-			die('No access levels');
+		if (empty($access['mail']))
+			return false;
 	
 		$_SESSION['username'] = $username;
 		$_SESSION['source'] = 'ldap';
+		$_SESSION['access'] = $access;
 
 		return true;
 	}
