@@ -112,7 +112,7 @@ class Settings
 			$credentials = $this->getDBCredentials();
 			
 			if(!$credentials['dsn'])
-				die("No database configured");
+				return null;
 			
 			$dsn = $credentials['dsn'];
 			$username = isset($credentials['user']) ? $credentials['user'] : null;
