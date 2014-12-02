@@ -1,6 +1,9 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
+if (!file_exists(BASE.'/settings.php'))
+	die('Missing '.BASE.'/settings.php; edit <b>settings-default.php</b> and rename it to <b>settings.php</b>.');
+
 $title = 'Install';
 require_once BASE.'/inc/core.php';
 require_once BASE.'/partials/header.php';
