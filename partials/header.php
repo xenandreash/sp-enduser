@@ -30,7 +30,7 @@ $dbCredentials = $settings->getDBCredentials();
 		<?php } ?>
 	</head>
 	<body>
-		<?php if (class_exists('Session')) { ?>
+		<?php if (Session::Get()->getUsername()) { ?>
 		<div id="nav">
 			<ul id="menu">
 				<li class="mail<?php header_active('index') ?>"><a href=".">Messages</a></li>
