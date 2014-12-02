@@ -39,7 +39,8 @@ if (count($settings->getAuthSources()) == 0) {
 	<p><strong>ERROR:</strong> No authentication sources</p>
 <?php } ?>
 <?php
-if (isset($settings->getDBCredentials()['dsn'])) {
+$dbCredentials = $settings->getDBCredentials();
+if (isset($dbCredentials['dsn'])) {
 ?>
 	<p>
 <?php

@@ -38,8 +38,10 @@ if (isset($_POST['action'])) {
 // Prepare data
 $scores = $settings->getDisplayScores();
 $logs = $settings->getDisplayTextlog();
-if (isset($settings->getDisplayTransport()[$mail->msgtransport])) $transport = $settings->getDisplayTransport()[$mail->msgtransport];
-if (isset($settings->getDisplayListener()[$mail->msglistener])) $listener = $settings->getDisplayListener()[$mail->msglistener];
+$transports = $settings->getDisplayTransport();
+$listeners = $settings->getDisplayListener();
+if (isset($transports[$mail->msgtransport])) $transport = $transports[$mail->msgtransport];
+if (isset($listeners[$mail->msglistener])) $listener = $listeners[$mail->msglistener];
 if ($_GET['type'] == 'queue' && $mail->msgaction == 'DELIVER')
 	$desc = 'In queue (retry '.$mail->msgretries.') <span class="semitrans">'.htmlspecialchars($mail->msgerror).'</span>';
 else

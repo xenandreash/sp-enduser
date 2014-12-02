@@ -14,6 +14,8 @@ function header_active($page) {
 		echo ' active';
 }
 
+$dbCredentials = $settings->getDBCredentials();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,7 +34,7 @@ function header_active($page) {
 		<div id="nav">
 			<ul id="menu">
 				<li class="mail<?php header_active('index') ?>"><a href=".">Messages</a></li>
-				<?php if ($settings->getDBCredentials()['dsn']) { ?>
+				<?php if ($dbCredentials['dsn']) { ?>
 				<li class="bwlist<?php header_active('bwlist') ?>"><a href="?page=bwlist">Black/whitelist</a></li>
 				<?php } ?>
 			</ul>
