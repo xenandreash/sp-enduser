@@ -29,10 +29,17 @@ class NodeBackend extends Backend
 		$clients = array();
 		foreach ($this->nodes as $n => &$node)
 		{
-			$clients[$n] = $node->soap(true);
+			$client = null;
+			try {
+				$client = $node->soap(true);
+				$clients[$n] = $client;
+			} catch (SoapFault $f) {
+				// Don't explode if we can't connect
+				continue;
+			}
 			
 			try {
-				call_user_func(array($clients[$n], $fname), $args);
+				call_user_func(array($client, $fname), $args);
 			} catch (SoapFault $f) {
 				$errors[] = $f->faultstring;
 			}

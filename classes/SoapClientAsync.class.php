@@ -29,7 +29,7 @@ class SoapClientAsync extends SoapClient {
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_ENCODING, "");
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
-		curl_setopt($ch, CURLOPT_TIMEOUT, $this->_connection_timeout ?: 30);
+		curl_setopt($ch, CURLOPT_TIMEOUT, $this->_connection_timeout ?: 10);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_login.':'.$this->_password);
