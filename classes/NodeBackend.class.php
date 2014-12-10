@@ -35,6 +35,7 @@ class NodeBackend extends Backend
 				$clients[$n] = $client;
 			} catch (SoapFault $f) {
 				// Don't explode if we can't connect
+				$errors[] = $f->faultstring;
 				continue;
 			}
 			
