@@ -7,7 +7,7 @@ require_once BASE.'/inc/core.php';
 $pagename = $settings->getPageName();
 $title = $title ?: 'Untitled';
 $logo = file_exists('template/logo.png') ? 'template/logo.png' : 'static/img/logo.png';
-$styles = file_exists('template/styles.css') ? 'template/styles.css' : 'static/styles.css';
+$styles = file_exists('template/styles.css') ? 'template/styles.css' : 'static/css/styles.css';
 
 function header_active($page) {
 	if ($_GET['page'] == $page || ($_GET['page'] == '' && $page == 'index'))
@@ -24,7 +24,7 @@ $dbCredentials = $settings->getDBCredentials();
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title><?php echo $title ?> | <?php echo $pagename ?></title>
 		<link rel="stylesheet" href="<?php echo $styles ?>">
-		<script src="static/jquery-1.9.1.min.js"></script>
+		<script src="static/js/jquery.min.js"></script>
 		<?php if (isset($javascript)) foreach ($javascript as $js) { ?>
 		<script src="<?php echo $js; ?>"></script>
 		<?php } ?>

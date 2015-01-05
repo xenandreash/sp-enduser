@@ -62,7 +62,7 @@ $_SESSION['logs_id'][] = $cmd_id->result;
 // Prepare data
 
 $title = 'Text log';
-$javascript[] = 'static/log.js';
+$javascript[] = 'static/js/log.js';
 require_once BASE.'/partials/header.php';
 ?>
 			<form>

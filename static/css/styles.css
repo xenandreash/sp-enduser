@@ -57,31 +57,31 @@
 }
 
 #nav li.mail {
-	background-image: url(img/mail-16-white.png);
+	background-image: url(../img/mail-16-white.png);
 }
 
 #nav li.mail.active {
-	background-image: url(img/mail-16-black.png);
+	background-image: url(../img/mail-16-black.png);
 }
 
 #nav li.bwlist {
-	background-image: url(img/clipboard-16-white.png);
+	background-image: url(../img/clipboard-16-white.png);
 }
 
 #nav li.bwlist.active {
-	background-image: url(img/clipboard-16-black.png);
+	background-image: url(../img/clipboard-16-black.png);
 }
 
 #nav li.user {
-	background-image: url(img/user-16-white.png);
+	background-image: url(../img/user-16-white.png);
 }
 
 #nav li.user.active {
-	background-image: url(img/user-16-black.png);
+	background-image: url(../img/user-16-black.png);
 }
 
 #nav li.logout {
-	background-image: url(img/signout-16-white.png);
+	background-image: url(../img/signout-16-white.png);
 }
 
 #header {
@@ -176,19 +176,19 @@
 }
 
 #header .search {
-	background-image: url(img/magnifying-22-blue.png);
+	background-image: url(../img/magnifying-22-blue.png);
 }
 
 #header .start {
-	background-image: url(img/start-22-blue.png);
+	background-image: url(../img/start-22-blue.png);
 }
 
 #header .back {
-	background-image: url(img/back-22-blue.png);
+	background-image: url(../img/back-22-blue.png);
 }
 
 #header .down {
-	background-image: url(img/down-22-blue.png);
+	background-image: url(../img/down-22-blue.png);
 }
 
 #header img#logo {
@@ -354,15 +354,15 @@ button.icon:hover, a.icon:hover, div.icon:hover {
 }
 
 .icon.mail {
-	background-image: url(img/mail-16-black.png);
+	background-image: url(../img/mail-16-black.png);
 }
 
 .icon.close {
-	background-image: url(img/cross-16-black.png);
+	background-image: url(../img/cross-16-black.png);
 }
 
 .icon.go {
-	background-image: url(img/play-16-black.png);
+	background-image: url(../img/play-16-black.png);
 }
 
 .semitrans {
@@ -542,7 +542,7 @@ pre.indent {
 	background-color: #eee;
 	background-repeat: no-repeat;
 	background-position: 2px 2px;
-	background-image: url(img/clipboard-16-black.png);
+	background-image: url(../img/clipboard-16-black.png);
 }
 
 a {
@@ -601,9 +601,9 @@ html {
 
 @font-face{
 	font-family: ostrich-rounded;
-	src: url('img/ostrich-rounded-webfont.eot');
-	src: url('img/ostrich-rounded-webfont.eot?#iefix') format('embedded-opentype'),
-		 url('img/ostrich-rounded-webfont.woff') format('woff'),
-		 url('img/ostrich-rounded-webfont.ttf') format('truetype'),
-		 url('img/ostrich-rounded-webfont.svg#ostrich-rounded') format('svg');
+	src: url('../fonts/ostrich-rounded-webfont.eot');
+	src: url('../fonts/ostrich-rounded-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('../fonts/ostrich-rounded-webfont.woff') format('woff'),
+		 url('../fonts/ostrich-rounded-webfont.ttf') format('truetype'),
+		 url('../fonts/ostrich-rounded-webfont.svg#ostrich-rounded') format('svg');
 }

@@ -33,7 +33,7 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 }
 
 $title = 'Messages';
-$javascript[] = 'static/index.js';
+$javascript[] = 'static/js/index.js';
 require_once BASE.'/partials/header.php';
 
 // Backends

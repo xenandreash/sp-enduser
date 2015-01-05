@@ -79,9 +79,9 @@ if ($_GET['type'] == 'queue') {
 }
 
 $title = 'Message';
-$javascript[] = 'static/preview.js';
-$javascript[] = 'static/diff_match_patch.js';
-$javascript[] = 'static/diff.js';
+$javascript[] = 'static/js/preview.js';
+$javascript[] = 'static/js/diff_match_patch.js';
+$javascript[] = 'static/js/diff.js';
 require_once BASE.'/partials/header.php';
 ?>
 			<form>
