@@ -33,18 +33,29 @@ $dbCredentials = $settings->getDBCredentials();
 	</head>
 	<body>
 		<?php if (Session::Get()->getUsername()) { ?>
-		<nav class="navbar navbar-enduser">
+		<nav class="navbar navbar-inverse navbar-static-top">
 			<div class="container-fluid">
-				<ul class="nav navbar-nav">
-					<li class="mail<?php header_active('index'); ?>"><a href="."><i class="icon icon-mail"></i>Messages</a></li>
-					<?php if ($dbCredentials['dsn'] && $settings->getDisplayBWList()) { ?>
-					<li class="bwlist<?php header_active('bwlist'); ?>"><a href="?page=bwlist">Black/whitelist</a></li>
-					<?php } ?>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li class="user<?php header_active('user') ?>"><a href="?page=user"><?php p(Session::Get()->getUsername()); ?></a></li>
-					<li class="logout<?php header_active('logout') ?>"><a href="?page=logout">Logout</a></li>
-				</ul>
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sp-enduser-top-navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand visible-xs">Menu</a>
+				</div>
+				<div class="collapse navbar-collapse" id="sp-enduser-top-navbar">
+					<ul class="nav navbar-nav">
+						<li class="mail<?php header_active('index'); ?>"><a href="."><i class="icon icon-mail"></i>Messages</a></li>
+						<?php if ($dbCredentials['dsn'] && $settings->getDisplayBWList()) { ?>
+						<li class="bwlist<?php header_active('bwlist'); ?>"><a href="?page=bwlist">Black/whitelist</a></li>
+						<?php } ?>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="user<?php header_active('user') ?>"><a href="?page=user"><?php p(Session::Get()->getUsername()); ?></a></li>
+						<li class="logout<?php header_active('logout') ?>"><a href="?page=logout">Logout</a></li>
+					</ul>
+				</div>
 			</div>
 		</nav>
 		<!--<div id="nav">
