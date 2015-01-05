@@ -36,7 +36,7 @@ body > .navbar {
 	border-top-left-radius: 5px;
 }
 
-.navbar-enduser .navbar-nav > li.active > a {
+.navbar-enduser .navbar-nav > li.active > a, .navbar-enduser .navbar-nav > li > a:hover {
 	background-color: #eee;
 	color: #f60;
 	font-weight: bold;
@@ -51,7 +51,7 @@ body > .navbar {
 	background-image: url(../img/mail-16-white.png);
 }
 
-.navbar-enduser li.mail.active a {
+.navbar-enduser li.mail.active a, .navbar-enduser li.mail a:hover {
 	background-image: url(../img/mail-16-black.png);
 }
 
@@ -59,7 +59,7 @@ body > .navbar {
 	background-image: url(../img/clipboard-16-white.png);
 }
 
-.navbar-enduser li.bwlist.active a {
+.navbar-enduser li.bwlist.active a, .navbar-enduser li.bwlist a:hover {
 	background-image: url(../img/clipboard-16-black.png);
 }
 
@@ -67,12 +67,16 @@ body > .navbar {
 	background-image: url(../img/user-16-white.png);
 }
 
-.navbar-enduser li.user.active a {
+.navbar-enduser li.user.active a, .navbar-enduser li.user a:hover {
 	background-image: url(../img/user-16-black.png);
 }
 
 .navbar-enduser li.logout a {
 	background-image: url(../img/signout-16-white.png);
+}
+
+.navbar-enduser li.logout.active a, .navbar-enduser li.logout a:hover {
+	background-image: url(../img/signout-16-black.png);
 }
 
 #header {
