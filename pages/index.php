@@ -36,6 +36,10 @@ $title = 'Messages';
 $javascript[] = 'static/index.js';
 require_once BASE.'/partials/header.php';
 
+// Backends
+$dbBackend = new DatabaseBackend($settings->getDatabase());
+$nodeBackend = new NodeBackend($settings->getNodes());
+
 // Default values
 $search = isset($_GET['search']) ? hql_transform($_GET['search']) : '';
 $size = isset($_GET['size']) ? $_GET['size'] : 50;
@@ -46,7 +50,9 @@ $display_scores = $settings->getDisplayScores();
 // Select box arrays
 foreach (array(10, 50, 100, 500, 1000, 5000) as $n)
 	$pagesize[$n] = $n.' results';
-$sources = array('history' => 'History', 'queue' => 'Queue', 'quarantine' => 'Quarantine', 'log' => 'Log');
+$sources = array('history' => 'History');
+if($nodeBackend->isValid())
+	$sources += array('queue' => 'Queue', 'quarantine' => 'Quarantine');
 
 // Create actual search query for SOAP, in order of importance (for security)
 $queries = array();
@@ -69,9 +75,6 @@ $next_button = ' disabled';
 $param = array();
 $errors = array();
 
-$dbBackend = new DatabaseBackend($settings->getDatabase());
-$nodeBackend = new NodeBackend($settings->getNodes());
-
 // Override offset with GET
 $totaloffset = 0;
 foreach ($_GET as $k => $v) {
@@ -86,15 +89,12 @@ foreach ($_GET as $k => $v) {
 
 $cols = 8;
 
-if ($source == 'log') {
-	$results = $dbBackend->loadMailHistory($real_search, $size, $param['log'], $errors);
-	$timesort = merge_2d($timesort, $results);
-}
 if ($source == 'history') {
-	$results = $nodeBackend->loadMailHistory($real_search, $size, $param['history'], $errors);
+	$backend = ($dbBackend->isValid() ? $dbBackend : $nodeBackend);
+	$results = $backend->loadMailHistory($real_search, $size, $param['history'], $errors);
 	$timesort = merge_2d($timesort, $results);
 }
-if ($source == 'queue' || $source == 'quarantine') {
+else if ($source == 'queue' || $source == 'quarantine') {
 	$results = $nodeBackend->loadMailQueue($real_search, $size, $param['queue'], $errors);
 	$timesort = merge_2d($timesort, $results);
 }
@@ -214,7 +214,7 @@ ksort($errors);
 					</td>
 					<td>
 						<a title="Details" class="icon mail" href="?<?php echo $preview?>"></a>
-					<?php if ($m['type'] != 'history' && $m['type'] != 'log') { ?>
+					<?php if ($m['type'] != 'history') { ?>
 						<div title="Release/retry" class="icon go"></div>
 					<?php } ?>
 					</td>
