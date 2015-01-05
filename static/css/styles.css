@@ -47,6 +47,10 @@ body > .navbar {
 	text-decoration: none;
 }
 
+.navbar-enduser .icon-bar {
+	background-color: #ccc;
+}
+
 .navbar-enduser li.mail a {
 	background-image: url(../img/mail-16-white.png);
 }
