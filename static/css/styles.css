@@ -19,33 +19,13 @@ body > .navbar {
 	min-height: 35px !important;
 }
 
-#nav ul {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-#nav ul#menu {
-	float: left;
-	padding-left: 10px;
-}
-
-#nav ul#taskbar {
-	float: right;
-	padding-right: 20px;
-}
-
 .navbar-enduser .navbar-nav > li {
 	padding-top: 6px;
 }
 
 .navbar-enduser .navbar-nav > li > a {
-	/*display: block;*/
-	/*height: 24px;*/
 	background-repeat: no-repeat;
 	background-position: 7px 6px;
-	/*float: left;*/
-	/*margin-left: 10px;*/
 	margin-top: 5px;
 	padding-top: 4px;
 	padding-left: 30px;
