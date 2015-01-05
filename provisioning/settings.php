@@ -63,7 +63,7 @@ $settings['display-textlog'] = true;
  * examples. You should use PHP PDO format.
  */
 
-// $settings['database']['dsn'] = 'mysql:host=localhost;port=5432;dbname=spenduser';
+$settings['database']['dsn'] = 'mysql:host=localhost;port=5432;dbname=spenduser';
 $settings['database']['user'] = 'spenduser';
 $settings['database']['password'] = 'spenduser';
 
