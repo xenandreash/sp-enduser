@@ -32,8 +32,12 @@ if ($_GET['type'] == 'log') {
 	$node = null;
 	foreach ($settings->getNodes() as $n => $tmpnode)
 	{
-		if($tmpnode->getSerial(true) == $mail->serialno)
-			$node = $n;
+		try {
+			if($tmpnode->getSerial(true) == $mail->serialno)
+				$node = $n;
+		} catch (SoapFault $e) {
+			
+		}
 	}
 	if ($node === null) die('Unable to find SOAP node');
 	$args = array('searchlog', $mail->msgid, '-'.$mail->msgts);
