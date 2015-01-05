@@ -26,7 +26,7 @@ class Node
 			'uri' => 'urn:halon',
 			'login' => $username,
 			'password' => $password,
-			'connection_timeout' => 5,
+			'connection_timeout' => 3,
 			'features' => SOAP_SINGLE_ELEMENT_ARRAYS,
 			'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP
 			);
