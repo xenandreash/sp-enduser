@@ -24,6 +24,7 @@ class Settings
 	private $defaultSource = 'history';
 	private $displayScores = false;
 	private $displayTextlog = false;
+	private $displayBWList = true;
 	private $displayListener = array('mailserver:1' => "Inbound");
 	private $displayTransport = array('mailtransport:2' => "Internet");
 	private $quarantineFilter = array();
@@ -64,6 +65,7 @@ class Settings
 		$this->extract($this->defaultSource, 'default-source');
 		$this->extract($this->displayScores, 'display-scores');
 		$this->extract($this->displayTextlog, 'display-textlog');
+		$this->extract($this->displayBWList, 'display-bwlist');
 		$this->extract($this->displayListener, 'display-listener');
 		$this->extract($this->displayTransport, 'display-transport');
 		$this->extract($this->dbCredentials, 'database');
@@ -245,6 +247,14 @@ class Settings
 	public function getDisplayTextlog()
 	{
 		return $this->displayTextlog;
+	}
+	
+	/**
+	 * Returns whether the black/whitelist tab should be displayed.
+	 */
+	public function getDisplayBWList()
+	{
+		return $this->displayBWList;
 	}
 	
 	/**

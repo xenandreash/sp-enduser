@@ -51,6 +51,7 @@ $settings['api-key'] = 'secret';
 //$settings['default-source'] = 'history';
 //$settings['display-scores'] = false;
 //$settings['display-textlog'] = false;
+//$settings['display-bwlist'] = true;
 //$settings['display-listener']['mailserver:1'] = 'Inbound';
 //$settings['display-transport']['mailtransport:2'] = 'Internet';
 
