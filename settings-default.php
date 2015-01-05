@@ -104,6 +104,10 @@
 //		'type' => 'server',
 //		);
 
+//$settings['ldap-options'] = array(
+//		LDAP_OPT_NETWORK_TIMEOUT => 10,
+//		);
+
 /*
  * The quarantine filter is used to restrict the end-user access to
  * only certain quarantines, in case you have multiple quarantines with

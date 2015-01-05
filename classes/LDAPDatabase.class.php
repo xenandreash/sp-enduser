@@ -23,6 +23,10 @@ class LDAPDatabase {
 		if (!$ds)
 			return false;
 		ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
+		
+		$options = Settings::Get()->getLDAPOptions();
+		foreach($options as $k => $v)
+			ldap_set_option($ds, $k, $v);
 
 		$bind = @ldap_bind($ds, $username, $password);
 		if (!$bind)
