@@ -288,3 +288,46 @@ function has_auth_database() {
 			return true;
 	return false;
 }
+
+/**
+ * Merges two two-dimensional arrays together.
+ * 
+ * For example, this code:
+ * 
+ * $arr1 = array(
+ *     'a' => array($a1, $a2),
+ *     'b' => array($b1),
+ * );
+ * $arr2 = array(
+ *     'a' => array($a3),
+ *     'c' => array($c1),
+ * );
+ * $arr = merge_2d($arr1, $arr2);
+ * 
+ * Would result in:
+ * 
+ * $arr = array(
+ *     'a' => array($a1, $a2, $a3),
+ *     'b' => array($b1),
+ *     'c' => array($c1),
+ * );
+ * 
+ * While array_merge would produce:
+ * 
+ * $arr = array(
+ *     'a' => array($a3),
+ *     'b' => array($b1),
+ *     'c' => array($c1),
+ * );
+ */
+function merge_2d($a1, $a2) {
+	foreach ($a2 as $k => $v) {
+		if (!in_array($k, $a1, true)) {
+			$a1[$k] = $v;
+		} else {
+			$a1[$k] = array_merge($a1[$k], $v);
+		}
+	}
+	
+	return $a1;
+}

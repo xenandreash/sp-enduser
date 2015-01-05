@@ -88,18 +88,18 @@ $cols = 8;
 
 if ($source == 'log') {
 	$results = $dbBackend->loadMailHistory($real_search, $size, $param['log'], $errors);
-	$timesort = array_merge($timesort, $results);
+	$timesort = merge_2d($timesort, $results);
 }
 if ($source == 'history') {
 	$results = $nodeBackend->loadMailHistory($real_search, $size, $param['history'], $errors);
-	$timesort = array_merge($timesort, $results);
+	$timesort = merge_2d($timesort, $results);
 }
 if ($source == 'queue' || $source == 'quarantine') {
 	$results = $nodeBackend->loadMailQueue($real_search, $size, $param['queue'], $errors);
-	$timesort = array_merge($timesort, $results);
+	$timesort = merge_2d($timesort, $results);
 }
 
-ksort($timesort);
+krsort($timesort);
 ksort($errors);
 ?>
 			<form>
