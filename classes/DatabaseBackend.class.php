@@ -9,6 +9,9 @@ class DatabaseBackend extends Backend
 		$this->database = $db;
 	}
 	
+	// A database backend is valid if it has a database configured
+	public function isValid() { return $this->database != NULL; }
+	
 	// Database backends support history; it's literally all they do
 	public function supportsHistory() { return true; }
 	

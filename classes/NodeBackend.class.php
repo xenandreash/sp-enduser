@@ -2,7 +2,7 @@
 
 class NodeBackend extends Backend
 {
-	private $nodes = null;
+	private $nodes = array();
 	
 	public function __construct($nodes)
 	{
@@ -10,6 +10,9 @@ class NodeBackend extends Backend
 	}
 	
 	
+	
+	// A node backend is valid if it has at least one node
+	public function isValid() { return count($this->nodes) > 0; }
 	
 	// Node backends support everything
 	public function supportsHistory() { return true; }

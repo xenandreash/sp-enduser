@@ -2,6 +2,10 @@
 
 class Backend
 {
+	/// Is the backend valid, eg. does it have configured sources?
+	/// (Note: This does NOT check if said sources are actually reachable)
+	public function isValid() { return true; }
+	
 	/// Does the backend support loading history?
 	public function supportsHistory() { return false; }
 	
