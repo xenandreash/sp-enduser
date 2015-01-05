@@ -1,5 +1,9 @@
-#nav {
-	width: 100%;
+.navbar-enduser .navbar-brand, .navbar-enduser .navbar-toggle {
+	color: #ccc;
+}
+
+.navbar-enduser {
+	border-radius: 0;
 	background-color: #444;
 	background: linear-gradient(#444, #000);
 	background: -moz-linear-gradient(#444, #000);
@@ -7,7 +11,8 @@
 	background: -o-linear-gradient(#444, #000);
 	background: -ms-linear-gradient(#444, #000);
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#444444', endColorstr='#000000')";
-	height: 35px;
+	padding: 0;
+	min-height: 35px !important;
 }
 
 #nav ul {
@@ -26,61 +31,63 @@
 	padding-right: 20px;
 }
 
-#nav li {
-	display: block;
-	height: 24px;
+.navbar-enduser .navbar-nav > li {
+	padding-top: 6px;
+}
+
+.navbar-enduser .navbar-nav > li > a {
+	/*display: block;*/
+	/*height: 24px;*/
 	background-repeat: no-repeat;
 	background-position: 7px 6px;
-	float: left;
-	margin-left: 10px;
+	/*float: left;*/
+	/*margin-left: 10px;*/
 	margin-top: 5px;
-	padding-top: 6px;
+	padding-top: 4px;
 	padding-left: 30px;
 	padding-right: 8px;
+	padding-bottom: 0;
 	color: #ccc;
 	border-top-right-radius: 5px;
 	border-top-left-radius: 5px;
 }
 
-#nav li.active {
+.navbar-enduser .navbar-nav > li.active > a {
 	background-color: #eee;
-}
-
-#nav li.active a {
 	color: #f60;
 	font-weight: bold;
 }
 
-#nav a {
+.navbar-enduser a {
 	color: #ccc;
 	text-decoration: none;
 }
 
-#nav li.mail {
+.navbar-enduser li.mail a {
 	background-image: url(../img/mail-16-white.png);
 }
 
-#nav li.mail.active {
+.navbar-enduser li.mail.active a {
 	background-image: url(../img/mail-16-black.png);
 }
 
-#nav li.bwlist {
+.navbar-enduser li.bwlist a {
 	background-image: url(../img/clipboard-16-white.png);
 }
 
-#nav li.bwlist.active {
+.navbar-enduser li.bwlist.active a {
 	background-image: url(../img/clipboard-16-black.png);
 }
 
-#nav li.user {
+.navbar-enduser li.user a {
 	background-image: url(../img/user-16-white.png);
 }
 
-#nav li.user.active {
+.navbar-enduser li.user.active a {
 	background-image: url(../img/user-16-black.png);
 }
 
-#nav li.logout {
+.navbar-enduser li.logout a {
 	background-image: url(../img/signout-16-white.png);
 }
 
