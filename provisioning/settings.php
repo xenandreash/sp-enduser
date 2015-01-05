@@ -49,8 +49,8 @@ $settings['api-key'] = 'secret';
 //$settings['mail']['from'] = 'Mail quarantine <postmaster@example.org>';
 //$settings['public-url'] = 'http://10.2.0.166/enduser/';
 //$settings['default-source'] = 'history';
-//$settings['display-scores'] = false;
-//$settings['display-textlog'] = false;
+$settings['display-scores'] = true;
+$settings['display-textlog'] = true;
 //$settings['display-bwlist'] = true;
 //$settings['display-listener']['mailserver:1'] = 'Inbound';
 //$settings['display-transport']['mailtransport:2'] = 'Internet';
@@ -63,12 +63,9 @@ $settings['api-key'] = 'secret';
  * examples. You should use PHP PDO format.
  */
 
-//$settings['database']['dsn'] = 'sqlite:/tmp/foo.db';
-//$settings['database']['dsn'] = 'pgsql:host=localhost;port=5432;dbname=spenduser;user=halon;password=halon';
-$settings['database']['dsn'] = 'mysql:host=localhost;port=5432;dbname=spenduser';
+// $settings['database']['dsn'] = 'mysql:host=localhost;port=5432;dbname=spenduser';
 $settings['database']['user'] = 'spenduser';
 $settings['database']['password'] = 'spenduser';
-//$settings['database']['dsn'] = 'sqlite:/vagrant/enduser.db';
 
 /*
  * Authentication is probably the second most important configuration
