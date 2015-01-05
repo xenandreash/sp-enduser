@@ -250,7 +250,7 @@ ksort($errors);
 				Diagnostic information:
 				<ul>
 				<?php foreach ($errors as $n => $error) { ?>
-					<li><?php p($n.': '.$error); ?>
+					<li><?php p($n.': '.$error); ?></li>
 				<?php } ?>
 				</ul>
 			</span>
