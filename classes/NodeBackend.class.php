@@ -39,6 +39,7 @@ class NodeBackend extends Backend
 			} catch (SoapFault $f) {
 				// Don't explode if we can't connect
 				$errors[] = $f->faultstring;
+				$clients[$n] = NULL;
 				continue;
 			}
 			
@@ -57,6 +58,9 @@ class NodeBackend extends Backend
 		$results = array();
 		foreach ($clients as $n => &$c)
 		{
+			if ($c === NULL)
+				continue;
+			
 			try {
 				$results[$n] = call_user_func(array($clients[$n], $fname), $args);
 			} catch (SoapFault $f) {
