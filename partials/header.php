@@ -23,7 +23,9 @@ $dbCredentials = $settings->getDBCredentials();
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title><?php echo $title ?> | <?php echo $pagename ?></title>
+		<link rel="stylesheet" href="static/css/bootstrap.min.css">
 		<link rel="stylesheet" href="<?php echo $styles ?>">
+		<script src="static/js/bootstrap.min.js"></script>
 		<script src="static/js/jquery.min.js"></script>
 		<?php if (isset($javascript)) foreach ($javascript as $js) { ?>
 		<script src="<?php echo $js; ?>"></script>
