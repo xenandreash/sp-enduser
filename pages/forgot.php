@@ -17,7 +17,7 @@ if (isset($_GET['forgot']) && !isset($_GET['token'])) {
 		$publictoken = hash_hmac('sha256', $row['password'], $token);
 		$statement = $dbh->prepare("UPDATE users SET reset_password_token = :token, reset_password_timestamp = :timestamp WHERE username = :username;");
 		$statement->execute(array(':username' => $_GET['forgot'], ':token' => $token, ':timestamp' => time()));
-		mail2($_GET['forgot'], 'Reset password', wordwrap("Someone (hopefully you) have requested a password reset (from IP {$_SERVER['REMOTE_ADDR']}).\r\n\r\nThe token is:\r\n$publictoken \r\n\r\nDirect URL:\r\n".$settings->getPublicURL()."}/?page=forgot&forgot={$_GET['forgot']}&token=$publictoken", 70, "\r\n"));
+		mail2($_GET['forgot'], 'Reset password', wordwrap("Someone (hopefully you) have requested a password reset (from IP {$_SERVER['REMOTE_ADDR']}).\r\n\r\nThe token is:\r\n$publictoken \r\n\r\nDirect URL:\r\n".$settings->getPublicURL()."/?page=forgot&forgot={$_GET['forgot']}&token=$publictoken", 70, "\r\n"));
 	}
 }
 
