@@ -47,9 +47,10 @@ $size = $size > 5000 ? 5000 : $size;
 $source = isset($_GET['source']) ? $_GET['source'] : $settings->getDefaultSource();
 $display_scores = $settings->getDisplayScores();
 
-// Select box arrays
-foreach (array(10, 50, 100, 500, 1000, 5000) as $n)
-	$pagesize[$n] = $n.' results';
+// // Select box arrays
+$pagesize = array(10, 50, 100, 500, 1000, 5000);
+// foreach (array(10, 50, 100, 500, 1000, 5000) as $n)
+// 	$pagesize[$n] = $n.' results';
 $sources = array('history' => 'History');
 if($nodeBackend->isValid())
 	$sources += array('queue' => 'Queue', 'quarantine' => 'Quarantine');
@@ -136,10 +137,6 @@ ksort($errors);
 							</div>
 						</div>
 						<!-- <label>Search</label> -->
-					</div>
-					<div class="form-group">
-						<?php p_select('size', $size, $pagesize, 'class="form-control"') ?>
-						<!-- <label for="size">Page size</label> -->
 					</div>
 				</form>
 				<ul class="nav navbar-nav navbar-left hidden-xs hidden-sm">
@@ -285,8 +282,8 @@ ksort($errors);
 		<form id="nav-form">
 			<nav>
 				<ul class="pager">
-					<li class="previous"><a onclick="history.go(-1);" <?php echo $prev_button ?>><span aria-hidden="true">&larr;</span> Previous</a></li>
-					<li class="next"><a onclick="$('#nav-form').submit()" <?php echo $next_button; ?>>Next <span aria-hidden="true">&rarr;</span></a></li>
+					<li class="previous"><a href="#" onclick="history.go(-1); return false;" <?php echo $prev_button ?>><span aria-hidden="true">&larr;</span> Previous</a></li>
+					<li class="next"><a href="#" onclick="$('#nav-form').submit(); return false;" <?php echo $next_button; ?>>Next <span aria-hidden="true">&rarr;</span></a></li>
 				</ul>
 			</nav>
 			<input type="hidden" name="size" value="<?php p($size) ?>">
@@ -296,6 +293,21 @@ ksort($errors);
 				<input type="hidden" name="<?php p($type) ?>offset<?php p($node) ?>" value="<?php p($args['offset']) ?>">
 			<?php } ?>
 		</form>
+		
+		<hr />
+		<p class="text-muted small">
+			Results per page:
+		</p>
+		<div class="btn-group" role="group" aria-label="Results per page">
+			<?php foreach ($pagesize as $s) {
+				if ($size == $s) echo '<a class="btn btn-sm btn-default active">'.$s.'</a> ';
+				else {
+					$q = array('size' => $s, 'source' => $source);
+					if (!empty($search)) $q['search'] = $search;
+					echo '<a class="btn btn-sm btn-default" href="?'.http_build_query($q).'">'.$s.'</a> ';
+				}
+			} ?>
+		</div>
 		
 		<?php if (count($errors)) { ?>
 		<div style="padding-left: 17px;">
