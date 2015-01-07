@@ -279,24 +279,24 @@ ksort($errors);
 				<?php } ?>
 				</form>
 				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="<?php p($cols) ?>" style="text-align: center">
-							<form>
-								<button type="button" name="prev" <?php echo $prev_button ?> style="float: left" onclick="history.go(-1)">Previous</button>
-								<button type="submit" name="next" <?php echo $next_button ?> style="float: right">Next</button>
-								<input type="hidden" name="size" value="<?php p($size) ?>">
-								<input type="hidden" name="search" value="<?php p($search) ?>">
-								<input type="hidden" name="source" value="<?php p($source) ?>">
-								<?php foreach ($param as $type => $nodes) foreach ($nodes as $node => $args) if ($args['offset'] > 0) { ?>
-									<input type="hidden" name="<?php p($type) ?>offset<?php p($node) ?>" value="<?php p($args['offset']) ?>">
-								<?php } ?>
-							</form>
-						</td>
-					</tr>
-				</tfoot>
 			</table>
 		</div>
+		
+		<form id="nav-form">
+			<nav>
+				<ul class="pager">
+					<li class="previous"><a onclick="history.go(-1);" <?php echo $prev_button ?>><span aria-hidden="true">&larr;</span> Previous</a></li>
+					<li class="next"><a onclick="$('#nav-form').submit()" <?php echo $next_button; ?>>Next <span aria-hidden="true">&rarr;</span></a></li>
+				</ul>
+			</nav>
+			<input type="hidden" name="size" value="<?php p($size) ?>">
+			<input type="hidden" name="search" value="<?php p($search) ?>">
+			<input type="hidden" name="source" value="<?php p($source) ?>">
+			<?php foreach ($param as $type => $nodes) foreach ($nodes as $node => $args) if ($args['offset'] > 0) { ?>
+				<input type="hidden" name="<?php p($type) ?>offset<?php p($node) ?>" value="<?php p($args['offset']) ?>">
+			<?php } ?>
+		</form>
+		
 		<?php if (count($errors)) { ?>
 		<div style="padding-left: 17px;">
 			<span class="semitrans">
