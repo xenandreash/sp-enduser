@@ -1,8 +1,12 @@
+body.has-bottom-bar {
+	padding-bottom: 60px;
+}
+
 body > .navbar {
 	margin-bottom: 0;
 }
 
-.navbar-enduser .navbar-brand, .navbar-enduser .navbar-toggle {
+/*.navbar-enduser .navbar-brand, .navbar-enduser .navbar-toggle {
 	color: #ccc;
 }
 
@@ -171,7 +175,7 @@ body > .navbar {
 }
 
 #header button:focus {
-	outline: none; /* IE8 */
+	outline: none;
 }
 
 #header .search {
@@ -193,7 +197,7 @@ body > .navbar {
 #header img#logo {
 	margin: 20px;
 	float: right;
-}
+}*/
 
 table.list {
 	border-collapse: collapse;
@@ -586,7 +590,7 @@ fieldset input[type="checkbox"] {
 	width: auto;
 }
 
-body {
+/*body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
@@ -596,7 +600,7 @@ body {
 
 html {
 	height: 100%;
-}
+}*/
 
 @font-face{
 	font-family: ostrich-rounded;

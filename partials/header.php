@@ -36,7 +36,7 @@ $dbCredentials = $settings->getDBCredentials();
 		<nav class="navbar navbar-inverse navbar-static-top">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sp-enduser-top-navbar">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
 						<span class="sr-only">Toggle navigation</span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
@@ -44,7 +44,7 @@ $dbCredentials = $settings->getDBCredentials();
 					</button>
 					<a class="navbar-brand visible-xs">Menu</a>
 				</div>
-				<div class="collapse navbar-collapse" id="sp-enduser-top-navbar">
+				<div class="collapse navbar-collapse" id="navbar-collapse">
 					<ul class="nav navbar-nav">
 						<li class="mail<?php header_active('index'); ?>"><a href="."><i class="icon icon-mail"></i>Messages</a></li>
 						<?php if ($dbCredentials['dsn'] && $settings->getDisplayBWList()) { ?>
@@ -73,6 +73,24 @@ $dbCredentials = $settings->getDBCredentials();
 			</ul>
 		</div>-->
 		<?php } ?>
-		<div id="header">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<?php if ($has_toolbar) { ?>
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toolbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<?php if (!isset($collapse_icon)) { ?>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						<?php } else { ?>
+							<i class="glyphicon glyphicon-<?php p($collapse_icon); ?>"></i>
+						<?php } ?>
+					</button>
+					<?php } ?>
+					<a class="navbar-brand"><?php p($title); ?></a>
+				</div>
+				<div class="collapse navbar-collapse" id="toolbar-collapse">
+		<!-- <div id="header">
 			<h1><?php echo $title ?></h1>
-			<img src="<?php echo $logo ?>" id="logo">
+			<img src="<?php echo $logo ?>" id="logo"> -->

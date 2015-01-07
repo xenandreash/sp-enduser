@@ -34,6 +34,8 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 
 $title = 'Messages';
 $javascript[] = 'static/js/index.js';
+$has_toolbar = true;
+$collapse_icon = 'search';
 require_once BASE.'/partials/header.php';
 
 // Backends
@@ -102,30 +104,54 @@ else if ($source == 'queue' || $source == 'quarantine') {
 krsort($timesort);
 ksort($errors);
 ?>
-			<form>
-				<div class="item">
-					<input type="search" size="40" placeholder="any" name="search" value="<?php p($search) ?>">
-					<label>Search</label>
-				</div>
-				<div class="item">
-					<?php p_select('size', $size, $pagesize) ?>
-					<label for="size">Page size</label>
-				</div>
-				<div class="item">
-					<?php p_select('source', $source, $sources) ?>
-					<label for="size">Source</label>
-				</div>
-				<div class="item">
-					<button class="search">Search</button>
-				</div>
-				<div class="item">
-					<div class="divider"></div>
-				</div>
-				<div class="item">
-					<div class="button start tracking-actions">Actions...</div>
-				</div>
-			</form>
-		</div>
+				<form class="navbar-form navbar-left" role="search">
+					<div class="form-group">
+						<input type="search" class="form-control" size="40" placeholder="Search" name="search" value="<?php p($search) ?>">
+						<!-- <label>Search</label> -->
+					</div>
+					<div class="form-group">
+						<?php p_select('size', $size, $pagesize, 'class="form-control"') ?>
+						<!-- <label for="size">Page size</label> -->
+					</div>
+					<div class="form-group">
+						<?php p_select('source', $source, $sources, 'class="form-control"') ?>
+						<!-- <label for="size">Source</label> -->
+					</div>
+					<div class="form-group">
+						<button class="btn btn-default">Search</button> <!-- class = search -->
+					</div>
+				</form>
+				<ul class="nav navbar-nav navbar-left hidden-xs">
+					<li class="divider"></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Delete selected</a></li>
+							<li><a href="#">Bounce selected</a></li>
+							<li><a href="#">Retry/release selected</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<nav class="navbar navbar-default navbar-fixed-bottom" id="bottom-bar" style="display:none;">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Action</a></li>
+							<li><a href="#">Another action</a></li>
+							<li><a href="#">Something else here</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Separated link</a></li>
+							<li class="divider"></li>
+							<li><a href="#">One more separated link</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
 		<?php if (count($errors)) { ?>
 		<p style="padding-left: 17px; padding-top: 17px;">
 			<span class="semitrans">
@@ -137,7 +163,9 @@ ksort($errors);
 			<thead>
 				<tr>
 					<th style="width: 17px; padding: 0"></th>
-					<th style="width: 20px" class="action"><input type="checkbox" id="select-all"></th>
+					<th style="width: 20px" class="action">
+						<?php if ($m['type'] == 'queue') { ?><input type="checkbox" id="select-all"><?php } ?>
+					</th>
 					<th style="width: 125px">Date and time</th>
 					<th>From</th>
 					<th>To</th>

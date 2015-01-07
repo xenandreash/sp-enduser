@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('.tracking-actions').each(function() {
+	/*$('.tracking-actions').each(function() {
 		var f = function() {
 			var action = $(this).data("action");
 			if (action == "deletebulk")
@@ -44,7 +44,13 @@ $(document).ready(function() {
 		$("#multiform").submit();
 	});
 	// Add tooltip if table overflows
-	$("table.list tbody td").on('mouseenter', global_reg_tooltip);
+	$("table.list tbody td").on('mouseenter', global_reg_tooltip);*/
+	
+	$('[name^=multiselect-]').change(function() {
+		var count = $('[name^=multiselect-]:checked').length;
+		$('#bottom-bar').toggle(count > 0);
+		$('body').toggleClass('has-bottom-bar', count > 0);
+	});
 });
 
 function global_reg_tooltip() {
