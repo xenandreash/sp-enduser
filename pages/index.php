@@ -180,119 +180,121 @@ ksort($errors);
 			</span>
 		</p>
 		<?php } ?>
-		<table class="list pad fixed">
-			<thead>
-				<tr>
-					<th style="width: 17px; padding: 0"></th>
-					<th style="width: 20px" class="action">
-						<?php if ($m['type'] == 'queue') { ?><input type="checkbox" id="select-all"><?php } ?>
-					</th>
-					<th style="width: 125px">Date and time</th>
-					<th>From</th>
-					<th>To</th>
-					<th>Subject</th>
-					<?php if ($display_scores) { $cols++ ?><th>Scores</th><?php } ?>
-					<th>Details</th>
-					<th style="width: 40px"></th>
-				</tr>
-			</thead>
-			<tbody>
-			<form method="post" id="multiform">
-			<?php
-			$i = 1;
-			foreach ($timesort as $t) {
-				if ($i > $size) {
-					$next_button = ''; // enable "next" page button
-					break;
-				}
-				foreach ($t as $m) {
+		<div class="row">
+			<table class="list pad fixed">
+				<thead>
+					<tr>
+						<th style="width: 17px; padding: 0"></th>
+						<th style="width: 20px" class="action">
+							<?php if ($m['type'] == 'queue') { ?><input type="checkbox" id="select-all"><?php } ?>
+						</th>
+						<th style="width: 125px">Date and time</th>
+						<th>From</th>
+						<th>To</th>
+						<th>Subject</th>
+						<?php if ($display_scores) { $cols++ ?><th>Scores</th><?php } ?>
+						<th>Details</th>
+						<th style="width: 40px"></th>
+					</tr>
+				</thead>
+				<tbody>
+				<form method="post" id="multiform">
+				<?php
+				$i = 1;
+				foreach ($timesort as $t) {
 					if ($i > $size) {
 						$next_button = ''; // enable "next" page button
 						break;
 					}
-					$i++;
-					$param[$m['type']][$m['id']]['offset']++;
-					$preview = http_build_query(array(
-						'page' => 'preview',
-						'node' => $m['id'],
-						'id' => $m['data']->id,
-						'type' => $m['type']));
-				?>
-				<tr>
-					<td style="width: 17px; padding: 0"></td>
-					<td class="action <?php p($m['data']->msgaction.' '.$m['type']) ?>" title="<?php p($m['data']->msgaction) ?>">
-					<?php if ($m['type'] == 'queue') { // queue or quarantine ?>
-						<input type="checkbox" name="multiselect-<?php p($m['data']->id) ?>" value="<?php p($m['id']) ?>">
-					<?php } else { // history ?>
-						<strong><?php p($m['data']->msgaction[0]) ?></strong>
-					<?php } ?>
-					</td>
-					<td><span class="semitrans">
-						<?php p(strftime('%Y-%m-%d %H:%M:%S', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
-					</span></td>
-					<td><?php p($m['data']->msgfrom) ?></td>
-					<td><?php p($m['data']->msgto) ?></td>
-					<td>
-						<a href="?<?php echo $preview ?>"><?php p($m['data']->msgsubject) ?></a>
-					</td>
-					<?php if ($display_scores) {
-						$printscores = array();
-						$scores = history_parse_scores($m['data']);
-						foreach ($scores as $engine => $s) {
-							if ($engine == 'rpd' && $s['score'] != 'Unknown')
-								$printscores[] = strtolower($s['score']);
-							if ($engine == 'kav' && $s['score'] != 'Ok')
-								$printscores[] = 'virus';
-							if ($engine == 'clam' && $s['score'] != 'Ok')
-								$printscores[] = 'virus';
-							if ($engine == 'rpdav' && $s['score'] != 'Ok')
-								$printscores[] = 'virus';
-							if ($engine == 'sa')
-								$printscores[] = $s['score'];
+					foreach ($t as $m) {
+						if ($i > $size) {
+							$next_button = ''; // enable "next" page button
+							break;
 						}
+						$i++;
+						$param[$m['type']][$m['id']]['offset']++;
+						$preview = http_build_query(array(
+							'page' => 'preview',
+							'node' => $m['id'],
+							'id' => $m['data']->id,
+							'type' => $m['type']));
 					?>
-					<td><?php p(implode(', ', array_unique($printscores))) ?></td>
-					<?php } ?>
-					<td>
-					<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
-						In queue (retry <?php p($m['data']->msgretries) ?>)
-						<span class="semitrans"><?php p($m['data']->msgerror) ?></span>
-					<?php } else { // history or quarantine ?>
-						<span class="semitrans"><?php p($m['data']->msgdescription) ?></span>
-					<?php } ?>
-					</td>
-					<td>
-						<a title="Details" class="icon mail" href="?<?php echo $preview?>"></a>
-					<?php if ($m['type'] != 'history') { ?>
-						<div title="Release/retry" class="icon go"></div>
-					<?php } ?>
-					</td>
-				</tr>
-			<?php }} ?>
-			<?php if (empty($timesort)) { ?>
-				<tr>
-					<td colspan="<?php p($cols) ?>"><span class="semitrans">No matches</span></td>
-				</tr>
-			<?php } ?>
-			</form>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="<?php p($cols) ?>" style="text-align: center">
-						<form>
-							<button type="button" name="prev" <?php echo $prev_button ?> style="float: left" onclick="history.go(-1)">Previous</button>
-							<button type="submit" name="next" <?php echo $next_button ?> style="float: right">Next</button>
-							<input type="hidden" name="size" value="<?php p($size) ?>">
-							<input type="hidden" name="search" value="<?php p($search) ?>">
-							<input type="hidden" name="source" value="<?php p($source) ?>">
-							<?php foreach ($param as $type => $nodes) foreach ($nodes as $node => $args) if ($args['offset'] > 0) { ?>
-								<input type="hidden" name="<?php p($type) ?>offset<?php p($node) ?>" value="<?php p($args['offset']) ?>">
-							<?php } ?>
-						</form>
-					</td>
-				</tr>
-			</tfoot>
-		</table>
+					<tr>
+						<td style="width: 17px; padding: 0"></td>
+						<td class="action <?php p($m['data']->msgaction.' '.$m['type']) ?>" title="<?php p($m['data']->msgaction) ?>">
+						<?php if ($m['type'] == 'queue') { // queue or quarantine ?>
+							<input type="checkbox" name="multiselect-<?php p($m['data']->id) ?>" value="<?php p($m['id']) ?>">
+						<?php } else { // history ?>
+							<strong><?php p($m['data']->msgaction[0]) ?></strong>
+						<?php } ?>
+						</td>
+						<td><span class="semitrans">
+							<?php p(strftime('%Y-%m-%d %H:%M:%S', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
+						</span></td>
+						<td><?php p($m['data']->msgfrom) ?></td>
+						<td><?php p($m['data']->msgto) ?></td>
+						<td>
+							<a href="?<?php echo $preview ?>"><?php p($m['data']->msgsubject) ?></a>
+						</td>
+						<?php if ($display_scores) {
+							$printscores = array();
+							$scores = history_parse_scores($m['data']);
+							foreach ($scores as $engine => $s) {
+								if ($engine == 'rpd' && $s['score'] != 'Unknown')
+									$printscores[] = strtolower($s['score']);
+								if ($engine == 'kav' && $s['score'] != 'Ok')
+									$printscores[] = 'virus';
+								if ($engine == 'clam' && $s['score'] != 'Ok')
+									$printscores[] = 'virus';
+								if ($engine == 'rpdav' && $s['score'] != 'Ok')
+									$printscores[] = 'virus';
+								if ($engine == 'sa')
+									$printscores[] = $s['score'];
+							}
+						?>
+						<td><?php p(implode(', ', array_unique($printscores))) ?></td>
+						<?php } ?>
+						<td>
+						<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
+							In queue (retry <?php p($m['data']->msgretries) ?>)
+							<span class="semitrans"><?php p($m['data']->msgerror) ?></span>
+						<?php } else { // history or quarantine ?>
+							<span class="semitrans"><?php p($m['data']->msgdescription) ?></span>
+						<?php } ?>
+						</td>
+						<td>
+							<a title="Details" class="icon mail" href="?<?php echo $preview?>"></a>
+						<?php if ($m['type'] != 'history') { ?>
+							<div title="Release/retry" class="icon go"></div>
+						<?php } ?>
+						</td>
+					</tr>
+				<?php }} ?>
+				<?php if (empty($timesort)) { ?>
+					<tr>
+						<td colspan="<?php p($cols) ?>"><span class="semitrans">No matches</span></td>
+					</tr>
+				<?php } ?>
+				</form>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="<?php p($cols) ?>" style="text-align: center">
+							<form>
+								<button type="button" name="prev" <?php echo $prev_button ?> style="float: left" onclick="history.go(-1)">Previous</button>
+								<button type="submit" name="next" <?php echo $next_button ?> style="float: right">Next</button>
+								<input type="hidden" name="size" value="<?php p($size) ?>">
+								<input type="hidden" name="search" value="<?php p($search) ?>">
+								<input type="hidden" name="source" value="<?php p($source) ?>">
+								<?php foreach ($param as $type => $nodes) foreach ($nodes as $node => $args) if ($args['offset'] > 0) { ?>
+									<input type="hidden" name="<?php p($type) ?>offset<?php p($node) ?>" value="<?php p($args['offset']) ?>">
+								<?php } ?>
+							</form>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
 		<?php if (count($errors)) { ?>
 		<div style="padding-left: 17px;">
 			<span class="semitrans">
