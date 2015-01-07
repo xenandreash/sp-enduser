@@ -140,7 +140,7 @@ ksort($errors);
 						<button class="btn btn-default">Search</button> <!-- class = search -->
 					</div>
 				</form>
-				<ul class="nav navbar-nav navbar-left hidden-sm">
+				<ul class="nav navbar-nav navbar-left hidden-xs hidden-sm">
 					<li class="divider"></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
