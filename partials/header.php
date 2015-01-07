@@ -42,7 +42,7 @@ $dbCredentials = $settings->getDBCredentials();
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand visible-xs">Menu</a>
+					<a class="navbar-brand visible-xs" data-toggle="collapse" data-target="#navbar-collapse"><?php p($title); ?></a>
 				</div>
 				<div class="collapse navbar-collapse" id="navbar-collapse">
 					<ul class="nav navbar-nav">
@@ -73,24 +73,6 @@ $dbCredentials = $settings->getDBCredentials();
 			</ul>
 		</div>-->
 		<?php } ?>
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<?php if ($has_toolbar) { ?>
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toolbar-collapse">
-						<span class="sr-only">Toggle navigation</span>
-						<?php if (!isset($collapse_icon)) { ?>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						<?php } else { ?>
-							<i class="glyphicon glyphicon-<?php p($collapse_icon); ?>"></i>
-						<?php } ?>
-					</button>
-					<?php } ?>
-					<a class="navbar-brand"><?php p($title); ?></a>
-				</div>
-				<div class="collapse navbar-collapse" id="toolbar-collapse">
 		<!-- <div id="header">
 			<h1><?php echo $title ?></h1>
 			<img src="<?php echo $logo ?>" id="logo"> -->

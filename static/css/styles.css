@@ -6,6 +6,36 @@ body > .navbar {
 	margin-bottom: 0;
 }
 
+@media(min-width: 768px) {
+	/* Imitate navbar-default on desktop */
+	.navbar-toolbar {
+		background-color: #F8F8F8;
+		border-color: #E7E7E7;
+	}
+
+	.navbar-toolbar .navbar-collapse, .navbar-toolbar .navbar-form {
+		border-color: #E7E7E7;
+	}
+
+	.navbar-toolbar .navbar-brand {
+		color: #777;
+	}
+}
+@media(max-width: 767px) {
+	/* Imitate a H1 for the toolbar brand on mobile */
+	.navbar-toolbar .navbar-brand {
+		color: #333;
+		font-size: 36px;
+		font-weight: 500;
+		line-height: 1.1;
+		margin-bottom: 0.67em;
+	}
+}
+
+/*.navbar-toolbar .navbar-collapse {
+	border-color: #E7E7E7;
+}*/
+
 /*.navbar-enduser .navbar-brand, .navbar-enduser .navbar-toggle {
 	color: #ccc;
 }

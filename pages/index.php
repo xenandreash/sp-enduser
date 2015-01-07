@@ -34,8 +34,6 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 
 $title = 'Messages';
 $javascript[] = 'static/js/index.js';
-$has_toolbar = true;
-$collapse_icon = 'search';
 require_once BASE.'/partials/header.php';
 
 // Backends
@@ -104,6 +102,17 @@ else if ($source == 'queue' || $source == 'quarantine') {
 krsort($timesort);
 ksort($errors);
 ?>
+	<nav class="navbar navbar-toolbar navbar-static-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toolbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<i class="glyphicon glyphicon-search"></i>
+				</button>
+				<a class="navbar-brand visible-xs"><?php p($sources[$source]); ?></a>
+				<a class="navbar-brand hidden-xs"><?php p($title); ?></a>
+			</div>
+			<div class="collapse navbar-collapse" id="toolbar-collapse">
 				<form class="navbar-form navbar-left" role="search">
 					<div class="form-group">
 						<input type="search" class="form-control" size="40" placeholder="Search" name="search" value="<?php p($search) ?>">
@@ -133,25 +142,27 @@ ksort($errors);
 					</li>
 				</ul>
 			</div>
-		</nav>
-		<nav class="navbar navbar-default navbar-fixed-bottom" id="bottom-bar" style="display:none;">
-			<div class="container-fluid">
-				<ul class="nav navbar-nav">
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Action</a></li>
-							<li><a href="#">Another action</a></li>
-							<li><a href="#">Something else here</a></li>
-							<li class="divider"></li>
-							<li><a href="#">Separated link</a></li>
-							<li class="divider"></li>
-							<li><a href="#">One more separated link</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</nav>
+		</div>
+	</nav>
+	<nav class="navbar navbar-default navbar-fixed-bottom" id="bottom-bar" style="display:none;">
+		<div class="container-fluid">
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#">Action</a></li>
+						<li><a href="#">Another action</a></li>
+						<li><a href="#">Something else here</a></li>
+						<li class="divider"></li>
+						<li><a href="#">Separated link</a></li>
+						<li class="divider"></li>
+						<li><a href="#">One more separated link</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container-fluid">
 		<?php if (count($errors)) { ?>
 		<p style="padding-left: 17px; padding-top: 17px;">
 			<span class="semitrans">
