@@ -129,15 +129,17 @@ ksort($errors);
 				<form class="navbar-form navbar-left" role="search">
 					<input type="hidden" name="source" value="<?php p($_GET['source']); ?>">
 					<div class="form-group">
-						<input type="search" class="form-control" size="40" placeholder="Search" name="search" value="<?php p($search) ?>">
+						<div class="input-group">
+							<input type="search" class="form-control" size="40" placeholder="Search" name="search" value="<?php p($search) ?>">
+							<div class="input-group-btn">
+								<button class="btn btn-default">Search</button>
+							</div>
+						</div>
 						<!-- <label>Search</label> -->
 					</div>
 					<div class="form-group">
 						<?php p_select('size', $size, $pagesize, 'class="form-control"') ?>
 						<!-- <label for="size">Page size</label> -->
-					</div>
-					<div class="form-group">
-						<button class="btn btn-default">Search</button> <!-- class = search -->
 					</div>
 				</form>
 				<ul class="nav navbar-nav navbar-left hidden-xs hidden-sm">
