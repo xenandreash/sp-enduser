@@ -6,19 +6,20 @@ body > .navbar {
 	margin-bottom: 0;
 }
 
-@media(min-width: 992px) {
+@media(min-width: 768px) {
 	/* Imitate navbar-default on desktop */
 	.navbar-toolbar {
 		background-color: #F8F8F8;
 		border-color: #E7E7E7;
 	}
-
+	
 	.navbar-toolbar .navbar-collapse, .navbar-toolbar .navbar-form {
 		border-color: #E7E7E7;
 	}
-
-	.navbar-toolbar .navbar-brand {
+	
+	.navbar-toolbar a.navbar-brand, .navbar-toolbar .navbar-brand-link {
 		color: #777;
+		text-decoration: none;
 	}
 }
 @media(max-width: 767px) {
@@ -27,18 +28,12 @@ body > .navbar {
 		font-size: 36px;
 		font-weight: 500;
 		line-height: 1.1;
-		margin-bottom: 0.5em;
 		height: auto;
 	}
 	
 	.navbar-toolbar a.navbar-brand, .navbar-toolbar .navbar-brand-link {
 		color: #333;
 		text-decoration: none;
-		padding-bottom: 20px;
-	}
-	
-	.navbar-toolbar .navbar-brand .dropdown {
-		padding-bottom: 5px;
 	}
 	
 	.navbar-toolbar .navbar-toggle {
