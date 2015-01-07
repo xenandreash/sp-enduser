@@ -180,13 +180,14 @@ ksort($errors);
 		</p>
 		<?php } ?>
 		<div class="row">
-			<table class="list pad fixed">
+			<!-- <table class="list pad fixed"> -->
+			<table class="table">
 				<thead>
 					<tr>
-						<th style="width: 17px; padding: 0"></th>
-						<th style="width: 20px" class="action">
+						<!-- <th style="width: 17px; padding: 0"></th> -->
+						<!-- <th style="width: 20px" class="action">
 							<?php if ($m['type'] == 'queue') { ?><input type="checkbox" id="select-all"><?php } ?>
-						</th>
+						</th> -->
 						<th style="width: 125px">Date and time</th>
 						<th>From</th>
 						<th>To</th>
@@ -217,16 +218,26 @@ ksort($errors);
 							'node' => $m['id'],
 							'id' => $m['data']->id,
 							'type' => $m['type']));
+						
+						$action_classes = array(
+							'DELIVER' => 'success',
+							'QUEUE' => 'success',
+							'QUARANTINE' => 'warning',
+							'BOUNCE' => 'danger',
+							'DELETE' => 'danger',
+							'ERROR' => 'danger',
+							'DEFER' => 'info'
+						);
 					?>
-					<tr>
-						<td style="width: 17px; padding: 0"></td>
-						<td class="action <?php p($m['data']->msgaction.' '.$m['type']) ?>" title="<?php p($m['data']->msgaction) ?>">
+					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>">
+						<!-- <td style="width: 17px; padding: 0"></td> -->
+						<!-- <td class="action <?php p($m['data']->msgaction.' '.$m['type']) ?>" title="<?php p($m['data']->msgaction) ?>">
 						<?php if ($m['type'] == 'queue') { // queue or quarantine ?>
 							<input type="checkbox" name="multiselect-<?php p($m['data']->id) ?>" value="<?php p($m['id']) ?>">
 						<?php } else { // history ?>
 							<strong><?php p($m['data']->msgaction[0]) ?></strong>
 						<?php } ?>
-						</td>
+						</td> -->
 						<td><span class="semitrans">
 							<?php p(strftime('%Y-%m-%d %H:%M:%S', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
 						</span></td>
