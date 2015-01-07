@@ -188,7 +188,7 @@ ksort($errors);
 						<!-- <th style="width: 20px" class="action">
 							<?php if ($m['type'] == 'queue') { ?><input type="checkbox" id="select-all"><?php } ?>
 						</th> -->
-						<th style="width: 125px">Date and time</th>
+						<th style="width: 125px">Date<span class="hidden-sm hidden-xs"> and time</span></th>
 						<th>From</th>
 						<th>To</th>
 						<th>Subject</th>
@@ -239,7 +239,10 @@ ksort($errors);
 						<?php } ?>
 						</td> -->
 						<td><span class="semitrans">
-							<?php p(strftime('%Y-%m-%d %H:%M:%S', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
+							<?php p(strftime('%Y-%m-%d', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
+							<span class="hidden-sm hidden-xs">
+								<?php p(strftime('%H:%M:%S', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
+							</span>
 						</span></td>
 						<td><?php p($m['data']->msgfrom) ?></td>
 						<td><?php p($m['data']->msgto) ?></td>
