@@ -309,4 +309,5 @@ ksort($errors);
 			</span>
 		</div>
 		<?php } ?>
+	</div>
 <?php require_once BASE.'/partials/footer.php'; ?>
