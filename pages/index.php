@@ -109,8 +109,21 @@ ksort($errors);
 					<span class="sr-only">Toggle navigation</span>
 					<i class="glyphicon glyphicon-search"></i>
 				</button>
-				<a class="navbar-brand visible-xs"><?php p($sources[$source]); ?></a>
-				<a class="navbar-brand hidden-xs hidden-sm"><?php p($title); ?></a>
+				<div class="navbar-brand">
+					<div class="dropdown clearfix">
+						<a class="dropdown-toggle navbar-brand-link" id="source-select" data-toggle="dropdown" aria-expanded="true">
+							<?php p($sources[$source]); ?>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="source-select">
+							<?php foreach ($sources as $sid => $sname) { ?>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="?<?php p(query_merge($_GET, array('source' => $sid))); ?>"><?php p($sname); ?></a></li>
+							<?php } ?>
+						</ul>
+					</div>
+				</div>
+				<!-- <a class="navbar-brand visible-xs"><?php p($sources[$source]); ?></a>
+				<a class="navbar-brand hidden-xs hidden-sm"><?php p($title); ?></a> -->
 			</div>
 			<div class="collapse navbar-collapse" id="toolbar-collapse">
 				<form class="navbar-form navbar-left" role="search">
@@ -121,10 +134,6 @@ ksort($errors);
 					<div class="form-group">
 						<?php p_select('size', $size, $pagesize, 'class="form-control"') ?>
 						<!-- <label for="size">Page size</label> -->
-					</div>
-					<div class="form-group">
-						<?php p_select('source', $source, $sources, 'class="form-control"') ?>
-						<!-- <label for="size">Source</label> -->
 					</div>
 					<div class="form-group">
 						<button class="btn btn-default">Search</button> <!-- class = search -->

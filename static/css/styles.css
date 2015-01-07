@@ -6,7 +6,7 @@ body > .navbar {
 	margin-bottom: 0;
 }
 
-@media(min-width: 768px) {
+@media(min-width: 992px) {
 	/* Imitate navbar-default on desktop */
 	.navbar-toolbar {
 		background-color: #F8F8F8;
@@ -24,11 +24,24 @@ body > .navbar {
 @media(max-width: 767px) {
 	/* Imitate a H1 for the toolbar brand on mobile */
 	.navbar-toolbar .navbar-brand {
-		color: #333;
 		font-size: 36px;
 		font-weight: 500;
 		line-height: 1.1;
-		margin-bottom: 0.67em;
+		margin-bottom: 0.5em;
+	}
+	
+	.navbar-toolbar a.navbar-brand, .navbar-toolbar .navbar-brand-link {
+		color: #333;
+		text-decoration: none;
+		padding-bottom: 20px;
+	}
+	
+	.navbar-toolbar .navbar-brand .dropdown {
+		padding-bottom: 5px;
+	}
+	
+	.navbar-toolbar .navbar-toggle {
+		padding: 15px 10px;
 	}
 }
 

@@ -331,3 +331,8 @@ function merge_2d($a1, $a2) {
 	
 	return $a1;
 }
+
+function query_merge($a1, $a2, $amps = false) {
+	$arr = array_merge($a1, $a2);
+	return http_build_query($arr, '', ($amps ? '&amp;' : '&'));
+}
