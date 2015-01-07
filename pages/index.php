@@ -127,6 +127,7 @@ ksort($errors);
 			</div>
 			<div class="collapse navbar-collapse" id="toolbar-collapse">
 				<form class="navbar-form navbar-left" role="search">
+					<input type="hidden" name="source" value="<?php p($_GET['source']); ?>">
 					<div class="form-group">
 						<input type="search" class="form-control" size="40" placeholder="Search" name="search" value="<?php p($search) ?>">
 						<!-- <label>Search</label> -->
