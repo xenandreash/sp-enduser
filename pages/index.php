@@ -110,7 +110,7 @@ ksort($errors);
 					<i class="glyphicon glyphicon-search"></i>
 				</button>
 				<div class="navbar-brand">
-					<div class="dropdown clearfix">
+					<div class="dropdown">
 						<a class="dropdown-toggle navbar-brand-link" id="source-select" data-toggle="dropdown" aria-expanded="true">
 							<?php p($sources[$source]); ?>
 							<span class="caret"></span>

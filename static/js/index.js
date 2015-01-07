@@ -51,9 +51,13 @@ $(document).ready(function() {
 		$('#bottom-bar').toggle(count > 0);
 		$('body').toggleClass('has-bottom-bar', count > 0);
 	});
+	
+	// This is for some reason needed to get the source list dropdown to
+	// work on iOS, I don't have the faintest idea why...
+	$('.dropdown-toggle').click(function() { });
 });
 
-function global_reg_tooltip() {
+/*function global_reg_tooltip() {
 	// WebKit already has tooltip
 	if (/WebKit/.test(navigator.userAgent))
 		return;
@@ -64,4 +68,4 @@ function global_reg_tooltip() {
 	// Everyone else, add tooltip if overflow
 	if (this.offsetWidth < this.scrollWidth && !$(this).attr('title'))
 		$(this).attr('title', $.trim($(this).text()));
-}
+}*/

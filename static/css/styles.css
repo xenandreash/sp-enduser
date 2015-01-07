@@ -28,6 +28,7 @@ body > .navbar {
 		font-weight: 500;
 		line-height: 1.1;
 		margin-bottom: 0.5em;
+		height: auto;
 	}
 	
 	.navbar-toolbar a.navbar-brand, .navbar-toolbar .navbar-brand-link {
