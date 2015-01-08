@@ -146,7 +146,7 @@ require_once BASE.'/partials/header.php';
 			</form>
 		</div>-->
 		<!-- <div class="row"> -->
-			<div class="col-md-4">
+			<div class="col-md-4 col-md-push-8">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title">Metadata</h3>
@@ -223,7 +223,7 @@ require_once BASE.'/partials/header.php';
 				</div>
 			</div>
 			
-			<div class="col-md-8">
+			<div class="col-md-8 col-md-pull-4">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title"><?php p($mail->msgsubject ?: "No Subject"); ?></h3>
