@@ -158,6 +158,11 @@ dd, .panel-title {
 	text-overflow: ellipsis;
 }
 
+pre.panel-body {
+	border: none;
+	margin: 0;
+}
+
 /*.navbar-toolbar .navbar-collapse {
 	border-color: #E7E7E7;
 }*/

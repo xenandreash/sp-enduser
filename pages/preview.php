@@ -226,16 +226,12 @@ require_once BASE.'/partials/header.php';
 					<div class="panel-heading">
 						<h3 class="panel-title"><?php p($mail->msgsubject ?: "No Subject"); ?></h3>
 					</div>
-					<div class="panel-body">
-						<div class="msg-body">
-							<?php
-							if ($encode == 'TEXT')
-								echo '<pre>'.$body.'</pre>';
-							else if ($body)
-								echo $body;
-							?>
-						</div>
-					</div>
+					<?php
+					if ($encode == 'TEXT')
+						echo '<pre class="panel-body msg-body">'.$body.'</pre>';
+					else if ($body)
+						echo '<div class="panel-body msg-body">'.$body.'</div>';
+					?>
 					
 					<?php if (count($attachments) > 0) { ?>
 					<div class="panel-footer">
