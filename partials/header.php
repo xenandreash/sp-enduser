@@ -32,7 +32,7 @@ $dbCredentials = $settings->getDBCredentials();
 		<script src="static/js/bootstrap.min.js"></script>
 		<?php } ?>
 	</head>
-	<body>
+	<body class="<?php p($body_class); ?>">
 		<?php if (Session::Get()->getUsername()) { ?>
 		<nav class="navbar navbar-inverse navbar-static-top">
 			<div class="container-fluid">

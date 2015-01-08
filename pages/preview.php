@@ -80,6 +80,7 @@ if ($_GET['type'] == 'queue') {
 
 $title = 'Viewing Message';
 $show_back = true;
+$body_class = 'has-bottom-bar';
 $javascript[] = 'static/js/preview.js';
 $javascript[] = 'static/js/diff_match_patch.js';
 $javascript[] = 'static/js/diff.js';
