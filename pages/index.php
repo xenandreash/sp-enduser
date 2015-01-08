@@ -189,12 +189,12 @@ ksort($errors);
 							<?php if ($m['type'] == 'queue') { ?><input type="checkbox" id="select-all"><?php } ?>
 						</th> -->
 						<th style="width: 125px">Date<span class="hidden-sm hidden-xs"> and time</span></th>
-						<th>From</th>
-						<th>To</th>
+						<th class="hidden-xs">From</th>
+						<th class="hidden-xs">To</th>
 						<th>Subject</th>
-						<?php if ($display_scores) { $cols++ ?><th>Scores</th><?php } ?>
-						<th>Details</th>
-						<th style="width: 40px"></th>
+						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm">Scores</th><?php } ?>
+						<th class="hidden-xs hidden-sm">Details</th>
+						<th class="hidden-xs hidden-sm" style="width: 40px"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -244,8 +244,8 @@ ksort($errors);
 								<?php p(strftime('%H:%M:%S', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
 							</span>
 						</span></td>
-						<td><?php p($m['data']->msgfrom) ?></td>
-						<td><?php p($m['data']->msgto) ?></td>
+						<td class="hidden-xs"><?php p($m['data']->msgfrom) ?></td>
+						<td class="hidden-xs"><?php p($m['data']->msgto) ?></td>
 						<td>
 							<a href="?<?php echo $preview ?>"><?php p($m['data']->msgsubject) ?></a>
 						</td>
@@ -265,9 +265,9 @@ ksort($errors);
 									$printscores[] = $s['score'];
 							}
 						?>
-						<td><?php p(implode(', ', array_unique($printscores))) ?></td>
+						<td class="hidden-xs hidden-sm"><?php p(implode(', ', array_unique($printscores))) ?></td>
 						<?php } ?>
-						<td>
+						<td class="hidden-xs hidden-sm">
 						<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
 							In queue (retry <?php p($m['data']->msgretries) ?>)
 							<span class="semitrans"><?php p($m['data']->msgerror) ?></span>
@@ -275,7 +275,7 @@ ksort($errors);
 							<span class="semitrans"><?php p($m['data']->msgdescription) ?></span>
 						<?php } ?>
 						</td>
-						<td>
+						<td class="hidden-xs hidden-sm">
 							<a title="Details" class="icon mail" href="?<?php echo $preview?>"></a>
 						<?php if ($m['type'] != 'history') { ?>
 							<div title="Release/retry" class="icon go"></div>
