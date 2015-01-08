@@ -79,6 +79,7 @@ if ($_GET['type'] == 'queue') {
 }
 
 $title = 'Viewing Message';
+$show_back = true;
 $javascript[] = 'static/js/preview.js';
 $javascript[] = 'static/js/diff_match_patch.js';
 $javascript[] = 'static/js/diff.js';
@@ -91,7 +92,7 @@ require_once BASE.'/partials/header.php';
 					<span class="sr-only">Toggle navigation</span>
 					<i class="glyphicon glyphicon-search"></i>
 				</button>
-				<a class="navbar-brand"><?php p($title); ?></a>
+				<a class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
 				<!-- <a class="navbar-brand visible-xs"><?php p($sources[$source]); ?></a>
 				<a class="navbar-brand hidden-xs hidden-sm"><?php p($title); ?></a> -->
 			</div>
