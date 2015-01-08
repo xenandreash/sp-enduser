@@ -118,7 +118,7 @@ ksort($errors);
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="source-select">
 							<?php foreach ($sources as $sid => $sname) { ?>
-							<li role="presentation"><a role="menuitem" tabindex="-1" href="?<?php p(mkquery(array('source' => $sid, 'search' => $search, 'size' => $_GET['size']))); ?>"><?php p($sname); ?></a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="?<?php p(mkquery(array('source' => $sid, 'search' => $_GET['search'], 'size' => $_GET['size']))); ?>"><?php p($sname); ?></a></li>
 							<?php } ?>
 						</ul>
 					</div>
@@ -314,13 +314,15 @@ ksort($errors);
 		</p>
 		<div class="btn-group" role="group" aria-label="Results per page">
 			<?php foreach ($pagesize as $s) {
-				if ($size == $s) echo '<a class="btn btn-sm btn-default active">'.$s.'</a> ';
-				else {
-					$q = array('size' => $s, 'source' => $source);
-					if (!empty($search)) $q['search'] = $search;
-					echo '<a class="btn btn-sm btn-default" href="?'.http_build_query($q).'">'.$s.'</a> ';
+				$classes = 'btn btn-sm btn-default';
+				$href = '?'.mkquery(array('size' => $s, 'source' => $_GET['source'], 'search' => $_GET['search']));
+				if ($s == $size) {
+					$classes .= ' active';
+					$href = '';
 				}
-			} ?>
+			?>
+				<a class="<?php p($classes); ?>" href="<?php p($href); ?>"><?php p($s); ?></a>
+			<?php } ?>
 		</div>
 		
 		<?php if (count($errors)) { ?>
