@@ -208,11 +208,16 @@ require_once BASE.'/partials/header.php';
 							<tbody>
 							<?php
 							$scores = history_parse_scores($mail);
+							if (count($scores) > 0)
 							foreach ($scores as $score) { ?>
 								<tr>
 								<td><?php p($score['name']) ?></td>
 								<td><?php p($score['score']) ?></td>
 								<td class="semitrans hidden-xs"><?php p($score['text']) ?></td>
+								</tr>
+							<?php } else { ?>
+								<tr>
+									<td colspan="3" class="text-muted text-center">No Scores</td>
 								</tr>
 							<?php } ?>
 							</tbody>
