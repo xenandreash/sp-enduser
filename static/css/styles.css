@@ -6,8 +6,8 @@ body.has-bottom-bar {
 	padding-bottom: 80px;
 }
 
-body > .navbar {
-	margin-bottom: 0;
+body > .navbar-toolbar {
+	margin-top: -20px;
 }
 
 @media(min-width: 768px) {
