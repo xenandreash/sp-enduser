@@ -224,7 +224,7 @@ ksort($errors);
 							'QUEUE' => 'success',
 							'QUARANTINE' => 'warning',
 							'BOUNCE' => 'danger',
-							'DELETE' => 'danger',
+							'REJECT' => 'danger',
 							'ERROR' => 'danger',
 							'DEFER' => 'info'
 						);
