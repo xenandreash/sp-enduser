@@ -112,16 +112,8 @@ require_once BASE.'/partials/header.php';
 					</div>
 					<div class="panel-body">
 						<dl class="dl-horizontal">
-							<?php if ($listener) { ?>
-								<dt>Received by</dt>
-								<dd><?php echo $listener ?></dd>
-							<?php } ?>
-							
-							<dt>Date</dt>
-							<dd><?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
-							
-							<dt>Server</dt><dd><?php p($mail->msgfromserver) ?></dd>
-							<?php if ($mail->msgsasl) { ?><dt>User</dt><dd><?php p($mail->msgsasl) ?></dd><?php } ?>
+							<dt>Subject</dt>
+							<dd><?php p($mail->msgsubject) ?></dd>
 							
 							<?php if (!empty($mail->msgfrom)) { ?>
 							<dt>From</dt>
@@ -131,8 +123,8 @@ require_once BASE.'/partials/header.php';
 							<dt>To</dt>
 							<dd><?php p($mail->msgto) ?></dd>
 							
-							<dt>Subject</dt>
-							<dd><?php p($mail->msgsubject) ?></dd>
+							<dt>Date</dt>
+							<dd><?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
 							
 							<dt>Action</dt>
 							<dd><?php p(ucfirst(strtolower($mail->msgaction))) ?></dd>
@@ -141,6 +133,14 @@ require_once BASE.'/partials/header.php';
 							<dt>Details</dt>
 							<dd><?php echo $desc ?></dd>
 							<?php } ?>
+							
+							<?php if ($listener) { ?>
+								<dt>Received by</dt>
+								<dd><?php echo $listener ?></dd>
+							<?php } ?>
+							
+							<dt>Server</dt><dd><?php p($mail->msgfromserver) ?></dd>
+							<?php if ($mail->msgsasl) { ?><dt>User</dt><dd><?php p($mail->msgsasl) ?></dd><?php } ?>
 							
 							<?php if ($transport) { ?>
 							<dt>Destination</dt>
