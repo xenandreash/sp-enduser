@@ -153,6 +153,11 @@ body > .navbar-toolbar {
 	text-overflow: ellipsis;
 }
 
+dd, .panel-title {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 /*.navbar-toolbar .navbar-collapse {
 	border-color: #E7E7E7;
 }*/
