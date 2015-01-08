@@ -200,7 +200,7 @@ require_once BASE.'/partials/header.php';
 					<div class="panel-footer">
 						<ul class="list-inline">
 							<?php foreach ($attachments as $i => $a) { ?>
-								<li>
+								<li class="nowrap">
 									<i class="glyphicon glyphicon-paperclip"></i>
 									<?php p($a[2]); ?>&nbsp;<small class="text-muted">(<?php p(round($a[1]/1024, 0)); ?>KiB)</small>
 								</li>

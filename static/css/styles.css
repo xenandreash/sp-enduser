@@ -81,6 +81,11 @@ body > .navbar-toolbar {
 	overflow: scroll;
 }
 
+.nowrap {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
 /*.navbar-toolbar .navbar-collapse {
 	border-color: #E7E7E7;
 }*/
