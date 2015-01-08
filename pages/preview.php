@@ -247,28 +247,29 @@ require_once BASE.'/partials/header.php';
 					<?php } ?>
 				</div>
 				
+				<?php if ($header != '') { ?>
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title">Headers</h3>
 					</div>
-					<div class="panel-body">
-						<?php if ($header != '') { ?>
-							<div class="msg-header" style="clear:both;margin-top:5px;">
-								<div style="float:left;margin:5px;height:8px;width:8px;background-color:#ddffdd;border: 1px solid #ccc;"></div>
-								<div style="float:left;font-size:10px;padding-top:5px;color:green;margin-right:10px;">Added</div>
-								<div style="float:left;margin:5px;height:8px;width:8px;background-color:#ffdddd;border: 1px solid #ccc;"></div>
-								<div style="float:left;font-size:10px;padding-top:5px;color:red;">Removed</div>
-								<div class="preview-headers"></div>
-							</div>
-							<script>
-								var headers_original = <?php echo json_encode($header); ?>;
-								var headers_modified = <?php echo json_encode($headerdelta); ?>;
-								$(".preview-headers").html(diff_lineMode(headers_original,
-									headers_modified ? headers_modified : headers_original, true));
-							</script>
-						<?php } ?>
+					<div class="panel-body preview-headers">
+						<div class="msg-header pull-right" style="clear:both;margin-top:5px;">
+							<div style="float:left;margin:5px;height:8px;width:8px;background-color:#ddffdd;border: 1px solid #ccc;"></div>
+							<div style="float:left;font-size:10px;padding-top:5px;color:green;margin-right:10px;">Added</div>
+							<div style="float:left;margin:5px;height:8px;width:8px;background-color:#ffdddd;border: 1px solid #ccc;"></div>
+							<div style="float:left;font-size:10px;padding-top:5px;color:red;">Removed</div>
+							<div class=""></div>
+						</div>
+						<div id="preview-headers-go-here"></div>
 					</div>
 				</div>
+				<script>
+					var headers_original = <?php echo json_encode($header); ?>;
+					var headers_modified = <?php echo json_encode($headerdelta); ?>;
+					$("#preview-headers-go-here").html(diff_lineMode(headers_original,
+						headers_modified ? headers_modified : headers_original, true));
+				</script>
+				<?php } ?>
 			</div>
 		</div>
 		

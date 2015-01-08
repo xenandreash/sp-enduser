@@ -665,9 +665,8 @@ pre.indent {
 
 .preview-headers {
 	clear: both;
-	border: 1px solid #ccc;
 	background-color: #fafafa;
-	color: #999;
+	color: #888;
 }
 
 .preview-headers span, .preview-headers ins, .preview-headers del {
