@@ -43,6 +43,29 @@ body > .navbar {
 	.navbar-toolbar .navbar-toggle {
 		padding: 15px 10px;
 	}
+	
+	table.collapse-to-list, table.collapse-to-list tbody, table.collapse-to-list tr, table.collapse-to-list td {
+		display: block;
+	}
+	
+	table.collapse-to-list thead {
+		display: none;
+	}
+	
+	.collapse-to-timestamp {
+		float: right;
+		font-size: 85%;
+		max-width: 20%;
+	}
+	
+	.collapse-to-title {
+		float: left;
+		font-weight: bold;
+		max-width: 80%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 }
 
 /* Give data-href-ed elements the cursor of a "real" link */
