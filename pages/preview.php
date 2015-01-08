@@ -194,17 +194,20 @@ require_once BASE.'/partials/header.php';
 								echo $body;
 							?>
 						</div>
-						
-						<?php if (count($attachments) > 0) { ?>
-							<hr />
-							
-							<div class="preview-attachments">
-							<?php foreach ($attachments as $a) { ?>
-								<div class="preview-attachment"><?php p($a[2]) ?> (<?php echo round($a[1]/1024, 0) ?> KiB)</div>
-							<?php } ?>
-							</div>
-						<?php } ?>
 					</div>
+					
+					<?php if (count($attachments) > 0) { ?>
+					<div class="panel-footer">
+						<ul class="list-inline">
+							<?php foreach ($attachments as $i => $a) { ?>
+								<li>
+									<i class="glyphicon glyphicon-paperclip"></i>
+									<?php p($a[2]); ?>&nbsp;<small class="text-muted">(<?php p(round($a[1]/1024, 0)); ?>KiB)</small>
+								</li>
+							<?php } ?>
+						</ul>
+					</div>
+					<?php } ?>
 				</div>
 				
 				<div class="panel panel-default">
