@@ -84,7 +84,8 @@ $javascript[] = 'static/js/diff_match_patch.js';
 $javascript[] = 'static/js/diff.js';
 require_once BASE.'/partials/header.php';
 ?>
-			<form>
+	<div class="container-fluid">
+			<!--<form>
 				<div class="item">
 					<div class="button back" onclick="history.back()">Back</div>
 				</div>
@@ -102,58 +103,93 @@ require_once BASE.'/partials/header.php';
 				</div>
 				<?php } ?>
 			</form>
-		</div>
-		<div class="fullpage">
-			<?php if ($listener) { ?><div class="preview-header">Received by</div> <?php echo $listener ?><br><?php } ?>
-			<div class="preview-header">Date</div> <?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?><br>
-			<div class="preview-header">Server</div> <?php p($mail->msgfromserver) ?><br>
-			<?php if ($mail->msgsasl) { ?><div class="preview-header">User</div> <?php p($mail->msgsasl) ?><br><?php } ?>
-			<div class="preview-header">From</div> <?php p($mail->msgfrom) ?><br>
-			<div class="preview-header">To</div> <?php p($mail->msgto) ?><br>
-			<div class="preview-header">Subject</div> <?php p($mail->msgsubject) ?><br>
-			<div class="preview-header">Action</div> <?php p(ucfirst(strtolower($mail->msgaction))) ?><br>
-			<?php if ($desc) { ?><div class="preview-header">Details</div> <?php echo $desc ?><br><?php } ?>
-			<?php if ($transport) { ?><div class="preview-header">Destination</div> <?php echo $transport ?><br><?php } ?>
-			<div class="preview-header">ID</div> <?php p($mail->msgid) ?><br>
-			<div class="hr"></div>
-
+		</div>-->
+		<dl class="dl-horizontal">
+			<?php if ($listener) { ?>
+				<dt>Received by</dt>
+				<dd><?php echo $listener ?></dd>
+			<?php } ?>
+			
+			<dt>Date</dt>
+			<dd><?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
+			
+			<dt>Server</dt><dd><?php p($mail->msgfromserver) ?></dd>
+			<?php if ($mail->msgsasl) { ?><dt>User</dt><dd><?php p($mail->msgsasl) ?></dd><?php } ?>
+			
+			<dt>From</dt>
+			<dd><?php p($mail->msgfrom) ?></dd>
+			
+			<dt>To</dt>
+			<dd><?php p($mail->msgto) ?></dd>
+			
+			<dt>Subject</dt>
+			<dd><?php p($mail->msgsubject) ?></dd>
+			
+			<dt>Action</dt>
+			<dd><?php p(ucfirst(strtolower($mail->msgaction))) ?></dd>
+			
+			<?php if ($desc) { ?>
+			<dt>Details</dt>
+			<dd><?php echo $desc ?></dd>
+			<?php } ?>
+			
+			<?php if ($transport) { ?>
+			<dt>Destination</dt>
+			<dd><?php echo $transport ?></dd>
+			<?php } ?>
+			
+			<dt>ID</dt>
+			<dd><?php p($mail->msgid) ?></dd>
+		</dl>
+		
+		<hr />
+		
+		<div class="msg-body">
 			<?php
 			if ($encode == 'TEXT')
 				echo '<pre>'.$body.'</pre>';
 			else if ($body)
 				echo $body;
 			?>
-
-			<?php if (count($attachments) > 0) { ?>
+		</div>
+		
+		<hr />
+		
+		<?php if (count($attachments) > 0) { ?>
 			<div class="preview-attachments">
 			<?php foreach ($attachments as $a) { ?>
 				<div class="preview-attachment"><?php p($a[2]) ?> (<?php echo round($a[1]/1024, 0) ?> KiB)</div>
 			<?php } ?>
 			</div>
-			<?php } ?>
-			<?php if ($header != '') { ?>
-			<div style="clear:both;margin-top:5px;">
+			
+			<hr />
+		<?php } ?>
+		
+		<?php if ($header != '') { ?>
+			<div class="msg-header" style="clear:both;margin-top:5px;">
 				<div style="float:left;margin:5px;height:8px;width:8px;background-color:#ddffdd;border: 1px solid #ccc;"></div>
 				<div style="float:left;font-size:10px;padding-top:5px;color:green;margin-right:10px;">Added</div>
 				<div style="float:left;margin:5px;height:8px;width:8px;background-color:#ffdddd;border: 1px solid #ccc;"></div>
 				<div style="float:left;font-size:10px;padding-top:5px;color:red;">Removed</div>
 				<div class="preview-headers"></div>
 			</div>
-			<br>
 			<script>
 				var headers_original = <?php echo json_encode($header); ?>;
 				var headers_modified = <?php echo json_encode($headerdelta); ?>;
 				$(".preview-headers").html(diff_lineMode(headers_original,
 					headers_modified ? headers_modified : headers_original, true));
 			</script>
-			<?php } ?>
-			<?php if ($scores) { ?>
-			<table class="list">
+			
+			<hr />
+		<?php } ?>
+		
+		<?php if ($scores) { ?>
+			<table class="table">
 				<thead>
 					<tr>
 						<th>Engine</th>
 						<th>Result</th>
-						<th>Signature</th>
+						<th class="hidden-xs">Signature</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -163,16 +199,16 @@ require_once BASE.'/partials/header.php';
 					<tr>
 					<td><?php p($score['name']) ?></td>
 					<td><?php p($score['score']) ?></td>
-					<td class="semitrans"><?php p($score['text']) ?></td>
+					<td class="semitrans hidden-xs"><?php p($score['text']) ?></td>
 					</tr>
 				<?php } ?>
 				</tbody>
 			</table>
-			<?php } ?>
-
-			<form id="actionform" method="post" action="?page=preview&node=<?php p($node) ?>&id=<?php p($id) ?>">
-				<input type="hidden" name="action" id="action" value="">
-				<input type="hidden" name="referer" id="referer" value="<?php p(isset($_POST['referer']) ? $_POST['referer'] : $_SERVER['HTTP_REFERER']); ?>">
-			</form>
+		<?php } ?>
+		
+		<form id="actionform" method="post" action="?page=preview&node=<?php p($node) ?>&id=<?php p($id) ?>">
+			<input type="hidden" name="action" id="action" value="">
+			<input type="hidden" name="referer" id="referer" value="<?php p(isset($_POST['referer']) ? $_POST['referer'] : $_SERVER['HTTP_REFERER']); ?>">
+		</form>
 	</div>
 <?php require_once BASE.'/partials/footer.php'; ?>

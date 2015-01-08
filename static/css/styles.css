@@ -73,6 +73,14 @@ body > .navbar-toolbar {
 	cursor: pointer;
 }
 
+.msg-header {
+	word-wrap: break-word;
+}
+.msg-body {
+	max-width: 100%;
+	overflow: scroll;
+}
+
 /*.navbar-toolbar .navbar-collapse {
 	border-color: #E7E7E7;
 }*/
