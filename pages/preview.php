@@ -84,6 +84,47 @@ $javascript[] = 'static/js/diff_match_patch.js';
 $javascript[] = 'static/js/diff.js';
 require_once BASE.'/partials/header.php';
 ?>
+	<nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toolbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<i class="glyphicon glyphicon-search"></i>
+				</button>
+				<a class="navbar-brand"><?php p($title); ?></a>
+				<!-- <a class="navbar-brand visible-xs"><?php p($sources[$source]); ?></a>
+				<a class="navbar-brand hidden-xs hidden-sm"><?php p($title); ?></a> -->
+			</div>
+			<div class="collapse navbar-collapse" id="toolbar-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">Delete</a></li>
+					<li><a href="#">Bounce</a></li>
+					<li><a href="#">Retry/release</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<nav class="navbar navbar-default navbar-fixed-bottom visible-xs" id="bottom-bar">
+		<div class="container-fluid">
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<?php if ($logs) { ?>
+						<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>">Text log</a></li>
+						<?php } ?>
+						<?php if ($_GET['type'] == 'queue') { ?>
+						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>">Download</a></li>
+						<?php } ?>
+						<li class="divider"></li>
+						<li><a href="#">Delete message</a></li>
+						<li><a href="#">Bounce message</a></li>
+						<li><a href="#">Retry/release message</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</nav>
 	<div class="container-fluid">
 			<!--<form>
 				<div class="item">
