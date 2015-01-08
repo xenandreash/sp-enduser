@@ -226,7 +226,7 @@ require_once BASE.'/partials/header.php';
 			<div class="col-md-8">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">Content</h3>
+						<h3 class="panel-title"><?php p($mail->msgsubject ?: "No Subject"); ?></h3>
 					</div>
 					<div class="panel-body">
 						<div class="msg-body">
