@@ -78,7 +78,7 @@ if ($_GET['type'] == 'queue') {
 	}
 }
 
-$title = 'Message';
+$title = 'Viewing Message';
 $javascript[] = 'static/js/preview.js';
 $javascript[] = 'static/js/diff_match_patch.js';
 $javascript[] = 'static/js/diff.js';
