@@ -229,7 +229,7 @@ ksort($errors);
 							'DEFER' => 'info'
 						);
 					?>
-					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>">
+					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>" data-href="?<?php echo $preview; ?>">
 						<!-- <td style="width: 17px; padding: 0"></td> -->
 						<!-- <td class="action <?php p($m['data']->msgaction.' '.$m['type']) ?>" title="<?php p($m['data']->msgaction) ?>">
 						<?php if ($m['type'] == 'queue') { // queue or quarantine ?>
@@ -247,7 +247,7 @@ ksort($errors);
 						<td class="hidden-xs"><?php p($m['data']->msgfrom) ?></td>
 						<td class="hidden-xs"><?php p($m['data']->msgto) ?></td>
 						<td>
-							<a href="?<?php echo $preview ?>"><?php p($m['data']->msgsubject) ?></a>
+							<?php p($m['data']->msgsubject) ?>
 						</td>
 						<?php if ($display_scores) {
 							$printscores = array();

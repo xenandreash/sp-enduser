@@ -45,6 +45,11 @@ body > .navbar {
 	}
 }
 
+/* Give data-href-ed elements the cursor of a "real" link */
+[data-href] {
+	cursor: pointer;
+}
+
 /*.navbar-toolbar .navbar-collapse {
 	border-color: #E7E7E7;
 }*/

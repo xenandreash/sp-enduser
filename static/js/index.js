@@ -46,10 +46,16 @@ $(document).ready(function() {
 	// Add tooltip if table overflows
 	$("table.list tbody td").on('mouseenter', global_reg_tooltip);*/
 	
+	// Make the checkboxes show/hide the action bar
 	$('[name^=multiselect-]').change(function() {
 		var count = $('[name^=multiselect-]:checked').length;
 		$('#bottom-bar').toggle(count > 0);
 		$('body').toggleClass('has-bottom-bar', count > 0);
+	});
+	
+	// Use `data-href` to make the unclickable clickable (eg. table rows)
+	$('[data-href]').click(function() {
+		window.location.href = $(this).data('href');
 	});
 	
 	// This is for some reason needed to get the source list dropdown to
