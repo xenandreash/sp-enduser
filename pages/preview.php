@@ -123,8 +123,10 @@ require_once BASE.'/partials/header.php';
 							<dt>Server</dt><dd><?php p($mail->msgfromserver) ?></dd>
 							<?php if ($mail->msgsasl) { ?><dt>User</dt><dd><?php p($mail->msgsasl) ?></dd><?php } ?>
 							
+							<?php if (!empty($mail->msgfrom)) { ?>
 							<dt>From</dt>
 							<dd><?php p($mail->msgfrom) ?></dd>
+							<?php } ?>
 							
 							<dt>To</dt>
 							<dd><?php p($mail->msgto) ?></dd>
