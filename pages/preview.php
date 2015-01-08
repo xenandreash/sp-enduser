@@ -146,7 +146,7 @@ require_once BASE.'/partials/header.php';
 				<?php } ?>
 			</form>
 		</div>-->
-		<!-- <div class="row"> -->
+		<div class="row">
 			<div class="col-md-4 col-md-push-8">
 				<div class="panel panel-default">
 					<div class="panel-heading">
