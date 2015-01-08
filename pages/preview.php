@@ -253,12 +253,11 @@ require_once BASE.'/partials/header.php';
 						<h3 class="panel-title">Headers</h3>
 					</div>
 					<div class="panel-body preview-headers">
-						<div class="pull-right">
-							<div style="float:left;margin-right:5px;margin-top:8px;height:8px;width:8px;background-color:#ddffdd;border: 1px solid #ccc;"></div>
-							<div style="float:left;font-size:10px;padding-top:5px;color:green;margin-right:10px;">Added</div>
-							<div style="float:left;margin-right:5px;margin-top:8px;height:8px;width:8px;background-color:#ffdddd;border: 1px solid #ccc;"></div>
-							<div style="float:left;font-size:10px;padding-top:5px;color:red;">Removed</div>
-							<div class=""></div>
+						<div class="pull-right preview-headers-legend">
+							<div style="background-color: #ddffdd; border: 1px solid #ccc;"></div>
+							<p style="color: green;">Added</p>
+							<div style="background-color: #ffdddd; border: 1px solid #ccc;"></div>
+							<p style="color: red;">Removed</p>
 						</div>
 						<div id="preview-headers-go-here"></div>
 					</div>

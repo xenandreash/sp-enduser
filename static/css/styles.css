@@ -163,6 +163,21 @@ pre.panel-body {
 	margin: 0;
 }
 
+.preview-headers-legend div {
+	float: left;
+	width: 8px;
+	height: 8px;
+	margin-top: 3px;
+	margin-right: 3px;
+}
+
+.preview-headers-legend p {
+	float: left;
+	font-size: 10px;
+	margin-right: 10px;
+	font-family: monospace;
+}
+
 /*.navbar-toolbar .navbar-collapse {
 	border-color: #E7E7E7;
 }*/
