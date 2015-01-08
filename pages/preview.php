@@ -153,9 +153,6 @@ require_once BASE.'/partials/header.php';
 					</div>
 					<div class="panel-body">
 						<dl class="dl-horizontal">
-							<dt>Subject</dt>
-							<dd><?php p($mail->msgsubject) ?></dd>
-							
 							<?php if (!empty($mail->msgfrom)) { ?>
 							<dt>From</dt>
 							<dd><?php p($mail->msgfrom) ?></dd>
