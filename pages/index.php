@@ -118,7 +118,7 @@ ksort($errors);
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="source-select">
 							<?php foreach ($sources as $sid => $sname) { ?>
-							<li role="presentation"><a role="menuitem" tabindex="-1" href="?<?php p(query_merge($_GET, array('source' => $sid))); ?>"><?php p($sname); ?></a></li>
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="?<?php p(mkquery(array('source' => $sid, 'search' => $search))); ?>"><?php p($sname); ?></a></li>
 							<?php } ?>
 						</ul>
 					</div>
