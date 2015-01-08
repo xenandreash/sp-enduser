@@ -252,14 +252,14 @@ require_once BASE.'/partials/header.php';
 					<div class="panel-heading">
 						<h3 class="panel-title">Headers</h3>
 					</div>
-					<div class="panel-body preview-headers">
+					<div class="panel-body preview-headers-container">
 						<div class="pull-right preview-headers-legend">
 							<div style="background-color: #ddffdd; border: 1px solid #ccc;"></div>
 							<p style="color: green;">Added</p>
 							<div style="background-color: #ffdddd; border: 1px solid #ccc;"></div>
 							<p style="color: red;">Removed</p>
 						</div>
-						<div id="preview-headers-go-here"></div>
+						<div class="preview-headers" id="preview-headers-go-here"></div>
 					</div>
 				</div>
 				<script>

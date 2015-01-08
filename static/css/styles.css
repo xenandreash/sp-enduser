@@ -163,6 +163,29 @@ pre.panel-body {
 	margin: 0;
 }
 
+.preview-headers-container {
+	background-color: #fafafa;
+	color: #888;
+}
+
+.preview-headers span, .preview-headers ins, .preview-headers del {
+	display: block;
+	font-family: monospace;
+	white-space: normal;
+}
+
+.preview-headers ins {
+	text-decoration: none;
+	color: green;
+	background-color: #ddffdd;
+}
+
+.preview-headers del {
+	text-decoration: none;
+	color: red;
+	background-color: #ffdddd;
+}
+
 .preview-headers-legend div {
 	float: left;
 	width: 8px;
@@ -666,61 +689,6 @@ pre.indent {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	border-top: 1px solid #bbb;
-}
-
-.preview-header {
-	font-weight: bold;
-	padding-right: 5px;
-	color: #999999;
-	width: 120px;
-	text-align: right;
-	float: left;
-	white-space: nowrap;
-}
-
-.preview-headers {
-	clear: both;
-	background-color: #fafafa;
-	color: #888;
-}
-
-.preview-headers span, .preview-headers ins, .preview-headers del {
-	display: block;
-	font-family: monospace;
-	white-space: normal;
-	text-indent: -40px;
-	padding-left: 42px;
-	padding-top: 1px;
-}
-
-.preview-headers ins {
-	text-decoration: none;
-	color: green;
-	background-color: #ddffdd;
-}
-
-.preview-headers del {
-	text-decoration: none;
-	color: red;
-	background-color: #ffdddd;
-}
-
-.preview-attachments {
-	clear: both;
-	margin-bottom: 3px;
-}
-
-.preview-attachment {
-	float: left;
-	margin-right: 3px;
-	margin-bottom: 3px;
-	padding: 3px;
-	padding-left: 25px;
-	border: 1px solid #ccc;
-	background-color: #eee;
-	background-repeat: no-repeat;
-	background-position: 2px 2px;
-	background-image: url(../img/clipboard-16-black.png);
 }
 
 a {
