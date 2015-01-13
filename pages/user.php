@@ -13,6 +13,10 @@ if ($source == 'database' && isset($_POST['password']) && $_POST['password'] == 
 	$changedPassword = true;
 }
 
+$access = Session::Get()->getAccess();
+$access_mail = (is_array($access['mail']) ? $access['mail'] : array());
+$access_domain = (is_array($access['domain']) ? $access['domain'] : array());
+
 $title = 'Account';
 require_once BASE.'/partials/header.php';
 ?>
@@ -26,31 +30,42 @@ require_once BASE.'/partials/header.php';
 						<h3 class="panel-title">Permissions</h3>
 					</div>
 					<div class="panel-body">
-						<p>You are authorized to view messages sent from/to the following users/domains:</p>
+						<?php if (empty($access_mail) && empty($access_domain)) { ?>
+						<p>
+							You have no restrictions, you may view messages to/from any domain.
+						</p>
+						<?php } else { ?>
+						<p>
+							You are authorized to view messages sent from/to the following <?php if (!empty($access_domain)) { p('domains'); } else { p('users'); } ?>:
+						</p>
+						<?php } ?>
+						<?php if (!empty($access_mail)) { ?>
 						<ul>
-						<?php
-							$r = 0;
-							$access = Session::Get()->getAccess();
-							if (is_array($access['mail'])) { ?>
-								<?php
-								foreach ($access['mail'] as $mail) {
-									++$r;
-									echo "<li>";
-									p($mail);
-								}
+							<?php
+							foreach ($access_mail as $mail) {
+								echo "<li>";
+								p($mail);
+								echo "</li>";
 							}
-							if (is_array($access['domain'])) { ?>
+							?>
+						</ul>
+						<?php } ?>
+						<?php if (!empty($access_domain)) { ?>
+							<?php if (!empty($access_mail)) { ?>
+							<p>
+								And the following users:
+							</p>
+							<?php } ?>
+							<ul>
 								<?php
-								foreach ($access['domain'] as $domain) {
-									++$r;
+								foreach ($access_domain as $domain) {
 									echo "<li>";
 									p($domain);
+									echo "</li>";
 								}
-							}
-							if ($r == 0)
-								echo "<li>No restrictions (you can view everything)";
-						?>
-						</ul>
+								?>
+							</ul>
+						<?php } ?>
 					</div>
 				</div>
 			</div>
