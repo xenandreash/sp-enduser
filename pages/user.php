@@ -76,18 +76,23 @@ require_once BASE.'/partials/header.php';
 					</div>
 					<div class="panel-body">
 						<?php if ($source == 'database') { ?>
-							<form method="post" action="?page=user">
-								<div>
-									<label>Password</label>
-									<input type="password" name="password">
+							<form class="form-horizontal" method="post" action="?page=user">
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="password">Password</label>
+									<div class="col-sm-10">
+										<input type="password" class="form-control" name="password" id="password" placeholder="Your new password">
+									</div>
 								</div>
-								<div>
-									<label>Repeat password</label>
-									<input type="password" name="password2">
+								<div class="form-group">
+									<label class="col-sm-2 control-label">Repeat</label>
+									<div class="col-sm-10">
+										<input type="password" class="form-control" name="password2" id="password2" placeholder="And again, to make sure you typed it right">
+									</div>
 								</div>
-								<div>
-									<label></label>
-									<button type="submit">Change</button>
+								<div class="form-group">
+									<div class="col-sm-offset-2 col-sm-10">
+										<button type="submit" class="btn btn-primary">Change</button>
+									</div>
 								</div>
 							</form>
 						<?php } else { ?>
