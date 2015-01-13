@@ -43,74 +43,80 @@ if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password']
 $title = 'Reset password';
 require_once BASE.'/partials/header.php';
 ?>
-		</div>
-		<?php if (isset($error)) { ?>
-		<div class="message pad error"><?php p($error) ?></div>
-		<?php } ?>
-		<div class="halfpages">
-			<div class="halfpage">
-				<fieldset>
-					<legend>Help</legend>
-					<?php
-					if ($settings->getForgotText())
-						echo $settings->getForgotText();
-					else { ?>
+	<div class="container">
+		<div class="col-md-offset-3 col-md-6">
+			<div class="panel panel-default" style="margin-top:40px;">
+				<div class="panel-heading">
+					<h3 class="panel-title">Forgot password</h3>
+				</div>
+				<div class="panel-body">
+					<?php if (isset($error)) { ?>
+					<div class="alert alert-danger"><?php p($error) ?></div>
+					<?php } ?>
+					
+					<?php if ($settings->getForgotText() !== null) { ?>
 					<p>
-						If your user exists in the local
-						database, you can reset its password
-						on this page by typing your e-mail
-						address in the field.
+						<?php p($settings->getForgotText()); ?>
+						<hr />
 					</p>
 					<?php } ?>
-				</fieldset>
-			</div>
-			<div class="halfpage">
-				<fieldset>
-					<legend>Reset</legend>
+					
 					<?php if (isset($_GET['forgot']) && !isset($error)) { ?>
-					<form method="post" action="?page=forgot">
+					<form class="form-horizontal" method="post" action="?page=forgot">
 						<input type="hidden" name="reset" value="<?php p($_GET['forgot']) ?>">
 						<?php if (isset($_GET['token'])) { ?>
-						<p>Choose a new password.</p>
-						<input type="hidden" name="token" value="<?php p($_GET['token']) ?>">
+							<p>Choose a new password.</p>
+							<input type="hidden" name="token" value="<?php p($_GET['token']) ?>">
 						<?php } else { ?>
-						<p>Enter the token you receivied in your inbox, and choose a new password.</p>
-						<div>
-							<label for="token">Token</label>
-							<input type="text" name="token">
-						</div>
+							<p class="alert alert-success">Enter the token you receivied in your inbox, and choose a new password.</p>
+							<div class="form-group">
+								<label class="control-label col-sm-3" for="token">Token</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="token" autofocus value="<?php //print $publictoken; ?>">
+								</div>
+							</div>
 						<?php } ?>
-						<div>
-							<label for="password">Password</label>
-							<input type="password" name="password">
+						<div class="form-group">
+							<label class="control-label col-sm-3" for="password">Password</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" name="password" autofocus>
+							</div>
 						</div>
-						<div>
-							<label for="password2">Repeat password</label>
-							<input type="password" name="password2">
+						<div class="form-group">
+							<label class="control-label col-sm-3" for="password2">Repeat password</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" name="password2">
+							</div>
 						</div>
-						<div>
-							<label></label>
-							<button type="submit">Change password</button>
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-9">
+								<button type="submit" class="btn btn-primary">Change password</button>
+							</div>
 						</div>
-					
 					</form>
 					<?php } else if (isset($reset)) { ?>
-					<p>Your password has been reset, now <a href="?page=login">sign in</a>.</p>
-					<?php } else { ?>
-					<form method="get">
-						<input type="hidden" name="page" value="forgot">
-						<p>Enter your e-mail address and a reset request will be sent to your inbox.</p>
-						<div>
-							<label for="forgot">E-mail</label>
-							<input type="text" name="forgot">
+						<p class="alert alert-success">Your password has been reset!</p>
+						<div class="col-sm-offset-3 col-sm-9">
+							<a class="btn btn-primary" href="?page=login">Sign in</a>
 						</div>
-						<div>
-							<label></label>
-							<button type="submit">Send request</button>
+					<?php } else { ?>
+					<form class="form-horizontal" method="get">
+						<input type="hidden" name="page" value="forgot">
+						<div class="form-group">
+							<label class="control-label col-sm-3" for="forgot">E-mail</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" name="forgot" autofocus>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-9">
+								<button type="submit" class="btn btn-primary">Reset password</button>
+								<a class="btn btn-default" href=".">I remembered!</a>
+							</div>
 						</div>
 					</form>
 					<?php } ?>
-				</fieldset>
+				</div>
 			</div>
 		</div>
 <?php require_once BASE.'/partials/footer.php'; ?>
