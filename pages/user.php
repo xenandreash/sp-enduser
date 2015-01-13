@@ -92,7 +92,7 @@ require_once BASE.'/partials/header.php';
 							</form>
 						<?php } else { ?>
 							<p>
-								User authenticated using <?php p($source); ?> and can not change the password from this page.
+								You are authenticated externally, so password changes are not done here.
 							</p>
 						<?php } ?>
 					</div>
