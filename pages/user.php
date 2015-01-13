@@ -20,9 +20,6 @@ $access_domain = (is_array($access['domain']) ? $access['domain'] : array());
 $title = 'Account';
 require_once BASE.'/partials/header.php';
 ?>
-		<?php if ($changedPassword) { ?>
-		<div class="alert alert-success">Password changed</div>
-		<?php } ?>
 		<div class="container">
 			<div class="col-md-6">
 				<div class="panel panel-default">
@@ -75,6 +72,13 @@ require_once BASE.'/partials/header.php';
 						<h3 class="panel-title">Change password</h3>
 					</div>
 					<div class="panel-body">
+						<?php if ($changedPassword) { ?>
+						<div class="alert alert-success">Password changed</div>
+						<?php } ?>
+						<?php if ($error) { ?>
+						<div class="alert alert-error"><?php p($error); ?></div>
+						<?php } ?>
+						
 						<?php if ($source == 'database') { ?>
 							<form class="form-horizontal" method="post" action="?page=user">
 								<div class="form-group">
