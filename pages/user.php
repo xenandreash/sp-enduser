@@ -4,14 +4,35 @@ if (!defined('SP_ENDUSER')) die('File not included');
 require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
-$source = Session::Get()->getSource();
-$changedPassword = false;
-if ($source == 'database' && isset($_POST['password']) && $_POST['password'] == $_POST['password2']) {
+function do_change_password() {
+	global $settings, $error, $changedPassword;
+	
+	if ($_POST['password'] != $_POST['password2']) {
+		$error = "Your new passwords don't match!";
+		return;
+	}
+	
 	$dbh = $settings->getDatabase();
+	
+	$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
+	$statement->execute(array(':username' => Session::Get()->getUsername()));
+	$row = $statement->fetch();
+	
+	if (!$row || $row['password'] !== crypt($_POST['old_password'], $row['password'])) {
+		$error = "Your old password is incorrect!";
+		return;
+	}
+	
 	$statement = $dbh->prepare("UPDATE users SET password = :password WHERE username = :username;");
 	$statement->execute(array(':username' => Session::Get()->getUsername(), ':password' => crypt($_POST['password'])));
 	$changedPassword = true;
 }
+
+$source = Session::Get()->getSource();
+$changedPassword = false;
+$error = NULL;
+if ($source == 'database' && isset($_POST['password']))
+	do_change_password();
 
 $access = Session::Get()->getAccess();
 $access_mail = (is_array($access['mail']) ? $access['mail'] : array());
@@ -76,11 +97,17 @@ require_once BASE.'/partials/header.php';
 						<div class="alert alert-success">Password changed</div>
 						<?php } ?>
 						<?php if ($error) { ?>
-						<div class="alert alert-error"><?php p($error); ?></div>
+						<div class="alert alert-danger"><?php p($error); ?></div>
 						<?php } ?>
 						
 						<?php if ($source == 'database') { ?>
 							<form class="form-horizontal" method="post" action="?page=user">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="old_password">Old Password</label>
+									<div class="col-sm-9">
+										<input type="password" class="form-control" name="old_password" id="old_password" placeholder="Your new password">
+									</div>
+								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="password">New Password</label>
 									<div class="col-sm-9">
