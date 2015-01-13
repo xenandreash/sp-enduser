@@ -36,7 +36,7 @@ if (isset($_POST['action'])) {
 }
 
 // Prepare data
-$scores = $settings->getDisplayScores();
+$display_scores = $settings->getDisplayScores();
 $logs = $settings->getDisplayTextlog();
 $transports = $settings->getDisplayTransport();
 $listeners = $settings->getDisplayListener();
@@ -193,38 +193,40 @@ require_once BASE.'/partials/header.php';
 					</div>
 				</div>
 				
-				<div class="panel panel-default">
+				<?php
+				if ($display_scores) {
+					$scores = history_parse_scores($mail);
+				?>
+				<div class="panel panel-default <?php if (count($scores) == 0) { ?>hidden-xs<?php } ?>">
 					<div class="panel-heading">
 						<h3 class="panel-title">Scores</h3>
 					</div>
-					<?php if ($scores) { ?>
-						<table class="table">
-							<thead>
-								<tr>
-									<th>Engine</th>
-									<th>Result</th>
-									<th class="hidden-xs">Signature</th>
-								</tr>
-							</thead>
-							<tbody>
-							<?php
-							$scores = history_parse_scores($mail);
-							if (count($scores) > 0)
-							foreach ($scores as $score) { ?>
-								<tr>
-								<td><?php p($score['name']) ?></td>
-								<td><?php p($score['score']) ?></td>
-								<td class="semitrans hidden-xs"><?php p($score['text']) ?></td>
-								</tr>
-							<?php } else { ?>
-								<tr>
-									<td colspan="3" class="text-muted text-center">No Scores</td>
-								</tr>
-							<?php } ?>
-							</tbody>
-						</table>
-					<?php } ?>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Engine</th>
+								<th>Result</th>
+								<th class="hidden-xs">Signature</th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php
+						if (count($scores) > 0)
+						foreach ($scores as $score) { ?>
+							<tr>
+							<td><?php p($score['name']) ?></td>
+							<td><?php p($score['score']) ?></td>
+							<td class="semitrans hidden-xs"><?php p($score['text']) ?></td>
+							</tr>
+						<?php } else { ?>
+							<tr>
+								<td colspan="3" class="text-muted text-center">No Scores</td>
+							</tr>
+						<?php } ?>
+						</tbody>
+					</table>
 				</div>
+				<?php } ?>
 			</div>
 			
 			<div class="col-md-8 col-md-pull-4">
