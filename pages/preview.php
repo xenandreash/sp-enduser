@@ -99,6 +99,13 @@ require_once BASE.'/partials/header.php';
 			</div>
 			<div class="collapse navbar-collapse" id="toolbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
+					<?php if ($logs) { ?>
+						<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>">Text log</a></li>
+					<?php } ?>
+					<?php if ($_GET['type'] == 'queue') { ?>
+						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>">Download</a></li>
+					<?php } ?>
+					<li class="divider"></li>
 					<li><a href="#">Delete</a></li>
 					<li><a href="#">Bounce</a></li>
 					<li><a href="#">Retry/release</a></li>
