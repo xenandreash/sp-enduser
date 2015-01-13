@@ -129,15 +129,15 @@ require_once BASE.'/partials/header.php';
 ?>
 	<div class="container">
 		<div class="col-md-offset-3 col-md-6">
-			<?php if (isset($error)) { ?>
-			<div class="alert alert-danger"><?php p($error) ?></div>
-			<?php } ?>
-			
 			<div class="panel panel-default" style="margin-top:40px;">
 				<div class="panel-heading">
 					<h3 class="panel-title">Sign in</h3>
 				</div>
 				<div class="panel-body">
+					<?php if (isset($error)) { ?>
+					<div class="alert alert-danger"><?php p($error) ?></div>
+					<?php } ?>
+					
 					<?php if ($settings->getLoginText() !== null) { ?>
 					<p>
 						<?php p($settings->getLoginText()); ?>
