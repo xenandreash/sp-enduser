@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.40, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.16  Distrib 10.1.1-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: spenduser
 -- ------------------------------------------------------
--- Server version	5.5.40-0+wheezy1
+-- Server version	10.1.1-MariaDB-1~wheezy-wsrep-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -112,6 +112,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` (`username`, `password`, `reset_password_token`, `reset_password_timestamp`) VALUES ('username','$6$wEk9AoMhbBgF$7z1S1MSQDDznEmUBHLzmJUz1u4LXulKneWDKGyx4H/SEP1cDaAY6Sx.86teQQvySkzhiBt89XZhKr31qn4/KN1',NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,4 +149,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-10-31 10:34:33
+-- Dump completed on 2015-01-13 10:01:32
