@@ -138,7 +138,7 @@ body > .navbar-toolbar {
 .form-group .form-control {
 	margin-bottom: 10px;
 }
-.form-group .form-control:last-child {
+.form-group .form-control:last-child, .navbar .form-control {
 	margin-bottom: 0;
 }
 
