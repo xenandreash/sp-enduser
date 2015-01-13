@@ -235,7 +235,9 @@ require_once BASE.'/partials/header.php';
 						<h3 class="panel-title"><?php p($mail->msgsubject ?: "No Subject"); ?></h3>
 					</div>
 					<?php
-					if ($encode == 'TEXT')
+					if (empty($body))
+						echo '<div class="panel-body msg-body"><p class="text-muted text-center">No Content</p></div>';
+					else if ($encode == 'TEXT')
 						echo '<pre class="panel-body msg-body">'.$body.'</pre>';
 					else if ($body)
 						echo '<div class="panel-body msg-body">'.$body.'</div>';
