@@ -127,64 +127,50 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 $title = 'Sign in';
 require_once BASE.'/partials/header.php';
 ?>
-		</div>
-		<?php if (isset($error)) { ?>
-		<div class="message pad error"><?php p($error) ?></div>
-		<?php } ?>
-		<script>
-			window.onload = function() {
-				document.getElementById("username").focus();
-			};
-		</script>
-		<div class="halfpages">
-			<div class="halfpage">
-				<fieldset>
-					<legend><?php p($pagename) ?></legend>
-					<?php
-					if ($settings->getLoginText() !== null)
-						echo $settings->getLoginText();
-					else { ?>
+	<div class="container">
+		<div class="col-md-offset-3 col-md-6">
+			<?php if (isset($error)) { ?>
+			<div class="alert alert-danger"><?php p($error) ?></div>
+			<?php } ?>
+			
+			<div class="panel panel-default" style="margin-top:40px;">
+				<div class="panel-heading">
+					<h3 class="panel-title">Sign in</h3>
+				</div>
+				<div class="panel-body">
+					<?php if ($settings->getLoginText() !== null) { ?>
 					<p>
-						This site allows end-user access of e-mail security
-						systems from Halon Security in the SP (spam prevention)
-						series. It provides features such as quarantine and queue
-						management, access to the message history, black/whitelist,
-						etc.
-					</p>
-					<p>
-						The login credentials can be verified against the
-						settings file, LDAP servers, SMTP servers using SASL, 
-						or database sources created dynamically as messages
-						are quarantined.
+						<?php p($settings->getLoginText()); ?>
+						<hr />
 					</p>
 					<?php } ?>
-				</fieldset>
-			</div>
-			<div class="halfpage">
-				<fieldset>
-					<legend>Sign in</legend>
-					<form method="post" action="?page=login">
-						<div>
-							<label for="username">Username</label>
-							<input name="username" id="username" type="text">
+					<form class="form-horizontal" method="post" action="?page=login">
+						<div class="form-group">
+							<label for="username" class="control-label col-sm-3">Username</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" name="username" id="username" autofocus="autofocus">
+							</div>
 						</div>
-						<div>
-							<label for="password">Password</label>
-							<input name="password" type="password">
+						<div class="form-group">
+							<label for="username" class="control-label col-sm-3">Password</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" name="password" id="password">
+							</div>
 						</div>
-						<div>
-							<label></label>
-							<button type="submit">Sign in</button>
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-sm-9">
+								<button type="submit" class="btn btn-primary">Sign in</button>
+								<?php if (has_auth_database()) { ?>
+									<a class="btn btn-default" href="?page=forgot">Forgot password</a>
+								<?php } ?>
+							</div>
 						</div>
-						<input type="hidden" id="timezone" name="timezone">
 					</form>
-					<?php if (has_auth_database()) { ?>
-						<p><a href="?page=forgot">Forgot password?</a></p>
-					<?php } ?>
-				</fieldset>
+				</div>
 			</div>
 		</div>
-		<script>
-			$("#timezone").val(new Date().getTimezoneOffset());
-		</script>
+	</div>
+	<script>
+		$("#timezone").val(new Date().getTimezoneOffset());
+	</script>
 <?php require_once BASE.'/partials/footer.php'; ?>
