@@ -82,15 +82,10 @@ require_once BASE.'/partials/header.php';
 						<?php if ($source == 'database') { ?>
 							<form class="form-horizontal" method="post" action="?page=user">
 								<div class="form-group">
-									<label class="col-sm-2 control-label" for="password">Password</label>
-									<div class="col-sm-10">
+									<label class="col-sm-3 control-label" for="password">New Password</label>
+									<div class="col-sm-9">
 										<input type="password" class="form-control" name="password" id="password" placeholder="Your new password">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label">Repeat</label>
-									<div class="col-sm-10">
-										<input type="password" class="form-control" name="password2" id="password2" placeholder="And again, to make sure you typed it right">
+										<input type="password" class="form-control" name="password2" id="password2" placeholder="And again, just to be sure">
 									</div>
 								</div>
 								<div class="form-group">

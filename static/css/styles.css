@@ -135,6 +135,13 @@ body > .navbar-toolbar {
 	}
 }
 
+.form-group .form-control {
+	margin-bottom: 10px;
+}
+.form-group .form-control:last-child {
+	margin-bottom: 0;
+}
+
 /* Give data-href-ed elements the cursor of a "real" link */
 [data-href] {
 	cursor: pointer;
