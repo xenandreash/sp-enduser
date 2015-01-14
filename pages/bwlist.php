@@ -51,6 +51,7 @@ $row_classes = array(
 ?>
 	<div class="container-fluid">
 		<div class="col-md-6 col-lg-8">
+			<h1 class="visible-xs">Black/whitelist</h1>
 			<table class="table">
 				<thead>
 					<tr>
