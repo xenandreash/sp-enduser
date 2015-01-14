@@ -51,70 +51,74 @@ $row_classes = array(
 ?>
 	<div class="container-fluid">
 		<div class="col-md-6 col-lg-8">
-			<h1 class="visible-xs">Black/whitelist</h1>
-			<table class="table">
-				<thead>
-					<tr>
-						<th class="hidden-xs">Type</th>
-						<th class="hidden-xs">Sender</th>
-						<th class="hidden-xs">For recipient</th>
-						<th class="visible-xs"></th>
-						<th style="width: 20px"></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
-					$result = array();
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Black/whitelist</h3>
+				</div>
+				<table class="table">
+					<thead class="hidden-xs">
+						<tr>
+							<th class="hidden-xs">Type</th>
+							<th class="hidden-xs">Sender</th>
+							<th class="hidden-xs">For recipient</th>
+							<th class="visible-xs"></th>
+							<th style="width: 20px"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						$result = array();
 
-					$access = Session::Get()->getAccess();
-					if (count($access) == 0) {
-						$statement = $dbh->prepare("SELECT * FROM bwlist ORDER BY type DESC;");
-						$statement->execute();
-						while ($row = $statement->fetch())
-							$result[] = $row;
-					}
-
-					foreach ($access as $type) {
-						foreach ($type as $item) {
-							$statement = $dbh->prepare("SELECT * FROM bwlist WHERE access = :access ORDER BY type DESC;");
-							$statement->execute(array(':access' => $item));
+						$access = Session::Get()->getAccess();
+						if (count($access) == 0) {
+							$statement = $dbh->prepare("SELECT * FROM bwlist ORDER BY type DESC;");
+							$statement->execute();
 							while ($row = $statement->fetch())
 								$result[] = $row;
 						}
-					}
 
-					foreach ($result as $row) {
-					?>
-					<tr class="<?php p($row_classes[$row['type']] ?: 'info'); ?>">
-						<td class="hidden-xs"><?php p($row['type']); ?></td>
-						<td class="hidden-xs"><?php p($row['value']); ?></td>
-						<td class="hidden-xs"><?php p($row['access']); ?></td>
-						<td class="visible-xs" colspan="2">
-							<p>
-								<i class="glyphicon glyphicon-pencil"></i>&nbsp;
-								<?php p($row['value']); ?>
-							</p>
-							<p>
-								<i class="glyphicon glyphicon-inbox"></i>&nbsp;
-								<?php if ($row['access']) { p($row['access']); } else { echo '<span class="text-muted">everyone</span>'; } ?>
-							</p>
-						</td>
-						<td class="pad-child-instead" style="vertical-align: middle;">
-							<a title="Remove" href="?page=bwlist&list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>"><i class="glyphicon glyphicon-remove"></i></a>
-						</td>
-					</tr>
-					<?php
-					}
-					if (count($result) == 0)
-						echo "<tr><td colspan=4 class=semitrans>No black/whitelist</td></tr>";
-					?>
-				</tbody>
-			</table>
+						foreach ($access as $type) {
+							foreach ($type as $item) {
+								$statement = $dbh->prepare("SELECT * FROM bwlist WHERE access = :access ORDER BY type DESC;");
+								$statement->execute(array(':access' => $item));
+								while ($row = $statement->fetch())
+									$result[] = $row;
+							}
+						}
+
+						foreach ($result as $row) {
+						?>
+						<tr class="<?php p($row_classes[$row['type']] ?: 'info'); ?>">
+							<td class="hidden-xs"><?php p($row['type']); ?></td>
+							<td class="hidden-xs"><?php p($row['value']); ?></td>
+							<td class="hidden-xs"><?php p($row['access']); ?></td>
+							<td class="visible-xs" colspan="2">
+								<p>
+									<i class="glyphicon glyphicon-pencil"></i>&nbsp;
+									<?php p($row['value']); ?>
+								</p>
+								<p>
+									<i class="glyphicon glyphicon-inbox"></i>&nbsp;
+									<?php if ($row['access']) { p($row['access']); } else { echo '<span class="text-muted">everyone</span>'; } ?>
+								</p>
+							</td>
+							<td class="pad-child-instead" style="vertical-align: middle;">
+								<a title="Remove" href="?page=bwlist&list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>"><i class="glyphicon glyphicon-remove"></i></a>
+							</td>
+						</tr>
+						<?php
+						}
+						if (count($result) == 0)
+							echo "<tr><td colspan=4 class=semitrans>No black/whitelist</td></tr>";
+						?>
+					</tbody>
+				</table>
+			</div>
 		</div>
 		<div class="col-md-6 col-lg-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Black/whitelist</h3>
+					<h3 class="panel-title">Add...</h3>
 				</div>
 				<div class="panel-body">
 					<form class="form-horizontal" action="?page=bwlist&list=add" method="post">
