@@ -144,28 +144,24 @@ ksort($errors);
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Delete selected</a></li>
-							<li><a href="#">Bounce selected</a></li>
-							<li><a href="#">Retry/release selected</a></li>
+							<li><a href="#" data-bulk-action="delete">Delete selected</a></li>
+							<li><a href="#" data-bulk-action="bounce">Bounce selected</a></li>
+							<li><a href="#" data-bulk-action="retry">Retry/release selected</a></li>
 						</ul>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-	<nav class="navbar navbar-default navbar-fixed-bottom" id="bottom-bar" style="display:none;">
+	<nav class="navbar navbar-default navbar-fixed-bottom visible-xs" id="bottom-bar" style="display:none;">
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">Action</a></li>
-						<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
-						<li class="divider"></li>
-						<li><a href="#">Separated link</a></li>
-						<li class="divider"></li>
-						<li><a href="#">One more separated link</a></li>
+						<li><a href="#" data-bulk-action="delete">Delete selected</a></li>
+						<li><a href="#" data-bulk-action="bounce">Bounce selected</a></li>
+						<li><a href="#" data-bulk-action="retry">Retry/release selected</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -188,6 +184,9 @@ ksort($errors);
 						<!-- <th style="width: 20px" class="action">
 							<?php if ($m['type'] == 'queue') { ?><input type="checkbox" id="select-all"><?php } ?>
 						</th> -->
+						<?php if ($source == 'queue') { ?>
+							<th>&nbsp;</th>
+						<?php } ?>
 						<th style="width: 125px">Date<span class="hidden-sm hidden-xs"> and time</span></th>
 						<th class="hidden-xs">From</th>
 						<th class="hidden-xs">To</th>
@@ -238,6 +237,11 @@ ksort($errors);
 							<strong><?php p($m['data']->msgaction[0]) ?></strong>
 						<?php } ?>
 						</td> -->
+						<?php if ($source == 'queue') { ?>
+							<td>
+								<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
+							</td>
+						<?php } ?>
 						<td class="collapse-to-timestamp semitrans">
 							<?php p(strftime('%Y-%m-%d', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
 							<span class="hidden-sm hidden-xs">

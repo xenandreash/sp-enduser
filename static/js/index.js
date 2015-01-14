@@ -1,4 +1,13 @@
 $(document).ready(function() {
+	$('[data-bulk-action]').click(function(e) {
+		var action = $(this).data('bulk-action');
+		var count = $('[name^=multiselect-]:checked').length;
+		if(confirm("Are you sure you want to " + action + " these " + count + " messages?")) {
+			$('#multiform').append('<input type="hidden" name="' + action + '" value="yes">');
+			$('#multiform').submit();
+		}
+		e.preventDefault();
+	});
 	/*$('.tracking-actions').each(function() {
 		var f = function() {
 			var action = $(this).data("action");
