@@ -79,7 +79,7 @@ require_once BASE.'/partials/header.php';
 					foreach ($result as $row) {
 					?>
 					<tr>
-						<td><?php p($row['type']); ?> </td>
+						<td><?php p(substr($row['type'], 0, 1)); ?><span class="hidden-xs"><?php p(substr($row['type'], 1)); ?></span></td>
 						<td><?php p($row['value']); ?></td>
 						<td><?php p($row['access']); ?></td>
 						<td>
