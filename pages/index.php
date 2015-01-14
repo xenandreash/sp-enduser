@@ -187,8 +187,8 @@ ksort($errors);
 						<?php if ($source == 'queue') { ?>
 							<th>&nbsp;</th>
 						<?php } ?>
-						<th style="width: 125px">Date<span class="hidden-sm hidden-xs"> and time</span></th>
-						<th class="hidden-xs">From</th>
+						<th>Date<span class="hidden-sm hidden-xs"> and time</span></th>
+						<th style="min-width: 200px" class="hidden-xs">From</th>
 						<th class="hidden-xs">To</th>
 						<th style="width:100%;">Subject</th>
 						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm">Scores</th><?php } ?>
