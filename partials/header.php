@@ -51,13 +51,13 @@ $dbCredentials = $settings->getDBCredentials();
 				</div>
 				<div class="collapse navbar-collapse" id="navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li class="mail<?php header_active('index'); ?>"><a href="."><i class="icon icon-mail"></i>Messages</a></li>
+						<li class="mail<?php header_active('index'); ?>"><a href="."><i class="glyphicon glyphicon-envelope"></i>&nbsp;Messages</a></li>
 						<?php if ($dbCredentials['dsn'] && $settings->getDisplayBWList()) { ?>
-						<li class="bwlist<?php header_active('bwlist'); ?>"><a href="?page=bwlist">Black/whitelist</a></li>
+						<li class="bwlist<?php header_active('bwlist'); ?>"><a href="?page=bwlist"><i class="glyphicon glyphicon-inbox"></i>&nbsp;Black/whitelist</a></li>
 						<?php } ?>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li class="user<?php header_active('user') ?>"><a href="?page=user"><?php p(Session::Get()->getUsername()); ?></a></li>
+						<li class="user<?php header_active('user') ?>"><a href="?page=user"><i class="glyphicon glyphicon-user"></i>&nbsp;<?php p(Session::Get()->getUsername()); ?></a></li>
 						<li class="logout<?php header_active('logout') ?>"><a href="?page=logout">Logout</a></li>
 					</ul>
 				</div>
