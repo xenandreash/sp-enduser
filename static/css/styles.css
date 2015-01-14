@@ -119,6 +119,16 @@ body > .navbar-toolbar {
 		display: none;
 	}
 	
+	.collapse-to-multiselect {
+		display: block;
+		float: left;
+	}
+	
+	.collapse-to-multiselect .checkbox {
+		display: block;
+		margin: 0;
+	}
+	
 	.collapse-to-timestamp {
 		float: right;
 		font-size: 85%;
@@ -140,6 +150,10 @@ body > .navbar-toolbar {
 }
 .form-group .form-control:last-child, .navbar .form-control {
 	margin-bottom: 0;
+}
+
+.checkbox label {
+	display: block;
 }
 
 /* Give data-href-ed elements the cursor of a "real" link */

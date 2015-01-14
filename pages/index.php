@@ -238,8 +238,12 @@ ksort($errors);
 						<?php } ?>
 						</td> -->
 						<?php if ($source == 'queue') { ?>
-							<td>
-								<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
+							<td class="collapse-to-multiselect">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
+									</label>
+								</div>
 							</td>
 						<?php } ?>
 						<td class="collapse-to-timestamp semitrans">
