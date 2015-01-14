@@ -49,8 +49,6 @@ $display_scores = $settings->getDisplayScores();
 
 // // Select box arrays
 $pagesize = array(10, 50, 100, 500, 1000, 5000);
-// foreach (array(10, 50, 100, 500, 1000, 5000) as $n)
-// 	$pagesize[$n] = $n.' results';
 $sources = array('history' => 'History');
 if($nodeBackend->isValid())
 	$sources += array('queue' => 'Queue', 'quarantine' => 'Quarantine');
@@ -123,8 +121,6 @@ ksort($errors);
 						</ul>
 					</div>
 				</div>
-				<!-- <a class="navbar-brand visible-xs"><?php p($sources[$source]); ?></a>
-				<a class="navbar-brand hidden-xs hidden-sm"><?php p($title); ?></a> -->
 			</div>
 			<div class="collapse navbar-collapse" id="toolbar-collapse">
 				<form class="navbar-form navbar-left" role="search">
@@ -136,7 +132,6 @@ ksort($errors);
 								<button class="btn btn-default">Search</button>
 							</div>
 						</div>
-						<!-- <label>Search</label> -->
 					</div>
 				</form>
 				<ul class="nav navbar-nav navbar-left hidden-xs hidden-sm">
@@ -176,14 +171,9 @@ ksort($errors);
 		</p>
 		<?php } ?>
 		<div class="row">
-			<!-- <table class="list pad fixed"> -->
 			<table class="table nowrap">
 				<thead>
 					<tr>
-						<!-- <th style="width: 17px; padding: 0"></th> -->
-						<!-- <th style="width: 20px" class="action">
-							<?php if ($m['type'] == 'queue') { ?><input type="checkbox" id="select-all"><?php } ?>
-						</th> -->
 						<?php if ($source == 'queue') { ?>
 							<th>&nbsp;</th>
 						<?php } ?>
@@ -229,14 +219,6 @@ ksort($errors);
 						);
 					?>
 					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>">
-						<!-- <td style="width: 17px; padding: 0"></td> -->
-						<!-- <td class="action <?php p($m['data']->msgaction.' '.$m['type']) ?>" title="<?php p($m['data']->msgaction) ?>">
-						<?php if ($m['type'] == 'queue') { // queue or quarantine ?>
-							<input type="checkbox" name="multiselect-<?php p($m['data']->id) ?>" value="<?php p($m['id']) ?>">
-						<?php } else { // history ?>
-							<strong><?php p($m['data']->msgaction[0]) ?></strong>
-						<?php } ?>
-						</td> -->
 						<?php if ($source == 'queue') { ?>
 							<td class="pad-child-instead">
 								<label>

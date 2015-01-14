@@ -94,8 +94,6 @@ require_once BASE.'/partials/header.php';
 					<i class="glyphicon glyphicon-search"></i>
 				</button>
 				<a class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
-				<!-- <a class="navbar-brand visible-xs"><?php p($sources[$source]); ?></a>
-				<a class="navbar-brand hidden-xs hidden-sm"><?php p($title); ?></a> -->
 			</div>
 			<div class="collapse navbar-collapse" id="toolbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
@@ -135,25 +133,6 @@ require_once BASE.'/partials/header.php';
 		</div>
 	</nav>
 	<div class="container-fluid">
-			<!--<form>
-				<div class="item">
-					<div class="button back" onclick="history.back()">Back</div>
-				</div>
-				<?php if ($logs) { ?>
-				<div class="item">
-					<a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>"><div class="button search">Text log</div></a>
-				</div>
-				<?php } ?>
-				<?php if ($_GET['type'] == 'queue') { ?>
-				<div class="item">
-					<a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><div class="button down">Download</div></a>
-				</div>
-				<div class="item">
-					<div class="button start tracking-actions">Actions...</div>
-				</div>
-				<?php } ?>
-			</form>
-		</div>-->
 		<div class="row">
 			<div class="col-md-4 col-md-push-8">
 				<div class="panel panel-default">
