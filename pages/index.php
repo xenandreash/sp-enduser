@@ -238,12 +238,10 @@ ksort($errors);
 						<?php } ?>
 						</td> -->
 						<?php if ($source == 'queue') { ?>
-							<td>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
-									</label>
-								</div>
+							<td class="pad-child-instead">
+								<label>
+									<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
+								</label>
 							</td>
 						<?php } ?>
 						<td class="semitrans">

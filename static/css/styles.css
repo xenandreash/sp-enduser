@@ -170,6 +170,17 @@ body > .navbar-toolbar {
 	white-space: nowrap;
 }
 
+td.pad-child-instead {
+	padding: 0 !important;
+}
+td.pad-child-instead > * {
+	padding: 8px;
+}
+
+td label {
+	margin-bottom: 0;
+}
+
 dd, .panel-title {
 	overflow: hidden;
 	text-overflow: ellipsis;
