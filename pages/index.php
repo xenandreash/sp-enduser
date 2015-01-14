@@ -244,11 +244,8 @@ ksort($errors);
 								</label>
 							</td>
 						<?php } ?>
-						<td class="semitrans">
-							<?php p(strftime('%Y-%m-%d', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
-							<span class="hidden-sm hidden-xs">
-								<?php p(strftime('%H:%M:%S', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
-							</span>
+						<td class="small text-muted">
+							<?php echo strftime('%b %e <span class="hidden-xs">%Y, </span><span class="hidden-sm hidden-xs">%H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
 						<td class="hidden-xs"><?php p($m['data']->msgfrom) ?></td>
 						<td class="hidden-xs"><?php p($m['data']->msgto) ?></td>
