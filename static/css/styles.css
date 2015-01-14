@@ -120,6 +120,10 @@ body > .navbar-toolbar {
 	}
 }
 
+.disabled a {
+	pointer-events: none;
+}
+
 .form-group .form-control {
 	margin-bottom: 10px;
 }
