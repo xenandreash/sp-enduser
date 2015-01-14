@@ -98,15 +98,15 @@ require_once BASE.'/partials/header.php';
 			<div class="collapse navbar-collapse" id="toolbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<?php if ($logs) { ?>
-						<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>">Text log</a></li>
+						<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
 					<?php } ?>
 					<?php if ($_GET['type'] == 'queue') { ?>
-						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>">Download</a></li>
+						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 					<?php } ?>
 					<li class="divider"></li>
-					<li><a href="#">Delete</a></li>
-					<li><a href="#">Bounce</a></li>
-					<li><a href="#">Retry/release</a></li>
+					<li><a href="#"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
+					<li><a href="#"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce</a></li>
+					<li><a href="#"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release</a></li>
 				</ul>
 			</div>
 		</div>
@@ -118,15 +118,15 @@ require_once BASE.'/partials/header.php';
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<?php if ($logs) { ?>
-						<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>">Text log</a></li>
+						<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
 						<?php } ?>
 						<?php if ($_GET['type'] == 'queue') { ?>
-						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>">Download</a></li>
+						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 						<?php } ?>
 						<li class="divider"></li>
-						<li><a href="#">Delete message</a></li>
-						<li><a href="#">Bounce message</a></li>
-						<li><a href="#">Retry/release message</a></li>
+						<li><a href="#"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete message</a></li>
+						<li><a href="#"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce message</a></li>
+						<li><a href="#"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release message</a></li>
 					</ul>
 				</li>
 			</ul>

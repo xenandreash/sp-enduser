@@ -140,9 +140,9 @@ ksort($errors);
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="#" data-bulk-action="delete">Delete selected</a></li>
-							<li><a href="#" data-bulk-action="bounce">Bounce selected</a></li>
-							<li><a href="#" data-bulk-action="retry">Retry/release selected</a></li>
+							<li><a href="#" data-bulk-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete selected</a></li>
+							<li><a href="#" data-bulk-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce selected</a></li>
+							<li><a href="#" data-bulk-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release selected</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -156,9 +156,9 @@ ksort($errors);
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#" data-bulk-action="delete">Delete selected</a></li>
-						<li><a href="#" data-bulk-action="bounce">Bounce selected</a></li>
-						<li><a href="#" data-bulk-action="retry">Retry/release selected</a></li>
+						<li><a href="#" data-bulk-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete selected</a></li>
+						<li><a href="#" data-bulk-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce selected</a></li>
+						<li><a href="#" data-bulk-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release selected</a></li>
 					</ul>
 				</li>
 			</ul>
