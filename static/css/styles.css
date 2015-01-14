@@ -174,11 +174,17 @@ td.pad-child-instead {
 	padding: 0 !important;
 }
 td.pad-child-instead > * {
+	display: block;
 	padding: 8px;
 }
 
 td label {
 	margin-bottom: 0;
+}
+
+td a {
+	color: #333;
+	text-decoration: none;
 }
 
 dd, .panel-title {

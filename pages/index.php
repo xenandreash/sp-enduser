@@ -183,7 +183,10 @@ ksort($errors);
 						<th style="width:100%;">Subject</th>
 						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm">Scores</th><?php } ?>
 						<th class="hidden-xs hidden-sm">Details</th>
-						<th class="hidden-xs hidden-sm" style="width: 60px"></th>
+						<th class="hidden-xs hidden-sm"></th>
+						<?php if ($source != 'history') { ?>
+						<th class="hidden-xs hidden-sm"></th>
+						<?php } ?>
 					</tr>
 				</thead>
 				<tbody>
@@ -226,12 +229,12 @@ ksort($errors);
 								</label>
 							</td>
 						<?php } ?>
-						<td class="small text-muted" data-href="<?php p($preview); ?>">
+						<td class="small text-muted" data-href="?<?php p($preview); ?>">
 							<?php echo strftime('%b %e <span class="hidden-xs">%Y, </span><span class="hidden-sm hidden-xs">%H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
-						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgfrom) ?></td>
-						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgto) ?></td>
-						<td class="overflowhack" data-href="<?php p($preview); ?>">
+						<td class="hidden-xs" data-href="?<?php p($preview); ?>"><?php p($m['data']->msgfrom) ?></td>
+						<td class="hidden-xs" data-href="?<?php p($preview); ?>"><?php p($m['data']->msgto) ?></td>
+						<td class="overflowhack" data-href="?<?php p($preview); ?>">
 							<div><p><?php p($m['data']->msgsubject) ?></p></div>
 						</td>
 						<?php if ($display_scores) {
@@ -250,9 +253,9 @@ ksort($errors);
 									$printscores[] = $s['score'];
 							}
 						?>
-						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>"><?php p(implode(', ', array_unique($printscores))) ?></td>
+						<td class="hidden-xs hidden-sm" data-href="?<?php p($preview); ?>"><?php p(implode(', ', array_unique($printscores))) ?></td>
 						<?php } ?>
-						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>">
+						<td class="hidden-xs hidden-sm" data-href="?<?php p($preview); ?>">
 						<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
 							In queue (retry <?php p($m['data']->msgretries) ?>)
 							<span class="semitrans"><?php p($m['data']->msgerror) ?></span>
@@ -260,12 +263,14 @@ ksort($errors);
 							<span class="semitrans"><?php p($m['data']->msgdescription) ?></span>
 						<?php } ?>
 						</td>
-						<td class="hidden-xs hidden-sm">
-							<a title="Details" class="icon mail" href="?<?php echo $preview?>"></a>
-						<?php if ($m['type'] != 'history') { ?>
-							<div title="Release/retry" class="icon go"></div>
-						<?php } ?>
+						<td class="hidden-xs hidden-sm pad-child-instead">
+							<a title="Details" href="?<?php echo $preview?>"><i class="glyphicon glyphicon-envelope"></i></a>
 						</td>
+						<?php if ($source != 'history') { ?>
+						<td class="hidden-xs hidden-sm pad-child-instead">
+							<div title="Release/retry"><i class="glyphicon glyphicon-play"></i></div>
+						</td>
+						<?php } ?>
 					</tr>
 				<?php }} ?>
 				<?php if (empty($timesort)) { ?>
