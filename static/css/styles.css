@@ -118,31 +118,6 @@ body > .navbar-toolbar {
 	table.collapse-to-list thead {
 		display: none;
 	}
-	
-	.collapse-to-multiselect {
-		display: block;
-		float: left;
-	}
-	
-	.collapse-to-multiselect .checkbox {
-		display: block;
-		margin: 0;
-	}
-	
-	.collapse-to-timestamp {
-		float: right;
-		font-size: 85%;
-		max-width: 20%;
-	}
-	
-	.collapse-to-title {
-		float: left;
-		font-weight: bold;
-		max-width: 80%;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
 }
 
 .form-group .form-control {

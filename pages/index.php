@@ -177,7 +177,7 @@ ksort($errors);
 		<?php } ?>
 		<div class="row">
 			<!-- <table class="list pad fixed"> -->
-			<table class="table collapse-to-list">
+			<table class="table">
 				<thead>
 					<tr>
 						<!-- <th style="width: 17px; padding: 0"></th> -->
@@ -238,7 +238,7 @@ ksort($errors);
 						<?php } ?>
 						</td> -->
 						<?php if ($source == 'queue') { ?>
-							<td class="collapse-to-multiselect">
+							<td>
 								<div class="checkbox">
 									<label>
 										<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
@@ -246,7 +246,7 @@ ksort($errors);
 								</div>
 							</td>
 						<?php } ?>
-						<td class="collapse-to-timestamp semitrans">
+						<td class="semitrans">
 							<?php p(strftime('%Y-%m-%d', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
 							<span class="hidden-sm hidden-xs">
 								<?php p(strftime('%H:%M:%S', $m['data']->msgts0 - $_SESSION['timezone'] * 60)) ?>
@@ -254,9 +254,7 @@ ksort($errors);
 						</td>
 						<td class="hidden-xs"><?php p($m['data']->msgfrom) ?></td>
 						<td class="hidden-xs"><?php p($m['data']->msgto) ?></td>
-						<td class="clearfix">
-							<p class="collapse-to-title"><?php p($m['data']->msgsubject) ?></p>
-						</td>
+						<td><?php p($m['data']->msgsubject) ?></td>
 						<?php if ($display_scores) {
 							$printscores = array();
 							$scores = history_parse_scores($m['data']);
