@@ -29,8 +29,8 @@ $dbCredentials = $settings->getDBCredentials();
 		<script src="static/js/jquery.min.js"></script>
 		<?php if (isset($javascript)) foreach ($javascript as $js) { ?>
 		<script src="<?php echo $js; ?>"></script>
-		<script src="static/js/bootstrap.min.js"></script>
 		<?php } ?>
+		<script src="static/js/bootstrap.min.js"></script>
 	</head>
 	<body class="<?php p($body_class); ?>">
 		<?php if (Session::Get()->getUsername()) { ?>
