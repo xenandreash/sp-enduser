@@ -43,15 +43,21 @@ if ($_GET['list'] == 'add') {
 
 $title = 'Black/whitelist';
 require_once BASE.'/partials/header.php';
+
+$row_classes = array(
+	'whitelist' => 'success',
+	'blacklist' => 'danger',
+);
 ?>
 	<div class="container-fluid">
 		<div class="col-md-6 col-lg-8">
 			<table class="table">
 				<thead>
 					<tr>
-						<th>Type</th>
-						<th>Sender</th>
-						<th>For recipient</th>
+						<th class="hidden-xs">Type</th>
+						<th class="hidden-xs">Sender</th>
+						<th class="hidden-xs">For recipient</th>
+						<th class="visible-xs"></th>
 						<th style="width: 20px"></th>
 					</tr>
 				</thead>
@@ -78,11 +84,21 @@ require_once BASE.'/partials/header.php';
 
 					foreach ($result as $row) {
 					?>
-					<tr>
-						<td><?php p(substr($row['type'], 0, 1)); ?><span class="hidden-xs"><?php p(substr($row['type'], 1)); ?></span></td>
-						<td><?php p($row['value']); ?></td>
-						<td><?php p($row['access']); ?></td>
-						<td>
+					<tr class="<?php p($row_classes[$row['type']] ?: 'info'); ?>">
+						<td class="hidden-xs"><?php p($row['type']); ?></td>
+						<td class="hidden-xs"><?php p($row['value']); ?></td>
+						<td class="hidden-xs"><?php p($row['access']); ?></td>
+						<td class="visible-xs" colspan="2">
+							<p>
+								<i class="glyphicon glyphicon-pencil"></i>&nbsp;
+								<?php p($row['value']); ?>
+							</p>
+							<p>
+								<i class="glyphicon glyphicon-inbox"></i>&nbsp;
+								<?php if ($row['access']) { p($row['access']); } else { echo '<span class="text-muted">everyone</span>'; } ?>
+							</p>
+						</td>
+						<td class="pad-child-instead" style="vertical-align: middle;">
 							<a title="Remove" href="?page=bwlist&list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>"><i class="glyphicon glyphicon-remove"></i></a>
 						</td>
 					</tr>
