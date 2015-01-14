@@ -148,7 +148,7 @@ body > .navbar-toolbar {
 }
 
 /* Give data-href-ed elements the cursor of a "real" link */
-[data-href] {
+[data-href], [data-bulk-action] {
 	cursor: pointer;
 }
 
