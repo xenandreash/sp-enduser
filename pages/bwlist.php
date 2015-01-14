@@ -44,19 +44,18 @@ if ($_GET['list'] == 'add') {
 $title = 'Black/whitelist';
 require_once BASE.'/partials/header.php';
 ?>
-			</div>
-			<div class="halfpages">
-				<div class="halfpage">
-					<table class="list pad">
-						<thead>
-							<tr>
-								<th>Type</th>
-								<th>Sender</th>
-								<th>For recipient</th>
-								<th style="width: 20px"></th>
-							</tr>
-						</thead>
-					<tbody>
+	<div class="container-fluid">
+		<div class="col-md-6 col-lg-8">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Sender</th>
+						<th>For recipient</th>
+						<th style="width: 20px"></th>
+					</tr>
+				</thead>
+				<tbody>
 					<?php
 					$result = array();
 
@@ -78,68 +77,76 @@ require_once BASE.'/partials/header.php';
 					}
 
 					foreach ($result as $row) {
-						?>
-						<tr>
-							<td><?php p($row['type']); ?> </td>
-							<td><?php p($row['value']); ?></td>
-							<td><?php p($row['access']); ?></td>
-							<td>
-								<a title="Remove" class="icon close" href="?page=bwlist&list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>"></a>
-							</td>
-						</tr>
-						<?php
+					?>
+					<tr>
+						<td><?php p($row['type']); ?> </td>
+						<td><?php p($row['value']); ?></td>
+						<td><?php p($row['access']); ?></td>
+						<td>
+							<a title="Remove" class="icon close" href="?page=bwlist&list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>"></a>
+						</td>
+					</tr>
+					<?php
 					}
 					if (count($result) == 0)
 						echo "<tr><td colspan=4 class=semitrans>No black/whitelist</td></tr>";
 					?>
-					</tbody>
-				</table>
-			</div>
-			<div class="halfpage">
-				<fieldset>
-					<legend>Black/whitelist</legend>
-					<form action="?page=bwlist&list=add" method="post">
-						<div>
-							<label>Action</label>
-							<select name="type">
-								<option value="blacklist">Blacklist</option>
-								<option value="whitelist">Whitelist</option>
-							</select>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-6 col-lg-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Black/whitelist</h3>
+				</div>
+				<div class="panel-body">
+					<form class="form-horizontal" action="?page=bwlist&list=add" method="post">
+						<div class="form-group">
+							<label for="type" class="control-label col-md-3">Action</label>
+							<div class="col-md-9">
+								<select name="type" class="form-control">
+									<option value="blacklist">Blacklist</option>
+									<option value="whitelist">Whitelist</option>
+								</select>
+							</div>
 						</div>
-						<div>
-							<label>Sender</label>
-							<input type="text" name="value">
+						<div class="form-group">
+							<label class="control-label col-md-3">Sender</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="value">
+							</div>
 						</div>
-						<div>
-							<label>For recipient</label>
-							<?php
-								$_access = array();
-								foreach ($access as $a) {
-									foreach ($a as $type) {
-										$_access[] = $type;
+						<div class="form-group">
+							<label class="control-label col-md-3">For recipient</label>
+							<div class="col-md-9">
+								<?php
+									$_access = array();
+									foreach ($access as $a) {
+										foreach ($a as $type) {
+											$_access[] = $type;
+										}
 									}
-								}
-								if (count($_access) > 0) {
-							?>
-							<select name="access">
-							<?php foreach ($_access as $a) { ?>
-								<option><?php echo $a; ?></option>
-							<?php } ?>
-							</select>
-							<?php } else { ?>
-							<input type="text" name="access" placeholder="everyone">
-							<?php } ?>
+									if (count($_access) > 0) {
+								?>
+								<select name="access" class="form-control">
+									<?php foreach ($_access as $a) { ?>
+										<option><?php echo $a; ?></option>
+									<?php } ?>
+								</select>
+								<?php } else { ?>
+									<input type="text" class="form-control" name="access" placeholder="everyone">
+								<?php } ?>
+								<p class="help-block">
+									Sender may be an IP address, an e-mail address, a domain name or a wildcard domain name starting with a dot (eg. .co.uk).
+								</p>
+							</div>
 						</div>
-						<div>
-							<label></label>
-							<button type="submit">Add</button>
-						</div>
-						<br>
-						<div>
-							Sender may be an IP address, an e-mail address, a domain name or a wildcard domain name starting with a dot (eg. .co.uk).
+						<div class="col-md-offset-3 col-md-9">
+							<button type="submit" class="btn btn-primary">Add</button>
 						</div>
 					</form>
-				</fieldset>
+				</div>
 			</div>
 		</div>
+	</div>
 <?php require_once BASE.'/partials/footer.php'; ?>
