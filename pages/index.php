@@ -148,7 +148,7 @@ ksort($errors);
 			</div>
 		</div>
 	</nav>
-	<nav class="navbar navbar-default navbar-fixed-bottom visible-xs" id="bottom-bar" style="display:none;">
+	<nav class="navbar navbar-default navbar-fixed-bottom hidden-sm hidden-md hidden-lg" id="bottom-bar" style="display:none;">
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
