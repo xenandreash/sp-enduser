@@ -134,6 +134,7 @@ ksort($errors);
 						</div>
 					</div>
 				</form>
+				<?php if ($source != 'history') { ?>
 				<ul class="nav navbar-nav navbar-left hidden-xs hidden-sm">
 					<li class="divider"></li>
 					<li class="dropdown">
@@ -145,6 +146,7 @@ ksort($errors);
 						</ul>
 					</li>
 				</ul>
+				<?php } ?>
 			</div>
 		</div>
 	</nav>
