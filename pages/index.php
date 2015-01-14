@@ -229,7 +229,7 @@ ksort($errors);
 							'DEFER' => 'info'
 						);
 					?>
-					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>" data-href="?<?php p($preview); ?>">
+					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>">
 						<!-- <td style="width: 17px; padding: 0"></td> -->
 						<!-- <td class="action <?php p($m['data']->msgaction.' '.$m['type']) ?>" title="<?php p($m['data']->msgaction) ?>">
 						<?php if ($m['type'] == 'queue') { // queue or quarantine ?>
