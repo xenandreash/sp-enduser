@@ -193,7 +193,7 @@ ksort($errors);
 						<th>Subject</th>
 						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm">Scores</th><?php } ?>
 						<th class="hidden-xs hidden-sm">Details</th>
-						<th class="hidden-xs hidden-sm" style="width: 40px"></th>
+						<th class="hidden-xs hidden-sm" style="width: 60px"></th>
 					</tr>
 				</thead>
 				<tbody>
