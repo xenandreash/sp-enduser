@@ -177,7 +177,7 @@ ksort($errors);
 		<?php } ?>
 		<div class="row">
 			<!-- <table class="list pad fixed"> -->
-			<table class="table">
+			<table class="table nowrap">
 				<thead>
 					<tr>
 						<!-- <th style="width: 17px; padding: 0"></th> -->
@@ -190,7 +190,7 @@ ksort($errors);
 						<th style="width: 125px">Date<span class="hidden-sm hidden-xs"> and time</span></th>
 						<th class="hidden-xs">From</th>
 						<th class="hidden-xs">To</th>
-						<th>Subject</th>
+						<th style="width:100%;">Subject</th>
 						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm">Scores</th><?php } ?>
 						<th class="hidden-xs hidden-sm">Details</th>
 						<th class="hidden-xs hidden-sm" style="width: 60px"></th>
@@ -254,7 +254,9 @@ ksort($errors);
 						</td>
 						<td class="hidden-xs"><?php p($m['data']->msgfrom) ?></td>
 						<td class="hidden-xs"><?php p($m['data']->msgto) ?></td>
-						<td><?php p($m['data']->msgsubject) ?></td>
+						<td class="overflowhack">
+							<div><p><?php p($m['data']->msgsubject) ?></p></div>
+						</td>
 						<?php if ($display_scores) {
 							$printscores = array();
 							$scores = history_parse_scores($m['data']);
