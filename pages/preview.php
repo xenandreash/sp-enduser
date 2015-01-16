@@ -102,26 +102,20 @@ require_once BASE.'/partials/header.php';
 	<nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toolbar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<i class="glyphicon glyphicon-search"></i>
-				</button>
 				<a class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
 			</div>
-			<div class="collapse navbar-collapse" id="toolbar-collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<?php if ($logs) { ?>
-						<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
-					<?php } ?>
-					<?php if ($_GET['type'] == 'queue') { ?>
-						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
-					<?php } ?>
-					<li class="divider"></li>
-					<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
-					<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce</a></li>
-					<li><a data-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release</a></li>
-				</ul>
-			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<?php if ($logs) { ?>
+					<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+				<?php } ?>
+				<?php if ($_GET['type'] == 'queue') { ?>
+					<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
+				<?php } ?>
+				<li class="divider"></li>
+				<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
+				<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce</a></li>
+				<li><a data-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release</a></li>
+			</ul>
 		</div>
 	</nav>
 	<nav class="navbar navbar-default navbar-fixed-bottom visible-xs" id="bottom-bar">
