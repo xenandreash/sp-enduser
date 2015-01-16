@@ -10,7 +10,6 @@ require_once BASE.'/partials/header.php';
 
 $ok = true;
 ?>
-	</div>
 	<div style="padding: 10px;"> 
 <?php
 if (count($settings->getNodes()) == 0) {
@@ -38,7 +37,7 @@ if ($settings->getAPIKey() === null) {
 ?>
 	<p><em>WARNING:</em> No api-key, dynamic user creation and black/whitelist lookups will not work until you specify one.</p>
 <?php } else { ?>
-	<p><em>INFO:</em> The trigger URL for this setup is <tt><?php p($settings->getPublicURL()); ?>api.php?api-key=<i>secret-api-key</i></tt>.</p>
+	<p><em>INFO:</em> The trigger URL for this setup is: <code><?php p($settings->getPublicURL()); ?>api.php?api-key=<i>secret-api-key</i></code></p>
 <?php } ?>
 <?php
 if (count($settings->getAuthSources()) == 0) {
