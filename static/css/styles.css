@@ -208,6 +208,16 @@ dd, .panel-title {
 	text-overflow: ellipsis;
 }
 
+dl:last-child {
+	margin-bottom: 0;
+}
+
+@media(max-width: 767px) {
+	dd {
+		margin-bottom: 10px;
+	}
+}
+
 pre.panel-body {
 	border: none;
 	margin: 0;
