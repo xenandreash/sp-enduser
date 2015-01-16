@@ -1,8 +1,11 @@
+$(document).ready(function() {
+	poll();
+});
+
 $(window).unload(function() {
-	$.ajax({
-		type: "GET",
+	// Note: This has to be synchronous, or the unloading will abort it
+	$.ajax(document.URL, {
 		async: false,
-		url: document.URL,
 		dataType: "json",
 		data: {
 			cmd_id: cmd_id,
@@ -14,25 +17,30 @@ $(window).unload(function() {
 });
 
 function poll() {
-	$.ajax({
-		type: "GET",
-		url: document.URL,
+	$.ajax(document.URL, {
 		dataType: "json",
 		data: {
 			cmd_id: cmd_id,
 			cmd_node: cmd_node,
 			ajax: 1,
 			action: "poll"
-		},
-		success: function(result) {
-			$.each(result, function(k, v) {
-				$("#log").append(document.createTextNode(v));
-			});
-			setTimeout(function () { poll(); }, result.length ? 10 : 1000);
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			if (textStatus == 'error' && jqXHR.responseText.length)
-				$("#log").append("<b>Error: " + jqXHR.responseText + "</b>");
 		}
+	}).done(function(data) {
+		$.each(data, function(i, row) {
+			$('#log').append(document.createTextNode(row));
+		});
+		setTimeout(poll, data.length > 0 ? 10 : 1000);
+	}).fail(function(req, status, error) {
+		var err = "Unknown Error";
+		if (status == 'timeout')
+			err = "The request timed out";
+		else if (status == 'error')
+			err = "HTTP Error: " + error;
+		else if (status == 'abort')
+			err = "Connection aborted";
+		else if (status == 'parsererror')
+			err = "Couldn't parse response";
+		
+		$('#log').append('<b class="text-danger">' + err + '</b>');
 	});
 }
