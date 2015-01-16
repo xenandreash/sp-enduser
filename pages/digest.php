@@ -15,7 +15,8 @@ $sign = $_GET['sign'];
 $client = soap_client($node);
 
 // Check time, allow 1 week of links
-if ($time + (3600*24*7) < time()) die('Link has expired (valid 1 week)');
+if ($time + (3600*24*7) < time())
+	die('Link has expired (valid 1 week)');
 
 // Get message ID, part of signing hash
 $query['filter'] = 'queueid='.$queueid;
@@ -35,12 +36,12 @@ $client->mailQueueRetry(array('id' => $queueid));
 ?>
 <html>
 <head>
-<title>Message successfully released</title>
-<script>
-window.close();
-</script>
+	<title>Message successfully released</title>
+	<script>
+		window.close();
+	</script>
 </head>
 <body>
-The message was successfully released.
+	The message was successfully released.
 </body>
 </html>
