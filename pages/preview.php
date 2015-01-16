@@ -56,7 +56,7 @@ $listeners = $settings->getDisplayListener();
 if (isset($transports[$mail->msgtransport])) $transport = $transports[$mail->msgtransport];
 if (isset($listeners[$mail->msglistener])) $listener = $listeners[$mail->msglistener];
 if ($_GET['type'] == 'queue' && $mail->msgaction == 'DELIVER')
-	$desc = 'In queue (retry '.$mail->msgretries.') <span class="text-muted">'.htmlspecialchars($mail->msgerror).'</span>';
+	$desc = 'In queue (retry '.$mail->msgretries.')<br /><span class="text-muted">'.htmlspecialchars($mail->msgerror).'</span>';
 else
 	$desc = htmlspecialchars($mail->msgdescription);
 if ($_GET['type'] == 'queue') {
