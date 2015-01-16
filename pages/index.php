@@ -167,7 +167,7 @@ ksort($errors);
 	<div class="container-fluid">
 		<?php if (count($errors)) { ?>
 		<p style="padding-left: 17px; padding-top: 17px;">
-			<span class="semitrans">
+			<span class="text-muted">
 				Some messages might not be available at the moment due to maintenance.
 			</span>
 		</p>
@@ -260,9 +260,9 @@ ksort($errors);
 						<td class="hidden-xs hidden-sm" data-href="?<?php p($preview); ?>">
 						<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
 							In queue (retry <?php p($m['data']->msgretries) ?>)
-							<span class="semitrans"><?php p($m['data']->msgerror) ?></span>
+							<span class="text-muted"><?php p($m['data']->msgerror) ?></span>
 						<?php } else { // history or quarantine ?>
-							<span class="semitrans"><?php p($m['data']->msgdescription) ?></span>
+							<span class="text-muted"><?php p($m['data']->msgdescription) ?></span>
 						<?php } ?>
 						</td>
 						<td class="hidden-xs hidden-sm pad-child-instead">
@@ -277,7 +277,7 @@ ksort($errors);
 				<?php }} ?>
 				<?php if (empty($timesort)) { ?>
 					<tr>
-						<td colspan="<?php p($cols) ?>"><span class="semitrans">No matches</span></td>
+						<td colspan="<?php p($cols) ?>"><span class="text-muted">No matches</span></td>
 					</tr>
 				<?php } ?>
 				</form>
@@ -319,7 +319,7 @@ ksort($errors);
 		
 		<?php if (count($errors)) { ?>
 		<div style="padding-left: 17px;">
-			<span class="semitrans">
+			<span class="text-muted">
 				Diagnostic information:
 				<ul>
 				<?php foreach ($errors as $n => $error) { ?>

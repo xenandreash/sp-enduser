@@ -56,7 +56,7 @@ $listeners = $settings->getDisplayListener();
 if (isset($transports[$mail->msgtransport])) $transport = $transports[$mail->msgtransport];
 if (isset($listeners[$mail->msglistener])) $listener = $listeners[$mail->msglistener];
 if ($_GET['type'] == 'queue' && $mail->msgaction == 'DELIVER')
-	$desc = 'In queue (retry '.$mail->msgretries.') <span class="semitrans">'.htmlspecialchars($mail->msgerror).'</span>';
+	$desc = 'In queue (retry '.$mail->msgretries.') <span class="text-muted">'.htmlspecialchars($mail->msgerror).'</span>';
 else
 	$desc = htmlspecialchars($mail->msgdescription);
 if ($_GET['type'] == 'queue') {
@@ -215,7 +215,7 @@ require_once BASE.'/partials/header.php';
 							<tr>
 							<td><?php p($score['name']) ?></td>
 							<td><?php p($score['score']) ?></td>
-							<td class="semitrans hidden-xs"><?php p($score['text']) ?></td>
+							<td class="text-muted hidden-xs"><?php p($score['text']) ?></td>
 							</tr>
 						<?php } else { ?>
 							<tr>

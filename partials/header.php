@@ -63,21 +63,4 @@ $dbCredentials = $settings->getDBCredentials();
 				</div>
 			</div>
 		</nav>
-		<!--<div id="nav">
-			<ul id="menu">
-				<li class="mail<?php header_active('index') ?>"><a href=".">Messages</a></li>
-				<?php if ($dbCredentials['dsn'] && $settings->getDisplayBWList()) { ?>
-				<li class="bwlist<?php header_active('bwlist') ?>"><a href="?page=bwlist">Black/whitelist</a></li>
-				<?php } ?>
-			</ul>
-			<ul id="taskbar">
-				<li class="user<?php header_active('user') ?>"><a href="?page=user"><?php echo htmlspecialchars(Session::Get()->getUsername()) ?></a></li>
-				<?php if (Session::Get()->getSource() != 'cpanel') { ?>
-				<li class="logout"><a href="?page=logout">Logout</a></li>
-				<?php } ?>
-			</ul>
-		</div>-->
 		<?php } ?>
-		<!-- <div id="header">
-			<h1><?php echo $title ?></h1>
-			<img src="<?php echo $logo ?>" id="logo"> -->

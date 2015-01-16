@@ -109,7 +109,7 @@ $row_classes = array(
 						<?php
 						}
 						if (count($result) == 0)
-							echo "<tr><td colspan=4 class=semitrans>No black/whitelist</td></tr>";
+							echo '<tr><td colspan="4" class="text-muted">No black/whitelist</td></tr>';
 						?>
 					</tbody>
 				</table>
