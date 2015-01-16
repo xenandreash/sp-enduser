@@ -1,7 +1,7 @@
 <?php
 
 function p($str, $def = "") {
-	echo htmlspecialchars($str ?: $def);
+	echo $str ? htmlspecialchars($str) : $def;
 }
 
 function p_select($name, $selected, $options, $extra = "") {
