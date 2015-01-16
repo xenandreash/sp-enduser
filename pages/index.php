@@ -36,6 +36,25 @@ $title = 'Messages';
 $javascript[] = 'static/js/index.js';
 require_once BASE.'/partials/header.php';
 
+$action_classes = array(
+	'DELIVER' => 'success',
+	'QUEUE' => 'success',
+	'QUARANTINE' => 'warning',
+	'BOUNCE' => 'danger',
+	'REJECT' => 'danger',
+	'ERROR' => 'danger',
+	'DEFER' => 'info'
+);
+
+function get_preview_link($m) {
+	return http_build_query(array(
+		'page' => 'preview',
+		'node' => $m['id'],
+		'id' => $m['data']->id,
+		'type' => $m['type']
+	));
+}
+
 // Backends
 $dbBackend = new DatabaseBackend($settings->getDatabase());
 $nodeBackend = new NodeBackend($settings->getNodes());
@@ -173,7 +192,7 @@ ksort($errors);
 		</p>
 		<?php } ?>
 		<div class="row">
-			<table class="table nowrap">
+			<table class="table nowrap hidden-xs">
 				<thead>
 					<tr>
 						<?php if ($source == 'queue') { ?>
@@ -207,21 +226,7 @@ ksort($errors);
 						}
 						$i++;
 						$param[$m['type']][$m['id']]['offset']++;
-						$preview = http_build_query(array(
-							'page' => 'preview',
-							'node' => $m['id'],
-							'id' => $m['data']->id,
-							'type' => $m['type']));
-						
-						$action_classes = array(
-							'DELIVER' => 'success',
-							'QUEUE' => 'success',
-							'QUARANTINE' => 'warning',
-							'BOUNCE' => 'danger',
-							'REJECT' => 'danger',
-							'ERROR' => 'danger',
-							'DEFER' => 'info'
-						);
+						$preview = get_preview_link($m);
 					?>
 					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>">
 						<?php if ($source == 'queue') { ?>
@@ -283,6 +288,19 @@ ksort($errors);
 				</form>
 				</tbody>
 			</table>
+			
+			<div class="list-group">
+				<?php foreach ($timesort as $t) { ?>
+					<?php foreach ($t as $m) { ?>
+						<a href="<?php p(get_preview_link($m)); ?>" class="list-group-item">
+							<h4 class="list-group-item-heading"><?php p($m['data']->msgsubject, '<span class="text-muted">No Subject</span>'); ?></h4>
+							<p class="list-group-item-text">
+								
+							</p>
+						</a>
+					<?php } ?>
+				<?php } ?>
+			</div>
 		</div>
 		
 		<form id="nav-form">
