@@ -270,7 +270,7 @@ ksort($errors);
 						</td>
 						<?php if ($source != 'history') { ?>
 						<td class="hidden-xs hidden-sm pad-child-instead">
-							<div title="Release/retry"><i class="glyphicon glyphicon-play"></i></div>
+							<a title="Release/retry" data-action="retry"><i class="glyphicon glyphicon-play"></i></a>
 						</td>
 						<?php } ?>
 					</tr>

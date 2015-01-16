@@ -9,6 +9,14 @@ $(document).ready(function() {
 		e.preventDefault();
 	});
 	
+	$('td [data-action]').click(function(e) {
+		var action = $(this).data('action');
+		$('[name^=multiselect-]').prop('checked', false);
+		$(this).closest("tr").find("input").prop('checked', true);
+		$("#multiform").append('<input type="hidden" name="' + action + '" value="yes">');
+		$("#multiform").submit();
+	});
+	
 	// Make the checkboxes show/hide the action bar
 	$('[name^=multiselect-]').change(function() {
 		var count = $('[name^=multiselect-]:checked').length;
