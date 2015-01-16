@@ -32,12 +32,12 @@ if (isset($_POST['action'])) {
 	
 	$title = 'Viewing Message';
 	$show_back = true;
-	$back_steps = 2;
+	$back_steps = $_POST['action'] != 'delete' ? 1 : 2;
 	require_once BASE.'/partials/header.php'; ?>
 		<nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="javascript:history.go(-2);">&larr;&nbsp;Back</a>
+					<a class="navbar-brand" href="javascript:history.go(-<?php p($back_steps); ?>);">&larr;&nbsp;Back</a>
 				</div>
 			</div>
 		</nav>
