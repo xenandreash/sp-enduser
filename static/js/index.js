@@ -8,6 +8,7 @@ $(document).ready(function() {
 		}
 		e.preventDefault();
 	});
+	
 	/*$('.tracking-actions').each(function() {
 		var f = function() {
 			var action = $(this).data("action");

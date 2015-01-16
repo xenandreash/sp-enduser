@@ -1,5 +1,12 @@
 $(document).ready(function() {
-	$('.tracking-actions').each(function() {
+	$('[data-action]').click(function(e) {
+		var action = $(this).data('action');
+		if (confirm("Are you sure you want to " + action + " this message?")) {
+			$('#action').val(action);
+			$('#actionform').submit();
+		}
+	});
+	/*$('.tracking-actions').each(function() {
 		var f = function() {
 			var action = $(this).data("action");
 			if (action == "delete" || action == "bounce")
@@ -22,5 +29,5 @@ $(document).ready(function() {
 		});
 	});
 	if (window.history.length == 1)
-		$(".back").parent().hide();
+		$(".back").parent().hide();*/
 });

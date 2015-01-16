@@ -46,7 +46,7 @@ $dbCredentials = $settings->getDBCredentials();
 					<?php if (!$show_back) { ?>
 					<a class="navbar-brand visible-xs" data-toggle="collapse" data-target="#navbar-collapse"><?php p($title); ?></a>
 					<?php } else { ?>
-					<a class="navbar-brand visible-xs" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
+					<a class="navbar-brand visible-xs" href="javascript:history.go(-<?php echo $back_steps ?: 1; ?>);">&larr;&nbsp;Back</a>
 					<?php } ?>
 				</div>
 				<div class="collapse navbar-collapse" id="navbar-collapse">

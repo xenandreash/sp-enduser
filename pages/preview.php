@@ -18,19 +18,32 @@ if ($_GET['type'] == 'log') {
 }
 
 if (isset($_POST['action'])) {
-	if ($_POST['action'] == 'bounce')
+	$past_tense = $_POST['action']."d";
+	if ($_POST['action'] == 'bounce') {
 		$client->mailQueueBounce(array('id' => $id));
-	if ($_POST['action'] == 'delete')
+	}
+	else if ($_POST['action'] == 'delete') {
 		$client->mailQueueDelete(array('id' => $id));
-	if ($_POST['action'] == 'retry')
+	}
+	else if ($_POST['action'] == 'retry') {
 		$client->mailQueueRetry(array('id' => $id));
-	$title = 'Message';
+		$past_tense = "retried";
+	}
+	
+	$title = 'Viewing Message';
+	$show_back = true;
+	$back_steps = 2;
 	require_once BASE.'/partials/header.php'; ?>
-				<div class="item">
-					<div class="button back" onclick="location.href='<?php p($_POST['referer']) ?>';">Back</div>
+		<nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="javascript:history.go(-2);">&larr;&nbsp;Back</a>
 				</div>
 			</div>
-			<div class="pad message ok">The requested action has been performed</div>
+		</nav>
+		<div class="container">
+			<div class="alert alert-success">The message has been successfully <?php p($past_tense); ?>.</div>
+		</div>
 	<?php require_once BASE.'/partials/footer.php';
 	die();
 }
@@ -104,9 +117,9 @@ require_once BASE.'/partials/header.php';
 						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 					<?php } ?>
 					<li class="divider"></li>
-					<li><a href="#"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
-					<li><a href="#"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce</a></li>
-					<li><a href="#"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release</a></li>
+					<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
+					<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce</a></li>
+					<li><a data-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release</a></li>
 				</ul>
 			</div>
 		</div>
@@ -124,9 +137,9 @@ require_once BASE.'/partials/header.php';
 						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 						<?php } ?>
 						<li class="divider"></li>
-						<li><a href="#"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete message</a></li>
-						<li><a href="#"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce message</a></li>
-						<li><a href="#"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release message</a></li>
+						<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete message</a></li>
+						<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce message</a></li>
+						<li><a data-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release message</a></li>
 					</ul>
 				</li>
 			</ul>
