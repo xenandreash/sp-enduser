@@ -288,8 +288,8 @@ ksort($errors);
 		<form id="nav-form">
 			<nav>
 				<ul class="pager">
-					<li class="previous <?php echo $prev_button ?>"><a href="#" onclick="history.go(-1); return false;"><span aria-hidden="true">&larr;</span> Previous</a></li>
-					<li class="next <?php echo $next_button; ?>"><a href="#" onclick="$('#nav-form').submit(); return false;">Next <span aria-hidden="true">&rarr;</span></a></li>
+					<li class="previous <?php echo $prev_button ?>"><a href="#" onclick="history.go(-1); return false;"><span aria-hidden="true">&larr;</span> Newer</a></li>
+					<li class="next <?php echo $next_button; ?>"><a href="#" onclick="$('#nav-form').submit(); return false;">Older <span aria-hidden="true">&rarr;</span></a></li>
 				</ul>
 			</nav>
 			<input type="hidden" name="size" value="<?php p($size) ?>">
