@@ -1,4 +1,8 @@
+var dotCount = 3;
+var loaded = false;
+
 $(document).ready(function() {
+	animateDots();
 	poll();
 });
 
@@ -43,5 +47,19 @@ function poll() {
 			err = "Couldn't parse response";
 		
 		$('#log').append('<b class="text-danger">' + err + '</b>');
+	}).always(function() {
+		$('#loading').hide();
+		loaded = true;
 	});
+}
+
+function animateDots() {
+	var dots = $('.dot');
+	
+	dotCount = (dotCount + 1) % (dots.length + 1);
+	dots.each(function(i) {
+		$(this).toggle(i < dotCount);
+	});
+	
+	if (!loaded) setTimeout(animateDots, 250);
 }

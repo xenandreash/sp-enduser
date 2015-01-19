@@ -74,7 +74,7 @@ require_once BASE.'/partials/header.php';
 		</div>
 	</nav>
 	<div class="container-fluid">
-		<pre id="log"></pre>
+		<pre id="log"><span class="text-info" id="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span></pre>
 	</div>
 	<script>
 		cmd_id = <?php echo json_encode($cmd_id->result); ?>;
