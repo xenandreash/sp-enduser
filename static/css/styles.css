@@ -168,6 +168,10 @@ body > .navbar-toolbar {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+.wrap {
+	word-break: break-all;
+	overflow: hidden;
+}
 
 .not-rounded,
 .not-rounded.list-group .list-group-item {

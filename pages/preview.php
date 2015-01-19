@@ -209,7 +209,7 @@ require_once BASE.'/partials/header.php';
 							<tr>
 							<td><?php p($score['name']) ?></td>
 							<td><?php p($score['score']) ?></td>
-							<td class="text-muted hidden-xs"><?php p($score['text']) ?></td>
+							<td class="text-muted hidden-xs wrap"><?php p($score['text']) ?></td>
 							</tr>
 						<?php } else { ?>
 							<tr>
