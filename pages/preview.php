@@ -144,7 +144,7 @@ require_once BASE.'/partials/header.php';
 			<div class="col-md-4 col-md-push-8">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">Metadata</h3>
+						<h3 class="panel-title">Details</h3>
 					</div>
 					<div class="panel-body">
 						<dl class="dl-horizontal">
