@@ -261,6 +261,10 @@ pre.panel-body {
 	background-color: #ffdddd;
 }
 
+.preview-headers-legend {
+	margin-top: 1px;
+}
+
 .preview-headers-legend div {
 	float: left;
 	width: 8px;
