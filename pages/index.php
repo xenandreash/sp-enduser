@@ -289,7 +289,7 @@ ksort($errors);
 				</tbody>
 			</table>
 			
-			<div class="list-group">
+			<div class="list-group visible-xs">
 				<?php foreach ($timesort as $t) { ?>
 					<?php foreach ($t as $m) { ?>
 						<a href="<?php p(get_preview_link($m)); ?>" class="list-group-item">
