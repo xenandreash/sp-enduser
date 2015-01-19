@@ -89,6 +89,9 @@ $settings['authentication'][] = array(
 		'type' => 'account',
 		'username' => 'foo',
 		'password' => 'foo',
+		'access' => array(
+			'mail' => array('admin@example.local'),
+			),
 		);
 //$settings['authentication'][] = array(
 //		'type' => 'ldap',
