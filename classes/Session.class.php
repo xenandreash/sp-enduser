@@ -85,10 +85,12 @@ class Session
 	 * 
 	 *   - mail: Can only see records involving the given email address(es)
 	 *   - domain: Can only see records involving the given domain(s)
+	 * 
+	 * @param $key The key to retrieve, or NULL for the whole array
 	 */
-	public function getAccess()
+	public function getAccess($key=NULL)
 	{
-		return $this->access;
+		return $key !== NULL ? $this->access[$key] : $this->access;
 	}
 	
 	/**
