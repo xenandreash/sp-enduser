@@ -201,10 +201,10 @@ ksort($errors);
 						<th style="width: 200px;" class="hidden-xs">From</th>
 						<th style="width: 200px;" class="hidden-xs">To</th>
 						<th>Subject</th>
-						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm">Scores</th><?php } ?>
-						<th class="hidden-xs hidden-sm">Status</th>
+						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm" style="width: 0;">Scores</th><?php } ?>
+						<th class="hidden-xs hidden-sm" style="width: 0;">Status</th>
 						<th style="width: 0;">&nbsp;</th>
-						<th class="hidden-xs hidden-sm"></th>
+						<th class="hidden-xs hidden-sm" style="width: 0; padding-right: 40px;"></th>
 						<?php if ($source != 'history') { ?>
 						<th class="hidden-xs hidden-sm"></th>
 						<?php } ?>
@@ -260,12 +260,7 @@ ksort($errors);
 						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>"><?php p(implode(', ', array_unique($printscores))) ?></td>
 						<?php } ?>
 						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>">
-						<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
-							In queue (retry <?php p($m['data']->msgretries) ?>)
-							<span class="text-muted"><?php p($m['data']->msgerror) ?></span>
-						<?php } else { // history or quarantine ?>
-							<span class="text-muted"><?php p($m['data']->msgdescription) ?></span>
-						<?php } ?>
+							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)); ?></span>
 						</td>
 						<td class="small text-muted" data-href="<?php p($preview); ?>">
 							<?php echo strftime('%b %e <span class="hidden-xs">%Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
@@ -297,17 +292,13 @@ ksort($errors);
 								<small class="pull-right"><?php echo strftime('%b %e %Y', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?></small>
 								<?php p($m['data']->msgfrom, '<span class="text-muted">Nobody</span>'); ?>
 								<?php if (count(Session::Get()->getAccess('mail')) != 1) { ?>
-									<small class="hidden-xs hidden-sm">&rarr; <?php p($m['data']->msgto); ?></small>
+									<br /><small>&rarr;&nbsp;<?php p($m['data']->msgto); ?></small>
 								<?php } ?>
 							</h4>
 							<p class="list-group-item-text clearfix">
-								<small class="pull-right text-right">
-									<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
-										<abbr title="<?php p($m['data']->msgerror); ?>">In queue (retry <?php p($m['data']->msgretries); ?>)</abbr>
-									<?php } else { // history or quarantine ?>
-										<span class="text-muted"><?php p($m['data']->msgdescription); ?></span>
-									<?php } ?>
-								</small>
+								<?php if ($m['type'] != 'log') { ?>
+									<small class="pull-right text-right"><?php p(long_msg_status($m)); ?></small>
+								<?php } ?>
 								<?php p($m['data']->msgsubject); ?>
 							</p>
 						</a>

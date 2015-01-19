@@ -143,6 +143,10 @@ body > .navbar-toolbar {
 	margin-bottom: 0;
 }
 
+.list-group-item-heading {
+	margin-bottom: 10px;
+}
+
 .checkbox label {
 	display: block;
 }
@@ -190,6 +194,7 @@ body > .navbar-toolbar {
 	width: 100%;
 	overflow: hidden;
 	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 td.pad-child-instead {
