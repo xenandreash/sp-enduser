@@ -119,6 +119,8 @@ else if ($source == 'queue' || $source == 'quarantine') {
 
 krsort($timesort);
 ksort($errors);
+
+$has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 ?>
 	<nav class="navbar navbar-toolbar navbar-static-top">
 		<div class="container-fluid">
@@ -199,7 +201,9 @@ ksort($errors);
 							<th>&nbsp;</th>
 						<?php } ?>
 						<th style="width: 200px;" class="hidden-xs">From</th>
+						<?php if ($has_multiple_addresses) { ?>
 						<th style="width: 200px;" class="hidden-xs">To</th>
+						<?php } ?>
 						<th>Subject</th>
 						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm" style="width: 0;">Scores</th><?php } ?>
 						<th class="hidden-xs hidden-sm" style="width: 0;">Status</th>
@@ -237,7 +241,9 @@ ksort($errors);
 							</td>
 						<?php } ?>
 						<td class="hidden-xs overflowhack" data-href="<?php p($preview); ?>"><div><p><?php p($m['data']->msgfrom) ?></p></div></td>
+						<?php if ($has_multiple_addresses) { ?>
 						<td class="hidden-xs overflowhack" data-href="<?php p($preview); ?>"><div><p><?php p($m['data']->msgto) ?></p></div></td>
+						<?php } ?>
 						<td class="overflowhack" data-href="<?php p($preview); ?>">
 							<div><p><?php p($m['data']->msgsubject) ?></p></div>
 						</td>
@@ -291,7 +297,7 @@ ksort($errors);
 							<h4 class="list-group-item-heading">
 								<small class="pull-right"><?php echo strftime('%b %e %Y', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?></small>
 								<?php p($m['data']->msgfrom, '<span class="text-muted">Nobody</span>'); ?>
-								<?php if (count(Session::Get()->getAccess('mail')) != 1) { ?>
+								<?php if ($has_multiple_addresses) { ?>
 									<br /><small>&rarr;&nbsp;<?php p($m['data']->msgto); ?></small>
 								<?php } ?>
 							</h4>
