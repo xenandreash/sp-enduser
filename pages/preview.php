@@ -141,7 +141,7 @@ require_once BASE.'/partials/header.php';
 	</nav>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-4 col-md-push-8">
+			<div class="col-lg-4 col-md-5 col-lg-push-8 col-md-push-7">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title">Details</h3>
@@ -222,7 +222,7 @@ require_once BASE.'/partials/header.php';
 				<?php } ?>
 			</div>
 			
-			<div class="col-md-8 col-md-pull-4">
+			<div class="col-lg-8 col-md-7 col-lg-pull-4 col-md-pull-5">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title"><?php p($mail->msgsubject ?: "No Subject"); ?></h3>
