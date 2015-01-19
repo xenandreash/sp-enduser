@@ -36,10 +36,10 @@ function poll() {
 		});
 		setTimeout(poll, data.length > 0 ? 10 : 1000);
 	}).fail(function(req, status, error) {
-		var err = "Unknown Error";
+		var err = "";
 		if (status == 'timeout')
 			err = "The request timed out";
-		else if (status == 'error')
+		else if (status == 'error' && error)
 			err = "HTTP Error: " + error;
 		else if (status == 'abort')
 			err = "Connection aborted";
