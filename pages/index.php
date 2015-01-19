@@ -266,7 +266,7 @@ ksort($errors);
 							<?php echo strftime('%b %e <span class="hidden-xs">%Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
 						<td class="hidden-xs hidden-sm pad-child-instead">
-							<a title="Details" href="?<?php echo $preview?>"><i class="glyphicon glyphicon-envelope"></i></a>
+							<a title="Details" href="<?php echo $preview?>"><i class="glyphicon glyphicon-envelope"></i></a>
 						</td>
 						<?php if ($source != 'history') { ?>
 						<td class="hidden-xs hidden-sm pad-child-instead">
