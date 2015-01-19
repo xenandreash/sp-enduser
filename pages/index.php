@@ -37,8 +37,8 @@ $javascript[] = 'static/js/index.js';
 require_once BASE.'/partials/header.php';
 
 $action_classes = array(
-	'DELIVER' => 'success',
-	'QUEUE' => 'success',
+	'DELIVER' => 'default',
+	'QUEUE' => 'default',
 	'QUARANTINE' => 'warning',
 	'BOUNCE' => 'danger',
 	'REJECT' => 'danger',
