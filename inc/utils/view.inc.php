@@ -46,13 +46,13 @@ function parse_status($status, $part = NULL) {
 
 /**
  * Returns a short status string for a message, such as "Ok" or
- * "In queue (retry 4)".
+ * "In queue".
  */
 function short_msg_status($m) {
 	if ($m['data']->msgaction == 'QUARANTINE')
 		return "Quarantine";
 	else if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER')
-		return "In queue (retry ".$m['data']->msgretries.")";
+		return "In queue";
 	else
 		return parse_status($m['data']->msgdescription, 0);
 }
