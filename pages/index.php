@@ -198,12 +198,12 @@ ksort($errors);
 						<?php if ($source == 'queue') { ?>
 							<th>&nbsp;</th>
 						<?php } ?>
-						<th>Date<span class="hidden-sm hidden-xs"> and time</span></th>
-						<th style="min-width: 200px" class="hidden-xs">From</th>
-						<th class="hidden-xs">To</th>
-						<th style="width:100%;">Subject</th>
+						<th style="width: 200px;" class="hidden-xs">From</th>
+						<th style="width: 200px;" class="hidden-xs">To</th>
+						<th>Subject</th>
 						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm">Scores</th><?php } ?>
-						<th class="hidden-xs hidden-sm">Details</th>
+						<th class="hidden-xs hidden-sm">Status</th>
+						<th style="width: 0;">&nbsp;</th>
 						<th class="hidden-xs hidden-sm"></th>
 						<?php if ($source != 'history') { ?>
 						<th class="hidden-xs hidden-sm"></th>
@@ -236,11 +236,8 @@ ksort($errors);
 								</label>
 							</td>
 						<?php } ?>
-						<td class="small text-muted" data-href="<?php p($preview); ?>">
-							<?php echo strftime('%b %e <span class="hidden-xs">%Y, </span><span class="hidden-sm hidden-xs">%H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
-						</td>
-						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgfrom) ?></td>
-						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgto) ?></td>
+						<td class="hidden-xs overflowhack" data-href="<?php p($preview); ?>"><div><p><?php p($m['data']->msgfrom) ?></p></div></td>
+						<td class="hidden-xs overflowhack" data-href="<?php p($preview); ?>"><div><p><?php p($m['data']->msgto) ?></p></div></td>
 						<td class="overflowhack" data-href="<?php p($preview); ?>">
 							<div><p><?php p($m['data']->msgsubject) ?></p></div>
 						</td>
@@ -270,6 +267,9 @@ ksort($errors);
 							<span class="text-muted"><?php p($m['data']->msgdescription) ?></span>
 						<?php } ?>
 						</td>
+						<td class="small text-muted" data-href="<?php p($preview); ?>">
+							<?php echo strftime('%b %e <span class="hidden-xs">%Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
+						</td>
 						<td class="hidden-xs hidden-sm pad-child-instead">
 							<a title="Details" href="?<?php echo $preview?>"><i class="glyphicon glyphicon-envelope"></i></a>
 						</td>
@@ -295,9 +295,19 @@ ksort($errors);
 						<a href="<?php p(get_preview_link($m)); ?>" class="list-group-item list-group-item-<?php p($action_classes[$m['data']->msgaction]); ?>">
 							<h4 class="list-group-item-heading">
 								<small class="pull-right"><?php echo strftime('%b %e %Y', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?></small>
-								<?php p($m['data']->msgfrom, '<span class="text-muted">No Subject</span>'); ?>
+								<?php p($m['data']->msgfrom, '<span class="text-muted">Nobody</span>'); ?>
+								<?php if (count(Session::Get()->getAccess('mail')) != 1) { ?>
+									<small class="hidden-xs hidden-sm">&rarr; <?php p($m['data']->msgto); ?></small>
+								<?php } ?>
 							</h4>
-							<p class="list-group-item-text">
+							<p class="list-group-item-text clearfix">
+								<small class="pull-right text-right">
+									<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
+										<abbr title="<?php p($m['data']->msgerror); ?>">In queue (retry <?php p($m['data']->msgretries); ?>)</abbr>
+									<?php } else { // history or quarantine ?>
+										<span class="text-muted"><?php p($m['data']->msgdescription); ?></span>
+									<?php } ?>
+								</small>
 								<?php p($m['data']->msgsubject); ?>
 							</p>
 						</a>

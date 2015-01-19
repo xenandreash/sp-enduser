@@ -182,6 +182,7 @@ body > .navbar-toolbar {
 
 .overflowhack > div {
 	position: relative;
+	margin-bottom: 20px;
 }
 
 .overflowhack > div > p {
