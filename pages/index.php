@@ -277,7 +277,7 @@ ksort($errors);
 				<?php }} ?>
 				<?php if (empty($timesort)) { ?>
 					<tr>
-						<td colspan="<?php p($cols) ?>"><span class="text-muted">No matches</span></td>
+						<td colspan="<?php p($cols) ?>" class="text-muted text-center">No matches</td>
 					</tr>
 				<?php } ?>
 				</form>
@@ -303,6 +303,9 @@ ksort($errors);
 							</p>
 						</a>
 					<?php } ?>
+				<?php } ?>
+				<?php if (empty($timesort)) { ?>
+					<a class="list-group-item disabled text-center">No matches</a>
 				<?php } ?>
 			</div>
 		</div>
