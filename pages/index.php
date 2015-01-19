@@ -198,20 +198,23 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 				<thead>
 					<tr>
 						<?php if ($source == 'queue') { ?>
-							<th>&nbsp;</th>
+							<th style="width:0">&nbsp;</th>
 						<?php } ?>
-						<th style="width: 200px;" class="hidden-xs">From</th>
+						<th style="min-width: 200px; max-width: 200px;" class="hidden-xs">From</th>
 						<?php if ($has_multiple_addresses) { ?>
-						<th style="width: 200px;" class="hidden-xs">To</th>
+						<th style="min-width: 200px; max-width: 200px;" class="hidden-xs">To</th>
 						<?php } ?>
-						<th>Subject</th>
+						<th style="width: 100%;">Subject</th>
 						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm" style="width: 0;">Scores</th><?php } ?>
 						<th class="hidden-xs hidden-sm" style="width: 0;">Status</th>
 						<th style="width: 0;">&nbsp;</th>
-						<th class="hidden-xs hidden-sm" style="width: 0; padding-right: 40px;"></th>
+						<th class="hidden-xs hidden-sm" style="width: 0;"></th>
 						<?php if ($source != 'history') { ?>
 						<th class="hidden-xs hidden-sm"></th>
 						<?php } ?>
+						
+						<!-- Padding column to avoid having the OSX scrollbar cover the rightmost button -->
+						<th style="min-width: 20px;">&nbsp;</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -279,6 +282,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 							<a title="Release/retry" data-action="retry"><i class="glyphicon glyphicon-play"></i></a>
 						</td>
 						<?php } ?>
+						<td data-href="<?php p($preview); ?>">&nbsp;</td>
 					</tr>
 				<?php }} ?>
 				<?php if (empty($timesort)) { ?>
