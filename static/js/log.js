@@ -6,6 +6,7 @@ $(window).unload(function() {
 	// Note: This has to be synchronous, or the unloading will abort it
 	$.ajax(document.URL, {
 		async: false,
+		timeout: 1000,
 		dataType: "json",
 		data: {
 			cmd_id: cmd_id,
