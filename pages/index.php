@@ -47,7 +47,7 @@ $action_classes = array(
 );
 
 function get_preview_link($m) {
-	return http_build_query(array(
+	return '?'.http_build_query(array(
 		'page' => 'preview',
 		'node' => $m['id'],
 		'id' => $m['data']->id,
@@ -236,12 +236,12 @@ ksort($errors);
 								</label>
 							</td>
 						<?php } ?>
-						<td class="small text-muted" data-href="?<?php p($preview); ?>">
+						<td class="small text-muted" data-href="<?php p($preview); ?>">
 							<?php echo strftime('%b %e <span class="hidden-xs">%Y, </span><span class="hidden-sm hidden-xs">%H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
-						<td class="hidden-xs" data-href="?<?php p($preview); ?>"><?php p($m['data']->msgfrom) ?></td>
-						<td class="hidden-xs" data-href="?<?php p($preview); ?>"><?php p($m['data']->msgto) ?></td>
-						<td class="overflowhack" data-href="?<?php p($preview); ?>">
+						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgfrom) ?></td>
+						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgto) ?></td>
+						<td class="overflowhack" data-href="<?php p($preview); ?>">
 							<div><p><?php p($m['data']->msgsubject) ?></p></div>
 						</td>
 						<?php if ($display_scores) {
@@ -260,9 +260,9 @@ ksort($errors);
 									$printscores[] = $s['score'];
 							}
 						?>
-						<td class="hidden-xs hidden-sm" data-href="?<?php p($preview); ?>"><?php p(implode(', ', array_unique($printscores))) ?></td>
+						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>"><?php p(implode(', ', array_unique($printscores))) ?></td>
 						<?php } ?>
-						<td class="hidden-xs hidden-sm" data-href="?<?php p($preview); ?>">
+						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>">
 						<?php if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') { // queue ?>
 							In queue (retry <?php p($m['data']->msgretries) ?>)
 							<span class="text-muted"><?php p($m['data']->msgerror) ?></span>
