@@ -165,6 +165,11 @@ body > .navbar-toolbar {
 	text-overflow: ellipsis;
 }
 
+.not-rounded,
+.not-rounded.list-group .list-group-item {
+	border-radius: 0;
+}
+
 /*
  * This is a hack to prevent long table cells from breaking the layout. Note
  * that the column it's applied to needs a width set, for instance to 100%.

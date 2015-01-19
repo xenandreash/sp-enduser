@@ -289,13 +289,16 @@ ksort($errors);
 				</tbody>
 			</table>
 			
-			<div class="list-group visible-xs">
+			<div class="list-group not-rounded visible-xs">
 				<?php foreach ($timesort as $t) { ?>
 					<?php foreach ($t as $m) { ?>
-						<a href="<?php p(get_preview_link($m)); ?>" class="list-group-item">
-							<h4 class="list-group-item-heading"><?php p($m['data']->msgsubject, '<span class="text-muted">No Subject</span>'); ?></h4>
+						<a href="<?php p(get_preview_link($m)); ?>" class="list-group-item list-group-item-<?php p($action_classes[$m['data']->msgaction]); ?>">
+							<h4 class="list-group-item-heading">
+								<small class="pull-right"><?php echo strftime('%b %e %Y', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?></small>
+								<?php p($m['data']->msgfrom, '<span class="text-muted">No Subject</span>'); ?>
+							</h4>
 							<p class="list-group-item-text">
-								
+								<?php p($m['data']->msgsubject); ?>
 							</p>
 						</a>
 					<?php } ?>
