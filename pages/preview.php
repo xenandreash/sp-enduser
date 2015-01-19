@@ -150,11 +150,11 @@ require_once BASE.'/partials/header.php';
 						<dl class="dl-horizontal">
 							<?php if (!empty($mail->msgfrom)) { ?>
 							<dt>From</dt>
-							<dd><?php p($mail->msgfrom) ?></dd>
+							<dd class="wrap"><?php p($mail->msgfrom) ?></dd>
 							<?php } ?>
 							
 							<dt>To</dt>
-							<dd><?php p($mail->msgto) ?></dd>
+							<dd class="wrap"><?php p($mail->msgto) ?></dd>
 							
 							<dt>Date</dt>
 							<dd><?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
