@@ -229,7 +229,7 @@ require_once BASE.'/partials/header.php';
 					</div>
 					<?php
 					if (empty($body))
-						echo '<div class="panel-body msg-body"><p class="text-muted text-center">No Content</p></div>';
+						echo '<div class="panel-body msg-body"><p class="text-muted text-center">Content unavailable<br /><small>Message is not in queue or quarantine</small></p></div>';
 					else if ($encode == 'TEXT')
 						echo '<pre class="panel-body msg-body">'.$body.'</pre>';
 					else if ($body)
