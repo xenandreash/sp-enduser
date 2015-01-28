@@ -32,15 +32,17 @@ function p_select($name, $selected, $options, $extra = "") {
  * @param $part If given, the index of the array to return alone (0 or 1)
  */
 function parse_status($status, $part = NULL) {
-	$parts0 = explode(' ', $status, 2);
+	// This needs a stricter implementation, and unit tests around it
+	/*$parts0 = explode(' ', $status, 2);
 	$parts1 = explode(':', $parts0[1], 2);
 	
 	$parts = array();
 	if (count($parts1) != 2)
 		$parts = array($parts0[0], $status);
 	else
-		$parts = array($parts1[0], ucfirst(trim($parts1[1])));
+		$parts = array($parts1[0], ucfirst(trim($parts1[1])));*/
 	
+	$parts = array($status, "");
 	return $part !== NULL ? $parts[$part] : $parts;
 }
 
