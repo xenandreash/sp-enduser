@@ -33,6 +33,11 @@ if (!in_array('dom', get_loaded_extensions())) {
 	<p><em>WARNING:</em> DOM extension is missing. Without it, email previews may be incomplete. <em>(This usually means you're running on CentOS, and need to install the <code>php-xml</code> package.)</em></p>
 <?php
 }
+if (!in_array('soap', get_loaded_extensions())) {
+?>
+	<p><em>WARNING:</em> SOAP extension is missing. Without it, you will be unable to connect directly to nodes. <em>(This usually means you're running on CentOS, and need to install the <code>php-soap</code> package.)</em></p>
+<?php
+}
 if ($settings->getAPIKey() === null) {
 ?>
 	<p><em>WARNING:</em> No api-key, dynamic user creation and black/whitelist lookups will not work until you specify one.</p>

@@ -12,7 +12,7 @@ class NodeBackend extends Backend
 	
 	
 	// A node backend is valid if it has at least one node
-	public function isValid() { return count($this->nodes) > 0; }
+	public function isValid() { return count($this->nodes) > 0 && in_array('soap', get_loaded_extensions()); }
 	
 	// Node backends support everything
 	public function supportsHistory() { return true; }
