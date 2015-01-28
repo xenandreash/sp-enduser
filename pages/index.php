@@ -108,7 +108,7 @@ foreach ($_GET as $k => $v) {
 $cols = 8;
 
 if ($source == 'history') {
-	$backend = ($dbBackend->isValid() ? $dbBackend : $nodeBackend);
+	$backend = ($settings->getUseDatabaseLog() && $dbBackend->isValid() ? $dbBackend : $nodeBackend);
 	$results = $backend->loadMailHistory($real_search, $size, $param['history'], $errors);
 	$timesort = merge_2d($timesort, $results);
 }

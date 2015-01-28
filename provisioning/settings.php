@@ -68,6 +68,13 @@ $settings['database']['user'] = 'spenduser';
 $settings['database']['password'] = 'spenduser';
 
 /*
+ * Logs are normally read from the nodes directly, but for performance, you can
+ * instead opt to configure your nodes to log to a central database server, as
+ * described at: http://wiki.halon.se/End-user#History_log
+ */
+$settings['database-log'] = true;
+
+/*
  * Authentication is probably the second most important configuration
  * directive, as it specifies how end-users should identify themselves.
  * 

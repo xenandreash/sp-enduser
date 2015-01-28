@@ -27,6 +27,7 @@ class Settings
 	private $displayBWList = true;
 	private $displayListener = array('mailserver:1' => "Inbound");
 	private $displayTransport = array('mailtransport:2' => "Internet");
+	private $useDatabaseLog = false;
 	private $quarantineFilter = array();
 	private $filterPattern = "{from} or {to}";
 	
@@ -68,6 +69,7 @@ class Settings
 		$this->extract($this->displayBWList, 'display-bwlist');
 		$this->extract($this->displayListener, 'display-listener');
 		$this->extract($this->displayTransport, 'display-transport');
+		$this->extract($this->useDatabaseLog, 'database-log');
 		$this->extract($this->dbCredentials, 'database');
 		$this->extract($this->authSources, 'authentication');
 		$this->extract($this->ldapOptions, 'ldap-options');
@@ -271,6 +273,14 @@ class Settings
 	public function getDisplayTransport()
 	{
 		return $this->displayTransport;
+	}
+	
+	/**
+	 * Returns whether or not database logging is enabled.
+	 */
+	public function getUseDatabaseLog()
+	{
+		return $this->useDatabaseLog;
 	}
 	
 	/**
