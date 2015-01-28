@@ -125,6 +125,7 @@ require_once BASE.'/partials/header.php';
 			</ul>
 		</div>
 	</nav>
+	<?php if (($logs && count($settings->getNodes())) || $type == 'queue') { ?>
 	<nav class="navbar navbar-default navbar-fixed-bottom visible-xs" id="bottom-bar">
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
@@ -146,6 +147,7 @@ require_once BASE.'/partials/header.php';
 			</ul>
 		</div>
 	</nav>
+	<?php } ?>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-5 col-md-push-7">
