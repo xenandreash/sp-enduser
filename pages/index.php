@@ -303,7 +303,14 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 					<?php foreach ($t as $m) { ?>
 						<a href="<?php p(get_preview_link($m)); ?>" class="list-group-item list-group-item-<?php p($action_classes[$m['data']->msgaction]); ?>">
 							<h4 class="list-group-item-heading">
-								<small class="pull-right"><?php echo strftime('%b %e %Y', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?></small>
+								<small class="pull-right">
+								<?php
+									if ($m['data']->msgts0 + (3600 * 24) > time())
+										echo strftime('%H:%M', $m['data']->msgts0 - $_SESSION['timezone'] * 60);
+									else
+										echo strftime('%b %e %Y', $m['data']->msgts0 - $_SESSION['timezone'] * 60);
+								?>
+								</small>
 								<?php p($m['data']->msgfrom, '<span class="text-muted">Nobody</span>'); ?>
 								<?php if ($has_multiple_addresses) { ?>
 									<br /><small>&rarr;&nbsp;<?php p($m['data']->msgto); ?></small>
