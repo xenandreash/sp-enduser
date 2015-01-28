@@ -7,11 +7,12 @@ class Node
 	private $password;
 	private $serial;
 	
-	public function __construct($address, $username = null, $password = null)
+	public function __construct($address, $username = null, $password = null, $serial = null)
 	{
 		$this->address = $address;
 		$this->username = $username;
 		$this->password = $password;
+		$this->serial = $serial;
 	}
 	
 	public function soap($async = false, $username = null, $password = null, $serial = null)
