@@ -162,6 +162,7 @@ body > .navbar-toolbar {
 .msg-body {
 	max-width: 100%;
 	overflow: scroll;
+	background-color: #fff;
 }
 
 .nowrap {
@@ -239,8 +240,7 @@ pre.panel-body {
 }
 
 .preview-headers-container {
-	background-color: #fafafa;
-	color: #888;
+	color: #777;
 }
 
 .preview-headers span, .preview-headers ins, .preview-headers del {
