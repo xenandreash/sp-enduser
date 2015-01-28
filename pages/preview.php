@@ -20,7 +20,7 @@ if ($type == 'log') {
 	}
 	catch (Exception $e) {
 		$node = 'local';
-		$mail = restrict_local_mail($id);
+		$mail = restrict_local_mail($_GET['msgid'], $_GET['msgactionid']);
 	}
 }
 

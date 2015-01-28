@@ -144,7 +144,7 @@ function build_query_restrict_local()
 	return array('filter' => implode(' or ', $filter), 'params' => $params);
 }
 
-function restrict_local_mail($id)
+function restrict_local_mail($id, $actionid = NULL)
 {
 	$settings = Settings::Get();
 	$filters = array();
@@ -153,8 +153,15 @@ function restrict_local_mail($id)
 	$real_sql_params = $restrict_sql['params'];
 	if ($restrict_sql['filter'])
 		$filters[] = $restrict_sql['filter'];
-	$real_sql_params[':id'] = intval($id);
-	$filters[] = 'id = :id';
+	if (!$actionid) {
+		$real_sql_params[':id'] = intval($id);
+		$filters[] = 'id = :id';
+	} else {
+		$real_sql_params[':id'] = intval($id);
+		$real_sql_params[':actionid'] = intval($actionid);
+		$filters[] = 'msgid = :id';
+		$filters[] = 'msgactionid = :actionid';
+	}
 	// extremely important to use "(...) AND (...)" for access control
 	if (count($filters))
 		$real_sql .= ' WHERE ('.implode(') AND (', $filters).')';

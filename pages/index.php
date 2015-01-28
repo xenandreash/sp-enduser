@@ -51,6 +51,8 @@ function get_preview_link($m) {
 		'page' => 'preview',
 		'node' => $m['id'],
 		'id' => $m['data']->id,
+		'msgid' => $m['data']->msgid,
+		'msgactionid' => $m['data']->msgactionid,
 		'type' => $m['type']
 	));
 }
