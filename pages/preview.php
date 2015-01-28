@@ -106,10 +106,10 @@ require_once BASE.'/partials/header.php';
 				<a class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
+				<?php if ($logs && count($settings->getNodes())) { ?>
+					<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+				<?php } ?>
 				<?php if ($type != 'log') { ?>
-					<?php if ($logs) { ?>
-						<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
-					<?php } ?>
 					<?php if ($type == 'queue') { ?>
 						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 					<?php } ?>
@@ -127,10 +127,10 @@ require_once BASE.'/partials/header.php';
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
+						<?php if ($logs && count($settings->getNodes())) { ?>
+							<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+						<?php } ?>
 						<?php if ($type != 'log') { ?>
-							<?php if ($logs) { ?>
-								<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
-							<?php } ?>
 							<?php if ($type == 'queue') { ?>
 								<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 							<?php } ?>
