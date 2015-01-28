@@ -5,15 +5,16 @@ require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
 $id = intval($_GET['id']);
+$type = $_GET['type'];
 
-if ($_GET['type'] == 'log') {
+if ($type == 'log') {
 	// Fetch data from local SQL log
 	$node = 'local';
 	$mail = restrict_local_mail($id);
 } else {
 	// Fetch data from SOAP
 	$node = intval($_GET['node']);
-	$mail = restrict_mail($_GET['type'], $node, $id);
+	$mail = restrict_mail($type, $node, $id);
 	$client = soap_client($node);
 }
 
@@ -55,11 +56,11 @@ $transports = $settings->getDisplayTransport();
 $listeners = $settings->getDisplayListener();
 if (isset($transports[$mail->msgtransport])) $transport = $transports[$mail->msgtransport];
 if (isset($listeners[$mail->msglistener])) $listener = $listeners[$mail->msglistener];
-if ($_GET['type'] == 'queue' && $mail->msgaction == 'DELIVER')
+if ($type == 'queue' && $mail->msgaction == 'DELIVER')
 	$desc = 'In queue (retry '.$mail->msgretries.')<br /><span class="text-muted">'.htmlspecialchars($mail->msgerror).'</span>';
 else
 	$desc = htmlspecialchars($mail->msgdescription);
-if ($_GET['type'] == 'queue') {
+if ($type == 'queue') {
 	$uniq = uniqid();
 	$command = array('previewmessage', $mail->msgpath, $uniq);
 	if ($mail->msgdeltapath)
@@ -105,16 +106,18 @@ require_once BASE.'/partials/header.php';
 				<a class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
-				<?php if ($logs) { ?>
-					<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+				<?php if ($type != 'log') { ?>
+					<?php if ($logs) { ?>
+						<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+					<?php } ?>
+					<?php if ($type == 'queue') { ?>
+						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
+					<?php } ?>
+					<li class="divider"></li>
+					<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
+					<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce</a></li>
+					<li><a data-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release</a></li>
 				<?php } ?>
-				<?php if ($_GET['type'] == 'queue') { ?>
-					<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
-				<?php } ?>
-				<li class="divider"></li>
-				<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
-				<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce</a></li>
-				<li><a data-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -124,16 +127,18 @@ require_once BASE.'/partials/header.php';
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<?php if ($logs) { ?>
-						<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($_GET['type']) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+						<?php if ($type != 'log') { ?>
+							<?php if ($logs) { ?>
+								<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+							<?php } ?>
+							<?php if ($type == 'queue') { ?>
+								<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
+							<?php } ?>
+							<li class="divider"></li>
+							<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete message</a></li>
+							<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce message</a></li>
+							<li><a data-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release message</a></li>
 						<?php } ?>
-						<?php if ($_GET['type'] == 'queue') { ?>
-						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
-						<?php } ?>
-						<li class="divider"></li>
-						<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete message</a></li>
-						<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce message</a></li>
-						<li><a data-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release message</a></li>
 					</ul>
 				</li>
 			</ul>

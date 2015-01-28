@@ -171,6 +171,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 			</div>
 		</div>
 	</nav>
+	<?php if ($source != 'history') { ?>
 	<nav class="navbar navbar-default navbar-fixed-bottom hidden-sm hidden-md hidden-lg" id="bottom-bar" style="display:none;">
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
@@ -185,6 +186,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 			</ul>
 		</div>
 	</nav>
+	<?php } ?>
 	<div class="container-fluid">
 		<?php if (count($errors)) { ?>
 		<p style="padding-left: 17px; padding-top: 17px;">
