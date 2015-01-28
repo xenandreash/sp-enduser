@@ -77,8 +77,8 @@ if ($type == 'queue') {
 	$result = array();
 	$result['HEADERS'] = trim($data[0]);
 	for ($i = 1; $i < count($data); ++$i) {
-		list($type, $content) = explode("\n", $data[$i], 2);
-		$result[$type] = trim($content);
+		list($format, $content) = explode("\n", $data[$i], 2);
+		$result[$format] = trim($content);
 	}
 	if (isset($result['TEXT']) || isset($result['HTML'])) {
 		$config = HTMLPurifier_Config::createDefault();
