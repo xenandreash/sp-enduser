@@ -105,7 +105,7 @@ if (isset($dbCredentials['dsn'])) {
 	</p>
 <?php if ($ok) { ?>
 	<p>
-		<strong>You should now remove install.php to proceed.</strong>
+		<strong>You should now remove <code>install.php</code> or create a blank file next to it called <code>installed.txt</code> to proceed.</strong>
 	</p>
 <?php } else { ?>
 	<p>
