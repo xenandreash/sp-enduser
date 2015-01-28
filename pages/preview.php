@@ -115,10 +115,8 @@ require_once BASE.'/partials/header.php';
 				<?php if ($logs && count($settings->getNodes())) { ?>
 					<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
 				<?php } ?>
-				<?php if ($type != 'log') { ?>
 					<?php if ($type == 'queue') { ?>
-						<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
-					<?php } ?>
+					<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 					<li class="divider"></li>
 					<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
 					<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce</a></li>
@@ -136,10 +134,8 @@ require_once BASE.'/partials/header.php';
 						<?php if ($logs && count($settings->getNodes())) { ?>
 							<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
 						<?php } ?>
-						<?php if ($type != 'log') { ?>
-							<?php if ($type == 'queue') { ?>
-								<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
-							<?php } ?>
+						<?php if ($type == 'queue') { ?>
+							<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 							<li class="divider"></li>
 							<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete message</a></li>
 							<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce message</a></li>
