@@ -87,8 +87,8 @@ if ($type == 'queue') {
 		$body = trim($purifier->purify($body));
 		$encode = isset($result['TEXT']) ? 'TEXT' : 'HTML';
 	} else {
-		$encode = 'TEXT';
-		$body = 'Preview not available';
+		$encode = 'HTML';
+		$body = '<p class="text-center text-muted">Preview unavailable</p>';
 	}
 }
 
