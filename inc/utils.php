@@ -47,7 +47,7 @@ function build_query_restrict($type = 'queue')
 	return $globalfilter.($globalfilter?" && ":"").$filter;
 }
 
-function restrict_mail($type, $node, $id)
+function restrict_mail($type, $node, $id, $die = true)
 {
 	$client = soap_client(intval($node));
 	$query = array();
@@ -62,8 +62,10 @@ function restrict_mail($type, $node, $id)
 		$res = $client->mailQueue($query);
 	}
 	// XXX Very important; many depend on us to die if access is denied
-	if (count($res->result->item) != 1)
-		die('Invalid mail');
+	if (count($res->result->item) != 1) {
+		if($die) die('Invalid mail');
+		else throw new Exception('Invalid mail');
+	}
 	return $res->result->item[0];
 }
 

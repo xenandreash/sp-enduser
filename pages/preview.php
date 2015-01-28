@@ -14,8 +14,14 @@ if ($type == 'log') {
 } else {
 	// Fetch data from SOAP
 	$node = intval($_GET['node']);
-	$mail = restrict_mail($type, $node, $id);
-	$client = soap_client($node);
+	try {
+		$mail = restrict_mail($type, $node, $id, !$settings->getUseDatabaseLog());
+		$client = soap_client($node);
+	}
+	catch (Exception $e) {
+		$node = 'local';
+		$mail = restrict_local_mail($id);
+	}
 }
 
 if (isset($_POST['action'])) {
