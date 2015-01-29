@@ -208,25 +208,34 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 		</p>
 		<?php } ?>
 		<div class="row">
-			<table class="table nowrap hidden-xs">
+			<style>
+				table {
+					table-layout: fixed;
+				}
+				td {
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					overflow: hidden;
+				}
+			</style>
+			<table class="table hidden-xs">
 				<thead>
 					<tr>
 						<?php if ($source == 'queue') { ?>
-							<th style="width:0">&nbsp;</th>
+							<th style="width:30px">&nbsp;</th>
 						<?php } ?>
 						<th class="hidden-xs">From</th>
 						<?php if ($has_multiple_addresses) { ?>
 						<th class="hidden-xs">To</th>
 						<?php } ?>
 						<th>Subject</th>
-						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm" style="width: 0;">Scores</th><?php } ?>
-						<th class="hidden-xs hidden-sm" style="width: 0;">Status</th>
+						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm" style="width: 50px;">Scores</th><?php } ?>
+						<th class="hidden-xs hidden-sm">Status</th>
 						<th>&nbsp;</th>
-						<th style="width: 0;" class="hidden-xs hidden-sm"></th>
+						<th style="width: 20px;" class="hidden-xs hidden-sm"></th>
 						<?php if ($source != 'history') { ?>
-						<th style="width: 0;" class="hidden-xs hidden-sm"></th>
+						<th style="width: 20px;" class="hidden-xs hidden-sm"></th>
 						<?php } ?>
-						
 						<!-- Padding column to avoid having the OSX scrollbar cover the rightmost button -->
 						<th style="width: 20px;">&nbsp;</th>
 					</tr>
