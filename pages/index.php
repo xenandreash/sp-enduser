@@ -174,7 +174,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 		</div>
 	</nav>
 	<?php if ($source != 'history') { ?>
-	<nav class="navbar navbar-default navbar-fixed-bottom hidden-sm hidden-md hidden-lg" id="bottom-bar" style="display:none;">
+	<nav class="navbar navbar-default navbar-fixed-bottom hidden-xs hidden-md hidden-lg" id="bottom-bar" style="display:none;">
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
@@ -275,7 +275,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>">
 							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)); ?></span>
 						</td>
-						<td class="small text-muted" data-href="<?php p($preview); ?>">
+						<td data-href="<?php p($preview); ?>">
 							<?php echo strftime('%b %e <span class="hidden-xs">%Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
 						<td class="hidden-xs hidden-sm pad-child-instead">

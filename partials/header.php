@@ -58,7 +58,7 @@ $dbCredentials = $settings->getDBCredentials();
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="user<?php header_active('user') ?>"><a href="?page=user"><i class="glyphicon glyphicon-user"></i>&nbsp;<?php p(Session::Get()->getUsername()); ?></a></li>
-						<li class="logout<?php header_active('logout') ?>"><a href="?page=logout">Logout</a></li>
+						<li class="logout<?php header_active('logout') ?>"><a href="?page=logout"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
 					</ul>
 				</div>
 			</div>
