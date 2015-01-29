@@ -179,27 +179,10 @@ body > .navbar-toolbar {
 	border-radius: 0;
 }
 
-/*
- * This is a hack to prevent long table cells from breaking the layout. Note
- * that the column it's applied to needs a width set, for instance to 100%.
- * 
- *     <td class="overflowhack"><div><p>...content...</p></div></td>
- */
-.overflowhack {
-	vertical-align: top;
-}
-
-.overflowhack > div {
-	position: relative;
-	margin-bottom: 20px;
-}
-
-.overflowhack > div > p {
-	position: absolute;
-	width: 100%;
-	overflow: hidden;
-	white-space: nowrap;
+.table {
 	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 td.pad-child-instead {
@@ -241,23 +224,29 @@ pre.panel-body {
 
 .preview-headers-container {
 	color: #777;
+	padding: 0;
+}
+
+.preview-headers {
+	padding: 15px 0;
 }
 
 .preview-headers span, .preview-headers ins, .preview-headers del {
 	display: block;
 	font-family: monospace;
 	white-space: normal;
+	padding: 0 15px;
 }
 
 .preview-headers ins {
 	text-decoration: none;
-	color: green;
+	color: #070;
 	background-color: #ddffdd;
 }
 
 .preview-headers del {
 	text-decoration: none;
-	color: red;
+	color: #c00;
 	background-color: #ffdddd;
 }
 
