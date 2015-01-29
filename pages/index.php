@@ -131,7 +131,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 					<span class="sr-only">Toggle navigation</span>
 					<i class="glyphicon glyphicon-search"></i>
 				</button>
-				<div class="navbar-brand">
+				<div class="navbar-brand visible-xs">
 					<div class="dropdown">
 						<a class="dropdown-toggle navbar-brand-link" id="source-select" data-toggle="dropdown" aria-expanded="true">
 							<?php p($sources[$source]); ?>
@@ -146,6 +146,16 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 				</div>
 			</div>
 			<div class="collapse navbar-collapse" id="toolbar-collapse">
+				<ul class="nav navbar-nav navbar-left hidden-xs">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false"><?php p($sources[$source]); ?> <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<?php foreach ($sources as $sid => $sname) { ?>
+							<li><a href="?<?php p(mkquery(array('source' => $sid, 'search' => $_GET['search'], 'size' => $_GET['size']))); ?>"><?php p($sname); ?></a></li>
+							<?php } ?>
+						</ul>
+					</li>
+				</ul>
 				<form class="navbar-form navbar-left" role="search">
 					<input type="hidden" name="source" value="<?php p($source); ?>">
 					<div class="form-group">
@@ -204,14 +214,14 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						<?php if ($source == 'queue') { ?>
 							<th style="width:0">&nbsp;</th>
 						<?php } ?>
-						<th style="min-width: 200px; max-width: 200px;" class="hidden-xs">From</th>
+						<th class="hidden-xs">From</th>
 						<?php if ($has_multiple_addresses) { ?>
-						<th style="min-width: 200px; max-width: 200px;" class="hidden-xs">To</th>
+						<th class="hidden-xs">To</th>
 						<?php } ?>
-						<th style="width: 100%;">Subject</th>
+						<th>Subject</th>
 						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm" style="width: 0;">Scores</th><?php } ?>
 						<th class="hidden-xs hidden-sm" style="width: 0;">Status</th>
-						<th style="width: 0;">&nbsp;</th>
+						<th>&nbsp;</th>
 						<th class="hidden-xs hidden-sm" style="width: 0;"></th>
 						<?php if ($source != 'history') { ?>
 						<th class="hidden-xs hidden-sm"></th>
@@ -247,13 +257,11 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 								</label>
 							</td>
 						<?php } ?>
-						<td class="hidden-xs overflowhack" data-href="<?php p($preview); ?>"><div><p><?php p($m['data']->msgfrom) ?></p></div></td>
+						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgfrom) ?></td>
 						<?php if ($has_multiple_addresses) { ?>
-						<td class="hidden-xs overflowhack" data-href="<?php p($preview); ?>"><div><p><?php p($m['data']->msgto) ?></p></div></td>
+						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgto) ?></td>
 						<?php } ?>
-						<td class="overflowhack" data-href="<?php p($preview); ?>">
-							<div><p><?php p($m['data']->msgsubject) ?></p></div>
-						</td>
+						<td data-href="<?php p($preview); ?>"><?php p($m['data']->msgsubject) ?></td>
 						<?php if ($display_scores) {
 							$printscores = array();
 							$scores = history_parse_scores($m['data']);
