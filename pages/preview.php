@@ -24,6 +24,7 @@ if ($type == 'log') {
 		$result = $client->mailQueue(array('filter' => 'messageid='.$mail->msgid.' actionid='.$mail->msgactionid, 'offset' => 0, 'limit' => 1));
 		if (count($result->result->item)) {
 			$mail = $result->result->item[0];
+			$id = $mail->id;
 			$type = 'queue';
 		}
 	}
