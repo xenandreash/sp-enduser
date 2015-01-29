@@ -229,8 +229,8 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						<th class="hidden-xs">To</th>
 						<?php } ?>
 						<th>Subject</th>
-						<?php if ($display_scores) { $cols++ ?><th class="visible-lg" style="width: 120px;">Scores</th><?php } ?>
 						<th class="hidden-xs hidden-sm">Status</th>
+						<?php if ($display_scores) { $cols++ ?><th class="visible-lg" style="width: 120px;">Scores</th><?php } ?>
 						<th>&nbsp;</th>
 						<th style="width: 25px;" class="hidden-xs hidden-sm"></th>
 						<?php if ($source != 'history') { ?>
@@ -269,6 +269,9 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgto) ?></td>
 						<?php } ?>
 						<td data-href="<?php p($preview); ?>"><?php p($m['data']->msgsubject) ?></td>
+						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>">
+							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)); ?></span>
+						</td>
 						<?php if ($display_scores) {
 							$printscores = array();
 							$scores = history_parse_scores($m['data']);
@@ -287,9 +290,6 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						?>
 						<td class="visible-lg" data-href="<?php p($preview); ?>"><?php p(implode(', ', array_unique($printscores))) ?></td>
 						<?php } ?>
-						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>">
-							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)); ?></span>
-						</td>
 						<td data-href="<?php p($preview); ?>">
 							<?php echo strftime('%b %e <span class="hidden-xs">%Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
