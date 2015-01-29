@@ -218,7 +218,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 					overflow: hidden;
 				}
 			</style>
-			<table class="table hidden-xs">
+			<table class="table table-hover table-condensed hidden-xs">
 				<thead>
 					<tr>
 						<?php if ($source == 'queue') { ?>
@@ -229,12 +229,12 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						<th class="hidden-xs">To</th>
 						<?php } ?>
 						<th>Subject</th>
-						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm" style="width: 50px;">Scores</th><?php } ?>
+						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm" style="width: 80px;">Scores</th><?php } ?>
 						<th class="hidden-xs hidden-sm">Status</th>
 						<th>&nbsp;</th>
-						<th style="width: 20px;" class="hidden-xs hidden-sm"></th>
+						<th style="width: 25px;" class="hidden-xs hidden-sm"></th>
 						<?php if ($source != 'history') { ?>
-						<th style="width: 20px;" class="hidden-xs hidden-sm"></th>
+						<th style="width: 25px;" class="hidden-xs hidden-sm"></th>
 						<?php } ?>
 						<!-- Padding column to avoid having the OSX scrollbar cover the rightmost button -->
 						<th style="width: 20px;">&nbsp;</th>
@@ -260,10 +260,8 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 					?>
 					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>">
 						<?php if ($source == 'queue') { ?>
-							<td class="pad-child-instead">
-								<label>
-									<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
-								</label>
+							<td>
+								<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
 							</td>
 						<?php } ?>
 						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgfrom) ?></td>
@@ -295,11 +293,11 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						<td data-href="<?php p($preview); ?>">
 							<?php echo strftime('%b %e <span class="hidden-xs">%Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
-						<td class="hidden-xs hidden-sm pad-child-instead">
+						<td class="hidden-xs hidden-sm">
 							<a title="Details" href="<?php echo $preview?>"><i class="glyphicon glyphicon-envelope"></i></a>
 						</td>
 						<?php if ($source != 'history') { ?>
-						<td class="hidden-xs hidden-sm pad-child-instead">
+						<td class="hidden-xs hidden-sm">
 							<a title="Release/retry" data-action="retry"><i class="glyphicon glyphicon-play"></i></a>
 						</td>
 						<?php } ?>
