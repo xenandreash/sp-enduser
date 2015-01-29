@@ -222,13 +222,13 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm" style="width: 0;">Scores</th><?php } ?>
 						<th class="hidden-xs hidden-sm" style="width: 0;">Status</th>
 						<th>&nbsp;</th>
-						<th class="hidden-xs hidden-sm" style="width: 0;"></th>
+						<th style="width: 0;" class="hidden-xs hidden-sm"></th>
 						<?php if ($source != 'history') { ?>
-						<th class="hidden-xs hidden-sm"></th>
+						<th style="width: 0;" class="hidden-xs hidden-sm"></th>
 						<?php } ?>
 						
 						<!-- Padding column to avoid having the OSX scrollbar cover the rightmost button -->
-						<th style="min-width: 20px;">&nbsp;</th>
+						<th style="width: 20px;">&nbsp;</th>
 					</tr>
 				</thead>
 				<tbody>
