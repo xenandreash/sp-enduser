@@ -229,7 +229,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						<th class="hidden-xs">To</th>
 						<?php } ?>
 						<th>Subject</th>
-						<?php if ($display_scores) { $cols++ ?><th class="hidden-xs hidden-sm" style="width: 80px;">Scores</th><?php } ?>
+						<?php if ($display_scores) { $cols++ ?><th class="visible-lg" style="width: 120px;">Scores</th><?php } ?>
 						<th class="hidden-xs hidden-sm">Status</th>
 						<th>&nbsp;</th>
 						<th style="width: 25px;" class="hidden-xs hidden-sm"></th>
@@ -285,7 +285,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 									$printscores[] = $s['score'];
 							}
 						?>
-						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>"><?php p(implode(', ', array_unique($printscores))) ?></td>
+						<td class="visible-lg" data-href="<?php p($preview); ?>"><?php p(implode(', ', array_unique($printscores))) ?></td>
 						<?php } ?>
 						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>">
 							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)); ?></span>
