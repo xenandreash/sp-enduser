@@ -221,7 +221,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 			<table class="table table-hover hidden-xs">
 				<thead>
 					<tr>
-						<?php if ($source == 'queue') { ?>
+						<?php if ($source != 'history') { ?>
 							<th style="width:30px">&nbsp;</th>
 						<?php } ?>
 						<th class="hidden-xs">From</th>
@@ -259,7 +259,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						$preview = get_preview_link($m);
 					?>
 					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>">
-						<?php if ($source == 'queue') { ?>
+						<?php if ($source != 'history') { ?>
 							<td>
 								<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
 							</td>
