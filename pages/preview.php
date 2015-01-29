@@ -6,7 +6,6 @@ require_once BASE.'/inc/utils.php';
 
 $id = intval($_GET['id']);
 $type = $_GET['type'];
-$client = null;
 
 if ($type == 'log') {
 	// Fetch data from local SQL log
@@ -23,8 +22,10 @@ if ($type == 'log') {
 	if ($node !== null) {
 		$client = soap_client($node);
 		$result = $client->mailQueue(array('filter' => 'messageid='.$mail->msgid.' actionid='.$mail->msgactionid, 'offset' => 0, 'limit' => 1));
-		if (count($result->result->item))
+		if (count($result->result->item)) {
 			$mail = $result->result->item[0];
+			$type = 'queue';
+		}
 	}
 } else {
 	// Fetch data from SOAP
@@ -81,7 +82,7 @@ if ($type == 'queue' && $mail->msgaction == 'DELIVER')
 	$desc = 'In queue (retry '.$mail->msgretries.')<br /><span class="text-muted">'.htmlspecialchars($mail->msgerror).'</span>';
 else
 	$desc = htmlspecialchars($mail->msgdescription);
-if ($client) {
+if ($type == 'queue') {
 	$uniq = uniqid();
 	$command = array('previewmessage', $mail->msgpath, $uniq);
 	if ($mail->msgdeltapath)
