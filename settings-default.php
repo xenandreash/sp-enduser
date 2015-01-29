@@ -49,6 +49,9 @@
 //$settings['default-source'] = 'history';
 //$settings['display-scores'] = false;
 //$settings['display-textlog'] = false;
+//$settings['display-history'] = true;
+//$settings['display-queue'] = true;
+//$settings['display-quarantine'] = true;
 //$settings['display-listener']['mailserver:1'] = 'Inbound';
 //$settings['display-transport']['mailtransport:2'] = 'Internet';
 
