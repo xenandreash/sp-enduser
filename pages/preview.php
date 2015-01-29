@@ -166,19 +166,19 @@ require_once BASE.'/partials/header.php';
 							<dd class="wrap"><?php p($mail->msgto) ?></dd>
 							
 							<dt>Date</dt>
-							<dd><?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
+							<dd><?php p(strftime('%Y-%m-%d %H:%M:%S') or p($mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
 							
 							<dt>Action</dt>
 							<dd><?php p(ucfirst(strtolower($mail->msgaction))) ?></dd>
 							
 							<?php if ($desc) { ?>
 							<dt>Details</dt>
-							<dd><?php echo $desc ?></dd>
+							<dd><?php pp($desc) ?></dd>
 							<?php } ?>
 							
 							<?php if ($listener) { ?>
 								<dt>Received by</dt>
-								<dd><?php echo $listener ?></dd>
+								<dd><?php p($listener) ?></dd>
 							<?php } ?>
 							
 							<dt>Server</dt><dd><?php p($mail->msgfromserver) ?></dd>
@@ -186,7 +186,7 @@ require_once BASE.'/partials/header.php';
 							
 							<?php if ($transport) { ?>
 							<dt>Destination</dt>
-							<dd><?php echo $transport ?></dd>
+							<dd><?php p($transport) ?></dd>
 							<?php } ?>
 							
 							<dt>ID</dt>
