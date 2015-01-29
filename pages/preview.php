@@ -13,7 +13,7 @@ if ($type == 'log') {
 	$mail = restrict_local_mail($id);
 	// Resolv SOAP node
 	$node = null;
-	foreach ($settings->getNodes() as $n => $tmpnode) {
+	if ($mail->msgaction == 'QUEUE') foreach ($settings->getNodes() as $n => $tmpnode) {
 		try {
 			if($tmpnode->getSerial(true) == $mail->serialno)
 				$node = $n;
