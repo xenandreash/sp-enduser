@@ -1,16 +1,24 @@
 <?php
 
 /**
- * Safely prints a value.
+ * Prints a trusted value. Use p() for user input.
+ * Returns whether or not anything was printed.
+ */
+function pp($str) {
+	echo $str;
+	return $str === "";
+}
+
+/**
+ * Safely prints a value, with HTML escaped. Use this unless you need to print
+ * HTML, and you're really sure that said HTML does not contain user input.
  * 
- * The second parameter is a default, which is assumed to be trusted, and not
- * escaped. To fall back to an untrusted value, use something like:
+ * Returns whether or not anything was printed, meaning you can do things like:
  * 
  *     <?php p($var) or p($default) ?>
  */
-function p($str, $def = "") {
-	echo $str ? htmlspecialchars($str) : $def;
-	return (bool)$str;
+function p($str) {
+	return pp(htmlspecialchars($str));
 }
 
 function p_select($name, $selected, $options, $extra = "") {
