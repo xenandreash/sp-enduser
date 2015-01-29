@@ -173,7 +173,7 @@ require_once BASE.'/partials/header.php';
 							
 							<?php if ($desc) { ?>
 							<dt>Details</dt>
-							<dd><?php p($desc) ?></dd>
+							<dd><?php pp($desc) ?></dd>
 							<?php } ?>
 							
 							<?php if ($listener) { ?>
