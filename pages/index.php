@@ -38,12 +38,12 @@ require_once BASE.'/partials/header.php';
 
 $action_classes = array(
 	'DELIVER' => 'default',
-	'QUEUE' => 'default',
+	'QUEUE' => 'info',
 	'QUARANTINE' => 'warning',
 	'BOUNCE' => 'danger',
 	'REJECT' => 'danger',
 	'ERROR' => 'danger',
-	'DEFER' => 'info'
+	'DEFER' => 'warning'
 );
 
 function get_preview_link($m) {
@@ -200,14 +200,14 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 	</nav>
 	<?php } ?>
 	<div class="container-fluid">
-		<?php if (count($errors)) { ?>
-		<p style="padding-left: 17px; padding-top: 17px;">
-			<span class="text-muted">
-				Some messages might not be available at the moment due to maintenance.
-			</span>
-		</p>
-		<?php } ?>
 		<div class="row">
+			<?php if (count($errors)) { ?>
+			<div class="col-sm-12">
+				<p class="text-muted">
+					Some messages might not be available at the moment due to maintenance.
+				</p>
+			</div>
+			<?php } ?>
 			<style>
 				table {
 					table-layout: fixed;
@@ -218,7 +218,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 					overflow: hidden;
 				}
 			</style>
-			<table class="table table-hover table-condensed hidden-xs">
+			<table class="table table-hover hidden-xs">
 				<thead>
 					<tr>
 						<?php if ($source == 'queue') { ?>
@@ -345,7 +345,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 				<?php } ?>
 			</div>
 		</div>
-		
+
 		<form id="nav-form">
 			<nav>
 				<ul class="pager">
@@ -361,7 +361,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 			<?php } ?>
 		</form>
 		
-		<hr />
+		<hr>
 		<p class="text-muted small">
 			Results per page:
 		</p>
