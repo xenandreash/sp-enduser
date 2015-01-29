@@ -326,7 +326,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 										echo strftime('%b %e %Y', $m['data']->msgts0 - $_SESSION['timezone'] * 60);
 								?>
 								</small>
-								<?php p($m['data']->msgfrom, '<span class="text-muted">Empty sender</span>'); ?>
+								<?php p($m['data']->msgfrom) or pp('<span class="text-muted">Empty sender</span>'); ?>
 								<?php if ($has_multiple_addresses) { ?>
 									<br /><small>&rarr;&nbsp;<?php p($m['data']->msgto); ?></small>
 								<?php } ?>

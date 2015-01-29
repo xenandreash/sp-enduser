@@ -157,40 +157,16 @@ require_once BASE.'/partials/header.php';
 					</div>
 					<div class="panel-body">
 						<dl class="dl-horizontal">
-							<?php if (!empty($mail->msgfrom)) { ?>
-							<dt>From</dt>
-							<dd class="wrap"><?php p($mail->msgfrom) ?></dd>
-							<?php } ?>
-							
-							<dt>To</dt>
-							<dd class="wrap"><?php p($mail->msgto) ?></dd>
-							
-							<dt>Date</dt>
-							<dd><?php p(strftime('%Y-%m-%d %H:%M:%S') or p($mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
-							
-							<dt>Action</dt>
-							<dd><?php p(ucfirst(strtolower($mail->msgaction))) ?></dd>
-							
-							<?php if ($desc) { ?>
-							<dt>Details</dt>
-							<dd><?php pp($desc) ?></dd>
-							<?php } ?>
-							
-							<?php if ($listener) { ?>
-								<dt>Received by</dt>
-								<dd><?php p($listener) ?></dd>
-							<?php } ?>
-							
+							<?php if ($mail->msgfrom !== '') { ?><dt>From</dt><dd class="wrap"><?php p($mail->msgfrom) ?></dd><?php } ?>
+							<dt>To</dt><dd class="wrap"><?php p($mail->msgto) ?></dd>
+							<dt>Date</dt><dd><?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
+							<dt>Action</dt><dd><?php p(ucfirst(strtolower($mail->msgaction))) ?></dd>
+							<?php if ($desc) { ?><dt>Details</dt><dd><?php pp($desc) ?></dd><?php } ?>
+							<?php if ($listener) { ?><dt>Received by</dt><dd><?php p($listener) ?></dd><?php } ?>
 							<dt>Server</dt><dd><?php p($mail->msgfromserver) ?></dd>
-							<?php if ($mail->msgsasl) { ?><dt>User</dt><dd><?php p($mail->msgsasl) ?></dd><?php } ?>
-							
-							<?php if ($transport) { ?>
-							<dt>Destination</dt>
-							<dd><?php p($transport) ?></dd>
-							<?php } ?>
-							
-							<dt>ID</dt>
-							<dd><?php p($mail->msgid) ?></dd>
+							<?php if ($mail->msgsasl !== '') { ?><dt>User</dt><dd><?php p($mail->msgsasl) ?></dd><?php } ?>
+							<?php if ($transport) { ?><dt>Destination</dt><dd><?php p($transport) ?></dd><?php } ?>
+							<dt>ID</dt><dd><?php p($mail->msgid) ?></dd>
 						</dl>
 					</div>
 				</div>
@@ -234,7 +210,7 @@ require_once BASE.'/partials/header.php';
 			<div class="col-md-7 col-md-pull-5">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title"><?php p($mail->msgsubject ?: "No Subject"); ?></h3>
+						<h3 class="panel-title"><?php p($mail->msgsubject) or pp('<span class="text-muted">No Subject</span>'); ?></h3>
 					</div>
 					<?php
 					if (!isset($body))

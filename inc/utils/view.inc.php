@@ -6,7 +6,7 @@
  */
 function pp($str) {
 	echo $str;
-	return $str === "";
+	return $str !== "";
 }
 
 /**
