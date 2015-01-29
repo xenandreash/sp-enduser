@@ -44,7 +44,7 @@ class NodeBackend extends Backend
 			}
 			
 			try {
-				call_user_func(array($client, $fname), $args);
+				call_user_func(array($client, $fname), $args[$n]);
 			} catch (SoapFault $f) {
 				$errors[] = $f->faultstring;
 			}
@@ -62,7 +62,7 @@ class NodeBackend extends Backend
 				continue;
 			
 			try {
-				$results[$n] = call_user_func(array($clients[$n], $fname), $args);
+				$results[$n] = call_user_func(array($clients[$n], $fname), $args[$n]);
 			} catch (SoapFault $f) {
 				$errors[] = $f->faultstring;
 			}
@@ -75,11 +75,14 @@ class NodeBackend extends Backend
 	
 	public function loadMailHistory($search, $size, $param, &$errors = array())
 	{
-		$params = array(
-			'limit' => $size + 1,
-			'filter' => $search,
-			'offset' => $param[1]['offset']
-		);
+		$params = array();
+		foreach ($this->nodes as $n => &$node) {
+			$params[] = array(
+				'limit' => $size + 1,
+				'filter' => $search,
+				'offset' => $param[$n]['offset']
+			);
+		}
 		$results = $this->soapCall('mailHistory', $params, $errors);
 		
 		$timesort = array();
@@ -93,11 +96,14 @@ class NodeBackend extends Backend
 	
 	public function loadMailQueue($search, $size, $param, &$errors = array())
 	{
-		$params = array(
-			'limit' => $size + 1,
-			'filter' => $search,
-			'offset' => $param[1]['offset']
-		);
+		$params = array();
+		foreach ($this->nodes as $n => &$node) {
+			$params[] = array(
+				'limit' => $size + 1,
+				'filter' => $search,
+				'offset' => $param[$n]['offset']
+			);
+		}
 		$results = $this->soapCall('mailQueue', $params, $errors);
 		
 		$timesort = array();

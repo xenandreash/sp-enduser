@@ -111,7 +111,7 @@ $cols = 8;
 
 if ($source == 'history') {
 	$backend = ($settings->getUseDatabaseLog() && $dbBackend->isValid() ? $dbBackend : $nodeBackend);
-	$results = $backend->loadMailHistory($real_search, $size, $param['history'], $errors);
+	$results = $backend->loadMailHistory($real_search, $size, $param['log'], $errors);
 	$timesort = merge_2d($timesort, $results);
 }
 else if ($source == 'queue' || $source == 'quarantine') {
