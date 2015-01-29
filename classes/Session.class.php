@@ -90,7 +90,7 @@ class Session
 	 */
 	public function getAccess($key=NULL)
 	{
-		return $key !== NULL ? $this->access[$key] : $this->access;
+		return $key !== NULL ? $this->access[$key] : ($this->access ?: array());
 	}
 	
 	/**
