@@ -241,23 +241,29 @@ pre.panel-body {
 
 .preview-headers-container {
 	color: #777;
+	padding: 0;
+}
+
+.preview-headers {
+	padding: 15px 0;
 }
 
 .preview-headers span, .preview-headers ins, .preview-headers del {
 	display: block;
 	font-family: monospace;
 	white-space: normal;
+	padding: 0 15px;
 }
 
 .preview-headers ins {
 	text-decoration: none;
-	color: green;
+	color: #070;
 	background-color: #ddffdd;
 }
 
 .preview-headers del {
 	text-decoration: none;
-	color: red;
+	color: #c00;
 	background-color: #ffdddd;
 }
 
