@@ -23,7 +23,8 @@ if ($type == 'log') {
 	if ($node !== null) {
 		$client = soap_client($node);
 		$result = $client->mailQueue(['filter' => 'messageid='.$mail->msgid.' actionid='.$mail->msgactionid, 'offset' => 0, 'limit' => 1]);
-		$mail = $result->result->item[0];
+		if (count($result->result->item))
+			$mail = $result->result->item[0];
 	}
 } else {
 	// Fetch data from SOAP
