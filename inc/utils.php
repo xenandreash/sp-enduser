@@ -334,7 +334,7 @@ function has_auth_database() {
  */
 function merge_2d($a1, $a2) {
 	foreach ($a2 as $k => $v) {
-		if (!in_array($k, $a1, true)) {
+		if (!isset($a1[$k])) {
 			$a1[$k] = $v;
 		} else {
 			$a1[$k] = array_merge($a1[$k], $v);
