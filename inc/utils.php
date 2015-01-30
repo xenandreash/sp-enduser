@@ -57,13 +57,16 @@ function restrict_mail($type, $node, $id, $die = true)
 	if ($type == 'history') {
 		$query['filter'] .= ' && historyid='.intval($id);
 		$res = $client->mailHistory($query);
+	} else if ($type == 'historyqueue') {
+		$query['filter'] .= ' && queueid='.intval($id);
+		$res = $client->mailHistory($query);
 	} else {
 		$query['filter'] .= ' && queueid='.intval($id);
 		$res = $client->mailQueue($query);
 	}
 	// XXX Very important; many depend on us to die if access is denied
 	if (count($res->result->item) != 1) {
-		if($die) die('Invalid mail');
+		if ($die) die('Invalid mail');
 		else throw new Exception('Invalid mail');
 	}
 	return $res->result->item[0];

@@ -42,6 +42,7 @@ $action_classes = array(
 	'QUARANTINE' => 'warning',
 	'REJECT' => 'danger',
 	'DELETE' => 'danger',
+	'BOUNCE' => 'warning',
 	'ERROR' => 'warning',
 	'DEFER' => 'warning',
 );
@@ -50,9 +51,10 @@ $action_icons = array(
 	'QUEUE' => 'transfer',
 	'QUARANTINE' => 'inbox',
 	'REJECT' => 'ban-circle',
+	'DELETE' => 'trash',
+	'BOUNCE' => 'exclamation-sign',
 	'ERROR' => 'exclamation-sign',
 	'DEFER' => 'warning-sign',
-	'DELETE' => 'trash',
 );
 
 function get_preview_link($m) {

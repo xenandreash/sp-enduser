@@ -32,43 +32,26 @@ if ($type == 'log') {
 	// Fetch data from SOAP
 	$node = intval($_GET['node']);
 	try {
-		$mail = restrict_mail($type, $node, $id, !$settings->getUseDatabaseLog());
+		$mail = restrict_mail($type, $node, $id, false); // throws for security
 		$client = soap_client($node);
-	}
-	catch (Exception $e) {
-		$node = 'local';
-		$mail = restrict_local_mail($_GET['msgid'], $_GET['msgactionid']);
+	} catch (Exception $e) {
+		// not found, try search in history
+		if ($type == 'queue') {
+			$mail = restrict_mail('historyqueue', $node, $id, true); // die for security
+			$type = 'history';
+		} else {
+			die($e->getMessage()); // die for security
+		}
 	}
 }
-
 if (isset($_POST['action'])) {
-	$past_tense = $_POST['action']."d";
-	if ($_POST['action'] == 'bounce') {
+	if ($_POST['action'] == 'bounce')
 		$client->mailQueueBounce(array('id' => $id));
-	}
-	else if ($_POST['action'] == 'delete') {
+	else if ($_POST['action'] == 'delete')
 		$client->mailQueueDelete(array('id' => $id));
-	}
-	else if ($_POST['action'] == 'retry') {
+	else if ($_POST['action'] == 'retry')
 		$client->mailQueueRetry(array('id' => $id));
-		$past_tense = "retried";
-	}
-	
-	$title = 'Viewing Message';
-	$show_back = true;
-	$back_steps = $_POST['action'] != 'delete' ? 1 : 2;
-	require_once BASE.'/partials/header.php'; ?>
-		<nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="javascript:history.go(-<?php p($back_steps); ?>);">&larr;&nbsp;Back</a>
-				</div>
-			</div>
-		</nav>
-		<div class="container">
-			<div class="alert alert-success">The message has been successfully <?php p($past_tense); ?>.</div>
-		</div>
-	<?php require_once BASE.'/partials/footer.php';
+	header('Location: ?page=preview&type=queue&id='.$id.'&node='.$node);
 	die();
 }
 
@@ -78,6 +61,7 @@ $action_classes = array(
 	'QUARANTINE' => 'warning',
 	'REJECT' => 'danger',
 	'DELETE' => 'danger',
+	'BOUNCE' => 'warning',
 	'ERROR' => 'warning',
 	'DEFER' => 'warning',
 );
@@ -87,6 +71,7 @@ $action_icons = array(
 	'QUARANTINE' => 'inbox',
 	'REJECT' => 'ban-circle',
 	'DELETE' => 'trash',
+	'BOUNCE' => 'exclamation-sign',
 	'ERROR' => 'exclamation-sign',
 	'DEFER' => 'warning-sign',
 );
