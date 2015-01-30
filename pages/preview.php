@@ -72,6 +72,26 @@ if (isset($_POST['action'])) {
 	die();
 }
 
+$action_classes = array(
+	'DELIVER' => 'success',
+	'QUEUE' => 'info',
+	'QUARANTINE' => 'warning',
+	'REJECT' => 'danger',
+	'DELETE' => 'danger',
+	'ERROR' => 'warning',
+	'DEFER' => 'warning',
+);
+$action_icons = array(
+	'DELIVER' => 'ok',
+	'QUEUE' => 'transfer',
+	'QUARANTINE' => 'inbox',
+	'REJECT' => 'ban-circle',
+	'DELETE' => 'trash',
+	'ERROR' => 'exclamation-sign',
+	'DEFER' => 'warning-sign',
+);
+if ($type == 'queue' && $mail->msgaction == 'DELIVER') $mail->msgaction = 'QUEUE';
+
 // Prepare data
 $display_scores = $settings->getDisplayScores();
 $logs = $settings->getDisplayTextlog();
@@ -79,7 +99,7 @@ $transports = $settings->getDisplayTransport();
 $listeners = $settings->getDisplayListener();
 if (isset($transports[$mail->msgtransport])) $transport = $transports[$mail->msgtransport];
 if (isset($listeners[$mail->msglistener])) $listener = $listeners[$mail->msglistener];
-if ($type == 'queue' && $mail->msgaction == 'DELIVER')
+if ($mail->msgaction == 'QUEUE')
 	$desc = 'In queue (retry '.$mail->msgretries.')<br /><span class="text-muted">'.htmlspecialchars($mail->msgerror).'</span>';
 else
 	$desc = htmlspecialchars($mail->msgdescription);
@@ -137,7 +157,7 @@ require_once BASE.'/partials/header.php';
 					<li class="divider"></li>
 					<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
 					<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce</a></li>
-					<li><a data-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release</a></li>
+					<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;Retry/release</a></li>
 				<?php } ?>
 			</ul>
 		</div>
@@ -157,7 +177,7 @@ require_once BASE.'/partials/header.php';
 							<li class="divider"></li>
 							<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete message</a></li>
 							<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce message</a></li>
-							<li><a data-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release message</a></li>
+							<li><a data-action="retry"><i class="glyphicon glyphicon-play-cicle"></i>&nbsp;Retry/release message</a></li>
 						<?php } ?>
 					</ul>
 				</li>
@@ -168,16 +188,19 @@ require_once BASE.'/partials/header.php';
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-5 col-md-push-7">
-				<div class="panel panel-default">
+				<div class="panel panel-default panel-<?php p($action_classes[$mail->msgaction]); ?>">
 					<div class="panel-heading">
 						<h3 class="panel-title">Details</h3>
 					</div>
 					<div class="panel-body">
 						<dl class="dl-horizontal">
+							<dt>Action</dt><dd>
+								<span class="glyphicon glyphicon-<?php echo $action_icons[$mail->msgaction] ?>"></span>
+								<?php p($mail->msgaction) ?>
+							</dd>
 							<?php if ($mail->msgfrom !== '') { ?><dt>From</dt><dd class="wrap"><?php p($mail->msgfrom) ?></dd><?php } ?>
 							<dt>To</dt><dd class="wrap"><?php p($mail->msgto) ?></dd>
 							<dt>Date</dt><dd><?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
-							<dt>Action</dt><dd><?php p(ucfirst(strtolower($mail->msgaction))) ?></dd>
 							<?php if ($desc) { ?><dt>Details</dt><dd><?php pp($desc) ?></dd><?php } ?>
 							<?php if ($listener) { ?><dt>Received by</dt><dd><?php p($listener) ?></dd><?php } ?>
 							<dt>Server</dt><dd><?php p($mail->msgfromserver) ?></dd>

@@ -161,7 +161,7 @@ body > .navbar-toolbar {
 }
 .msg-body {
 	max-width: 100%;
-	overflow: scroll;
+	overflow: auto;
 	background-color: #fff;
 }
 

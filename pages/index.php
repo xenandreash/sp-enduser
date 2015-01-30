@@ -40,10 +40,19 @@ $action_classes = array(
 	'DELIVER' => 'default',
 	'QUEUE' => 'info',
 	'QUARANTINE' => 'warning',
-	'BOUNCE' => 'danger',
 	'REJECT' => 'danger',
-	'ERROR' => 'danger',
-	'DEFER' => 'warning'
+	'DELETE' => 'danger',
+	'ERROR' => 'warning',
+	'DEFER' => 'warning',
+);
+$action_icons = array(
+	'DELIVER' => 'ok',
+	'QUEUE' => 'transfer',
+	'QUARANTINE' => 'inbox',
+	'REJECT' => 'ban-circle',
+	'ERROR' => 'exclamation-sign',
+	'DEFER' => 'warning-sign',
+	'DELETE' => 'trash',
 );
 
 function get_preview_link($m) {
@@ -189,7 +198,7 @@ $has_multiple_sources = count($sources) > 1;
 						<ul class="dropdown-menu" role="menu">
 							<li><a data-bulk-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete selected</a></li>
 							<li><a data-bulk-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce selected</a></li>
-							<li><a data-bulk-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release selected</a></li>
+							<li><a data-bulk-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;Retry/release selected</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -206,7 +215,7 @@ $has_multiple_sources = count($sources) > 1;
 					<ul class="dropdown-menu" role="menu">
 						<li><a data-bulk-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete selected</a></li>
 						<li><a data-bulk-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce selected</a></li>
-						<li><a data-bulk-action="retry"><i class="glyphicon glyphicon-play"></i>&nbsp;Retry/release selected</a></li>
+						<li><a data-bulk-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;Retry/release selected</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -235,9 +244,7 @@ $has_multiple_sources = count($sources) > 1;
 			<table class="table table-hover hidden-xs">
 				<thead>
 					<tr>
-						<?php if ($source != 'history') { ?>
-							<th style="width:30px">&nbsp;</th>
-						<?php } ?>
+						<th style="width:30px">&nbsp;</th>
 						<th class="hidden-xs">From</th>
 						<?php if ($has_multiple_addresses) { ?>
 						<th class="hidden-xs">To</th>
@@ -270,13 +277,16 @@ $has_multiple_sources = count($sources) > 1;
 						$i++;
 						$param[$m['type']][$m['id']]['offset']++;
 						$preview = get_preview_link($m);
+						if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') $m['data']->msgaction = 'QUEUE';
 					?>
 					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>">
+						<td>
 						<?php if ($source != 'history') { ?>
-							<td>
-								<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
-							</td>
+							<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
+						<?php } else { ?>
+							<span class="glyphicon glyphicon-<?php echo $action_icons[$m['data']->msgaction] ?>"></span>
 						<?php } ?>
+						</td>
 						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgfrom) ?></td>
 						<?php if ($has_multiple_addresses) { ?>
 						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgto) ?></td>
@@ -308,7 +318,7 @@ $has_multiple_sources = count($sources) > 1;
 						</td>
 						<?php if ($source != 'history') { ?>
 						<td class="hidden-xs hidden-sm">
-							<a title="Release/retry" data-action="retry"><i class="glyphicon glyphicon-play"></i></a>
+							<a title="Release/retry" data-action="retry"><i class="glyphicon glyphicon-play-circle"></i></a>
 						</td>
 						<?php } ?>
 						<td data-href="<?php p($preview); ?>">&nbsp;</td>
