@@ -88,6 +88,8 @@ if ($nodeBackend->isValid() && $settings->getDisplayQueue())
 	$sources += array('queue' => 'Queue');
 if ($nodeBackend->isValid() && $settings->getDisplayQuarantine())
 	$sources += array('quarantine' => 'Quarantine');
+if ($nodeBackend->isValid() && $settings->getDisplayAll())
+	$sources += array('all' => 'All');
 
 // Make sure a real, not disabled source is selected
 if (!array_key_exists($source, $sources))
@@ -128,12 +130,17 @@ foreach ($_GET as $k => $v) {
 
 $cols = 8;
 
-if ($source == 'history') {
-	$backend = ($settings->getUseDatabaseLog() && $dbBackend->isValid() ? $dbBackend : $nodeBackend);
+if ($source == 'log') {
+	$backend = $dbBackend;
 	$results = $backend->loadMailHistory($real_search, $size, $param['log'], $errors);
 	$timesort = merge_2d($timesort, $results);
 }
-else if ($source == 'queue' || $source == 'quarantine') {
+if ($source == 'history' || $source == 'all') {
+	$backend = $nodeBackend;
+	$results = $backend->loadMailHistory($real_search, $size, $param['history'], $errors);
+	$timesort = merge_2d($timesort, $results);
+}
+if ($source == 'queue' || $source == 'quarantine' || $source == 'all') {
 	$results = $nodeBackend->loadMailQueue($real_search, $size, $param['queue'], $errors);
 	$timesort = merge_2d($timesort, $results);
 }
@@ -192,7 +199,7 @@ $has_multiple_sources = count($sources) > 1;
 						</div>
 					</div>
 				</form>
-				<?php if ($source != 'history') { ?>
+				<?php if ($source == 'queue' || $source == 'quarantine') { ?>
 				<ul class="nav navbar-nav navbar-left hidden-xs hidden-sm">
 					<li class="divider"></li>
 					<li class="dropdown">
@@ -208,7 +215,7 @@ $has_multiple_sources = count($sources) > 1;
 			</div>
 		</div>
 	</nav>
-	<?php if ($source != 'history') { ?>
+	<?php if ($source == 'queue' || $source == 'quarantine') { ?>
 	<nav class="navbar navbar-default navbar-fixed-bottom hidden-xs hidden-md hidden-lg" id="bottom-bar" style="display:none;">
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
@@ -255,9 +262,7 @@ $has_multiple_sources = count($sources) > 1;
 						<th class="hidden-xs hidden-sm">Status</th>
 						<?php if ($display_scores) { $cols++ ?><th class="visible-lg" style="width: 120px;">Scores</th><?php } ?>
 						<th>&nbsp;</th>
-						<?php if ($source != 'history') { ?>
 						<th style="width: 25px;" class="hidden-xs hidden-sm"></th>
-						<?php } ?>
 						<!-- Padding column to avoid having the OSX scrollbar cover the rightmost button -->
 						<th style="width: 20px;">&nbsp;</th>
 					</tr>
@@ -288,9 +293,9 @@ $has_multiple_sources = count($sources) > 1;
 					?>
 					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>" <?php echo $tr ?>>
 						<td>
-						<?php if ($source != 'history') { ?>
+						<?php if ($m['type'] == 'queue') { echo $param[$m['type']][$m['id']]['offset']; ?>
 							<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
-						<?php } else { ?>
+						<?php } else { echo $param[$m['type']][$m['id']]['offset'] ?>
 							<span class="glyphicon glyphicon-<?php echo $action_icons[$m['data']->msgaction] ?>"></span>
 						<?php } ?>
 						</td>
@@ -323,11 +328,11 @@ $has_multiple_sources = count($sources) > 1;
 						<td <?php echo $td ?>>
 							<?php echo strftime('%b %e <span class="hidden-xs">%Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
-						<?php if ($source != 'history') { ?>
 						<td class="hidden-xs hidden-sm">
+						<?php if ($m['type'] == 'queue') { ?>
 							<a title="Release/retry" data-action="retry"><i class="glyphicon glyphicon-play-circle"></i></a>
-						</td>
 						<?php } ?>
+						</td>
 						<td>&nbsp;</td>
 					</tr>
 				<?php }} ?>

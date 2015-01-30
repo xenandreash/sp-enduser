@@ -27,6 +27,7 @@ class Settings
 	private $displayHistory = true;
 	private $displayQueue = true;
 	private $displayQuarantine = true;
+	private $displayAll = true;
 	private $displayBWList = true;
 	private $displayListener = array('mailserver:1' => "Inbound");
 	private $displayTransport = array('mailtransport:2' => "Internet");
@@ -71,6 +72,7 @@ class Settings
 		$this->extract($this->displayTextlog, 'display-textlog');
 		$this->extract($this->displayQueue, 'display-queue');
 		$this->extract($this->displayQuarantine, 'display-quarantine');
+		$this->extract($this->displayAll, 'display-all');
 		$this->extract($this->displayBWList, 'display-bwlist');
 		$this->extract($this->displayListener, 'display-listener');
 		$this->extract($this->displayTransport, 'display-transport');
@@ -269,6 +271,8 @@ class Settings
 	 */
 	public function getDisplayQueue()
 	{
+		if ($this->getUseDatabaseLog())
+			return false;
 		return $this->displayQueue;
 	}
 	
@@ -277,9 +281,21 @@ class Settings
 	 */
 	public function getDisplayQuarantine()
 	{
+		if ($this->getUseDatabaseLog())
+			return false;
 		return $this->displayQuarantine;
 	}
 	
+	/**
+	 * Returns whether the "All" (SOAP) source should be displayed.
+	 */
+	public function getDisplayAll()
+	{
+		if ($this->getUseDatabaseLog())
+			return false;
+		return $this->displayAll;
+	}
+
 	/**
 	 * Returns whether the black/whitelist tab should be displayed.
 	 */
