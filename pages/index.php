@@ -279,9 +279,14 @@ $has_multiple_sources = count($sources) > 1;
 						$i++;
 						$param[$m['type']][$m['id']]['offset']++;
 						$preview = get_preview_link($m);
+						$td = $tr = '';
+						if ($m['type'] == 'history')
+							$tr = 'data-href='.htmlspecialchars(get_preview_link($m));
+						else
+							$td = 'data-href='.htmlspecialchars(get_preview_link($m));
 						if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') $m['data']->msgaction = 'QUEUE';
 					?>
-					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>">
+					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>" <?php echo $tr ?>>
 						<td>
 						<?php if ($source != 'history') { ?>
 							<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
@@ -289,12 +294,12 @@ $has_multiple_sources = count($sources) > 1;
 							<span class="glyphicon glyphicon-<?php echo $action_icons[$m['data']->msgaction] ?>"></span>
 						<?php } ?>
 						</td>
-						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgfrom) ?></td>
+						<td class="hidden-xs" <?php echo $td ?>><?php p($m['data']->msgfrom) ?></td>
 						<?php if ($has_multiple_addresses) { ?>
-						<td class="hidden-xs" data-href="<?php p($preview); ?>"><?php p($m['data']->msgto) ?></td>
+						<td class="hidden-xs" <?php echo $td ?>><?php p($m['data']->msgto) ?></td>
 						<?php } ?>
-						<td data-href="<?php p($preview); ?>"><?php p($m['data']->msgsubject) ?></td>
-						<td class="hidden-xs hidden-sm" data-href="<?php p($preview); ?>">
+						<td <?php p($td); ?>><?php p($m['data']->msgsubject) ?></td>
+						<td class="hidden-xs hidden-sm" <?php echo $td ?>>
 							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)); ?></span>
 						</td>
 						<?php if ($display_scores) {
@@ -313,9 +318,9 @@ $has_multiple_sources = count($sources) > 1;
 									$printscores[] = $s['score'];
 							}
 						?>
-						<td class="visible-lg" data-href="<?php p($preview); ?>"><?php p(implode(', ', array_unique($printscores))) ?></td>
+						<td class="visible-lg" <?php echo $td ?>><?php p(implode(', ', array_unique($printscores))) ?></td>
 						<?php } ?>
-						<td data-href="<?php p($preview); ?>">
+						<td <?php echo $td ?>>
 							<?php echo strftime('%b %e <span class="hidden-xs">%Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
 						<?php if ($source != 'history') { ?>
@@ -323,7 +328,7 @@ $has_multiple_sources = count($sources) > 1;
 							<a title="Release/retry" data-action="retry"><i class="glyphicon glyphicon-play-circle"></i></a>
 						</td>
 						<?php } ?>
-						<td data-href="<?php p($preview); ?>">&nbsp;</td>
+						<td>&nbsp;</td>
 					</tr>
 				<?php }} ?>
 				<?php if (empty($timesort)) { ?>
