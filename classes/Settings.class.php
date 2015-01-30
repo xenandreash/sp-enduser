@@ -24,6 +24,9 @@ class Settings
 	private $defaultSource = 'history';
 	private $displayScores = false;
 	private $displayTextlog = false;
+	private $displayHistory = true;
+	private $displayQueue = true;
+	private $displayQuarantine = true;
 	private $displayBWList = true;
 	private $displayListener = array('mailserver:1' => "Inbound");
 	private $displayTransport = array('mailtransport:2' => "Internet");
@@ -66,6 +69,8 @@ class Settings
 		$this->extract($this->defaultSource, 'default-source');
 		$this->extract($this->displayScores, 'display-scores');
 		$this->extract($this->displayTextlog, 'display-textlog');
+		$this->extract($this->displayQueue, 'display-queue');
+		$this->extract($this->displayQuarantine, 'display-quarantine');
 		$this->extract($this->displayBWList, 'display-bwlist');
 		$this->extract($this->displayListener, 'display-listener');
 		$this->extract($this->displayTransport, 'display-transport');
@@ -249,6 +254,30 @@ class Settings
 	public function getDisplayTextlog()
 	{
 		return $this->displayTextlog;
+	}
+	
+	/**
+	 * Returns whether the History source should be displayed.
+	 */
+	public function getDisplayHistory()
+	{
+		return $this->displayHistory;
+	}
+	
+	/**
+	 * Returns whether the Queue source should be displayed.
+	 */
+	public function getDisplayQueue()
+	{
+		return $this->displayQueue;
+	}
+	
+	/**
+	 * Returns whether the Quarantine source should be displayed.
+	 */
+	public function getDisplayQuarantine()
+	{
+		return $this->displayQuarantine;
 	}
 	
 	/**

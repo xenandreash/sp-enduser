@@ -68,11 +68,19 @@ $size = $size > 5000 ? 5000 : $size;
 $source = isset($_GET['source']) ? $_GET['source'] : $settings->getDefaultSource();
 $display_scores = $settings->getDisplayScores();
 
-// // Select box arrays
+// Select box arrays
 $pagesize = array(10, 50, 100, 500, 1000, 5000);
-$sources = array('history' => 'History');
-if($nodeBackend->isValid())
-	$sources += array('queue' => 'Queue', 'quarantine' => 'Quarantine');
+$sources = array();
+if ($settings->getDisplayHistory())
+	$sources += array('history' => 'History');
+if ($nodeBackend->isValid() && $settings->getDisplayQueue())
+	$sources += array('queue' => 'Queue');
+if ($nodeBackend->isValid() && $settings->getDisplayQuarantine())
+	$sources += array('quarantine' => 'Quarantine');
+
+// Make sure a real, not disabled source is selected
+if (!array_key_exists($source, $sources))
+	die("Invalid source");
 
 // Create actual search query for SOAP, in order of importance (for security)
 $queries = array();
@@ -123,6 +131,7 @@ krsort($timesort);
 ksort($errors);
 
 $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
+$has_multiple_sources = count($sources) > 1;
 ?>
 	<nav class="navbar navbar-toolbar navbar-static-top">
 		<div class="container-fluid">
@@ -144,8 +153,12 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						</ul>
 					</div>
 				</div>
+				<?php if (!$has_multiple_sources) { ?>
+				<a class="navbar-brand hidden-xs"><?php p($sources[$source]); ?></a>
+				<?php } ?>
 			</div>
 			<div class="collapse navbar-collapse" id="toolbar-collapse">
+				<?php if ($has_multiple_sources) { ?>
 				<ul class="nav navbar-nav navbar-left hidden-xs">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false"><?php p($sources[$source]); ?> <span class="caret"></span></a>
@@ -156,6 +169,7 @@ $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 						</ul>
 					</li>
 				</ul>
+				<?php } ?>
 				<form class="navbar-form navbar-left" role="search">
 					<input type="hidden" name="source" value="<?php p($source); ?>">
 					<div class="form-group">
