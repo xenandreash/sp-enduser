@@ -280,10 +280,10 @@ $has_multiple_sources = count($sources) > 1;
 						$param[$m['type']][$m['id']]['offset']++;
 						$preview = get_preview_link($m);
 						$td = $tr = '';
-						if ($m['type'] == 'history')
-							$tr = 'data-href='.htmlspecialchars(get_preview_link($m));
-						else
+						if ($m['type'] == 'queue')
 							$td = 'data-href='.htmlspecialchars(get_preview_link($m));
+						else
+							$tr = 'data-href='.htmlspecialchars(get_preview_link($m));
 						if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') $m['data']->msgaction = 'QUEUE';
 					?>
 					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>" <?php echo $tr ?>>
