@@ -82,6 +82,8 @@ $display_scores = $settings->getDisplayScores();
 // Select box arrays
 $pagesize = array(10, 50, 100, 500, 1000, 5000);
 $sources = array();
+if ($settings->getUseDatabaseLog())
+	$sources += array('log' => 'Log');
 if ($settings->getDisplayHistory())
 	$sources += array('history' => 'History');
 if ($nodeBackend->isValid() && $settings->getDisplayQueue())
@@ -293,9 +295,9 @@ $has_multiple_sources = count($sources) > 1;
 					?>
 					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>" <?php echo $tr ?>>
 						<td>
-						<?php if ($m['type'] == 'queue') { echo $param[$m['type']][$m['id']]['offset']; ?>
+						<?php if ($m['type'] == 'queue') { ?>
 							<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
-						<?php } else { echo $param[$m['type']][$m['id']]['offset'] ?>
+						<?php } else { ?>
 							<span class="glyphicon glyphicon-<?php echo $action_icons[$m['data']->msgaction] ?>"></span>
 						<?php } ?>
 						</td>

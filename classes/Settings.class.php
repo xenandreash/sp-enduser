@@ -263,6 +263,8 @@ class Settings
 	 */
 	public function getDisplayHistory()
 	{
+		if ($this->getUseDatabaseLog())
+			return false;
 		return $this->displayHistory;
 	}
 	
