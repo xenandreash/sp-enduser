@@ -150,7 +150,11 @@ if ($source == 'queue' || $source == 'quarantine' || $source == 'all') {
 krsort($timesort);
 ksort($errors);
 
-if (count($timesort) > $size)
+$c = 0;
+foreach ($timesort as $t)
+	foreach ($t as $m)
+		$c++;
+if ($c > $size)
 	$next_button = ''; // enable "next" page button
 
 $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
