@@ -84,6 +84,7 @@ class Settings
 		$this->extract($this->filterPattern, 'filter-pattern');
 		$this->extract($this->digestToAll, 'digest.to-all');
 		$this->extract($this->digestSecret, 'digest.secret');
+		$this->extract($this->sessionName, 'session-name');
 		
 		foreach ($this->nodeCredentials as $cred) {
 			$username = isset($cred['username']) ? $cred['username'] : null;
