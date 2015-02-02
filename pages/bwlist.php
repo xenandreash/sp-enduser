@@ -48,6 +48,25 @@ $row_classes = array(
 	'whitelist' => 'success',
 	'blacklist' => 'danger',
 );
+
+$result = array();
+
+$access = Session::Get()->getAccess();
+if (count($access) == 0) {
+	$statement = $dbh->prepare("SELECT * FROM bwlist ORDER BY type DESC;");
+	$statement->execute();
+	while ($row = $statement->fetch())
+		$result[] = $row;
+}
+
+foreach ($access as $type) {
+	foreach ($type as $item) {
+		$statement = $dbh->prepare("SELECT * FROM bwlist WHERE access = :access ORDER BY type DESC;");
+		$statement->execute(array(':access' => $item));
+		while ($row = $statement->fetch())
+			$result[] = $row;
+	}
+}
 ?>
 	<div class="container-fluid">
 		<div class="col-md-6 col-lg-8">
@@ -67,25 +86,6 @@ $row_classes = array(
 					</thead>
 					<tbody>
 						<?php
-						$result = array();
-
-						$access = Session::Get()->getAccess();
-						if (count($access) == 0) {
-							$statement = $dbh->prepare("SELECT * FROM bwlist ORDER BY type DESC;");
-							$statement->execute();
-							while ($row = $statement->fetch())
-								$result[] = $row;
-						}
-
-						foreach ($access as $type) {
-							foreach ($type as $item) {
-								$statement = $dbh->prepare("SELECT * FROM bwlist WHERE access = :access ORDER BY type DESC;");
-								$statement->execute(array(':access' => $item));
-								while ($row = $statement->fetch())
-									$result[] = $row;
-							}
-						}
-
 						foreach ($result as $row) {
 						?>
 						<tr class="<?php p($row_classes[$row['type']] ?: 'info'); ?>">
