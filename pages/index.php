@@ -288,9 +288,9 @@ $has_multiple_sources = count($sources) > 1;
 						$preview = get_preview_link($m);
 						$td = $tr = '';
 						if ($m['type'] == 'queue')
-							$td = 'data-href='.htmlspecialchars(get_preview_link($m));
+							$td = 'data-href="'.htmlspecialchars(get_preview_link($m)).'"';
 						else
-							$tr = 'data-href='.htmlspecialchars(get_preview_link($m));
+							$tr = 'data-href="'.htmlspecialchars(get_preview_link($m)).'"';
 						if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') $m['data']->msgaction = 'QUEUE';
 					?>
 					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>" <?php echo $tr ?>>
@@ -305,7 +305,7 @@ $has_multiple_sources = count($sources) > 1;
 						<?php if ($has_multiple_addresses) { ?>
 						<td class="hidden-xs" <?php echo $td ?>><?php p($m['data']->msgto) ?></td>
 						<?php } ?>
-						<td <?php p($td); ?>><?php p($m['data']->msgsubject) ?></td>
+						<td <?php echo $td; ?>><?php p($m['data']->msgsubject) ?></td>
 						<td class="hidden-xs hidden-sm" <?php echo $td ?>>
 							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)); ?></span>
 						</td>
