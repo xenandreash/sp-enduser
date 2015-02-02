@@ -23,6 +23,8 @@ $dbCredentials = $settings->getDBCredentials();
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<link rel="icon" type="image/png" href="static/img/favicon.png" sizes="32x32">
+		<link rel="apple-touch-icon" href="static/img/apple-touch-icon.png">
 		<title><?php echo $title ?> | <?php echo $pagename ?></title>
 		<link rel="stylesheet" href="static/css/bootstrap.min.css">
 		<link rel="stylesheet" href="<?php echo $styles ?>">
