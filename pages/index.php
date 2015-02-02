@@ -150,6 +150,9 @@ if ($source == 'queue' || $source == 'quarantine' || $source == 'all') {
 krsort($timesort);
 ksort($errors);
 
+if (count($timesort) > $size)
+	$next_button = ''; // enable "next" page button
+
 $has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
 $has_multiple_sources = count($sources) > 1;
 ?>
@@ -274,15 +277,9 @@ $has_multiple_sources = count($sources) > 1;
 				<?php
 				$i = 1;
 				foreach ($timesort as $t) {
-					if ($i > $size) {
-						$next_button = ''; // enable "next" page button
-						break;
-					}
+					if ($i > $size) { break; }
 					foreach ($t as $m) {
-						if ($i > $size) {
-							$next_button = ''; // enable "next" page button
-							break;
-						}
+						if ($i > $size) { break; }
 						$i++;
 						$param[$m['type']][$m['id']]['offset']++;
 						$preview = get_preview_link($m);
@@ -348,8 +345,14 @@ $has_multiple_sources = count($sources) > 1;
 			</table>
 			
 			<div class="list-group not-rounded visible-xs">
-				<?php foreach ($timesort as $t) { ?>
-					<?php foreach ($t as $m) { ?>
+				<?php
+				$i = 1;
+				foreach ($timesort as $t) {
+					if ($i > $size) { break; }
+					foreach ($t as $m) {
+						if ($i > $size) { break; }
+						$i++;
+				?>
 						<a href="<?php p(get_preview_link($m)); ?>" class="list-group-item list-group-item-<?php p($action_classes[$m['data']->msgaction]); ?>">
 							<h4 class="list-group-item-heading">
 								<small class="pull-right">
