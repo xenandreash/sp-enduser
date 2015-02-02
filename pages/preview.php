@@ -183,12 +183,12 @@ require_once BASE.'/partials/header.php';
 								<span class="glyphicon glyphicon-<?php echo $action_icons[$mail->msgaction] ?>"></span>
 								<?php p($mail->msgaction) ?>
 							</dd>
-							<?php if ($mail->msgfrom !== '') { ?><dt>From</dt><dd class="wrap"><?php p($mail->msgfrom) ?></dd><?php } ?>
-							<dt>To</dt><dd class="wrap"><?php p($mail->msgto) ?></dd>
+							<dt>From</dt><dd class="wrap"><?php p($mail->msgfrom) ?>&nbsp;</dd>
+							<dt>To</dt><dd class="wrap"><?php p($mail->msgto) ?>&nbsp;</dd>
 							<dt>Date</dt><dd><?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
 							<?php if ($desc) { ?><dt>Details</dt><dd><?php pp($desc) ?></dd><?php } ?>
 							<?php if ($listener) { ?><dt>Received by</dt><dd><?php p($listener) ?></dd><?php } ?>
-							<dt>Server</dt><dd><?php p($mail->msgfromserver) ?></dd>
+							<dt>Server</dt><dd><?php p($mail->msgfromserver) ?>&nbsp;</dd>
 							<?php if ($mail->msgsasl !== '') { ?><dt>User</dt><dd><?php p($mail->msgsasl) ?></dd><?php } ?>
 							<?php if ($transport) { ?><dt>Destination</dt><dd><?php p($transport) ?></dd><?php } ?>
 							<dt>ID</dt><dd><?php p($mail->msgid) ?></dd>
