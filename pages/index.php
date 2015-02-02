@@ -152,8 +152,7 @@ ksort($errors);
 
 $c = 0;
 foreach ($timesort as $t)
-	foreach ($t as $m)
-		$c++;
+	$c += count($t);
 if ($c > $size)
 	$next_button = ''; // enable "next" page button
 
