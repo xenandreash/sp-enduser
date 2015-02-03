@@ -1,1 +1,1 @@
-Halon SP (e-mail security) end-user web application. Please read more on http://wiki.halon.se/End-user
+End-user web application for Halon's email gateway. Please read more on http://wiki.halon.se/End-user and http://halon.io
