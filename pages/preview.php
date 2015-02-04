@@ -186,6 +186,7 @@ require_once BASE.'/partials/header.php';
 							<dt>From</dt><dd class="wrap"><?php p($mail->msgfrom) ?>&nbsp;</dd>
 							<dt>To</dt><dd class="wrap"><?php p($mail->msgto) ?>&nbsp;</dd>
 							<dt>Date</dt><dd><?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
+							<?php if ($mail->msgsize) { ?><dt>Size</dt><dd class="wrap"><?php p(format_size($mail->msgsize)) ?>&nbsp;</dd><?php } ?>
 							<?php if ($desc) { ?><dt>Details</dt><dd><?php pp($desc) ?></dd><?php } ?>
 							<?php if ($listener) { ?><dt>Received by</dt><dd><?php p($listener) ?></dd><?php } ?>
 							<dt>Server</dt><dd><?php p($mail->msgfromserver) ?>&nbsp;</dd>
@@ -252,7 +253,7 @@ require_once BASE.'/partials/header.php';
 							<?php foreach ($attachments as $i => $a) { ?>
 								<li class="nowrap">
 									<i class="glyphicon glyphicon-paperclip"></i>
-									<?php p($a[2]); ?>&nbsp;<small class="text-muted">(<?php p(round($a[1]/1024, 0)); ?>KiB)</small>
+									<?php p($a[2]); ?>&nbsp;<small class="text-muted">(<?php p(format_size($a[1])); ?>)</small>
 								</li>
 							<?php } ?>
 						</ul>

@@ -183,3 +183,10 @@ function mkquery($a1, $a2 = array(), $amps = false) {
 	$arr = array_filter(array_merge($a1, $a2));
 	return http_build_query($arr, '', ($amps ? '&amp;' : '&'));
 }
+
+function format_size($size)
+{
+	$base = log($size, 1024);
+	$suffixes = array('B', 'KiB', 'MiB', 'GiB', 'TiB');
+	return round(pow(1024, $base - floor($base)), 0) . ' ' . $suffixes[floor($base)];
+}
