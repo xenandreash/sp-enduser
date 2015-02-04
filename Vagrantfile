@@ -60,6 +60,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provisioning/playbook.yml"
   end
+  
+  # Manually start Apache on boot - needed because it will otherwise try to
+  # start before the shared filesystem is mounted, but fail because its config
+  # is on it
+  config.vm.provision "shell", inline: "service apache2 start", run: "always"
 
   # Enable provisioning with CFEngine. CFEngine Community packages are
   # automatically installed. For example, configure the host as a
