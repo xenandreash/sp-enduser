@@ -48,7 +48,7 @@ $settings['api-key'] = 'secret';
 
 //$settings['mail']['from'] = 'Mail quarantine <postmaster@example.org>';
 //$settings['public-url'] = 'http://10.2.0.166/enduser/';
-//$settings['default-source'] = 'history';
+$settings['default-source'] = 'log';
 $settings['display-scores'] = true;
 $settings['display-textlog'] = true;
 //$settings['display-history'] = true;
