@@ -6,4 +6,8 @@ $(document).ready(function() {
 			$('#actionform').submit();
 		}
 	});
+
+	// Hide back button if page was opened in a new tab
+	if (window.history.length == 1)
+		$('#history_back').hide();
 });

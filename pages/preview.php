@@ -131,7 +131,7 @@ require_once BASE.'/partials/header.php';
 	<nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
+				<a id="history_back" class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
 				<?php if ($logs && count($settings->getNodes())) { ?>
