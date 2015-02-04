@@ -64,7 +64,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Manually start Apache on boot - needed because it will otherwise try to
   # start before the shared filesystem is mounted, but fail because its config
   # is on it
-  config.vm.provision "shell", inline: "service apache2 start", run: "always"
+  config.vm.provision "shell", inline: "service apache2 start > /dev/null", run: "always"
 
   # Enable provisioning with CFEngine. CFEngine Community packages are
   # automatically installed. For example, configure the host as a
