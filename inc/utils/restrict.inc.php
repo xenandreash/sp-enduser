@@ -51,7 +51,7 @@ function user_restrict_sql_query() {
 function user_restrict_sql_select($select, $where, $order, $limit, $offsets) {
 	$settings = Settings::Get();
 	$access = Session::Get()->getAccess();
-	restrict_sql_select($settings, $access, $select, $where, $order, $limit, $offsets);
+	return restrict_sql_select($settings, $access, $select, $where, $order, $limit, $offsets);
 }
 
 // XXX below are testable functions
