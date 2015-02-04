@@ -110,14 +110,6 @@ body > .navbar-toolbar {
 	.navbar-toolbar .navbar-toggle {
 		padding: 15px 10px;
 	}
-	
-	table.collapse-to-list, table.collapse-to-list tbody, table.collapse-to-list tr, table.collapse-to-list td {
-		display: block;
-	}
-	
-	table.collapse-to-list thead {
-		display: none;
-	}
 }
 
 .disabled a {
