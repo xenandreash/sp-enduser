@@ -301,13 +301,13 @@ $has_multiple_sources = count($sources) > 1;
 							<span class="glyphicon glyphicon-<?php echo $action_icons[$m['data']->msgaction] ?>"></span>
 						<?php } ?>
 						</td>
-						<td class="hidden-xs" <?php echo $td ?>><?php p($m['data']->msgfrom) ?></td>
+						<td class="hidden-xs" <?php echo $td ?>><?php p($m['data']->msgfrom) or pp('&nbsp;') ?></td>
 						<?php if ($has_multiple_addresses) { ?>
 						<td class="hidden-xs" <?php echo $td ?>><?php p($m['data']->msgto) ?></td>
 						<?php } ?>
-						<td <?php echo $td; ?>><?php p($m['data']->msgsubject) ?></td>
+						<td <?php echo $td; ?>><?php p($m['data']->msgsubject) or pp('&nbsp;'); ?></td>
 						<td class="hidden-xs hidden-sm" <?php echo $td ?>>
-							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)); ?></span>
+							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)) or pp('&nbsp;'); ?></span>
 						</td>
 						<?php if ($display_scores) {
 							$printscores = array();
@@ -325,7 +325,7 @@ $has_multiple_sources = count($sources) > 1;
 									$printscores[] = $s['score'];
 							}
 						?>
-						<td class="visible-lg" <?php echo $td ?>><?php p(implode(', ', array_unique($printscores))) ?></td>
+						<td class="visible-lg" <?php echo $td ?>><?php p(implode(', ', array_unique($printscores))) or pp('&nbsp;') ?></td>
 						<?php } ?>
 						<td <?php echo $td ?>>
 							<?php echo strftime('%b %e <span class="hidden-xs">%Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
