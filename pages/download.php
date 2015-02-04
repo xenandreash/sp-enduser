@@ -7,7 +7,7 @@ $node = intval($_GET['node']);
 $id = intval($_GET['id']);
 
 // Access permission
-$mail = restrict_mail('queue', $node, $id);
+$mail = user_restrict_soap_mail('queue', $node, $id); // dies for security
 
 $client = soap_client($node);
 header('Content-type: text/plain');

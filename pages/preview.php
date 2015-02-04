@@ -10,7 +10,7 @@ $type = $_GET['type'];
 if ($type == 'log') {
 	// Fetch data from local SQL log
 	$node = 'local';
-	$mail = restrict_local_mail($id);
+	$mail = user_restrict_sql_mail($id);
 	// Resolv SOAP node
 	$node = null;
 	if ($mail->msgaction == 'QUEUE') foreach ($settings->getNodes() as $n => $tmpnode) {
@@ -32,12 +32,12 @@ if ($type == 'log') {
 	// Fetch data from SOAP
 	$node = intval($_GET['node']);
 	try {
-		$mail = restrict_mail($type, $node, $id, false); // throws for security
+		$mail = user_restrict_soap_mail($type, $node, $id, false); // throws for security
 		$client = soap_client($node);
 	} catch (Exception $e) {
 		// not found, try search in history
 		if ($type == 'queue') {
-			$mail = restrict_mail('historyqueue', $node, $id, true); // die for security
+			$mail = user_restrict_soap_mail('historyqueue', $node, $id, true); // die for security
 			$type = 'history';
 		} else {
 			die($e->getMessage()); // die for security
@@ -120,7 +120,7 @@ if ($type == 'queue') {
 	}
 }
 
-$title = 'Viewing Message';
+$title = 'Message';
 $show_back = true;
 $body_class = 'has-bottom-bar';
 $javascript[] = 'static/js/preview.js';

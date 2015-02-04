@@ -27,7 +27,7 @@ if (isset($_GET['ajax'])) {
 
 if ($_GET['type'] == 'log') {
 	// SQL access permission
-	$mail = restrict_local_mail(intval($_GET['id']));
+	$mail = user_restrict_sql_mail(intval($_GET['id']));
 	// Resolv SOAP node
 	$node = null;
 	foreach ($settings->getNodes() as $n => $tmpnode)
@@ -45,7 +45,7 @@ if ($_GET['type'] == 'log') {
 	// SOAP access permission
 	$node = intval($_GET['node']);
 	$id = intval($_GET['id']);
-	$mail = restrict_mail($_GET['type'], $node, $id);
+	$mail = user_restrict_soap_mail($_GET['type'], $node, $id); // die for security
 	$args = array('searchlog', $mail->msgid.':'.$id, '-'.$mail->msgts);
 }
 
