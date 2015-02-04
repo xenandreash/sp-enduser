@@ -99,6 +99,10 @@
 // 		'type' => 'account',
 // 		'username' => 'foo',
 // 		'password' => 'foo',
+//		'access' => array( // optional access restrictions
+//				'domain' => array('example.com'),
+//				'mail' => array('foo@example.com'),
+//				),
 // 		);
 //$settings['authentication'][] = array(
 //		'type' => 'ldap',
