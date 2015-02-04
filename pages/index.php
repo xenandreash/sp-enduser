@@ -15,7 +15,7 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 		$client = soap_client($node);
 
 		// Access permission
-		user_restrict_soap_mail('queue', $node, $id); // Dies if access is denied
+		restrict_soap_mail('queue', $node, $id); // Dies if access is denied
 		$actions[$v][] = $id;
 	}
 	foreach ($actions as $soapid => $list)
@@ -99,7 +99,7 @@ if (!array_key_exists($source, $sources))
 
 // Create actual search query for SOAP, in order of importance (for security)
 $queries = array();
-$restrict = user_restrict_soap_query();
+$restrict = restrict_soap_query();
 if ($restrict != '')
 	$queries[] = $restrict;
 if ($source == 'queue')

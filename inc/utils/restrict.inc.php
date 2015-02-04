@@ -1,9 +1,9 @@
 <?php
 
 // Check the user's access to a specific message in SQL database
-function user_restrict_sql_mail($id, $actionid = NULL) {
-	$restrict_sql = user_restrict_sql_query();
-	list($real_sql, $real_sql_params) = restrict_sql_mail($restrict_sql, $id, $actionid);
+function restrict_sql_mail($id, $actionid = NULL) {
+	$restrict_sql = restrict_sql_query();
+	list($real_sql, $real_sql_params) = _restrict_sql_mail($restrict_sql, $id, $actionid);
 	$settings = Settings::Get();
 	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare($real_sql);
@@ -14,14 +14,14 @@ function user_restrict_sql_mail($id, $actionid = NULL) {
 }
 
 // Check the user's access to a specific message over SOAP/HQL
-function user_restrict_soap_mail($type, $node, $id, $die = true) {
+function restrict_soap_mail($type, $node, $id, $die = true) {
 	try {
 		$client = soap_client(intval($node));
 		$soaptype = $type;
 		if ($type == 'historyqueue')
 			$soaptype = 'history';
-		$restrict = user_restrict_soap_query($soaptype);
-		$res = restrict_soap_mail($restrict, $type, $id, $client);
+		$restrict = restrict_soap_query($soaptype);
+		$res = _restrict_soap_mail($restrict, $type, $id, $client);
 	} catch (Exception $e) {
 		// XXX Very important; many depend on us to die if access is denied
 		if ($die)
@@ -34,31 +34,31 @@ function user_restrict_soap_mail($type, $node, $id, $die = true) {
 }
 
 // Returns the SOAP HQL syntax for logged-in users access rights
-function user_restrict_soap_query($type = 'queue') {
+function restrict_soap_query($type = 'queue') {
 	$settings = Settings::Get();
 	$access = Session::Get()->getAccess();
-	return restrict_soap_query($settings, $access, $type);
+	return _restrict_soap_query($settings, $access, $type);
 }
 
 // Returns a "param-ized" SQL filter for logged-in users access rights
-function user_restrict_sql_query() {
+function restrict_sql_query() {
 	$settings = Settings::Get();
 	$access = Session::Get()->getAccess();
-	return restrict_sql_query($settings, $access);
+	return _restrict_sql_query($settings, $access);
 }
 
 // Currently only used by pages/index, exists because UNION/LIMIT is needed for OR query performance
-function user_restrict_sql_select($select, $where, $order, $limit, $offsets) {
+function restrict_sql_select($select, $where, $order, $limit, $offsets) {
 	$settings = Settings::Get();
 	$access = Session::Get()->getAccess();
-	return restrict_sql_select($settings, $access, $select, $where, $order, $limit, $offsets);
+	return _restrict_sql_select($settings, $access, $select, $where, $order, $limit, $offsets);
 }
 
 // XXX below are testable functions
 
 // Check the user's access to a specific message in SQL database
 // Testable using custom $client
-function restrict_soap_mail($restrict, $type, $id, $client)
+function _restrict_soap_mail($restrict, $type, $id, $client)
 {
 	$query = array();
 	$query['filter'] = $restrict;
@@ -83,7 +83,7 @@ function restrict_soap_mail($restrict, $type, $id, $client)
 
 // Check the user's access to a specific message in SQL database
 // Testable by verifying return value
-function restrict_sql_mail($restrict_sql, $id, $actionid = NULL)
+function _restrict_sql_mail($restrict_sql, $id, $actionid = NULL)
 {
 	$filters = array();
 	$real_sql = 'SELECT *, UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
@@ -106,7 +106,7 @@ function restrict_sql_mail($restrict_sql, $id, $actionid = NULL)
 }
 
 // Returns the SOAP HQL syntax for $access's access rights
-function restrict_soap_query($settings, $access, $type = 'queue')
+function _restrict_soap_query($settings, $access, $type = 'queue')
 {
 	$globalfilter = "";
 	if (count($settings->getQuarantineFilter()) > 0 && $type != 'history')
@@ -142,7 +142,7 @@ function restrict_soap_query($settings, $access, $type = 'queue')
 }
 
 // Returns a "param-ized" SQL filter for $access's access rights
-function restrict_sql_query($settings, $access)
+function _restrict_sql_query($settings, $access)
 {
 	$settings = Settings::Get();
 	if (count($settings->getQuarantineFilter()) > 0)
@@ -169,7 +169,7 @@ function restrict_sql_query($settings, $access)
 }
 
 // Currently only used by pages/index, exists because UNION/LIMIT is needed for OR query performance
-function restrict_sql_select($settings, $access, $select, $where, $order, $limit, $offsets)
+function _restrict_sql_select($settings, $access, $select, $where, $order, $limit, $offsets)
 {
 	if ($settings->getFilterPattern() === null)
 		throw new Exception('you cannot combine filter-pattern and local sql history');
