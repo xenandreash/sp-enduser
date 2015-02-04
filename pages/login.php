@@ -145,6 +145,7 @@ require_once BASE.'/partials/header.php';
 					</p>
 					<?php } ?>
 					<form class="form-horizontal" method="post" action="?page=login">
+						<input type="hidden" name="timezone" id="timezone">
 						<div class="form-group">
 							<label for="username" class="control-label col-sm-3">Username</label>
 							<div class="col-sm-9">
