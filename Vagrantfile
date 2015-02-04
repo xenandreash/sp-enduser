@@ -34,6 +34,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # If true, then any SSH connections made will enable agent forwarding.
   # Default value: false
   config.ssh.forward_agent = true
+  
+  # Use a non-login shell and manually source /etc/profile; temporary fix for
+  # Debian boxes printing "stdin: is not a tty" when using shell provisioners,
+  # See: https://github.com/mitchellh/vagrant/issues/1673#issuecomment-28287711
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
