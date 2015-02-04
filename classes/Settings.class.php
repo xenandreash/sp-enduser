@@ -70,6 +70,7 @@ class Settings
 		$this->extract($this->defaultSource, 'default-source');
 		$this->extract($this->displayScores, 'display-scores');
 		$this->extract($this->displayTextlog, 'display-textlog');
+		$this->extract($this->displayHistory, 'display-history');
 		$this->extract($this->displayQueue, 'display-queue');
 		$this->extract($this->displayQuarantine, 'display-quarantine');
 		$this->extract($this->displayAll, 'display-all');
