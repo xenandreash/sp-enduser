@@ -4,11 +4,13 @@ class LDAPDatabase {
 	private $uri = '';
 	private $basedn = '';
 	private $schema = '';
+	private $options = array();
 
-	public function __construct($uri, $basedn, $schema) {
+	public function __construct($uri, $basedn, $schema, $options) {
 		$this->uri = $uri;
 		$this->basedn = $basedn;
 		$this->schema = $schema;
+		if (is_array($options)) $this->options = $options;
 	}
 	public function check($username, $password) {
 		// If username and password are not specified,
@@ -24,8 +26,7 @@ class LDAPDatabase {
 			return false;
 		ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
 		
-		$options = Settings::Get()->getLDAPOptions();
-		foreach($options as $k => $v)
+		foreach ($this->options as $k => $v)
 			ldap_set_option($ds, $k, $v);
 
 		$bind = @ldap_bind($ds, $username, $password);

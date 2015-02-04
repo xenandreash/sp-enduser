@@ -105,6 +105,7 @@
 //		'uri' => 'ldap://10.2.7.2',
 //		'base_dn' => 'CN=Users,DC=dev,DC=halon,DC=local',
 //		'schema' => 'msexchange',
+//		'options' => array(LDAP_OPT_PROTOCOL_VERSION => 3),
 //		);
 //$settings['authentication'][] = array(
 //		'type' => 'smtp',
@@ -113,10 +114,6 @@
 //		);
 //$settings['authentication'][] = array(
 //		'type' => 'server',
-//		);
-
-//$settings['ldap-options'] = array(
-//		LDAP_OPT_NETWORK_TIMEOUT => 10,
 //		);
 
 /*
