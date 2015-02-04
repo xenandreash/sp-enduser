@@ -26,9 +26,8 @@ $(document).ready(function() {
 		$('body').toggleClass('has-bottom-bar', count > 0);
 	});
 	
-	// Use `data-href` to make the unclickable clickable (eg. table rows)
-	$('[data-href]').click(function() {
-		window.location.href = $(this).data('href');
+	$('td[data-href], tr[data-href] td').wrapInner(function() {
+		return '<a class="data-link" href="' + ($(this).data('href') || $(this).parent().data('href')) + '"></a>';
 	});
 	
 	// This is for some reason needed to get the source list dropdown to

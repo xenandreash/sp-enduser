@@ -127,13 +127,16 @@ body > .navbar-toolbar {
 	background: none;
 	margin-bottom: 0;
 }
-.table .table td {
+.table .table td, .table .table .td {
 	border: none;
 }
 
 .table p:last-child {
 	margin-bottom: 0;
 }
+
+.tr { display: table-row; }
+.td { display: table-cell; }
 
 .list-group-item-heading {
 	margin-bottom: 10px;
@@ -144,8 +147,19 @@ body > .navbar-toolbar {
 }
 
 /* Give data-href-ed elements the cursor of a "real" link */
-[data-href], [data-action], [data-bulk-action] {
+[data-action], [data-bulk-action] {
 	cursor: pointer;
+}
+td[data-href], tr[data-href] td {
+	padding: 0 !important;
+}
+.data-link {
+	display: block;
+	padding: 8px;
+	color: #333;
+}
+.data-link:hover {
+	text-decoration: none;
 }
 
 .msg-header {
