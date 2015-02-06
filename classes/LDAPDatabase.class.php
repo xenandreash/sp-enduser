@@ -5,12 +5,17 @@ class LDAPDatabase {
 	private $basedn = '';
 	private $schema = '';
 	private $options = array();
+	private $query = '';
+	private $access_override = array();
+	private $authed = false;
 
-	public function __construct($uri, $basedn, $schema, $options) {
+	public function __construct($uri, $basedn, $schema, $options, $query, $access_override) {
 		$this->uri = $uri;
 		$this->basedn = $basedn;
 		$this->schema = $schema;
 		if (is_array($options)) $this->options = $options;
+		$this->query = $query;
+		if (is_array($access_override)) $this->access_override = $access_override;
 	}
 	public function check($username, $password) {
 		// If username and password are not specified,
@@ -51,6 +56,15 @@ class LDAPDatabase {
 					}
 				}
 			break;
+                        case 'auth-only':
+				$query = str_replace("\$ldapuser", $ldapuser, $this->query);
+                                $rs = ldap_search($ds, $this->basedn, $query);
+                                $entry = ldap_first_entry($ds, $rs);
+                                if ($entry) {
+                                        $access = $this->access_override;
+                                        $authed = true;
+                                }
+			break;
 			default:
 				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(mail=*))", array('mail'));
 				$entry = ldap_first_entry($ds, $rs);
@@ -64,7 +78,7 @@ class LDAPDatabase {
 			break;
 		}
 
-		if (empty($access['mail']))
+		if (empty($access['mail']) and !$authed)
 			return false;
 	
 		$_SESSION['username'] = $username;

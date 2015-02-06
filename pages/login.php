@@ -67,7 +67,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 					fwrite($fp, "QUIT\r\n");
 			break;
 			case 'ldap':
-				$method = new LDAPDatabase($method['uri'], $method['base_dn'], $method['schema'], $method['options']);
+				$method = new LDAPDatabase($method['uri'], $method['base_dn'], $method['schema'], $method['options'], $method['query'], $method['access']);
 				if ($method->check($username, $password))
 					break 2;
 			break;
