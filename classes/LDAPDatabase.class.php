@@ -7,7 +7,6 @@ class LDAPDatabase {
 	private $options = array();
 	private $query = '';
 	private $access_override = array();
-	private $authed = false;
 
 	public function __construct($uri, $basedn, $schema, $options, $query, $access_override) {
 		$this->uri = $uri;
@@ -39,6 +38,7 @@ class LDAPDatabase {
 			return false;
 
 		$access = array('mail' => array());
+		$authed = false;
 
 		$ldapuser = ldap_escape($username);
 		switch ($this->schema) {
@@ -56,14 +56,14 @@ class LDAPDatabase {
 					}
 				}
 			break;
-                        case 'auth-only':
+			case 'auth-only':
 				$query = str_replace("\$ldapuser", $ldapuser, $this->query);
-                                $rs = ldap_search($ds, $this->basedn, $query);
-                                $entry = ldap_first_entry($ds, $rs);
-                                if ($entry) {
-                                        $access = $this->access_override;
-                                        $authed = true;
-                                }
+				$rs = ldap_search($ds, $this->basedn, $query);
+				$entry = ldap_first_entry($ds, $rs);
+				if ($entry) {
+					$access = $this->access_override;
+					$authed = true;
+				}
 			break;
 			default:
 				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(mail=*))", array('mail'));
