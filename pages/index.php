@@ -156,7 +156,8 @@ foreach ($timesort as $t)
 if ($c > $size)
 	$next_button = ''; // enable "next" page button
 
-$has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
+if (count(Session::Get()->getAccess('mail')) != 1 or count(Session::Get()->getAccess('domain')) > 0)
+	$has_multiple_addresses = true;
 $has_multiple_sources = count($sources) > 1;
 ?>
 	<nav class="navbar navbar-toolbar navbar-static-top">
