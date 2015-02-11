@@ -117,6 +117,7 @@ $prev_button = ' disabled';
 $next_button = ' disabled';
 $param = array();
 $errors = array();
+$dayformat = stristr(PHP_OS,"win") ? '%#d' : '%e';
 
 // Override offset with GET
 $totaloffset = 0;
@@ -329,7 +330,7 @@ $has_multiple_sources = count($sources) > 1;
 						<td class="visible-lg" <?php echo $td ?>><?php p(implode(', ', array_unique($printscores))) or pp('&nbsp;') ?></td>
 						<?php } ?>
 						<td <?php echo $td ?>>
-							<?php echo strftime('%b %e <span class="hidden-xs">%Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
+							<?php echo strftime('%b '.$dayformat.'<span class="hidden-xs"> %Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
 						<td class="hidden-xs hidden-sm">
 						<?php if ($m['type'] == 'queue') { ?>
@@ -364,7 +365,7 @@ $has_multiple_sources = count($sources) > 1;
 									if ($m['data']->msgts0 + (3600 * 24) > time())
 										echo strftime('%H:%M', $m['data']->msgts0 - $_SESSION['timezone'] * 60);
 									else
-										echo strftime('%b %e %Y', $m['data']->msgts0 - $_SESSION['timezone'] * 60);
+										echo strftime('%b '.$dayformat.' %Y', $m['data']->msgts0 - $_SESSION['timezone'] * 60);
 								?>
 								</small>
 								<?php p($m['data']->msgfrom) or pp('<span class="text-muted">Empty sender</span>'); ?>
