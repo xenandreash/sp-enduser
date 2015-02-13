@@ -73,7 +73,7 @@ require_once BASE.'/partials/header.php';
 			</div>
 		</div>
 	</nav>
-	<div class="<?php p($container_class) or p("container-fluid"); ?>">
+	<div class="container-fluid">
 		<pre id="log"><span class="text-info" id="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span></pre>
 	</div>
 	<script>
