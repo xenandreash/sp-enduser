@@ -170,7 +170,7 @@ foreach ($users as $email => $access) {
 				$extra .= '<a href="'.$settings->getPublicURL().'/?page=digest&queueid='.$m['data']->id.
 					'&node='.$m['id'].'&time='.$time.'&sign='.$hash.'">Release</a>';
 			}
-			$data .= '<tr><td>'.strftime('%F %T', $m['data']->msgts).'</td><td>'.$m['data']->msgfrom.'</td><td>'.$m['data']->msgto.'</td><td>'.$m['data']->msgsubject.'</td><td>'.$extra.'</td></tr>';
+			$data .= '<tr><td>'.strftime2('%F %T', $m['data']->msgts).'</td><td>'.$m['data']->msgfrom.'</td><td>'.$m['data']->msgto.'</td><td>'.$m['data']->msgsubject.'</td><td>'.$extra.'</td></tr>';
 			$i++;
 		}
 	}

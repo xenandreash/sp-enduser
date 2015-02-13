@@ -185,7 +185,7 @@ require_once BASE.'/partials/header.php';
 							</dd>
 							<dt>From</dt><dd class="wrap"><?php p($mail->msgfrom) ?>&nbsp;</dd>
 							<dt>To</dt><dd class="wrap"><?php p($mail->msgto) ?>&nbsp;</dd>
-							<dt>Date</dt><dd><?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
+							<dt>Date</dt><dd><?php p(strftime2('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
 							<?php if ($mail->msgsize) { ?><dt>Size</dt><dd class="wrap"><?php p(format_size($mail->msgsize)) ?>&nbsp;</dd><?php } ?>
 							<?php if ($desc) { ?><dt>Details</dt><dd><?php pp($desc) ?></dd><?php } ?>
 							<?php if ($listener) { ?><dt>Received by</dt><dd><?php p($listener) ?></dd><?php } ?>
