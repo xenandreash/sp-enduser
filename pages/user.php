@@ -56,33 +56,29 @@ require_once BASE.'/partials/header.php';
 						<p>
 							You are authorized to view messages sent from/to the following <?php if (!empty($access_domain)) { p('domains'); } else { p('users'); } ?>:
 						</p>
-						<?php } ?>
-						<?php if (!empty($access_mail)) { ?>
 						<ul>
 							<?php
-							foreach ($access_mail as $mail) {
+							foreach (!empty($access_domain)?$access_domain:$access_mail as $a) {
 								echo "<li>";
-								p($mail);
+								p($a);
 								echo "</li>";
 							}
 							?>
 						</ul>
-						<?php } ?>
-						<?php if (!empty($access_domain)) { ?>
-							<?php if (!empty($access_mail)) { ?>
+							<?php if (!empty($access_domain) && !empty($access_mail)) { ?>
 							<p>
 								And the following users:
 							</p>
-							<?php } ?>
 							<ul>
 								<?php
-								foreach ($access_domain as $domain) {
+								foreach ($access_mail as $mail) {
 									echo "<li>";
-									p($domain);
+									p($mail);
 									echo "</li>";
 								}
 								?>
 							</ul>
+							<?php } ?>
 						<?php } ?>
 					</div>
 				</div>

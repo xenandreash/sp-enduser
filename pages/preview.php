@@ -10,7 +10,7 @@ $type = $_GET['type'];
 if ($type == 'log') {
 	// Fetch data from local SQL log
 	$node = 'local';
-	$mail = restrict_local_mail($id);
+	$mail = restrict_sql_mail($id);
 	// Resolv SOAP node
 	$node = null;
 	if ($mail->msgaction == 'QUEUE') foreach ($settings->getNodes() as $n => $tmpnode) {
@@ -32,12 +32,12 @@ if ($type == 'log') {
 	// Fetch data from SOAP
 	$node = intval($_GET['node']);
 	try {
-		$mail = restrict_mail($type, $node, $id, false); // throws for security
+		$mail = restrict_soap_mail($type, $node, $id, false); // throws for security
 		$client = soap_client($node);
 	} catch (Exception $e) {
 		// not found, try search in history
 		if ($type == 'queue') {
-			$mail = restrict_mail('historyqueue', $node, $id, true); // die for security
+			$mail = restrict_soap_mail('historyqueue', $node, $id, true); // die for security
 			$type = 'history';
 		} else {
 			die($e->getMessage()); // die for security
@@ -120,7 +120,7 @@ if ($type == 'queue') {
 	}
 }
 
-$title = 'Viewing Message';
+$title = 'Message';
 $show_back = true;
 $body_class = 'has-bottom-bar';
 $javascript[] = 'static/js/preview.js';
@@ -131,7 +131,7 @@ require_once BASE.'/partials/header.php';
 	<nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
+				<a id="history_back" class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
 				<?php if ($logs && count($settings->getNodes())) { ?>
@@ -186,6 +186,7 @@ require_once BASE.'/partials/header.php';
 							<dt>From</dt><dd class="wrap"><?php p($mail->msgfrom) ?>&nbsp;</dd>
 							<dt>To</dt><dd class="wrap"><?php p($mail->msgto) ?>&nbsp;</dd>
 							<dt>Date</dt><dd><?php p(strftime('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60)) ?></dd>
+							<?php if ($mail->msgsize) { ?><dt>Size</dt><dd class="wrap"><?php p(format_size($mail->msgsize)) ?>&nbsp;</dd><?php } ?>
 							<?php if ($desc) { ?><dt>Details</dt><dd><?php pp($desc) ?></dd><?php } ?>
 							<?php if ($listener) { ?><dt>Received by</dt><dd><?php p($listener) ?></dd><?php } ?>
 							<dt>Server</dt><dd><?php p($mail->msgfromserver) ?>&nbsp;</dd>
@@ -252,7 +253,7 @@ require_once BASE.'/partials/header.php';
 							<?php foreach ($attachments as $i => $a) { ?>
 								<li class="nowrap">
 									<i class="glyphicon glyphicon-paperclip"></i>
-									<?php p($a[2]); ?>&nbsp;<small class="text-muted">(<?php p(round($a[1]/1024, 0)); ?>KiB)</small>
+									<?php p($a[2]); ?>&nbsp;<small class="text-muted">(<?php p(format_size($a[1])); ?>)</small>
 								</li>
 							<?php } ?>
 						</ul>

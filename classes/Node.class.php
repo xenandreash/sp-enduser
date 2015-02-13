@@ -19,8 +19,8 @@ class Node
 	{
 		$session = Session::Get();
 		
-		if(!$username) $username = $session->getSOAPUsername() ?: $this->getUsername();
-		if(!$password) $password = $session->getSOAPPassword() ?: $this->getPassword();
+		if($username === null) $username = $session->getSOAPUsername() ?: $this->getUsername();
+		if($password === null) $password = $session->getSOAPPassword() ?: $this->getPassword();
 		
 		$options = array(
 			'location' => $this->getAddress().'/remote/',

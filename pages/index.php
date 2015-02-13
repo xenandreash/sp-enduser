@@ -15,7 +15,7 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 		$client = soap_client($node);
 
 		// Access permission
-		restrict_mail('queue', $node, $id); // Dies if access is denied
+		restrict_soap_mail('queue', $node, $id); // Dies if access is denied
 		$actions[$v][] = $id;
 	}
 	foreach ($actions as $soapid => $list)
@@ -99,7 +99,7 @@ if (!array_key_exists($source, $sources))
 
 // Create actual search query for SOAP, in order of importance (for security)
 $queries = array();
-$restrict = build_query_restrict();
+$restrict = restrict_soap_query();
 if ($restrict != '')
 	$queries[] = $restrict;
 if ($source == 'queue')
@@ -117,6 +117,7 @@ $prev_button = ' disabled';
 $next_button = ' disabled';
 $param = array();
 $errors = array();
+$dayformat = stristr(PHP_OS,"win") ? '%#d' : '%e';
 
 // Override offset with GET
 $totaloffset = 0;
@@ -156,7 +157,8 @@ foreach ($timesort as $t)
 if ($c > $size)
 	$next_button = ''; // enable "next" page button
 
-$has_multiple_addresses = count(Session::Get()->getAccess('mail')) != 1;
+if (count(Session::Get()->getAccess('mail')) != 1 or count(Session::Get()->getAccess('domain')) > 0)
+	$has_multiple_addresses = true;
 $has_multiple_sources = count($sources) > 1;
 ?>
 	<nav class="navbar navbar-toolbar navbar-static-top">
@@ -301,13 +303,13 @@ $has_multiple_sources = count($sources) > 1;
 							<span class="glyphicon glyphicon-<?php echo $action_icons[$m['data']->msgaction] ?>"></span>
 						<?php } ?>
 						</td>
-						<td class="hidden-xs" <?php echo $td ?>><?php p($m['data']->msgfrom) ?></td>
+						<td class="hidden-xs" <?php echo $td ?>><?php p($m['data']->msgfrom) or pp('&nbsp;') ?></td>
 						<?php if ($has_multiple_addresses) { ?>
 						<td class="hidden-xs" <?php echo $td ?>><?php p($m['data']->msgto) ?></td>
 						<?php } ?>
-						<td <?php echo $td; ?>><?php p($m['data']->msgsubject) ?></td>
+						<td <?php echo $td; ?>><?php p($m['data']->msgsubject) or pp('&nbsp;'); ?></td>
 						<td class="hidden-xs hidden-sm" <?php echo $td ?>>
-							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)); ?></span>
+							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)) or pp('&nbsp;'); ?></span>
 						</td>
 						<?php if ($display_scores) {
 							$printscores = array();
@@ -325,10 +327,10 @@ $has_multiple_sources = count($sources) > 1;
 									$printscores[] = $s['score'];
 							}
 						?>
-						<td class="visible-lg" <?php echo $td ?>><?php p(implode(', ', array_unique($printscores))) ?></td>
+						<td class="visible-lg" <?php echo $td ?>><?php p(implode(', ', array_unique($printscores))) or pp('&nbsp;') ?></td>
 						<?php } ?>
 						<td <?php echo $td ?>>
-							<?php echo strftime('%b %e <span class="hidden-xs">%Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
+							<?php echo strftime('%b '.$dayformat.'<span class="hidden-xs"> %Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
 						<td class="hidden-xs hidden-sm">
 						<?php if ($m['type'] == 'queue') { ?>
@@ -363,7 +365,7 @@ $has_multiple_sources = count($sources) > 1;
 									if ($m['data']->msgts0 + (3600 * 24) > time())
 										echo strftime('%H:%M', $m['data']->msgts0 - $_SESSION['timezone'] * 60);
 									else
-										echo strftime('%b %e %Y', $m['data']->msgts0 - $_SESSION['timezone'] * 60);
+										echo strftime('%b '.$dayformat.' %Y', $m['data']->msgts0 - $_SESSION['timezone'] * 60);
 								?>
 								</small>
 								<?php p($m['data']->msgfrom) or pp('<span class="text-muted">Empty sender</span>'); ?>

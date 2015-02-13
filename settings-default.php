@@ -52,6 +52,7 @@
 //$settings['display-history'] = true;
 //$settings['display-queue'] = true;
 //$settings['display-quarantine'] = true;
+//$settings['display-all'] = true;
 //$settings['display-listener']['mailserver:1'] = 'Inbound';
 //$settings['display-transport']['mailtransport:2'] = 'Internet';
 
@@ -98,12 +99,17 @@
 // 		'type' => 'account',
 // 		'username' => 'foo',
 // 		'password' => 'foo',
+//		'access' => array( // optional access restrictions
+//				'domain' => array('example.com'),
+//				'mail' => array('foo@example.com'),
+//				),
 // 		);
 //$settings['authentication'][] = array(
 //		'type' => 'ldap',
 //		'uri' => 'ldap://10.2.7.2',
 //		'base_dn' => 'CN=Users,DC=dev,DC=halon,DC=local',
 //		'schema' => 'msexchange',
+//		'options' => array(LDAP_OPT_PROTOCOL_VERSION => 3),
 //		);
 //$settings['authentication'][] = array(
 //		'type' => 'smtp',
@@ -112,10 +118,6 @@
 //		);
 //$settings['authentication'][] = array(
 //		'type' => 'server',
-//		);
-
-//$settings['ldap-options'] = array(
-//		LDAP_OPT_NETWORK_TIMEOUT => 10,
 //		);
 
 /*

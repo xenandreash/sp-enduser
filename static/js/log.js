@@ -4,6 +4,10 @@ var loaded = false;
 $(document).ready(function() {
 	animateDots();
 	poll();
+
+	// Hide back button if page was opened in a new tab
+	if (window.history.length == 1)
+		$('#history_back').hide();
 });
 
 $(window).unload(function() {

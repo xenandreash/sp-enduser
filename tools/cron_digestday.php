@@ -76,9 +76,12 @@ foreach ($settings->getAuthSources() as $a) {
 		}
 		$ds = ldap_connect($a['uri']);
 		if (!$ds) continue;
+		ldap_set_option($ds, LDAP_OPT_SIZELIMIT, 10000); // Increase and/or sync with AD if getting "Sizelimit exceeded"
+		if (is_array($a['options']))
+			foreach ($a['options'] as $k => $v)
+				ldap_set_option($ds, $k, $v);
 		$bind = ldap_bind($ds, $a['bind_dn'], $a['bind_password']);
 		if (!$bind) continue;
-		ldap_set_option($ds, LDAP_OPT_SIZELIMIT, 10000); // Increase and/or sync with AD if getting "Sizelimit exceeded"
 		if ($a['schema'] == 'msexchange') {
 			$try_paged = false;
 			if (function_exists('ldap_control_paged_result') &&

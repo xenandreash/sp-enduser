@@ -13,7 +13,6 @@ class Settings
 	private $apiKey = null;
 	private $dbCredentials = array('dns' => null);
 	private $authSources = array(array('type' => 'server'));
-	private $ldapOptions = array();
 	
 	private $mailSender = null;
 	private $publicURL = null;
@@ -70,6 +69,7 @@ class Settings
 		$this->extract($this->defaultSource, 'default-source');
 		$this->extract($this->displayScores, 'display-scores');
 		$this->extract($this->displayTextlog, 'display-textlog');
+		$this->extract($this->displayHistory, 'display-history');
 		$this->extract($this->displayQueue, 'display-queue');
 		$this->extract($this->displayQuarantine, 'display-quarantine');
 		$this->extract($this->displayAll, 'display-all');
@@ -79,7 +79,6 @@ class Settings
 		$this->extract($this->useDatabaseLog, 'database-log');
 		$this->extract($this->dbCredentials, 'database');
 		$this->extract($this->authSources, 'authentication');
-		$this->extract($this->ldapOptions, 'ldap-options');
 		$this->extract($this->quarantineFilter, 'quarantine-filter');
 		$this->extract($this->filterPattern, 'filter-pattern');
 		$this->extract($this->digestToAll, 'digest.to-all');
@@ -185,14 +184,6 @@ class Settings
 	public function getAuthSources()
 	{
 		return $this->authSources;
-	}
-	
-	/**
-	 * Returns an array of raw LDAP options. Empty by default.
-	 */
-	public function getLDAPOptions()
-	{
-		return $this->ldapOptions;
 	}
 	
 	/**
