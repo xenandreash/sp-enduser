@@ -105,6 +105,8 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 						// Use the user's credentials instead of the config's
 						$_SESSION['soap_username'] = $username;
 						$_SESSION['soap_password'] = $password;
+						
+						break 3;
 					} catch (SoapFault $e) {
 						// If the node is unavailable, skip to the next one
 						if($e->getMessage() != "Unauthorized")
