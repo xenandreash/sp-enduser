@@ -4,6 +4,9 @@ if (!defined('SP_ENDUSER')) die('File not included');
 require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
+$logs = $settings->getDisplayTextlog();
+if (!$logs) die('logs disabled');
+
 // Poll, has it's own permission system
 if (isset($_GET['ajax'])) {
 	if (!@in_array($_GET['cmd_id'], $_SESSION['logs_id']))
@@ -48,9 +51,6 @@ if ($_GET['type'] == 'log') {
 	$mail = restrict_soap_mail($_GET['type'], $node, $id); // die for security
 	$args = array('searchlog', $mail->msgid.':'.$id, '-'.$mail->msgts);
 }
-
-$logs = $settings->getDisplayTextlog();
-if (!$logs) die('logs disabled');
 
 $client = soap_client($node);
 try {
