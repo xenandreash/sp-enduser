@@ -51,6 +51,12 @@ function access_level_merge($a, $b)
 	return array_merge_recursive($a, $b);
 }
 
+function substrdots($text, $len) {
+	if (strlen($text) > $len)
+		return substr($text, 0, $len - 3) . '...';
+	return $text;
+}
+
 // Perform actual requests
 echo "Making query $real_search\n";
 foreach ($settings->getNodes() as $n => $r) {
@@ -138,7 +144,8 @@ $size = 500;
 echo "Found ".count($users)." users\n";
 foreach ($users as $email => $access) {
 	$i = 0;
-	$data = '<table><tr><th>Date</th><th>From</th><th>To</th><th>Subject</th><th></th></tr>';
+	$th = '<th style="border-bottom: 2px solid #999; text-align: left;">';
+	$data = "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}To</th>${th}Subject</th>${th}&nbsp;</th></tr>";
 	foreach ($timesort as $t) {
 		if ($i > $size)
 			break;
@@ -170,7 +177,11 @@ foreach ($users as $email => $access) {
 				$extra .= '<a href="'.$settings->getPublicURL().'/?page=digest&queueid='.$m['data']->id.
 					'&node='.$m['id'].'&time='.$time.'&sign='.$hash.'">Release</a>';
 			}
-			$data .= '<tr><td>'.strftime2('%F %T', $m['data']->msgts).'</td><td>'.htmlspecialchars($m['data']->msgfrom).'</td><td>'.htmlspecialchars($m['data']->msgto).'</td><td>'.htmlspecialchars($m['data']->msgsubject).'</td><td>'.$extra.'</td></tr>';
+			$td = '<td style="white-space: nowrap; border-bottom: 1px solid #999;">';
+			$tr = '<tr>';
+			if ($i % 2 == 0)
+				$tr = '<tr style="background-color: #eee;">';
+			$data .= $tr.$td.strftime2('%F %T', $m['data']->msgts).'</td>'.$td.htmlspecialchars(substrdots($m['data']->msgfrom, 30)).'</td>'.$td.htmlspecialchars(substrdots($m['data']->msgto, 30)).'</td>'.$td.htmlspecialchars(substrdots($m['data']->msgsubject, 30)).'</td>'.$td.$extra.'</td></tr>';
 			$i++;
 		}
 	}
