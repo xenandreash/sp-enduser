@@ -143,14 +143,12 @@ foreach ($allusers as $email => $tmp)
 $size = 500;
 echo "Found ".count($users)." users\n";
 foreach ($users as $email => $access) {
-	$i = 0;
-	$th = '<th style="border-bottom: 2px solid #999; text-align: left;">';
-	$data = "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}To</th>${th}Subject</th>${th}&nbsp;</th></tr>";
+	$maillist = array();
 	foreach ($timesort as $t) {
-		if ($i > $size)
+		if (count($maillist) > $size)
 			break;
 		foreach ($t as $m) {
-			if ($i > $size)
+			if (count($maillist) > $size)
 				break;
 			// Only show messages they have access to
 			$match = false;
@@ -167,31 +165,65 @@ foreach ($users as $email => $access) {
 						$match = true;
 			if (!$match)
 				continue;
-			// Make direct release link
-			$extra = '';
+
+			$mail = array();
 			if ($settings->getDigestSecret()) {
-				// Sign the "message"
+				// make direct release link
 				$time = time();
 				$message = $m['id'].$m['data']->id.$time.$m['data']->msgid;
 				$hash = hash_hmac('sha256', $message, $settings->getDigestSecret());
-				$extra .= '<a href="'.$settings->getPublicURL().'/?page=digest&queueid='.$m['data']->id.
-					'&node='.$m['id'].'&time='.$time.'&sign='.$hash.'">Release</a>';
+				$mail['release-url'] = $settings->getPublicURL().'/?page=digest&queueid='.$m['data']->id.'&node='.$m['id'].'&time='.$time.'&sign='.$hash;
 			}
-			$td = '<td style="white-space: nowrap; border-bottom: 1px solid #999;">';
-			$tr = '<tr>';
-			if ($i % 2 == 0)
-				$tr = '<tr style="background-color: #eee;">';
-			$data .= $tr.$td.strftime2('%F %T', $m['data']->msgts).'</td>'.$td.htmlspecialchars(substrdots($m['data']->msgfrom, 30)).'</td>'.$td.htmlspecialchars(substrdots($m['data']->msgto, 30)).'</td>'.$td.htmlspecialchars(substrdots($m['data']->msgsubject, 30)).'</td>'.$td.$extra.'</td></tr>';
-			$i++;
+			$mail['time'] = $m['data']->msgts;
+			$mail['from'] = $m['data']->msgfrom;
+			$mail['to'] = $m['data']->msgto;
+			$mail['subject'] = $m['data']->msgsubject;
+			$maillist[] = $mail;
 		}
 	}
-	if ($i == 0)
+
+	if (empty($maillist))
 		continue;
-	$data = '<p>You have '.$i.' message(s) received to your <a href="'.$settings->getPublicURL().'/?source=quarantine">quarantine</a> during the last 24 hours.</p>'.$data.'</table>';
-	$data = chunk_split(base64_encode($data));
-	echo "digest to $email with $i msgs\n";
+
+	$one_recipient = $maillist[0]['to'];
+	for ($i = 1; $i < count($maillist); ++$i) {
+		if ($maillist[$i]['to'] != $one_recipient) {
+			$one_recipient = null;
+			break;
+		}
+	}
+
+	/*
+	 * start printing email below this line.
+	 * $one_recipient contains an email if all messages were only to one recipient
+	 */
+	if ($one_recipient !== null)
+		$data = '<p>You have '.$i.' message(s) received to '.htmlspecialchars($one_recipient).' in your <a href="'.$settings->getPublicURL().'/?source=quarantine">quarantine</a> during the last 24 hours.</p>';
+	else
+		$data = '<p>You have '.$i.' message(s) received in your <a href="'.$settings->getPublicURL().'/?source=quarantine">quarantine</a> during the last 24 hours.</p>';
+
+	$th = '<th style="border-bottom: 2px solid #999; text-align: left;">';
+	if ($one_recipient !== null)
+		$data .= "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}Subject</th>${th}&nbsp;</th></tr>";
+	else
+		$data .= "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}To</th>${th}Subject</th>${th}&nbsp;</th></tr>";
+	foreach ($maillist as $i => $mail) {
+		$td = '<td style="white-space: nowrap; border-bottom: 1px solid #999;">';
+		$data .= $i % 2 == 0 ? '<tr style="background-color: #eee;">' : '<tr>';
+		$data .= $td.strftime2('%F %T', $mail['time']).'</td>';
+		$data .= $td.htmlspecialchars(substrdots($mail['from'], 30)).'</td>';
+		if ($one_recipient === null)
+			$data .= $td.htmlspecialchars(substrdots($mail['to'], 30)).'</td>';
+		$data .= $td.htmlspecialchars(substrdots($mail['subject'], $one_recipient === null ? 30 : 60)).'</td>';
+		if ($mail['release-url'])
+			$data .= $td.'<a href="'.$mail['release-url'].'">Release</a></td>';
+		$data .= '</tr>';
+	}
+	$data .= '</table>';
+
+	echo "Digest to $email with ".count($maillist)." messages\n";
 	$headers = array();
 	$headers[] = 'Content-Type: text/html; charset=UTF-8';
 	$headers[] = 'Content-Transfer-Encoding: base64';
-	mail2($email, "Quarantine digest, $i new messages", $data, $headers);
+	mail2($email, "Quarantine digest, ".count($maillist)." new messages", chunk_split(base64_encode($data)), $headers);
 }
