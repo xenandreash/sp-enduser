@@ -150,7 +150,7 @@ class NodeBackend extends Backend
 			return NULL;
 
 		$queries = array();
-		$restrict = restrict_soap_query();
+		$restrict = restrict_soap_query($source == 'mailHistory' ? 'history' : 'queue');
 		if ($restrict != '')
 			$queries[] = $restrict;
 		if ($search != '')
