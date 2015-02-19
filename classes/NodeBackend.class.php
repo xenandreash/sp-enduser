@@ -6,7 +6,7 @@ class NodeBackend extends Backend
 	
 	public function __construct($nodes)
 	{
-		$this->nodes = $nodes;
+		$this->nodes = is_array($nodes) ? $nodes : array($nodes);
 	}
 	
 	
