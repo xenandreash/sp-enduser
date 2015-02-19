@@ -3,14 +3,14 @@ if (!defined('SP_ENDUSER')) die('File not included');
 
 require_once BASE.'/inc/utils.php';
 
-$node = intval($_GET['node']);
-$id = intval($_GET['id']);
-
-// Access permission
-$mail = restrict_soap_mail('queue', $node, $id); // dies for security
-
-$client = soap_client($node);
 header('Content-type: text/plain');
+
+$nodeBackend = new NodeBackend(array_slice($settings->getNodes(), $_GET['node'], 1));
+$mail = $nodeBackend->getMailInQueue("queueid=".$_GET['id'], $errors);
+if (!$mail)
+	die('No mail found');
+$client = $nodeBackend->soap();
+
 header('Content-Disposition: attachment; filename='.$mail->msgid.'.txt');
 
 $file = $mail->msgpath;

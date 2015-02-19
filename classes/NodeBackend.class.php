@@ -14,6 +14,9 @@ class NodeBackend extends Backend
 	// A node backend is valid if it has at least one node
 	public function isValid() { return count($this->nodes) > 0 && in_array('soap', get_loaded_extensions()); }
 	
+	// It's possible to call soap() if the node backend only has one soap node
+	public function soap() { return count($this->nodes) == 1 ? $this->nodes[0]->soap(false) : NULL; }
+
 	// Node backends support everything
 	public function supportsHistory() { return true; }
 	public function supportsQueue() { return true; }
@@ -130,4 +133,45 @@ class NodeBackend extends Backend
 		
 		return $timesort;
 	}
+
+	public function getMailInQueue($search, &$errors = array())
+	{
+		return $this->getMailIn_('mailQueue', $search, $errors);
+	}
+
+	public function getMailInHistory($search, &$errors = array())
+	{
+		return $this->getMailIn_('mailHistory', $search, $errors);
+	}
+
+	private function getMailIn_($source, $search, &$errors = array())
+	{
+		if (empty($this->nodes))
+			return NULL;
+
+		$queries = array();
+		$restrict = restrict_soap_query();
+		if ($restrict != '')
+			$queries[] = $restrict;
+		if ($search != '')
+			$queries[] = $search;
+		$restricted_search = implode(' && ', $queries);
+
+		$params = array();
+		foreach ($this->nodes as $n => &$node) {
+			$params[] = array(
+					'limit' => 2,
+					'filter' => $restricted_search,
+					'offset' => array()
+					);
+		}
+		$results = $this->soapCall($source, $params, $errors);
+
+		$mail = array();
+		foreach ($results as $n => $data)
+			if (is_array($data->result->item))
+				$mail = array_merge($mail, $data->result->item);
+		return count($mail) == 1 && empty($errors) ? $mail[0] : NULL;
+	}
+
 }
