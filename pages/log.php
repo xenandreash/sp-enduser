@@ -35,17 +35,9 @@ if ($_GET['type'] == 'log') {
 	if (!$mail) die('Invalid mail');
 
 	// Resolv SOAP node
-	$node = null;
-	foreach ($settings->getNodes() as $n => $tmpnode)
-	{
-		try {
-			if($tmpnode->getSerial(true) == $mail->serialno)
-				$node = $n;
-		} catch (SoapFault $e) {
-			
-		}
-	}
+	$node = $settings->getNodeBySerial($mail->serialno);
 	if ($node === null) die('Unable to find SOAP node');
+	$node = $node->getId();
 	$args = array('searchlog', $mail->msgid, '-'.$mail->msgts);
 } else {
 	// SOAP access permission

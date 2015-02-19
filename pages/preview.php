@@ -16,11 +16,9 @@ if ($type == 'log') {
 
 	// Resolv SOAP node
 	$node = null;
-	if ($mail->msgaction == 'QUEUE') foreach ($settings->getNodes() as $n => $tmpnode) {
-		try {
-			if($tmpnode->getSerial(true) == $mail->serialno)
-				$node = $n;
-		} catch (SoapFault $e) {}
+	if ($mail->msgaction == 'QUEUE') {
+		$n = $settings->getNodeBySerial($mail->serialno);
+		if ($n !== null) $node = $n->getId();
 	}
 	if ($node !== null) {
 		$client = soap_client($node);
