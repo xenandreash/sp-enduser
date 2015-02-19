@@ -75,11 +75,19 @@ class NodeBackend extends Backend
 	
 	public function loadMailHistory($search, $size, $param, &$errors = array())
 	{
+		$queries = array();
+		$restrict = restrict_soap_query();
+		if ($restrict != '')
+			$queries[] = $restrict;
+		if ($search != '')
+			$queries[] = $search;
+		$restricted_search = implode(' && ', $queries);
+
 		$params = array();
 		foreach ($this->nodes as $n => &$node) {
 			$params[] = array(
 				'limit' => $size + 1,
-				'filter' => $search,
+				'filter' => $restricted_search,
 				'offset' => $param[$n]['offset']
 			);
 		}
@@ -96,11 +104,19 @@ class NodeBackend extends Backend
 	
 	public function loadMailQueue($search, $size, $param, &$errors = array())
 	{
+		$queries = array();
+		$restrict = restrict_soap_query();
+		if ($restrict != '')
+			$queries[] = $restrict;
+		if ($search != '')
+			$queries[] = $search;
+		$restricted_search = implode(' && ', $queries);
+
 		$params = array();
 		foreach ($this->nodes as $n => &$node) {
 			$params[] = array(
 				'limit' => $size + 1,
-				'filter' => $search,
+				'filter' => $restricted_search,
 				'offset' => $param[$n]['offset']
 			);
 		}

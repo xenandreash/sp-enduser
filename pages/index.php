@@ -97,11 +97,7 @@ if ($nodeBackend->isValid() && $settings->getDisplayAll())
 if (!array_key_exists($source, $sources))
 	die("Invalid source");
 
-// Create actual search query for SOAP, in order of importance (for security)
 $queries = array();
-$restrict = restrict_soap_query();
-if ($restrict != '')
-	$queries[] = $restrict;
 if ($source == 'queue')
 	$queries[] = 'action=DELIVER';
 if ($source == 'quarantine')
