@@ -42,16 +42,15 @@ if ($_GET['type'] == 'log')
 	if (!$node) die('Unable to find SOAP node');
 	$args = array('searchlog', $mail->msgid, '-'.$mail->msgts);
 } else {
-	// SOAP access permission
 	$node = $settings->getNode($_GET['node']);
 	if (!$node) die('Unable to find SOAP node');
 
 	$id = $_GET['id'];
-	$mail = null;
+	$nodeBackend = new NodeBackend($node);
 	if ($_GET['type'] == 'history')
-		$mail = (new NodeBackend($node))->getMailInHistory('historyid='.$id, $errors);
+		$mail = $nodeBackend->getMailInHistory('historyid='.$id, $errors);
 	else
-		$mail = (new NodeBackend($node))->getMailInQueue('queueid='.$id, $errors);
+		$mail = $nodeBackend->getMailInQueue('queueid='.$id, $errors);
 	if (!$mail || $errors) die('Invalid mail');
 	$args = array('searchlog', $mail->msgid.':'.$id, '-'.$mail->msgts);
 }
