@@ -37,17 +37,18 @@ if ($type == 'log') {
 		$mail = $nodeBackend->getMailInQueueOrHistory('queueid='.$id, $errors, $type);
 	if (!$mail || $errors)
 		die('Invalid mail');
-}
 
-if (isset($_POST['action']) && $type == 'queue') {
-	if ($_POST['action'] == 'bounce')
-		$client->mailQueueBounce(array('id' => $mail->id));
-	else if ($_POST['action'] == 'delete')
-		$client->mailQueueDelete(array('id' => $mail->id));
-	else if ($_POST['action'] == 'retry')
-		$client->mailQueueRetry(array('id' => $mail->id));
-	header('Location: ?page=preview&type=queue&id='.$mail->id.'&node='.$node->getId());
-	die();
+	// Action are only available for mail in queue
+	if (isset($_POST['action']) && $type == 'queue') {
+		if ($_POST['action'] == 'bounce')
+			$client->mailQueueBounce(array('id' => $mail->id));
+		else if ($_POST['action'] == 'delete')
+			$client->mailQueueDelete(array('id' => $mail->id));
+		else if ($_POST['action'] == 'retry')
+			$client->mailQueueRetry(array('id' => $mail->id));
+		header('Location: ?page=preview&type=queue&id='.$mail->id.'&node='.$node->getId());
+		die();
+	}
 }
 
 $action_classes = array(
