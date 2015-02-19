@@ -80,6 +80,8 @@ foreach ($settings->getAuthSources() as $a) {
 			echo "LDAP source without bind_dn or bind_password, skipping\n";
 			continue;
 		}
+		if ($a['schema'] == 'auth-only')
+			continue;
 		$ds = ldap_connect($a['uri']);
 		if (!$ds) continue;
 		ldap_set_option($ds, LDAP_OPT_SIZELIMIT, 10000); // Increase and/or sync with AD if getting "Sizelimit exceeded"
