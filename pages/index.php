@@ -133,13 +133,11 @@ foreach ($_GET as $k => $v) {
 $cols = 8;
 
 if ($source == 'log') {
-	$backend = $dbBackend;
-	$results = $backend->loadMailHistory($real_search, $size, $param['log'], $errors);
+	$results = $dbBackend->loadMailHistory($real_search, $size, $param['log'], $errors);
 	$timesort = merge_2d($timesort, $results);
 }
 if ($source == 'history' || $source == 'all') {
-	$backend = $nodeBackend;
-	$results = $backend->loadMailHistory($real_search, $size, $param['history'], $errors);
+	$results = $nodeBackend->loadMailHistory($real_search, $size, $param['history'], $errors);
 	$timesort = merge_2d($timesort, $results);
 }
 if ($source == 'queue' || $source == 'quarantine' || $source == 'all') {
