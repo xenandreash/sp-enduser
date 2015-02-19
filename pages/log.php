@@ -7,22 +7,24 @@ require_once BASE.'/inc/utils.php';
 $logs = $settings->getDisplayTextlog();
 if (!$logs) die('logs disabled');
 
-// Poll, has it's own permission system
-if (isset($_GET['ajax'])) {
+if (isset($_GET['ajax']))
+{
+	// poll, has it's own permission system
 	if (!@in_array($_GET['cmd_id'], $_SESSION['logs_id']))
 		die(json_encode(array("invalid session\n")));
-	$client = soap_client(intval($_GET['cmd_node']));
-	if ($_GET['action'] == 'poll') {
+
+	$client = $settings->getNode($_GET['cmd_node'])->soap();
+	if ($_GET['action'] == 'poll')
+	{
 		$result = $client->commandPoll(array('commandid' => $_GET['cmd_id']));
 		if ($result->result->item)
-			echo json_encode(array_map(function ($str) {
+			die(json_encode(array_map(function ($str) {
 					return str_replace("\r", "", $str);
-				}, $result->result->item));
-		else
-			echo json_encode(array());
-		die();
+				}, $result->result->item)));
+		die(json_encode(array()));
 	}
-	if ($_GET['action'] == 'stop') {
+	if ($_GET['action'] == 'stop')
+	{
 		$result = $client->commandStop(array('commandid' => $_GET['cmd_id']));
 		die(json_encode(true));
 	}
