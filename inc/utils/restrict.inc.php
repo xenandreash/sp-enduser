@@ -1,25 +1,5 @@
 <?php
 
-// Check the user's access to a specific message over SOAP/HQL
-function restrict_soap_mail($type, $node, $id, $die = true) {
-	try {
-		$client = soap_client(intval($node));
-		$soaptype = $type;
-		if ($type == 'historyqueue')
-			$soaptype = 'history';
-		$restrict = restrict_soap_query($soaptype);
-		$res = _restrict_soap_mail($restrict, $type, $id, $client);
-	} catch (Exception $e) {
-		// XXX Very important; many depend on us to die if access is denied
-		if ($die)
-			die('Invalid mail');
-		else
-			throw new Exception('Invalid mail');
-
-	}
-	return $res;
-}
-
 // Returns the SOAP HQL syntax for logged-in users access rights
 function restrict_soap_query($type = 'queue') {
 	$settings = Settings::Get();
@@ -42,31 +22,6 @@ function restrict_sql_select($select, $where, $order, $limit, $offsets) {
 }
 
 // XXX below are testable functions
-
-// Check the user's access to a specific message in SQL database
-// Testable using custom $client
-function _restrict_soap_mail($restrict, $type, $id, $client)
-{
-	$query = array();
-	$query['filter'] = $restrict;
-	$query['offset'] = 0;
-	$query['limit'] = 2; // security measure; if two msgs are matched
-	if ($type == 'history') {
-		$query['filter'] .= ' && historyid='.intval($id);
-		$res = $client->mailHistory($query);
-	} else if ($type == 'historyqueue') {
-		$query['filter'] .= ' && queueid='.intval($id);
-		$res = $client->mailHistory($query);
-	} else {
-		$query['filter'] .= ' && queueid='.intval($id);
-		$res = $client->mailQueue($query);
-	}
-
-	if (count($res->result->item) != 1)
-		throw new Exception('Invalid mail');
-
-	return $res->result->item[0];
-}
 
 // Check the user's access to a specific message in SQL database
 // Testable by verifying return value

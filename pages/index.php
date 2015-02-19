@@ -6,27 +6,29 @@ require_once BASE.'/inc/utils.php';
 
 if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])) {
 	$actions = array();
-	foreach ($_POST as $k => $v) {
+	foreach ($_POST as $k => $v)
+	{
 		if (!preg_match('/^multiselect-(\d+)$/', $k, $m))
 			continue;
 
-		$node = $v;
-		$id = intval($m[1]);
-		$client = soap_client($node);
+		$node = $settings->getNode($v);
+		if (!$node) die('Unable to find SOAP node');
 
-		// Access permission
-		restrict_soap_mail('queue', $node, $id); // Dies if access is denied
-		$actions[$v][] = $id;
+		$nodeBackend = new NodeBackend($node);
+		$mail = $nodeBackend->getMailInQueue('queueid='.$m[1], $errors);
+		if (!$mail || $errors) die('Invalid mail');
+
+		$actions[$node->getId()][] = $mail->id;
 	}
 	foreach ($actions as $soapid => $list)
 	{
 		$id = implode(',', $list);
 		if (isset($_POST['bounce']))
-			soap_client($soapid)->mailQueueBounce(array('id' => $id));
+			$settings->getNode($soapid)->soap()->mailQueueBounce(array('id' => $id));
 		if (isset($_POST['delete']))
-			soap_client($soapid)->mailQueueDelete(array('id' => $id));
+			$settings->getNode($soapid)->soap()->mailQueueDelete(array('id' => $id));
 		if (isset($_POST['retry']))
-			soap_client($soapid)->mailQueueRetry(array('id' => $id));
+			$settings->getNode($soapid)->soap()->mailQueueRetry(array('id' => $id));
 	}
 	header('Location: '.$_SERVER['REQUEST_URI']);
 	die();
