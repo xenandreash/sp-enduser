@@ -29,6 +29,8 @@ if ($type == 'log') {
 } else {
 	// Fetch data from SOAP
 	$node = $settings->getNode($_GET['node']);
+	if (!$node) die('Invalid mail');
+
 	$client = $node->soap();
 	$nodeBackend = new NodeBackend($node);
 	if ($_GET['type'] == 'history')

@@ -45,7 +45,7 @@ if ($_GET['type'] == 'log')
 	$args = array('searchlog', $mail->msgid, '-'.$mail->msgts);
 } else {
 	$node = $settings->getNode($_GET['node']);
-	if (!$node) die('Unable to find SOAP node');
+	if (!$node) die('Invalid mail');
 
 	$nodeBackend = new NodeBackend($node);
 	if ($_GET['type'] == 'history')
