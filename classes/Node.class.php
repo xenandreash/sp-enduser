@@ -2,13 +2,15 @@
 
 class Node
 {
+	private $id;
 	private $address;
 	private $username;
 	private $password;
 	private $serial;
 	
-	public function __construct($address, $username = null, $password = null, $serial = null)
+	public function __construct($id, $address, $username = null, $password = null, $serial = null)
 	{
+		$this->id = $id;
 		$this->address = $address;
 		$this->username = $username;
 		$this->password = $password;
@@ -35,6 +37,11 @@ class Node
 		if ($async)
 			return new SoapClientAsync($options['location'].'?wsdl', $options);
 		return new SoapClient($options['location'].'?wsdl', $options);
+	}
+
+	public function getId()
+	{
+		return $this->id;
 	}
 	
 	public function getAddress()

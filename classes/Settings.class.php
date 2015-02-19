@@ -85,11 +85,11 @@ class Settings
 		$this->extract($this->digestSecret, 'digest.secret');
 		$this->extract($this->sessionName, 'session-name');
 		
-		foreach ($this->nodeCredentials as $cred) {
+		foreach ($this->nodeCredentials as $id => $cred) {
 			$username = isset($cred['username']) ? $cred['username'] : null;
 			$password = isset($cred['password']) ? $cred['password'] : null;
 			$serial = isset($cred['serialno']) ? $cred['serialno'] : null;
-			$this->nodes[] = new Node($cred['address'], $username, $password, $serial);
+			$this->nodes[] = new Node($id, $cred['address'], $username, $password, $serial);
 		}
 		
 		if(!$this->publicURL)
