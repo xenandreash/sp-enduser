@@ -11,7 +11,7 @@ $node = null;
 if ($type == 'log') {
 	// Log = database backend
 	$dbBackend = new DatabaseBackend($settings->getDatabase());
-	$mail = $dbBackend->getMail($_GET['id']);
+	$mail = $dbBackend->getMail($id);
 	if (!$mail) die('Invalid mail');
 
 	// If in queue, get it from SOAP if possible (so that we get more info)
@@ -24,7 +24,6 @@ if ($type == 'log') {
 		if ($node_mail && !$errors) {
 			$mail = $node_mail;
 			$type = $node_type;
-			$id = $mail->id;
 		}
 	}
 } else {
@@ -131,10 +130,10 @@ require_once BASE.'/partials/header.php';
 			</div>
 			<ul class="nav navbar-nav navbar-right">
 				<?php if ($logs && $node) { ?>
-					<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node->getId()) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+					<li><a href="?page=log&id=<?php p($mail->id) ?>&node=<?php p($node->getId()) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
 				<?php } ?>
 					<?php if ($type == 'queue' && $node) { ?>
-					<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node->getId()) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
+					<li><a href="?page=download&id=<?php p($mail->id) ?>&node=<?php p($node->getId()) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 					<li class="divider"></li>
 					<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
 					<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce</a></li>
@@ -151,10 +150,10 @@ require_once BASE.'/partials/header.php';
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<?php if ($logs && $node) { ?>
-							<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node->getId()) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+							<li><a href="?page=log&id=<?php p($node->id) ?>&node=<?php p($node->getId()) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
 						<?php } ?>
 						<?php if ($type == 'queue') { ?>
-							<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node->getId()) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
+							<li><a href="?page=download&id=<?php p($mail->id) ?>&node=<?php p($node->getId()) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 							<li class="divider"></li>
 							<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete message</a></li>
 							<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce message</a></li>
@@ -282,7 +281,7 @@ require_once BASE.'/partials/header.php';
 			</div>
 		</div>
 		<?php if ($node) { ?>
-		<form id="actionform" method="post" action="?page=preview&node=<?php p($node->getId()) ?>&id=<?php p($id) ?>">
+		<form id="actionform" method="post" action="?page=preview&node=<?php p($node->getId()) ?>&id=<?php p($mail->id) ?>">
 			<input type="hidden" name="action" id="action" value="">
 			<input type="hidden" name="referer" id="referer" value="<?php p(isset($_POST['referer']) ? $_POST['referer'] : $_SERVER['HTTP_REFERER']); ?>">
 		</form>
