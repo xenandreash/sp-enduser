@@ -38,4 +38,15 @@ class DatabaseBackend extends Backend
 		
 		return $results;
 	}
+
+	public function getMail($id)
+	{
+		$restrict_sql = restrict_sql_query();
+		list($real_sql, $real_sql_params) = _restrict_sql_mail($restrict_sql, $id, NULL);
+		$statement = $this->database->prepare($real_sql);
+		$statement->execute($real_sql_params);
+		$mail = $statement->fetchObject();
+		if (!$mail) return NULL;
+		return $mail;
+	}
 }
