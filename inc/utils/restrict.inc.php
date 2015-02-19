@@ -70,22 +70,15 @@ function _restrict_soap_mail($restrict, $type, $id, $client)
 
 // Check the user's access to a specific message in SQL database
 // Testable by verifying return value
-function _restrict_sql_mail($restrict_sql, $id, $actionid = NULL)
+function _restrict_sql_mail($restrict_sql, $id)
 {
 	$filters = array();
 	$real_sql = 'SELECT *, UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
 	$real_sql_params = $restrict_sql['params'];
 	if ($restrict_sql['filter'])
 		$filters[] = $restrict_sql['filter'];
-	if (!$actionid) {
-		$real_sql_params[':id'] = intval($id);
-		$filters[] = 'id = :id';
-	} else {
-		$real_sql_params[':id'] = intval($id);
-		$real_sql_params[':actionid'] = intval($actionid);
-		$filters[] = 'msgid = :id';
-		$filters[] = 'msgactionid = :actionid';
-	}
+	$real_sql_params[':id'] = intval($id);
+	$filters[] = 'id = :id';
 	// extremely important to use "(...) AND (...)" for access control
 	if (count($filters))
 		$real_sql .= ' WHERE ('.implode(') AND (', $filters).')';
