@@ -161,6 +161,21 @@ class Settings
 			return $this->nodes[$i];
 		return null;
 	}
+
+	/**
+	 * Returns a specific node from the list by serial, or null if there's no such node.
+	 */
+	public function getNodeBySerial($serial)
+	{
+		foreach ($this->nodes as $node)
+		{
+			try {
+				if($node->getSerial(true) == $serial)
+					return $node;
+			} catch (SoapFault $e) {}
+		}
+		return null;
+	}
 	
 	/**
 	 * Returns the nodes' API key.
