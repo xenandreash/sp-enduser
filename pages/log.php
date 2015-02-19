@@ -29,8 +29,11 @@ if (isset($_GET['ajax'])) {
 }
 
 if ($_GET['type'] == 'log') {
-	// SQL access permission
-	$mail = restrict_sql_mail(intval($_GET['id']));
+	// Fetch data from local SQL log
+	$dbBackend = new DatabaseBackend($settings->getDatabase());
+	$mail = $dbBackend->getMail($_GET['id']);
+	if (!$mail) die('Invalid mail');
+
 	// Resolv SOAP node
 	$node = null;
 	foreach ($settings->getNodes() as $n => $tmpnode)

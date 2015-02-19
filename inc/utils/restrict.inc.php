@@ -1,18 +1,5 @@
 <?php
 
-// Check the user's access to a specific message in SQL database
-function restrict_sql_mail($id, $actionid = NULL) {
-	$restrict_sql = restrict_sql_query();
-	list($real_sql, $real_sql_params) = _restrict_sql_mail($restrict_sql, $id, $actionid);
-	$settings = Settings::Get();
-	$dbh = $settings->getDatabase();
-	$statement = $dbh->prepare($real_sql);
-	$statement->execute($real_sql_params);
-	$mail = $statement->fetchObject();
-	if (!$mail) die('Invalid mail');
-	return $mail;
-}
-
 // Check the user's access to a specific message over SOAP/HQL
 function restrict_soap_mail($type, $node, $id, $die = true) {
 	try {

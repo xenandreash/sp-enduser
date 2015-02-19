@@ -10,7 +10,10 @@ $type = $_GET['type'];
 if ($type == 'log') {
 	// Fetch data from local SQL log
 	$node = 'local';
-	$mail = restrict_sql_mail($id);
+	$dbBackend = new DatabaseBackend($settings->getDatabase());
+	$mail = $dbBackend->getMail($_GET['id']);
+	if (!$mail) die('Invalid mail');
+
 	// Resolv SOAP node
 	$node = null;
 	if ($mail->msgaction == 'QUEUE') foreach ($settings->getNodes() as $n => $tmpnode) {
