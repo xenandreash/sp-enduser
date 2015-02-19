@@ -30,7 +30,8 @@ if (isset($_GET['ajax']))
 	}
 }
 
-if ($_GET['type'] == 'log') {
+if ($_GET['type'] == 'log')
+{
 	// Fetch data from local SQL log
 	$dbBackend = new DatabaseBackend($settings->getDatabase());
 	$mail = $dbBackend->getMail($_GET['id']);
@@ -38,25 +39,30 @@ if ($_GET['type'] == 'log') {
 
 	// Resolv SOAP node
 	$node = $settings->getNodeBySerial($mail->serialno);
-	if ($node === null) die('Unable to find SOAP node');
-	$node = $node->getId();
+	if (!$node) die('Unable to find SOAP node');
 	$args = array('searchlog', $mail->msgid, '-'.$mail->msgts);
 } else {
 	// SOAP access permission
-	$node = intval($_GET['node']);
-	$id = intval($_GET['id']);
-	$mail = restrict_soap_mail($_GET['type'], $node, $id); // die for security
+	$node = $settings->getNode($_GET['node']);
+	if (!$node) die('Unable to find SOAP node');
+
+	$id = $_GET['id'];
+	$mail = null;
+	if ($_GET['type'] == 'history')
+		$mail = (new NodeBackend($node))->getMailInHistory('historyid='.$id, $errors);
+	else
+		$mail = (new NodeBackend($node))->getMailInQueue('queueid='.$id, $errors);
+	if (!$mail || $errors) die('Invalid mail');
 	$args = array('searchlog', $mail->msgid.':'.$id, '-'.$mail->msgts);
 }
 
-$client = soap_client($node);
+$client = $node->soap();
 try {
 	$cmd_id = $client->commandRun(array('argv' => $args));
 } catch (Exception $e) {
 	die('unable to start log');
 }
 $_SESSION['logs_id'][] = $cmd_id->result;
-// Prepare data
 
 $title = 'Text log';
 $show_back = true;
@@ -75,6 +81,6 @@ require_once BASE.'/partials/header.php';
 	</div>
 	<script>
 		cmd_id = <?php echo json_encode($cmd_id->result); ?>;
-		cmd_node = <?php echo json_encode($node); ?>;
+		cmd_node = <?php echo json_encode($node->getId()); ?>;
 	</script>
 <?php require_once BASE.'/partials/footer.php'; ?>
