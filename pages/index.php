@@ -12,7 +12,7 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 			continue;
 
 		$node = $settings->getNode($v);
-		if (!$node) die('Unable to find SOAP node');
+		if (!$node) die('Invalid mail');
 
 		$nodeBackend = new NodeBackend($node);
 		$mail = $nodeBackend->getMailInQueue('queueid='.$m[1], $errors);
