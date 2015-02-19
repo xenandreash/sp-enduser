@@ -6,53 +6,48 @@ require_once BASE.'/inc/utils.php';
 
 $id = intval($_GET['id']);
 $type = $_GET['type'];
+$node = null;
 
 if ($type == 'log') {
-	// Fetch data from local SQL log
-	$node = 'local';
+	// Log = database backend
 	$dbBackend = new DatabaseBackend($settings->getDatabase());
 	$mail = $dbBackend->getMail($_GET['id']);
 	if (!$mail) die('Invalid mail');
 
-	// Resolv SOAP node
-	$node = null;
-	if ($mail->msgaction == 'QUEUE') {
-		$n = $settings->getNodeBySerial($mail->serialno);
-		if ($n !== null) $node = $n->getId();
-	}
+	// If in queue, get it from SOAP if possible (so that we get more info)
+	if ($mail->msgaction == 'QUEUE' || $mail->msgaction == 'QUARANTINE')
+		$node = $settings->getNodeBySerial($mail->serialno);
 	if ($node !== null) {
-		$client = soap_client($node);
-		$result = $client->mailQueue(array('filter' => 'messageid='.$mail->msgid.' actionid='.$mail->msgactionid, 'offset' => 0, 'limit' => 1));
-		if (count($result->result->item)) {
-			$mail = $result->result->item[0];
+		$client = $node->soap();
+		$nodeBackend = new NodeBackend($node);
+		$node_mail = $nodeBackend->getMailInQueueOrHistory('messageid='.$mail->msgid.' actionid='.$mail->msgactionid, $errors, $node_type);
+		if ($node_mail && !$errors) {
+			$mail = $node_mail;
+			$type = $node_type;
 			$id = $mail->id;
-			$type = 'queue';
 		}
 	}
 } else {
 	// Fetch data from SOAP
-	$node = intval($_GET['node']);
-	try {
-		$mail = restrict_soap_mail($type, $node, $id, false); // throws for security
-		$client = soap_client($node);
-	} catch (Exception $e) {
-		// not found, try search in history
-		if ($type == 'queue') {
-			$mail = restrict_soap_mail('historyqueue', $node, $id, true); // die for security
-			$type = 'history';
-		} else {
-			die($e->getMessage()); // die for security
-		}
-	}
+	$node = $settings->getNode($_GET['node']);
+	$client = $node->soap();
+	$nodeBackend = new NodeBackend($node);
+	if ($_GET['type'] == 'history')
+		$mail = $nodeBackend->getMailInHistory('historyid='.$id, $errors);
+	else
+		$mail = $nodeBackend->getMailInQueueOrHistory('queueid='.$id, $errors, $type);
+	if (!$mail || $errors)
+		die('Invalid mail');
 }
-if (isset($_POST['action'])) {
+
+if (isset($_POST['action']) && $type == 'queue') {
 	if ($_POST['action'] == 'bounce')
-		$client->mailQueueBounce(array('id' => $id));
+		$client->mailQueueBounce(array('id' => $mail->id));
 	else if ($_POST['action'] == 'delete')
-		$client->mailQueueDelete(array('id' => $id));
+		$client->mailQueueDelete(array('id' => $mail->id));
 	else if ($_POST['action'] == 'retry')
-		$client->mailQueueRetry(array('id' => $id));
-	header('Location: ?page=preview&type=queue&id='.$id.'&node='.$node);
+		$client->mailQueueRetry(array('id' => $mail->id));
+	header('Location: ?page=preview&type=queue&id='.$mail->id.'&node='.$node->getId());
 	die();
 }
 
@@ -135,11 +130,11 @@ require_once BASE.'/partials/header.php';
 				<a id="history_back" class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
-				<?php if ($logs && count($settings->getNodes())) { ?>
-					<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+				<?php if ($logs && $node) { ?>
+					<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node->getId()) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
 				<?php } ?>
-					<?php if ($type == 'queue') { ?>
-					<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
+					<?php if ($type == 'queue' && $node) { ?>
+					<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node->getId()) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 					<li class="divider"></li>
 					<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
 					<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce</a></li>
@@ -155,11 +150,11 @@ require_once BASE.'/partials/header.php';
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<?php if ($logs && count($settings->getNodes())) { ?>
-							<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+						<?php if ($logs && $node) { ?>
+							<li><a href="?page=log&id=<?php p($id) ?>&node=<?php p($node->getId()) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
 						<?php } ?>
 						<?php if ($type == 'queue') { ?>
-							<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
+							<li><a href="?page=download&id=<?php p($id) ?>&node=<?php p($node->getId()) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
 							<li class="divider"></li>
 							<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete message</a></li>
 							<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce message</a></li>
@@ -286,10 +281,11 @@ require_once BASE.'/partials/header.php';
 				<?php } ?>
 			</div>
 		</div>
-		
-		<form id="actionform" method="post" action="?page=preview&node=<?php p($node) ?>&id=<?php p($id) ?>">
+		<?php if ($node) { ?>
+		<form id="actionform" method="post" action="?page=preview&node=<?php p($node->getId()) ?>&id=<?php p($id) ?>">
 			<input type="hidden" name="action" id="action" value="">
 			<input type="hidden" name="referer" id="referer" value="<?php p(isset($_POST['referer']) ? $_POST['referer'] : $_SERVER['HTTP_REFERER']); ?>">
 		</form>
+		<?php } ?>
 	</div>
 <?php require_once BASE.'/partials/footer.php'; ?>

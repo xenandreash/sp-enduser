@@ -144,6 +144,17 @@ class NodeBackend extends Backend
 		return $this->getMailIn_('mailHistory', $search, $errors);
 	}
 
+	public function getMailInQueueOrHistory($search, &$errors = array(), &$type)
+	{
+		$type = 'queue';
+		$mail = $this->getMailInQueue($search, $errors);
+		if (!$mail || $errors) {
+			$mail = $this->getMailInHistory($search, $errors);
+			$type = 'history';
+		}
+		return $mail;
+	}
+
 	private function getMailIn_($source, $search, &$errors = array())
 	{
 		if (empty($this->nodes))
