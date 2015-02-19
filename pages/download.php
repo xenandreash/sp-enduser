@@ -5,8 +5,10 @@ require_once BASE.'/inc/utils.php';
 
 header('Content-type: text/plain');
 
+$id = preg_replace('/[^0-9]/', '', $_GET['id']);
+
 $nodeBackend = new NodeBackend($settings->getNode($_GET['node']));
-$mail = $nodeBackend->getMailInQueue("queueid=".$_GET['id'], $errors);
+$mail = $nodeBackend->getMailInQueue("queueid=".$id, $errors);
 if (!$mail)
 	die('No mail found');
 $client = $nodeBackend->soap();

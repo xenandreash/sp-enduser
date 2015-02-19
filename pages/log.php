@@ -30,11 +30,13 @@ if (isset($_GET['ajax']))
 	}
 }
 
+$id = preg_replace('/[^0-9]/', '', $_GET['id']);
+
 if ($_GET['type'] == 'log')
 {
 	// Fetch data from local SQL log
 	$dbBackend = new DatabaseBackend($settings->getDatabase());
-	$mail = $dbBackend->getMail($_GET['id']);
+	$mail = $dbBackend->getMail($id);
 	if (!$mail) die('Invalid mail');
 
 	// Resolv SOAP node
@@ -45,7 +47,6 @@ if ($_GET['type'] == 'log')
 	$node = $settings->getNode($_GET['node']);
 	if (!$node) die('Unable to find SOAP node');
 
-	$id = $_GET['id'];
 	$nodeBackend = new NodeBackend($node);
 	if ($_GET['type'] == 'history')
 		$mail = $nodeBackend->getMailInHistory('historyid='.$id, $errors);
