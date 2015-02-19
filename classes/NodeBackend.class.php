@@ -79,7 +79,7 @@ class NodeBackend extends Backend
 	public function loadMailHistory($search, $size, $param, &$errors = array())
 	{
 		$queries = array();
-		$restrict = restrict_soap_query();
+		$restrict = restrict_soap_query('history');
 		if ($restrict != '')
 			$queries[] = $restrict;
 		if ($search != '')
@@ -108,7 +108,7 @@ class NodeBackend extends Backend
 	public function loadMailQueue($search, $size, $param, &$errors = array())
 	{
 		$queries = array();
-		$restrict = restrict_soap_query();
+		$restrict = restrict_soap_query('queue');
 		if ($restrict != '')
 			$queries[] = $restrict;
 		if ($search != '')
