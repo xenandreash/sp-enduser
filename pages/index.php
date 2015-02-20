@@ -110,7 +110,6 @@ $real_search = implode(' && ', $queries);
 
 // Initial settings
 $timesort = array();
-$tasks = array();
 $prev_button = ' disabled';
 $next_button = ' disabled';
 $param = array();

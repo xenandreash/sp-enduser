@@ -32,10 +32,10 @@ $real_search = implode(' ', $restrict);
 
 // Initial settings
 $timesort = array();
-$tasks = array();
 $total = 0;
 $param = array();
 $clients = array();
+
 foreach ($settings->getNodes() as $n => $r) {
 	$param[$n]['limit'] = $limit;
 	$param[$n]['filter'] = $real_search;
