@@ -76,12 +76,14 @@ foreach ($settings->getAuthSources() as $a) {
 		$users[$a['email']] = access_level_merge($users[$a['email']], $a['access']);
 	// Send to LDAP users if a bind_dn is specified
 	if ($a['type'] == 'ldap') {
+		if ($a['schema'] == 'auth-only') {
+			echo "LDAP source with auth-only schema, skipping\n";
+			continue;
+		}
 		if (!isset($a['bind_dn']) || !isset($a['bind_password'])) {
 			echo "LDAP source without bind_dn or bind_password, skipping\n";
 			continue;
 		}
-		if ($a['schema'] == 'auth-only')
-			continue;
 		$ds = ldap_connect($a['uri']);
 		if (!$ds) continue;
 		ldap_set_option($ds, LDAP_OPT_SIZELIMIT, 10000); // Increase and/or sync with AD if getting "Sizelimit exceeded"
