@@ -11,6 +11,10 @@ function do_change_password() {
 		$error = "Your new passwords don't match!";
 		return;
 	}
+	if ($_POST['password'] === '') {
+		$error = "Your new password cannot be empty!";
+		return;
+	}
 	
 	$dbh = $settings->getDatabase();
 	
