@@ -190,3 +190,12 @@ function format_size($size)
 	$suffixes = array('B', 'KiB', 'MiB', 'GiB', 'TiB');
 	return round(pow(1024, $base - floor($base)), 0) . ' ' . $suffixes[floor($base)];
 }
+
+function password_policy($password, &$error)
+{
+	if (strlen($password) < 6) {
+		$error = 'The password must be at least 6 characters long.';
+		return false;
+	}
+	return true;
+}

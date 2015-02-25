@@ -33,6 +33,8 @@ if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password']
 		$error = 'Invalid token';
 	else if ($_POST['password'] !== $_POST['password2'])
 		$error = 'The passwords doesn\'t match';
+	else if (!password_policy($_POST['password'], $error2))
+		$error = $error2;
 	if (!isset($error)) {	
 		$statement = $dbh->prepare("UPDATE users SET password = :password, reset_password_timestamp = 0 WHERE username = :username;");
 		$statement->execute(array(':username' => $_POST['reset'], ':password' => crypt($_POST['password'])));

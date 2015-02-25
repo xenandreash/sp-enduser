@@ -11,8 +11,8 @@ function do_change_password() {
 		$error = "Your new passwords don't match!";
 		return;
 	}
-	if ($_POST['password'] === '') {
-		$error = "Your new password cannot be empty!";
+	if (!password_policy($_POST['password'], $error2)) {
+		$error = $error2;
 		return;
 	}
 	
