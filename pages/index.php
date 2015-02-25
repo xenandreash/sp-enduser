@@ -137,8 +137,11 @@ if ($source == 'history' || $source == 'all') {
 	$results = $nodeBackend->loadMailHistory($real_search, $size, $param['history'], $errors);
 	$timesort = merge_2d($timesort, $results);
 }
+
+$hasMailWithActions = false;
 if ($source == 'queue' || $source == 'quarantine' || $source == 'all') {
 	$results = $nodeBackend->loadMailQueue($real_search, $size, $param['queue'], $errors);
+	$hasMailWithActions = !empty($results);
 	$timesort = merge_2d($timesort, $results);
 }
 
@@ -203,7 +206,7 @@ $has_multiple_sources = count($sources) > 1;
 						</div>
 					</div>
 				</form>
-				<?php if ($source == 'queue' || $source == 'quarantine') { ?>
+				<?php if ($hasMailWithActions) { ?>
 				<ul class="nav navbar-nav navbar-left hidden-xs hidden-sm">
 					<li class="divider"></li>
 					<li class="dropdown">
@@ -219,7 +222,7 @@ $has_multiple_sources = count($sources) > 1;
 			</div>
 		</div>
 	</nav>
-	<?php if ($source == 'queue' || $source == 'quarantine') { ?>
+	<?php if ($hasMailWithActions) { ?>
 	<nav class="navbar navbar-default navbar-fixed-bottom hidden-xs hidden-md hidden-lg" id="bottom-bar" style="display:none;">
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
