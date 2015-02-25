@@ -9,7 +9,6 @@ require_once BASE.'/inc/utils/soap.inc.php';
 require_once BASE.'/inc/utils/soap_async.inc.php';
 require_once BASE.'/inc/utils/mail.inc.php';
 require_once BASE.'/inc/utils/view.inc.php';
-require_once BASE.'/inc/utils/restrict.inc.php';
 
 function history_parse_scores($mail)
 {
