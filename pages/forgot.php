@@ -63,12 +63,17 @@ require_once BASE.'/partials/header.php';
 					</p>
 					<?php } ?>
 					
-					<?php if (isset($_GET['forgot']) && !isset($error)) { ?>
+					<?php if (isset($reset)) { ?>
+						<p class="alert alert-success">Your password has been reset!</p>
+						<div class="col-sm-offset-3 col-sm-9">
+							<a class="btn btn-primary" href="?page=login">Sign in</a>
+						</div>
+					<?php } else if ((isset($_GET['forgot']) && !isset($error)) || isset($_POST['reset'])) { ?>
 					<form class="form-horizontal" method="post" action="?page=forgot">
-						<input type="hidden" name="reset" value="<?php p($_GET['forgot']) ?>">
-						<?php if (isset($_GET['token'])) { ?>
+						<input type="hidden" name="reset" value="<?php p($_GET['forgot'] ?: $_POST['reset']) ?>">
+						<?php if (isset($_GET['token']) || isset($_POST['token'])) { ?>
 							<p>Choose a new password.</p>
-							<input type="hidden" name="token" value="<?php p($_GET['token']) ?>">
+							<input type="hidden" name="token" value="<?php p($_GET['token'] ?: $_POST['token']) ?>">
 						<?php } else { ?>
 							<p class="alert alert-success">Enter the token you received in your inbox, and choose a new password.</p>
 							<div class="form-group">
@@ -96,11 +101,6 @@ require_once BASE.'/partials/header.php';
 							</div>
 						</div>
 					</form>
-					<?php } else if (isset($reset)) { ?>
-						<p class="alert alert-success">Your password has been reset!</p>
-						<div class="col-sm-offset-3 col-sm-9">
-							<a class="btn btn-primary" href="?page=login">Sign in</a>
-						</div>
 					<?php } else { ?>
 					<form class="form-horizontal" method="get">
 						<input type="hidden" name="page" value="forgot">
