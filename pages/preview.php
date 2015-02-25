@@ -160,7 +160,7 @@ require_once BASE.'/partials/header.php';
 							<li class="divider"></li>
 							<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete message</a></li>
 							<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce message</a></li>
-							<li><a data-action="retry"><i class="glyphicon glyphicon-play-cicle"></i>&nbsp;Retry/release message</a></li>
+							<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;Retry/release message</a></li>
 						<?php } ?>
 					</ul>
 				</li>
