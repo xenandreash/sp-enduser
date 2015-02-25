@@ -23,7 +23,7 @@ class DatabaseBackend extends Backend
 		// Create search/restrict query for SQL
 		$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
 		$sql_where = hql_to_sql($search);
-		$real_sql = $this->restrict_sql_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param);
+		$real_sql = $this->restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param);
 		$real_sql['sql'] .= ' ORDER BY id DESC LIMIT '.intval($size + 1); // don't send unnecessary
 		
 		// Fetch stuff
@@ -41,8 +41,8 @@ class DatabaseBackend extends Backend
 
 	public function getMail($id)
 	{
-		$restrict_sql = $this->restrict_sql_query();
-		list($real_sql, $real_sql_params) = $this->_restrict_sql_mail($restrict_sql, $id);
+		$restrict_sql = $this->restrict_query();
+		list($real_sql, $real_sql_params) = $this->restrict_mail($restrict_sql, $id);
 		$statement = $this->database->prepare($real_sql);
 		$statement->execute($real_sql_params);
 		$mail = $statement->fetchObject();
@@ -50,27 +50,9 @@ class DatabaseBackend extends Backend
 		return $mail;
 	}
 
-	// Returns a "param-ized" SQL filter for logged-in users access rights
-	private function restrict_sql_query()
-	{
-		$settings = Settings::Get();
-		$access = Session::Get()->getAccess();
-		return $this->_restrict_sql_query($settings, $access);
-	}
-
-	// Currently only used by pages/index, exists because UNION/LIMIT is needed for OR query performance
-	private function restrict_sql_select($select, $where, $order, $limit, $offsets)
-	{
-		$settings = Settings::Get();
-		$access = Session::Get()->getAccess();
-		return $this->_restrict_sql_select($settings, $access, $select, $where, $order, $limit, $offsets);
-	}
-
-	// XXX below are testable functions
-
 	// Check the user's access to a specific message in SQL database
 	// Testable by verifying return value
-	private function _restrict_sql_mail($restrict_sql, $id)
+	private function restrict_mail($restrict_sql, $id)
 	{
 		$filters = array();
 		$real_sql = 'SELECT *, UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
@@ -86,9 +68,11 @@ class DatabaseBackend extends Backend
 	}
 
 	// Returns a "param-ized" SQL filter for $access's access rights
-	private function _restrict_sql_query($settings, $access)
+	private function restrict_query()
 	{
 		$settings = Settings::Get();
+		$access = Session::Get()->getAccess();
+
 		if (count($settings->getQuarantineFilter()) > 0)
 			die('you cannot combine filter-pattern and local history');
 		$filter = array();
@@ -113,8 +97,11 @@ class DatabaseBackend extends Backend
 	}
 
 	// Currently only used by pages/index, exists because UNION/LIMIT is needed for OR query performance
-	private function _restrict_sql_select($settings, $access, $select, $where, $order, $limit, $offsets)
+	private function restrict_select($select, $where, $order, $limit, $offsets)
 	{
+		$settings = Settings::Get();
+		$access = Session::Get()->getAccess();
+
 		if ($settings->getFilterPattern() === null)
 			throw new Exception('you cannot combine filter-pattern and local sql history');
 
