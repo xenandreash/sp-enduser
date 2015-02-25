@@ -70,7 +70,7 @@ require_once BASE.'/partials/header.php';
 							<p>Choose a new password.</p>
 							<input type="hidden" name="token" value="<?php p($_GET['token']) ?>">
 						<?php } else { ?>
-							<p class="alert alert-success">Enter the token you receivied in your inbox, and choose a new password.</p>
+							<p class="alert alert-success">Enter the token you received in your inbox, and choose a new password.</p>
 							<div class="form-group">
 								<label class="control-label col-sm-3" for="token">Token</label>
 								<div class="col-sm-9">
