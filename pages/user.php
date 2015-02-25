@@ -101,7 +101,7 @@ require_once BASE.'/partials/header.php';
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="old_password">Old Password</label>
 									<div class="col-sm-9">
-										<input type="password" class="form-control" name="old_password" id="old_password" placeholder="Your new password">
+										<input type="password" class="form-control" name="old_password" id="old_password" placeholder="Your old password">
 									</div>
 								</div>
 								<div class="form-group">
