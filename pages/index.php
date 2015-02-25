@@ -127,7 +127,7 @@ foreach ($_GET as $k => $v) {
 	$prev_button = '';
 }
 
-$cols = 8;
+$cols = 7;
 
 if ($source == 'log') {
 	$results = $dbBackend->loadMailHistory($real_search, $size, $param['log'], $errors);
@@ -262,9 +262,7 @@ $has_multiple_sources = count($sources) > 1;
 					<tr>
 						<th style="width:30px">&nbsp;</th>
 						<th class="hidden-xs">From</th>
-						<?php if ($has_multiple_addresses) { ?>
-						<th class="hidden-xs">To</th>
-						<?php } ?>
+						<?php if ($has_multiple_addresses) { $cols++ ?><th class="hidden-xs">To</th><?php } ?>
 						<th>Subject</th>
 						<th class="hidden-xs hidden-sm">Status</th>
 						<?php if ($display_scores) { $cols++ ?><th class="visible-lg" style="width: 120px;">Scores</th><?php } ?>
