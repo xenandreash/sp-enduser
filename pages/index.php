@@ -295,7 +295,7 @@ $has_multiple_sources = count($sources) > 1;
 					<tr class="<?php p($action_classes[$m['data']->msgaction]); ?>" <?php echo $tr ?>>
 						<td>
 						<?php if ($m['type'] == 'queue') { ?>
-							<input type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
+							<input class="hidden-sm" type="checkbox" name="multiselect-<?php p($m['data']->id); ?>" value="<?php p($m['id']); ?>">
 						<?php } else { ?>
 							<span class="glyphicon glyphicon-<?php echo $action_icons[$m['data']->msgaction] ?>"></span>
 						<?php } ?>
