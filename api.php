@@ -6,6 +6,8 @@ define('BASE', dirname(__FILE__));
 require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
+header('Content-Type: text/plain');
+
 // verify API key
 if (!isset($_GET['api-key']) || $settings->getAPIKey() !== $_GET['api-key'])
 	die('Invalid API-key');
