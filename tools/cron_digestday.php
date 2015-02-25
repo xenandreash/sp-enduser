@@ -214,7 +214,7 @@ foreach ($users as $email => $access) {
 	foreach ($maillist as $i => $mail) {
 		$td = '<td style="white-space: nowrap; border-bottom: 1px solid #999;">';
 		$data .= $i % 2 == 0 ? '<tr style="background-color: #eee;">' : '<tr>';
-		$data .= $td.strftime2('%F %T', $mail['time']).'</td>';
+		$data .= $td.strftime2('%b %e %Y %H:%M:%S', $mail['time']).'</td>';
 		$data .= $td.htmlspecialchars(substrdots($mail['from'], 30)).'</td>';
 		if ($one_recipient === null)
 			$data .= $td.htmlspecialchars(substrdots($mail['to'], 30)).'</td>';
