@@ -1,12 +1,5 @@
 <?php
 
-// Returns the SOAP HQL syntax for logged-in users access rights
-function restrict_soap_query($type = 'queue') {
-	$settings = Settings::Get();
-	$access = Session::Get()->getAccess();
-	return _restrict_soap_query($settings, $access, $type);
-}
-
 // Returns a "param-ized" SQL filter for logged-in users access rights
 function restrict_sql_query() {
 	$settings = Settings::Get();
@@ -38,42 +31,6 @@ function _restrict_sql_mail($restrict_sql, $id)
 	if (count($filters))
 		$real_sql .= ' WHERE ('.implode(') AND (', $filters).')';
 	return array($real_sql, $real_sql_params);
-}
-
-// Returns the SOAP HQL syntax for $access's access rights
-function _restrict_soap_query($settings, $access, $type = 'queue')
-{
-	$globalfilter = "";
-	if (count($settings->getQuarantineFilter()) > 0 && $type != 'history')
-	{
-		foreach ($settings->getQuarantineFilter() as $q)
-		{
-			if ($globalfilter != "")
-				$globalfilter .= " or ";
-			$globalfilter .= "quarantine=$q";
-		}
-		$globalfilter .= ' or not action=QUARANTINE ';
-	}
-
-	$pattern = $settings->getFilterPattern();
-
-	$filter = "";
-	if (is_array($access['domain'])) {
-		foreach ($access['domain'] as $domain) {
-			if ($filter != "")
-				$filter .= " or ";
-			$filter .= str_replace(array('{from}', '{to}'), array("from~%@$domain", "to~%@$domain"), $pattern);
-		} 
-	}
-
-	if (is_array($access['mail'])) {
-		foreach ($access['mail'] as $mail) {
-			if ($filter != "")
-				$filter .= " or ";
-			$filter .= str_replace(array('{from}', '{to}'), array("from=$mail", "to=$mail"), $pattern);
-		} 
-	}
-	return $globalfilter.($globalfilter?" && ":"").$filter;
 }
 
 // Returns a "param-ized" SQL filter for $access's access rights

@@ -79,7 +79,7 @@ class NodeBackend extends Backend
 	public function loadMailHistory($search, $size, $param, &$errors = array())
 	{
 		$queries = array();
-		$restrict = restrict_soap_query('history');
+		$restrict = $this->restrict_query('history');
 		if ($restrict != '')
 			$queries[] = $restrict;
 		if ($search != '')
@@ -108,7 +108,7 @@ class NodeBackend extends Backend
 	public function loadMailQueue($search, $size, $param, &$errors = array())
 	{
 		$queries = array();
-		$restrict = restrict_soap_query('queue');
+		$restrict = $this->restrict_query('queue');
 		if ($restrict != '')
 			$queries[] = $restrict;
 		if ($search != '')
@@ -161,7 +161,7 @@ class NodeBackend extends Backend
 			return NULL;
 
 		$queries = array();
-		$restrict = restrict_soap_query($source == 'mailHistory' ? 'history' : 'queue');
+		$restrict = $this->restrict_query($source == 'mailHistory' ? 'history' : 'queue');
 		if ($restrict != '')
 			$queries[] = $restrict;
 		if ($search != '')
@@ -185,4 +185,42 @@ class NodeBackend extends Backend
 		return count($mail) == 1 && empty($errors) ? $mail[0] : NULL;
 	}
 
+	// Returns the SOAP HQL syntax for $access's access rights
+	private function restrict_query($type)
+	{
+		$settings = Settings::Get();
+		$access = Session::Get()->getAccess();
+
+		$globalfilter = "";
+		if (count($settings->getQuarantineFilter()) > 0 && $type != 'history')
+		{
+			foreach ($settings->getQuarantineFilter() as $q)
+			{
+				if ($globalfilter != "")
+					$globalfilter .= " or ";
+				$globalfilter .= "quarantine=$q";
+			}
+			$globalfilter .= ' or not action=QUARANTINE ';
+		}
+
+		$pattern = $settings->getFilterPattern();
+
+		$filter = "";
+		if (is_array($access['domain'])) {
+			foreach ($access['domain'] as $domain) {
+				if ($filter != "")
+					$filter .= " or ";
+				$filter .= str_replace(array('{from}', '{to}'), array("from~%@$domain", "to~%@$domain"), $pattern);
+			}
+		}
+
+		if (is_array($access['mail'])) {
+			foreach ($access['mail'] as $mail) {
+				if ($filter != "")
+					$filter .= " or ";
+				$filter .= str_replace(array('{from}', '{to}'), array("from=$mail", "to=$mail"), $pattern);
+			}
+		}
+		return $globalfilter.($globalfilter?" && ":"").$filter;
+	}
 }
