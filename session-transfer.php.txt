@@ -1,0 +1,50 @@
+<?php
+
+// On login requests (this should be determined on the remote host) eg. user visits a URL locally
+// on the control panel /login-enduser
+//
+// 1. Make a request in the background to session-transfer.php?api-key=<key>&username=<account>
+//    If account is a valid email, no 'access' array needs to be POST'ed in this request
+//    otherwide POST an access array
+//     eg. array('mail' => ('user@example.com', 'alias@example.com'))
+//     eg. array('domain' => array('example.com'))
+//
+// 2. The 'session' id returned by this file should be used to redirect the user
+//    Location: session-transfer.php?session=<SESSION>
+
+define('SP_ENDUSER', true);
+define('BASE', dirname(__FILE__));
+
+require_once BASE.'/inc/core.php';
+require_once BASE.'/inc/utils.php';
+
+header('Content-Type: text/plain');
+
+if (isset($_GET['session']))
+{
+	if (isset($_GET['api-key']))
+		die('STOP! You should NOT include the api-key in this request!');
+
+	$session_name = $settings->getSessionName();
+	if ($session_name)
+		session_name($session_name);
+	session_id($_GET['session']);
+	session_start();
+	header("Location: index.php?page=index");
+	die();
+}
+
+if (!isset($_GET['api-key']) || $settings->getAPIKey() !== $_GET['api-key'])
+	die(json_encode(array('error' => 'Invalid API-key')));
+
+if (!isset($_GET['username']))
+	die(json_encode(array('error' => 'No username given')));
+
+session_start();
+$_SESSION['timezone'] = isset($_GET['timezone']) ? $_GET['timezone'] : 0;
+$_SESSION['username'] = $_GET['username'];
+$_SESSION['source'] = 'external';
+$_SESSION['access'] = isset($_POST['access']) ? $_POST['access'] : array('mail' => array($_GET['username']));
+die(json_encode(array('session' => session_id())));
+
+?>
