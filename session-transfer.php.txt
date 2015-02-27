@@ -6,7 +6,7 @@
 // 1. Make a request in the background to session-transfer.php?api-key=<key>&username=<account>
 //    If account is a valid email, no 'access' array needs to be POST'ed in this request
 //    otherwide POST an access array
-//     eg. array('mail' => ('user@example.com', 'alias@example.com'))
+//     eg. array('mail' => array('user@example.com', 'alias@example.com'))
 //     eg. array('domain' => array('example.com'))
 //
 // 2. The 'session' id returned by this file should be used to redirect the user
