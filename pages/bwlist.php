@@ -91,7 +91,7 @@ foreach ($access as $type) {
 						<tr class="<?php p($row_classes[$row['type']] ?: 'info'); ?>">
 							<td class="hidden-xs"><?php p($row['type']); ?></td>
 							<td class="hidden-xs"><?php p($row['value']); ?></td>
-							<td class="hidden-xs"><?php p($row['access']); ?></td>
+							<td class="hidden-xs"><?php if (strlen($row['access']) != 0) { p($row['access']); } else { echo '<span class="text-muted">everyone</span>'; } ?></td>
 							<td class="visible-xs" colspan="2">
 								<p>
 									<i class="glyphicon glyphicon-pencil"></i>&nbsp;
@@ -99,7 +99,7 @@ foreach ($access as $type) {
 								</p>
 								<p>
 									<i class="glyphicon glyphicon-inbox"></i>&nbsp;
-									<?php if ($row['access']) { p($row['access']); } else { echo '<span class="text-muted">everyone</span>'; } ?>
+									<?php if (strlen($row['access']) != 0) { p($row['access']); } else { echo '<span class="text-muted">everyone</span>'; } ?>
 								</p>
 							</td>
 							<td class="pad-child-instead" style="vertical-align: middle;">
