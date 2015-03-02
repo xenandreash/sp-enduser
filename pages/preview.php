@@ -234,7 +234,7 @@ require_once BASE.'/partials/header.php';
 			<div class="col-md-7 col-md-pull-5">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title"><?php p($mail->msgsubject) or pp('<span class="text-muted">No Subject</span>'); ?></h3>
+						<h3 class="panel-title" style="white-space: nowrap;"><?php p($mail->msgsubject) or pp('<span class="text-muted">No Subject</span>'); ?></h3>
 					</div>
 					<?php
 					if (!isset($body))
