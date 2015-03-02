@@ -213,7 +213,7 @@ $has_multiple_sources = count($sources) > 1;
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a data-bulk-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete selected</a></li>
-							<li><a data-bulk-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce selected</a></li>
+							<li><a data-bulk-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Bounce selected</a></li>
 							<li><a data-bulk-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;Retry/release selected</a></li>
 						</ul>
 					</li>
@@ -230,7 +230,7 @@ $has_multiple_sources = count($sources) > 1;
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<li><a data-bulk-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete selected</a></li>
-						<li><a data-bulk-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce selected</a></li>
+						<li><a data-bulk-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Bounce selected</a></li>
 						<li><a data-bulk-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;Retry/release selected</a></li>
 					</ul>
 				</li>
