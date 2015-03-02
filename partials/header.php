@@ -55,7 +55,7 @@ $dbCredentials = $settings->getDBCredentials();
 					<ul class="nav navbar-nav">
 						<li class="mail<?php header_active('index'); ?>"><a href="."><i class="glyphicon glyphicon-envelope"></i>&nbsp;Messages</a></li>
 						<?php if ($dbCredentials['dsn'] && $settings->getDisplayBWList()) { ?>
-						<li class="bwlist<?php header_active('bwlist'); ?>"><a href="?page=bwlist"><i class="glyphicon glyphicon-inbox"></i>&nbsp;Black/whitelist</a></li>
+						<li class="bwlist<?php header_active('bwlist'); ?>"><a href="?page=bwlist"><i class="glyphicon glyphicon-list"></i>&nbsp;Black/whitelist</a></li>
 						<?php } ?>
 					</ul>
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">
