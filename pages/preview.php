@@ -156,11 +156,11 @@ require_once BASE.'/partials/header.php';
 							<li><a href="?page=log&id=<?php p($mail->id) ?>&node=<?php p($node->getId()) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
 						<?php } ?>
 						<?php if ($type == 'queue') { ?>
-							<li><a href="?page=download&id=<?php p($mail->id) ?>&node=<?php p($node->getId()) ?>"><i class="glyphicon glyphicon-download"></i>&nbsp;Download</a></li>
+							<li><a href="?page=download&id=<?php p($mail->id) ?>&node=<?php p($node->getId()) ?>"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;Download</a></li>
 							<li class="divider"></li>
-							<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete message</a></li>
-							<li><a data-action="bounce"><i class="glyphicon glyphicon-repeat"></i>&nbsp;Bounce message</a></li>
-							<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;Retry/release message</a></li>
+							<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
+							<li><a data-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Bounce</a></li>
+							<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;Retry/release</a></li>
 						<?php } ?>
 					</ul>
 				</li>
