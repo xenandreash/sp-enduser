@@ -32,7 +32,7 @@ body > .navbar-toolbar {
 	.navbar-toolbar .navbar-brand:hover,
 	.navbar-toolbar .navbar-brand:focus,
 	.navbar-toolbar .navbar-brand-link:hover,
-	.navbar-toolbar .navbar-brand-link:focus, {
+	.navbar-toolbar .navbar-brand-link:focus {
 		color: #5e5e5e;
 		background-color: transparent;
 	}
