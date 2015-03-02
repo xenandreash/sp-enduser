@@ -58,9 +58,9 @@ $dbCredentials = $settings->getDBCredentials();
 						<li class="bwlist<?php header_active('bwlist'); ?>"><a href="?page=bwlist"><i class="glyphicon glyphicon-inbox"></i>&nbsp;Black/whitelist</a></li>
 						<?php } ?>
 					</ul>
-					<ul class="nav navbar-nav navbar-right">
+					<ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">
 						<li class="user<?php header_active('user') ?>"><a href="?page=user"><i class="glyphicon glyphicon-user"></i>&nbsp;<?php p(Session::Get()->getUsername()); ?></a></li>
-						<li class="logout<?php header_active('logout') ?>"><a href="?page=logout"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
+						<li class="logout<?php header_active('logout') ?>"><a href="?page=logout"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Sign out</a></li>
 					</ul>
 				</div>
 			</div>
