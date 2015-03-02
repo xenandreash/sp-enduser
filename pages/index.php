@@ -199,13 +199,16 @@ $has_multiple_sources = count($sources) > 1;
 					<input type="hidden" name="source" value="<?php p($source); ?>">
 					<div class="form-group">
 						<div class="input-group">
-							<input type="search" class="form-control" size="40" placeholder="Search" name="search" value="<?php p($_GET['search']) ?>">
+							<input type="search" class="form-control" size="40" placeholder="Search" id="search" name="search" value="<?php p($search) ?>">
 							<div class="input-group-btn">
-								<button class="btn btn-default">Search</button>
+								<button class="btn btn-default" id="dosearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 							</div>
 						</div>
 					</div>
 				</form>
+				<ul class="nav navbar-nav">
+					<li><a href="#" data-toggle="modal" data-target="#querybuilder"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> Search filter</a></li>
+				</ul>
 				<?php if ($hasMailWithActions) { ?>
 				<ul class="nav navbar-nav navbar-left hidden-xs hidden-sm">
 					<li class="divider"></li>
@@ -251,7 +254,7 @@ $has_multiple_sources = count($sources) > 1;
 				table {
 					table-layout: fixed;
 				}
-				td, td > a {
+				td, td > a, .list-group p, .list-group h4 {
 					text-overflow: ellipsis;
 					white-space: nowrap;
 					overflow: hidden;
@@ -428,4 +431,130 @@ $has_multiple_sources = count($sources) > 1;
 		</div>
 		<?php } ?>
 	</div>
+	<div class="modal fade" id="querybuilder"><div class="modal-dialog"><div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title">Search filter</h4>
+	</div>
+	<div class="modal-body" id="query">
+		<p>Even more fields and operator types are documented on the <a href="http://wiki.halon.se/Search_filter">search filter</a> page.</p>
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Action</label>
+				<label class="col-sm-2 control-label">is</label>
+				<div class="col-sm-2"><select class="form-control" id="query_action">
+					<option></option>
+					<option>QUARANTINE</option>
+					<option>DELIVER</option>
+					<option>DELETE</option>
+					<option>REJECT</option>
+					<option>DEFER</option>
+					<option>ERROR</option>
+					<option>QUEUE</option>
+				</select></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Date</label>
+				<label class="col-sm-2 control-label">between</label>
+				<div class="col-sm-8"><input type="datetime-local" class="form-control" id="query_date_1" placeholder="yyyy/mm/dd hh:mm:ss"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"></label>
+				<label class="col-sm-2 control-label">and</label>
+				<div class="col-sm-8"><input type="datetime-local" class="form-control" id="query_date_2" placeholder="yyyy/mm/dd hh:mm:ss"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">ID</label>
+				<label class="col-sm-2 control-label">is</label>
+				<div class="col-sm-8"><input type="text" class="form-control" id="query_mid" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">From</label>
+				<div class="col-sm-2"><select class="form-control" id="query_from_op"><option value="=">is</option><option value="~">contains</option></select></div>
+				<div class="col-sm-8"><input type="email" class="form-control" id="query_from" placeholder="user@example.com"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">To</label>
+				<div class="col-sm-2"><select class="form-control" id="query_to_op"><option value="=">is</option><option value="~">contains</option></select></div>
+				<div class="col-sm-8"><input type="email" class="form-control" id="query_to" placeholder="user@example.com"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">IP</label>
+				<div class="col-sm-2"><select class="form-control" id="query_ip_op"><option value="=">is</option><option value="~">contains</option></select></div>
+				<div class="col-sm-8"><input type="text" class="form-control" id="query_ip" placeholder="0.0.0.0"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Subject</label>
+				<div class="col-sm-2"><select class="form-control" id="query_subject_op"><option value="=">is</option><option value="~" selected>contains</option></select></div>
+				<div class="col-sm-8"><input type="text" class="form-control" id="query_subject" placeholder=""></div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-primary" onclick="$('#dosearch').click()">Search</button>
+	</div>
+	</div></div></div>
+	<script>
+		function datetime_to_obj(d) {
+			// according to http://stackoverflow.com/questions/24703698/html-input-type-datetime-local-setting-the-wrong-time-zone
+			d = d.replace(/-/g, "/");
+			d = d.replace("T", " ");
+			if (d.split(":").length < 3)
+				d += ":59";
+			var now = d.split(".");
+			if (now.length > 1)
+				d = now[0];
+			return Date.parse(d);
+		}
+
+		$(function() {
+			$("#query input, #query select").on("change keyup", function() {
+				var search = [];
+				if ($("#query_date_1").val() || $("#query_time_1").val())
+				{
+					var d = $("#query_date_1").val();
+					search.push("time>" + datetime_to_obj(d) / 1000);
+				}
+
+				if ($("#query_date_2").val() || $("#query_time_2").val())
+				{
+					var d = $("#query_date_2").val();
+					search.push("time<" + datetime_to_obj(d) / 1000);
+				}
+
+				if ($("#query_mid").val())
+					search.push("messageid=" + $("#query_mid").val());
+
+				if ($("#query_qid").val())
+					search.push("queueid=" + $("#query_qid").val());
+
+				if ($("#query_from").val())
+					search.push("from" + $("#query_from_op").val() + $("#query_from").val());
+
+				if ($("#query_to").val())
+					search.push("to" + $("#query_to_op").val() + $("#query_to").val());
+
+				if ($("#query_ip").val())
+					search.push("ip" + $("#query_ip_op").val() + $("#query_ip").val());
+
+				if ($("#query_sasl").val())
+					search.push("sasl" + $("#query_sasl_op").val() + $("#query_sasl").val());
+
+				if ($("#query_subject").val())
+					search.push("subject" + $("#query_subject_op").val() + '"' + $("#query_subject").val() + '"');
+
+				if ($("#query_action").val())
+					search.push("action=" + $("#query_action").val());
+
+				if ($("#query_mailserver").val())
+					search.push("server=" + $("#query_mailserver").val());
+
+				if ($("#query_mailtransport").val())
+					search.push("transport=" + $("#query_mailtransport").val());
+
+				$("#search").val(search.join(' '));
+			});
+		});
+	</script>
 <?php require_once BASE.'/partials/footer.php'; ?>
