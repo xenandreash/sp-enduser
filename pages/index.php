@@ -442,7 +442,7 @@ $has_multiple_sources = count($sources) > 1;
 			<div class="form-group">
 				<label class="col-sm-2 control-label">Action</label>
 				<label class="col-sm-2 control-label">is</label>
-				<div class="col-sm-2"><select class="form-control" id="query_action">
+				<div class="col-sm-8"><select class="form-control" id="query_action">
 					<option></option>
 					<option>QUARANTINE</option>
 					<option>DELIVER</option>
