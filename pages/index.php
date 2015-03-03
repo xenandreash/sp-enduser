@@ -329,7 +329,12 @@ $has_multiple_sources = count($sources) > 1;
 						<td class="visible-lg" <?php echo $td ?>><?php p(implode(', ', array_unique($printscores))) or pp('&nbsp;') ?></td>
 						<?php } ?>
 						<td <?php echo $td ?>>
-							<?php echo strftime2('%b %e %Y<span class="hidden-sm">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
+							<?php
+								if ($m['data']->msgts0 + (3600 * 24) > time())
+									echo strftime2('<span class="hidden-sm">%b %e %Y, </span>%H:%M<span class="hidden-sm">:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60);
+								else
+									echo strftime2('%b %e %Y<span class="hidden-sm">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60);
+							?>
 						</td>
 						<td class="hidden-sm">
 						<?php if ($m['type'] == 'queue') { ?>
