@@ -439,20 +439,22 @@ $has_multiple_sources = count($sources) > 1;
 	<div class="modal-body" id="query">
 		<p>Even more fields and operator types are documented on the <a href="http://wiki.halon.se/Search_filter">search filter</a> page.</p>
 		<form class="form-horizontal">
+			<?php if ($source != 'queue' && $source != 'quarantine') { ?>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">Action</label>
 				<label class="col-sm-2 control-label">is</label>
 				<div class="col-sm-8"><select class="form-control" id="query_action">
 					<option></option>
-					<option>QUARANTINE</option>
+					<?php if ($source != 'history') { ?><option>QUARANTINE</option><?php } ?>
 					<option>DELIVER</option>
 					<option>DELETE</option>
 					<option>REJECT</option>
 					<option>DEFER</option>
 					<option>ERROR</option>
-					<option>QUEUE</option>
+					<?php if ($source == 'log') { ?><option>QUEUE</option><?php } ?>
 				</select></div>
 			</div>
+			<?php } ?>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">Date</label>
 				<label class="col-sm-2 control-label">between</label>
