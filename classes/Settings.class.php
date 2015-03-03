@@ -246,6 +246,8 @@ class Settings
 	 */
 	public function getDefaultSource()
 	{
+		if ($this->getUseDatabaseLog())
+			return 'log';
 		return $this->defaultSource;
 	}
 	
