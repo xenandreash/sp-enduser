@@ -20,7 +20,7 @@ class Settings
 	private $pageName = "Halon SP for end-users";
 	private $loginText = null;
 	private $forgotText = null;
-	private $defaultSource = 'history';
+	private $defaultSource = 'all';
 	private $displayScores = false;
 	private $displayTextlog = false;
 	private $displayHistory = true;

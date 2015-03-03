@@ -46,7 +46,7 @@
 
 //$settings['mail']['from'] = 'Mail quarantine <postmaster@example.org>';
 //$settings['public-url'] = 'http://10.2.0.166/enduser/';
-//$settings['default-source'] = 'history';
+//$settings['default-source'] = 'all';
 //$settings['display-scores'] = false;
 //$settings['display-textlog'] = false;
 //$settings['display-history'] = true;
