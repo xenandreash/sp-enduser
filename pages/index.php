@@ -264,13 +264,13 @@ $has_multiple_sources = count($sources) > 1;
 				<thead>
 					<tr>
 						<th style="width:30px">&nbsp;</th>
-						<th class="hidden-xs">From</th>
-						<?php if ($has_multiple_addresses) { $cols++ ?><th class="hidden-xs">To</th><?php } ?>
+						<th>From</th>
+						<?php if ($has_multiple_addresses) { $cols++ ?><th>To</th><?php } ?>
 						<th>Subject</th>
-						<th class="hidden-xs hidden-sm">Status</th>
+						<th class="hidden-sm">Status</th>
 						<?php if ($display_scores) { $cols++ ?><th class="visible-lg" style="width: 120px;">Scores</th><?php } ?>
 						<th>Date</th>
-						<th style="width: 25px;" class="hidden-xs hidden-sm"></th>
+						<th style="width: 25px;" class="hidden-sm"></th>
 						<!-- Padding column to avoid having the OSX scrollbar cover the rightmost button -->
 						<th style="width: 20px;">&nbsp;</th>
 					</tr>
@@ -302,12 +302,12 @@ $has_multiple_sources = count($sources) > 1;
 							<span class="glyphicon glyphicon-<?php echo $action_icons[$m['data']->msgaction] ?>"></span>
 						<?php } ?>
 						</td>
-						<td class="hidden-xs" <?php echo $td ?>><?php p($m['data']->msgfrom) or pp('&nbsp;') ?></td>
+						<td <?php echo $td ?>><?php p($m['data']->msgfrom) or pp('&nbsp;') ?></td>
 						<?php if ($has_multiple_addresses) { ?>
-						<td class="hidden-xs" <?php echo $td ?>><?php p($m['data']->msgto) ?></td>
+						<td <?php echo $td ?>><?php p($m['data']->msgto) ?></td>
 						<?php } ?>
 						<td <?php echo $td; ?>><?php p($m['data']->msgsubject) or pp('&nbsp;'); ?></td>
-						<td class="hidden-xs hidden-sm" <?php echo $td ?>>
+						<td class="hidden-sm" <?php echo $td ?>>
 							<span title="<?php p(long_msg_status($m)); ?>"><?php p(short_msg_status($m)) or pp('&nbsp;'); ?></span>
 						</td>
 						<?php if ($display_scores) {
@@ -329,9 +329,9 @@ $has_multiple_sources = count($sources) > 1;
 						<td class="visible-lg" <?php echo $td ?>><?php p(implode(', ', array_unique($printscores))) or pp('&nbsp;') ?></td>
 						<?php } ?>
 						<td <?php echo $td ?>>
-							<?php echo strftime2('%b %e<span class="hidden-xs"> %Y</span><span class="hidden-sm hidden-xs">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
+							<?php echo strftime2('%b %e %Y<span class="hidden-sm">, %H:%M:%S</span>', $m['data']->msgts0 - $_SESSION['timezone'] * 60); ?>
 						</td>
-						<td class="hidden-xs hidden-sm">
+						<td class="hidden-sm">
 						<?php if ($m['type'] == 'queue') { ?>
 							<a title="Release/retry" data-action="retry"><i class="glyphicon glyphicon-play-circle"></i></a>
 						<?php } ?>
