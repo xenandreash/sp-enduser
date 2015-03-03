@@ -269,7 +269,7 @@ $has_multiple_sources = count($sources) > 1;
 						<th>Subject</th>
 						<th class="hidden-xs hidden-sm">Status</th>
 						<?php if ($display_scores) { $cols++ ?><th class="visible-lg" style="width: 120px;">Scores</th><?php } ?>
-						<th>&nbsp;</th>
+						<th>Date</th>
 						<th style="width: 25px;" class="hidden-xs hidden-sm"></th>
 						<!-- Padding column to avoid having the OSX scrollbar cover the rightmost button -->
 						<th style="width: 20px;">&nbsp;</th>
