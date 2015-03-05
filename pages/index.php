@@ -198,11 +198,17 @@ $has_multiple_sources = count($sources) > 1;
 				<form class="navbar-form navbar-left" role="search">
 					<input type="hidden" name="source" value="<?php p($source); ?>">
 					<div class="form-group">
-						<div class="input-group">
-							<input type="search" class="form-control" size="40" placeholder="Search" id="search" name="search" value="<?php p($search) ?>">
-							<div class="input-group-btn">
-								<button class="btn btn-default" id="dosearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-							</div>
+						<input type="search" class="form-control" size="40" placeholder="Search" id="search" name="search" value="<?php p($search) ?>">
+						<div class="btn-group">
+							<button class="btn btn-default" id="dosearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+							<?php if (count(Session::Get()->getAccess('domain')) > 0 && count(Session::Get()->getAccess('domain')) < 30) { ?>
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+							<ul id="search_domain" class="dropdown-menu" role="menu">
+							<?php foreach (Session::Get()->getAccess('domain') as $search_domain) { ?>
+								<li><a href="#"><?php p($search_domain) ?></a></li>
+							<?php } ?>
+							</ul>
+							<?php } ?>
 						</div>
 					</div>
 				</form>
@@ -517,6 +523,11 @@ $has_multiple_sources = count($sources) > 1;
 		}
 
 		$(function() {
+			$("#search_domain li a").on("click", function(event) {
+				event.preventDefault();
+				$("#search").val($("#search").val() + " to~%@" + $(this).text());
+				$('#dosearch').click();
+			});
 			$("#query input, #query select").on("change keyup", function() {
 				var search = [];
 				if ($("#query_date_1").val() || $("#query_time_1").val())
