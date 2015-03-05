@@ -86,6 +86,7 @@ foreach ($settings->getAuthSources() as $a) {
 		}
 		$ds = ldap_connect($a['uri']);
 		if (!$ds) continue;
+		ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
 		ldap_set_option($ds, LDAP_OPT_SIZELIMIT, 10000); // Increase and/or sync with AD if getting "Sizelimit exceeded"
 		if (is_array($a['options']))
 			foreach ($a['options'] as $k => $v)
