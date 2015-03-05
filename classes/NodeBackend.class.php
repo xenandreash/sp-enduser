@@ -144,7 +144,7 @@ class NodeBackend extends Backend
 		return $this->getMailIn_('mailHistory', $search, $errors);
 	}
 
-	public function getMailInQueueOrHistory($search, &$errors = array(), &$type)
+	public function getMailInQueueOrHistory($search, &$errors, &$type)
 	{
 		$type = 'queue';
 		$mail = $this->getMailInQueue($search, $errors);
