@@ -15,6 +15,7 @@ function header_active($page) {
 }
 
 $dbCredentials = $settings->getDBCredentials();
+$access = Session::Get()->getAccess();
 
 ?>
 <!DOCTYPE html>
@@ -56,6 +57,9 @@ $dbCredentials = $settings->getDBCredentials();
 						<li class="mail<?php header_active('index'); ?>"><a href="."><i class="glyphicon glyphicon-envelope"></i>&nbsp;Messages</a></li>
 						<?php if ($dbCredentials['dsn'] && $settings->getDisplayBWList()) { ?>
 						<li class="bwlist<?php header_active('bwlist'); ?>"><a href="?page=bwlist"><i class="glyphicon glyphicon-list"></i>&nbsp;Black/whitelist</a></li>
+						<?php } ?>
+						<?php if (count($access['domain']) > 0 && $settings->getDisplayStats()) { ?>
+						<li class="users<?php header_active('stats'); ?>"><a href="?page=stats"><i class="glyphicon glyphicon-stats"></i>&nbsp;Stats</a></li>
 						<?php } ?>
 					</ul>
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">

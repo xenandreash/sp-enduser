@@ -28,6 +28,7 @@ class Settings
 	private $displayQuarantine = true;
 	private $displayAll = true;
 	private $displayBWList = true;
+	private $displayStats = false;
 	private $displayListener = array('mailserver:1' => "Inbound");
 	private $displayTransport = array('mailtransport:2' => "Internet");
 	private $useDatabaseLog = false;
@@ -74,6 +75,7 @@ class Settings
 		$this->extract($this->displayQuarantine, 'display-quarantine');
 		$this->extract($this->displayAll, 'display-all');
 		$this->extract($this->displayBWList, 'display-bwlist');
+		$this->extract($this->displayStats, 'display-stats');
 		$this->extract($this->displayListener, 'display-listener');
 		$this->extract($this->displayTransport, 'display-transport');
 		$this->extract($this->useDatabaseLog, 'database-log');
@@ -313,6 +315,14 @@ class Settings
 	public function getDisplayBWList()
 	{
 		return $this->displayBWList;
+	}
+
+	/**
+	 * Returns whether the stats tab should be displayed.
+	 */
+	public function getDisplayStats()
+	{
+		return $this->displayStats;
 	}
 	
 	/**
