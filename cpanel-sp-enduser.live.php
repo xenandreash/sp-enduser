@@ -99,6 +99,9 @@ switch (@$_GET['page'])
 	case 'user':
 		require_once BASE.'/pages/user.php';
 	break;
+	case 'stats':
+		require_once BASE.'/pages/stats.php';
+	break;
 	case 'log':
 		require_once BASE.'/pages/log.php';
 	break;
