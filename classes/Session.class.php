@@ -92,6 +92,45 @@ class Session
 	{
 		return $key !== NULL ? $this->access[$key] : ($this->access ?: array());
 	}
+
+	public function checkAccessMail($mail)
+	{
+		// super admin
+		if (count($this->access) == 0)
+			return true;
+		// mail access
+		$access_mail = (is_array($this->access['mail']) ? $this->access['mail'] : array());
+		if (in_array($mail, $access_mail))
+			return true;
+		// domain access
+		$access_domain = (is_array($this->access['domain']) ? $this->access['domain'] : array());
+		$mail = explode('@', $mail);
+		if (count($mail) != 2)
+			return false;
+		if (in_array($mail[1], $access_domain))
+			return true;
+		return false;
+	}
+
+	public function checkAccessDomain($domain)
+	{
+		// super admin
+		if (count($this->access) == 0)
+			return true;
+		// domain access
+		$access_domain = (is_array($this->access['domain']) ? $this->access['domain'] : array());
+		if (in_array($domain, $access_domain))
+			return true;
+		return false;
+	}
+
+	public function checkAccessAll()
+	{
+		// super admin
+		if (count($this->access) == 0)
+			return true;
+		return false;
+	}
 	
 	/**
 	 * Returns the user's own SOAP username, if there is one.
