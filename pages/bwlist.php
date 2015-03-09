@@ -29,13 +29,16 @@ if ($_GET['list'] == 'delete') {
 }
 
 if ($_GET['list'] == 'add') {
-	if (strpos($_POST['value'], ' ') !== false) die('Invalid email address, domain name or IP address.');
-	if (strpos($_POST['access'], ' ') !== false) die('Invalid email address or domain name.');
-	if ($_POST['value'][0] == '@') $_POST['value'] = substr($_POST['value'], 1);
-	if ($_POST['access'][0] == '@') $_POST['access'] = substr($_POST['access'], 1);
-	if (checkAccess($_POST['access']) && ($_POST['type'] == 'whitelist' || $_POST['type'] == 'blacklist')) {
-		$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
-		$statement->execute(array(':access' => strtolower($_POST['access']), ':type' => $_POST['type'], ':value' => strtolower($_POST['value'])));
+	foreach ($_POST['access'] as $access)
+	{
+		if (strpos($_POST['value'], ' ') !== false) die('Invalid email address, domain name or IP address.');
+		if (strpos($access, ' ') !== false) die('Invalid email address or domain name.');
+		if ($_POST['value'][0] == '@') $_POST['value'] = substr($_POST['value'], 1);
+		if ($access[0] == '@') $access = substr($access, 1);
+		if (checkAccess($access) && ($_POST['type'] == 'whitelist' || $_POST['type'] == 'blacklist')) {
+			$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
+			$statement->execute(array(':access' => strtolower($access), ':type' => $_POST['type'], ':value' => strtolower($_POST['value'])));
+		}
 	}
 	header("Location: ?page=bwlist");
 	die();
@@ -138,7 +141,7 @@ foreach ($access as $type) {
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-md-3">For recipient</label>
+							<label class="control-label col-md-3" style="white-space: nowrap;">For recipient</label>
 							<div class="col-md-9">
 								<?php
 									$_access = array();
@@ -147,15 +150,24 @@ foreach ($access as $type) {
 											$_access[] = $type;
 										}
 									}
-									if (count($_access) > 0) {
+									if (count($_access) == 1) {
 								?>
-								<select name="access" class="form-control">
+									<input type="hidden" class="form-control" name="access[]" value="<?php p($_access[0]); ?>">
+									<p class="form-control-static"><?php p($_access[0]); ?></p>
+								<?php
+									} else if (count($_access) > 0) {
+								?>
 									<?php foreach ($_access as $a) { ?>
-										<option><?php echo $a; ?></option>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="access[]" value="<?php p($a); ?>">
+											<?php p($a); ?>
+										</label>
+									</div>
 									<?php } ?>
 								</select>
 								<?php } else { ?>
-									<input type="text" class="form-control" name="access" placeholder="everyone">
+									<input type="text" class="form-control" name="access[]" placeholder="everyone">
 								<?php } ?>
 								<p class="help-block">
 									Sender may be an IP address, an e-mail address, a domain name or a wildcard domain name starting with a dot (eg. .co.uk).
