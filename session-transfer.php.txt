@@ -12,7 +12,7 @@
    2. The 'session' id returned by this file should be used to redirect the user
     Location: session-transfer.php?session=<SESSION>
 
-   Simple example usage (be aware that a session is always recreated on the end-user regardless if the link
+   Simple example usage (be aware that a session is always created on the end-user regardless if the link
     is visited or not.
 
 	<?php
