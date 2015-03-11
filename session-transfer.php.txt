@@ -47,7 +47,7 @@
 		return $enduser.'session-transfer.php?session='.$result->session;
 	}
 
-	$link = halon_generateLink("User Name", array('example.se', 'exmaple.com'));
+	$link = halon_generateLink('User Name', array('example.se', 'example.com'));
 	echo '<a href="'.$link.'">End-user</a>';
 	?>
 
