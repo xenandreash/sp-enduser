@@ -186,7 +186,7 @@ foreach ($access as $type) {
 	<script>
 	$(document).ready(function() {
 		$('#check-all').click(function() {
-				$('input.recipient').attr('checked', true);
+				$('input.recipient').prop('checked', true);
 				return false;
 		});
 	});
