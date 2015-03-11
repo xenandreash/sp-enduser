@@ -38,6 +38,8 @@ if (isset($_GET['ajax-pie'])) {
 	foreach ($settings->getNodes() as $node) {
 		try {
 			$ss = $node->soap()->statList(array('key1' => $keyname.'%', 'key2' => $inbound, 'key3' => $_GET['ajax-pie'], 'offset' => 0, 'limit' => 10))->result->item;
+			if (!is_array($ss))
+				continue;
 			foreach ($ss as $s) {
 				$k = str_replace($keyname, '', $s->key1);
 				if (!$stats[$k]) $stats[$k] = 0;
