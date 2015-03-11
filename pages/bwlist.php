@@ -157,10 +157,11 @@ foreach ($access as $type) {
 								<?php
 									} else if (count($_access) > 0) {
 								?>
+									<button id="check-all" class="btn btn-info">Select all</button>
 									<?php foreach ($_access as $a) { ?>
 									<div class="checkbox">
 										<label>
-											<input type="checkbox" name="access[]" value="<?php p($a); ?>">
+											<input type="checkbox" class="recipient" name="access[]" value="<?php p($a); ?>">
 											<?php p($a); ?>
 										</label>
 									</div>
@@ -182,4 +183,12 @@ foreach ($access as $type) {
 			</div>
 		</div>
 	</div>
+	<script>
+	$(document).ready(function() {
+		$('#check-all').click(function() {
+				$('input.recipient').attr('checked', true);
+				return false;
+		});
+	});
+	</script>
 <?php require_once BASE.'/partials/footer.php'; ?>
