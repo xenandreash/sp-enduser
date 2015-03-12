@@ -177,7 +177,7 @@ foreach ($users as $email => $access) {
 				$time = time();
 				$message = $m['id'].$m['data']->id.$time.$m['data']->msgid;
 				$hash = hash_hmac('sha256', $message, $settings->getDigestSecret());
-				$mail['release-url'] = $settings->getPublicURL().'/?page=digest&queueid='.$m['data']->id.'&node='.$m['id'].'&time='.$time.'&sign='.$hash;
+				$mail['release-url'] = $settings->getPublicURL().'/?page=digest&amp;queueid='.$m['data']->id.'&amp;node='.$m['id'].'&amp;time='.$time.'&amp;sign='.$hash;
 			}
 			$mail['time'] = $m['data']->msgts;
 			$mail['from'] = $m['data']->msgfrom;
