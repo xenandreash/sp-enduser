@@ -38,6 +38,16 @@ $title = 'Messages';
 $javascript[] = 'static/js/index.js';
 require_once BASE.'/partials/header.php';
 
+$action_colors = array(
+	'DELIVER' => '#8c1',
+	'QUEUE' => '#1ad',
+	'QUARANTINE' => '#f70',
+	'REJECT' => '#ba0f4b',
+	'DELETE' => '#333',
+	'BOUNCE' => '#333',
+	'ERROR' => '#333',
+	'DEFER' => '#b5b',
+);
 $action_classes = array(
 	'DELIVER' => 'default',
 	'QUEUE' => 'info',
@@ -358,7 +368,6 @@ $has_multiple_sources = count($sources) > 1;
 				</form>
 				</tbody>
 			</table>
-			
 			<div class="list-group not-rounded visible-xs">
 				<?php
 				$i = 1;
@@ -368,7 +377,13 @@ $has_multiple_sources = count($sources) > 1;
 						if ($i > $size) { break; }
 						$i++;
 				?>
-						<a href="<?php p(get_preview_link($m)); ?>" class="list-group-item list-group-item-<?php p($action_classes[$m['data']->msgaction]); ?>">
+						<a href="<?php p(get_preview_link($m)); ?>" class="list-group-item" style="padding: 0px; border-left: 0;">
+						<table cellspacing="0" cellpadding="0" style="width: 100%;">
+						<tr>
+						<td style="background-color: <?php p($action_colors[$m['data']->msgaction]); ?>; text-align: center; width: 20px;">
+							<span style="color: #fff;" class="glyphicon glyphicon-<?php echo $action_icons[$m['data']->msgaction] ?>"></span>
+						</td>
+						<td style="padding: 5px;">
 							<h4 class="list-group-item-heading">
 								<small class="pull-right">
 								<?php
@@ -389,6 +404,7 @@ $has_multiple_sources = count($sources) > 1;
 								<?php } ?>
 								<?php p($m['data']->msgsubject); ?>
 							</p>
+						</td></tr></table>
 						</a>
 					<?php } ?>
 				<?php } ?>
