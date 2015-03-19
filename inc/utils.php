@@ -122,9 +122,12 @@ function generate_random_password()
 	return $pass;
 }
 
-function ldap_escape($data)
+if (!function_exists('ldap_escape'))
 {
-	return str_replace(array('\\', '*', '(', ')', '\0'), array('\\5c', '\\2a', '\\28', '\\29', '\\00'), $data);
+	function ldap_escape($data)
+	{
+		return str_replace(array('\\', '*', '(', ')', '\0'), array('\\5c', '\\2a', '\\28', '\\29', '\\00'), $data);
+	}
 }
 
 function has_auth_database() {
