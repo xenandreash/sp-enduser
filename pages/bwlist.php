@@ -52,6 +52,30 @@ $row_classes = array(
 	'blacklist' => 'danger',
 );
 
+function print_row($type, $value, $accesses) {
+	$access = implode(', ', $accesses);
+?>
+							<td class="hidden-xs"><?php p($type); ?></td>
+							<td class="hidden-xs"><?php p($value); ?></td>
+							<td class="hidden-xs"><?php p($access); ?></td>
+							<td class="visible-xs" colspan="2">
+								<p>
+									<i class="glyphicon glyphicon-pencil"></i>&nbsp;
+									<?php p($value); ?>
+								</p>
+								<p>
+									<i class="glyphicon glyphicon-inbox"></i>&nbsp;
+									<?php p($access); ?>
+								</p>
+							</td>
+							<td class="pad-child-instead" style="vertical-align: middle;">
+							<?php if (count($accesses) == 1) { ?>
+								<a title="Remove" href="?page=bwlist&list=delete&access=<?php p($accesses[0]) ?>&type=<?php p($type) ?>&value=<?php p($value) ?>"><i class="glyphicon glyphicon-remove"></i></a>
+							<?php } ?>
+							</td>
+<?
+}
+
 $result = array();
 
 $access = Session::Get()->getAccess();
@@ -70,6 +94,12 @@ foreach ($access as $type) {
 			$result[] = $row;
 	}
 }
+
+// For users with many access levels; print them more condensed
+$result2 = array();
+foreach ($result as $row)
+	$result2[$row['type']][$row['value']][] = $row['access'];
+
 ?>
 	<div class="container-fluid">
 		<div class="col-md-6 col-lg-8">
@@ -80,36 +110,40 @@ foreach ($access as $type) {
 				<table class="table">
 					<thead class="hidden-xs">
 						<tr>
-							<th class="hidden-xs">Type</th>
+							<th class="hidden-xs" style="width: 100px">Type</th>
 							<th class="hidden-xs">Sender</th>
 							<th class="hidden-xs">For recipient</th>
 							<th class="visible-xs"></th>
-							<th style="width: 20px"></th>
+							<th style="width: 30px"></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
-						foreach ($result as $row) {
+						$id = 0;
+						foreach ($result2 as $type => $items) {
+							foreach ($items as $value => $accesses) {
+								if (count($accesses) > 1) {
+									$id++;
 						?>
-						<tr class="<?php p($row_classes[$row['type']] ?: 'info'); ?>">
-							<td class="hidden-xs"><?php p($row['type']); ?></td>
-							<td class="hidden-xs"><?php p($row['value']); ?></td>
-							<td class="hidden-xs"><?php if (strlen($row['access']) != 0) { p($row['access']); } else { echo '<span class="text-muted">everyone</span>'; } ?></td>
-							<td class="visible-xs" colspan="2">
-								<p>
-									<i class="glyphicon glyphicon-pencil"></i>&nbsp;
-									<?php p($row['value']); ?>
-								</p>
-								<p>
-									<i class="glyphicon glyphicon-inbox"></i>&nbsp;
-									<?php if (strlen($row['access']) != 0) { p($row['access']); } else { echo '<span class="text-muted">everyone</span>'; } ?>
-								</p>
-							</td>
-							<td class="pad-child-instead" style="vertical-align: middle;">
-								<a title="Remove" href="?page=bwlist&list=delete&access=<?php p($row['access']) ?>&type=<?php p($row['type']) ?>&value=<?php p($row['value']) ?>"><i class="glyphicon glyphicon-remove"></i></a>
-							</td>
+						<tr style="cursor:pointer" onclick="$('.hidden-<?php p($id) ?>').show();$(this).hide();" class="<?php p($row_classes[$type] ?: 'info'); ?>">
+						<?php print_row($type, $value, $accesses) ?>
 						</tr>
 						<?php
+									foreach ($accesses as $access) {
+						?>
+						<tr style="display:none" class="hidden-<?php p($id) ?> <?php p($row_classes[$type] ?: 'info'); ?>">
+						<?php print_row($type, $value, array($access)) ?>
+						</tr>
+						<?php
+									}
+								} else {
+						?>
+						<tr class="<?php p($row_classes[$type] ?: 'info'); ?>">
+						<?php print_row($type, $value, $accesses) ?>
+						</tr>
+						<?php
+								}
+							}
 						}
 						if (count($result) == 0)
 							echo '<tr><td colspan="4" class="text-muted">No black/whitelist</td></tr>';
@@ -145,7 +179,7 @@ foreach ($access as $type) {
 							<div class="col-md-9">
 								<?php
 									$_access = array();
-									foreach ($access as $a) {
+									foreach (Session::Get()->getAccess() as $a) {
 										foreach ($a as $type) {
 											$_access[] = $type;
 										}
@@ -183,6 +217,16 @@ foreach ($access as $type) {
 			</div>
 		</div>
 	</div>
+	<style>
+		table {
+			table-layout: fixed;
+		}
+		td {
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+	</style>
 	<script>
 	$(document).ready(function() {
 		$('#check-all').click(function() {
