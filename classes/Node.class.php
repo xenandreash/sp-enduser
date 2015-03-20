@@ -31,7 +31,7 @@ class Node
 			'password' => $password,
 			'connection_timeout' => 3,
 			'features' => SOAP_SINGLE_ELEMENT_ARRAYS,
-			'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP
+			'compression' => SOAP_COMPRESSION_ACCEPT | (SOAP_COMPRESSION_GZIP | 0)
 			);
 		
 		if ($async)
