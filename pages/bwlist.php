@@ -73,7 +73,7 @@ function print_row($type, $value, $accesses) {
 								<a title="Remove" href="?page=bwlist&list=delete&access=<?php p($accesses[0]) ?>&type=<?php p($type) ?>&value=<?php p($value) ?>"><i class="glyphicon glyphicon-remove"></i></a>
 							<?php } ?>
 							</td>
-<?
+<?php
 }
 
 $result = array();
