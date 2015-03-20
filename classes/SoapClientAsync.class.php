@@ -1,6 +1,13 @@
 <?php
 
 class SoapClientAsync extends SoapClient {
+	function __construct($wsdl, $options = array()) {
+		$this->login = $options['login'];
+		$this->password = $options['password'];
+		$this->connection_timeout = $options['connection_timeout'];
+		parent::__construct($wsdl, $options);
+	}
+
 	function __doRequest($request, $location, $action, $version, $one_way = 0) {
 		global $_soapResponses;
 		global $_soapRequests;
@@ -29,10 +36,10 @@ class SoapClientAsync extends SoapClient {
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_ENCODING, "");
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
-		curl_setopt($ch, CURLOPT_TIMEOUT, $this->_connection_timeout ?: 10);
+		curl_setopt($ch, CURLOPT_TIMEOUT, $this->connection_timeout ?: 10);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
-		curl_setopt($ch, CURLOPT_USERPWD, $this->_login.':'.$this->_password);
+		curl_setopt($ch, CURLOPT_USERPWD, $this->login.':'.$this->password);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 		$_soapRequests[$id] = $ch;
