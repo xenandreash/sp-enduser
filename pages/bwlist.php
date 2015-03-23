@@ -71,7 +71,7 @@ function print_row($type, $value, $accesses, $icon = '') {
 							<td style="width: 30px; vertical-align: middle">
 								<?php echo $icon ?>
 							<?php if (count($accesses) == 1) { ?>
-								<a title="Remove" href="?page=bwlist&list=delete&access=<?php p($accesses[0]) ?>&type=<?php p($type) ?>&value=<?php p($value) ?>"><i class="glyphicon glyphicon-remove"></i></a>
+								<a title="Remove" href="?page=bwlist&list=delete&access=<?php echo urlencode($accesses[0]) ?>&type=<?php p($type) ?>&value=<?php echo urlencode($value) ?>"><i class="glyphicon glyphicon-remove"></i></a>
 							<?php } ?>
 							</td>
 <?php
