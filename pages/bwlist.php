@@ -52,13 +52,13 @@ $row_classes = array(
 	'blacklist' => 'danger',
 );
 
-function print_row($type, $value, $accesses) {
+function print_row($type, $value, $accesses, $icon = '') {
 	$access = implode(', ', $accesses);
 ?>
 							<td class="hidden-xs"><?php p($type); ?></td>
 							<td class="hidden-xs"><?php p($value); ?></td>
 							<td class="hidden-xs"><?php p($access); ?></td>
-							<td class="visible-xs" colspan="2">
+							<td class="visible-xs">
 								<p>
 									<i class="glyphicon glyphicon-pencil"></i>&nbsp;
 									<?php p($value); ?>
@@ -68,7 +68,8 @@ function print_row($type, $value, $accesses) {
 									<?php p($access); ?>
 								</p>
 							</td>
-							<td class="pad-child-instead" style="vertical-align: middle;">
+							<td style="width: 30px; vertical-align: middle">
+								<?php echo $icon ?>
 							<?php if (count($accesses) == 1) { ?>
 								<a title="Remove" href="?page=bwlist&list=delete&access=<?php p($accesses[0]) ?>&type=<?php p($type) ?>&value=<?php p($value) ?>"><i class="glyphicon glyphicon-remove"></i></a>
 							<?php } ?>
@@ -125,8 +126,8 @@ foreach ($result as $row)
 								if (count($accesses) > 1) {
 									$id++;
 						?>
-						<tr style="cursor:pointer" onclick="$('.hidden-<?php p($id) ?>').show();$(this).hide();" class="<?php p($row_classes[$type] ?: 'info'); ?>">
-						<?php print_row($type, $value, $accesses) ?>
+						<tr style="cursor:pointer" data-toggle="<?php p($id) ?>" class="toggle <?php p($row_classes[$type] ?: 'info'); ?>">
+						<?php print_row($type, $value, $accesses, '<span class="expand-icon glyphicon glyphicon-expand"></span>') ?>
 						</tr>
 						<?php
 									foreach ($accesses as $access) {
@@ -232,6 +233,14 @@ foreach ($result as $row)
 		$('#check-all').click(function() {
 				$('input.recipient').prop('checked', true);
 				return false;
+		});
+		$(".toggle").click(function() {
+			$(".hidden-" + $(this).data("toggle")).toggle();
+			var icon = $(this).find(".expand-icon");
+			if (icon.hasClass('glyphicon-expand'))
+				icon.addClass('glyphicon-collapse-down').removeClass('glyphicon-expand');
+			else
+				icon.addClass('glyphicon-expand').removeClass('glyphicon-collapse-down');
 		});
 	});
 	</script>
