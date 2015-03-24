@@ -10,7 +10,7 @@ if (!$logs) die('logs disabled');
 if (isset($_GET['ajax']))
 {
 	// poll, has it's own permission system
-	if (!@in_array($_GET['cmd_id'], $_SESSION['logs_id']))
+	if (!@in_array($_GET['cmd_id'], $_SESSION['logs_id'], true))
 		die(json_encode(array("invalid session\n")));
 
 	$client = $settings->getNode($_GET['cmd_node'])->soap();

@@ -100,14 +100,14 @@ class Session
 			return true;
 		// mail access
 		$access_mail = (is_array($this->access['mail']) ? $this->access['mail'] : array());
-		if (in_array($mail, $access_mail))
+		if (in_array($mail, $access_mail, true))
 			return true;
 		// domain access
 		$access_domain = (is_array($this->access['domain']) ? $this->access['domain'] : array());
 		$mail = explode('@', $mail);
 		if (count($mail) != 2)
 			return false;
-		if (in_array($mail[1], $access_domain))
+		if (in_array($mail[1], $access_domain, true))
 			return true;
 		return false;
 	}
@@ -119,7 +119,7 @@ class Session
 			return true;
 		// domain access
 		$access_domain = (is_array($this->access['domain']) ? $this->access['domain'] : array());
-		if (in_array($domain, $access_domain))
+		if (in_array($domain, $access_domain, true))
 			return true;
 		return false;
 	}
