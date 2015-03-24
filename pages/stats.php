@@ -9,7 +9,7 @@ require_once BASE.'/inc/utils.php';
  * Use SOAP "future" instead for parallell config call
  * Support "outbound" aka more listeners
  */
-if (!$settings->getDisplayStats()) die('the setting show-stats isnt enabled');
+if (!$settings->getDisplayStats()) die("The setting display-stats isn't enabled");
 
 if (isset($_GET['ajax-rrd'])) {
 	if (!Session::Get()->checkAccessDomain($_GET['ajax-rrd']))
