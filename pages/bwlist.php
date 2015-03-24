@@ -78,10 +78,14 @@ function print_row($type, $value, $accesses, $icon = '') {
 }
 
 $result = array();
+$offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
+$limit = isset($_GET['limit']) ? intval($_GET['limit']) : 100;
 
 $access = Session::Get()->getAccess();
 if (count($access) == 0) {
-	$statement = $dbh->prepare("SELECT * FROM bwlist ORDER BY type DESC;");
+	$statement = $dbh->prepare("SELECT * FROM bwlist ORDER BY type DESC, value ASC LIMIT :offset, :limit;");
+	$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
+	$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 	$statement->execute();
 	while ($row = $statement->fetch())
 		$result[] = $row;
@@ -89,12 +93,17 @@ if (count($access) == 0) {
 
 foreach ($access as $type) {
 	foreach ($type as $item) {
-		$statement = $dbh->prepare("SELECT * FROM bwlist WHERE access = :access ORDER BY type DESC;");
-		$statement->execute(array(':access' => $item));
+		$statement = $dbh->prepare("SELECT * FROM bwlist WHERE access = :access ORDER BY type DESC, value ASC LIMIT :offset, :limit;");
+		$statement->bindValue(':access', $item);
+		$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
+		$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+		$statement->execute();
 		while ($row = $statement->fetch())
 			$result[] = $row;
 	}
 }
+
+$pagemore = count($result) > $limit;
 
 // For users with many access levels; print them more condensed
 $result2 = array();
@@ -152,6 +161,12 @@ foreach ($result as $row)
 					</tbody>
 				</table>
 			</div>
+			<nav>
+				<ul class="pager">
+					<li class="previous<?php if ($offset == 0) p(" disabled") ?>"><a href="javascript:history.go(-1);"><span aria-hidden="true">&larr;</span> Previous</a></li>
+					<li class="next<?php if (!$pagemore) p(" disabled") ?>"><a href="?page=bwlist&offset=<?php p($offset + $limit + 1); ?>&limit=<?php p($limit); ?>">Next <span aria-hidden="true">&rarr;</span></a></li>
+				</ul>
+			</nav>
 		</div>
 		<div class="col-md-6 col-lg-4">
 			<div class="panel panel-default">
