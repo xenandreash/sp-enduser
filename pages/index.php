@@ -22,13 +22,17 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 	}
 	foreach ($actions as $soapid => $list)
 	{
-		$id = implode(',', $list);
-		if (isset($_POST['bounce']))
-			$settings->getNode($soapid)->soap()->mailQueueBounce(array('id' => $id));
-		if (isset($_POST['delete']))
-			$settings->getNode($soapid)->soap()->mailQueueDelete(array('id' => $id));
-		if (isset($_POST['retry']))
-			$settings->getNode($soapid)->soap()->mailQueueRetry(array('id' => $id));
+		try {
+			$id = implode(',', $list);
+			if (isset($_POST['bounce']))
+				$settings->getNode($soapid)->soap()->mailQueueBounce(array('id' => $id));
+			if (isset($_POST['delete']))
+				$settings->getNode($soapid)->soap()->mailQueueDelete(array('id' => $id));
+			if (isset($_POST['retry']))
+				$settings->getNode($soapid)->soap()->mailQueueRetry(array('id' => $id));
+		} catch (SoapFault $f) {
+			die($f->getMessage());
+		}
 	}
 	header('Location: '.$_SERVER['REQUEST_URI']);
 	die();

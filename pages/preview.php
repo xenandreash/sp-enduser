@@ -42,12 +42,16 @@ if ($type == 'log') {
 
 	// Action are only available for mail in queue
 	if (isset($_POST['action']) && $type == 'queue') {
-		if ($_POST['action'] == 'bounce')
-			$client->mailQueueBounce(array('id' => $mail->id));
-		else if ($_POST['action'] == 'delete')
-			$client->mailQueueDelete(array('id' => $mail->id));
-		else if ($_POST['action'] == 'retry')
-			$client->mailQueueRetry(array('id' => $mail->id));
+		try {
+			if ($_POST['action'] == 'bounce')
+				$client->mailQueueBounce(array('id' => $mail->id));
+			else if ($_POST['action'] == 'delete')
+				$client->mailQueueDelete(array('id' => $mail->id));
+			else if ($_POST['action'] == 'retry')
+				$client->mailQueueRetry(array('id' => $mail->id));
+		} catch (SoapFault $f) {
+			die($f->getMessage());
+		}
 		header('Location: ?page=preview&type=queue&id='.$mail->id.'&node='.$node->getId());
 		die();
 	}
