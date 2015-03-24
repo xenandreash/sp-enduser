@@ -208,12 +208,18 @@ foreach ($result as $row)
 									} else if (count($_access) > 0) {
 								?>
 									<button id="check-all" class="btn btn-info">Select all</button>
+									<?php if (count($_access) > 5) { ?>
+									<div class="panel panel-default" style="height: 115px; padding-left: 10px; margin-top: 5px; overflow-y: scroll;">
+									<?php } ?>
 									<?php foreach ($_access as $a) { ?>
 									<div class="checkbox">
 										<label>
 											<input type="checkbox" class="recipient" name="access[]" value="<?php p($a); ?>">
 											<?php p($a); ?>
 										</label>
+									</div>
+									<?php } ?>
+									<?php if (count($_access) > 5) { ?>
 									</div>
 									<?php } ?>
 								</select>
