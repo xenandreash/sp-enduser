@@ -72,7 +72,7 @@ function print_row($type, $value, $accesses, $icon = '') {
 								</p>
 							</td>
 							<td style="width: 30px; vertical-align: middle">
-								<a title="Remove" href="?page=bwlist&list=delete&access=<?php echo urlencode(implode(',', $accesses)) ?>&type=<?php p($type) ?>&value=<?php echo urlencode($value) ?>"><i class="glyphicon glyphicon-remove"></i></a>
+								<a onclick="return confirm('Really delete <?php p($type) ?> <?php p($value) ?> for <?php echo count($accesses)?> recipients?')" title="Remove" href="?page=bwlist&list=delete&access=<?php echo urlencode(implode(',', $accesses)) ?>&type=<?php p($type) ?>&value=<?php echo urlencode($value) ?>"><i class="glyphicon glyphicon-remove"></i></a>
 							</td>
 <?php
 }
