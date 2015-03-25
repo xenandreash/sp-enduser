@@ -79,7 +79,7 @@ function print_row($type, $value, $accesses, $icon = '') {
 
 $result = array();
 $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
-$limit = isset($_GET['limit']) ? intval($_GET['limit']) : 100;
+$limit = isset($_GET['limit']) ? intval($_GET['limit']) : 500;
 
 $access = Session::Get()->getAccess();
 if (count($access) == 0) {
@@ -89,21 +89,24 @@ if (count($access) == 0) {
 	$statement->execute();
 	while ($row = $statement->fetch())
 		$result[] = $row;
+} else {
+	$in_access = array();
+	foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => $v)
+		$in_access[] = ':access'.$k;
+	$in = implode(',', $in_access);
+	$sql = 'SELECT * FROM bwlist WHERE access IN ('.$in.') ORDER BY type DESC, value ASC LIMIT :offset, :limit;';
+	$statement = $dbh->prepare($sql);
+	$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
+	$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+	foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => $id)
+		$statement->bindValue(':access'.$k, $id);
+	$statement->execute();
+	while ($row = $statement->fetch())
+		$result[] = $row;
 }
-
-foreach ($access as $type) {
-	foreach ($type as $item) {
-		$statement = $dbh->prepare("SELECT * FROM bwlist WHERE access = :access ORDER BY type DESC, value ASC LIMIT :offset, :limit;");
-		$statement->bindValue(':access', $item);
-		$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
-		$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-		$statement->execute();
-		while ($row = $statement->fetch())
-			$result[] = $row;
-	}
-}
-
 $pagemore = count($result) > $limit;
+if ($pagemore)
+	array_pop($result);
 
 // For users with many access levels; print them more condensed
 $result2 = array();
@@ -164,7 +167,7 @@ foreach ($result as $row)
 			<nav>
 				<ul class="pager">
 					<li class="previous<?php if ($offset == 0) p(" disabled") ?>"><a href="javascript:history.go(-1);"><span aria-hidden="true">&larr;</span> Previous</a></li>
-					<li class="next<?php if (!$pagemore) p(" disabled") ?>"><a href="?page=bwlist&offset=<?php p($offset + $limit + 1); ?>&limit=<?php p($limit); ?>">Next <span aria-hidden="true">&rarr;</span></a></li>
+					<li class="next<?php if (!$pagemore) p(" disabled") ?>"><a href="?page=bwlist&offset=<?php p($offset + $limit); ?>&limit=<?php p($limit); ?>">Next <span aria-hidden="true">&rarr;</span></a></li>
 				</ul>
 			</nav>
 		</div>
