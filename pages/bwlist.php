@@ -55,12 +55,13 @@ $row_classes = array(
 );
 
 function print_row($type, $value, $accesses, $icon = '') {
-	$access = implode(', ', $accesses);
+	$access = implode(', ', array_map(function($v) { return $v === '' ? '<span class="text-muted">everyone</span>' : htmlspecialchars($v);}, $accesses));
+	if (count($accesses) > 1) $access = '<span class="badge">'.count($accesses).'</span> '.$access;
 ?>
 							<td class="hidden-xs" style="width:30px"><?php echo $icon ?></td>
 							<td class="hidden-xs"><?php p($type); ?></td>
 							<td class="hidden-xs"><?php p($value); ?></td>
-							<td class="hidden-xs"><?php p($access); ?></td>
+							<td class="hidden-xs"><?php echo $access; ?></td>
 							<td class="visible-xs">
 								<p>
 									<i class="glyphicon glyphicon-pencil"></i>&nbsp;
@@ -68,7 +69,7 @@ function print_row($type, $value, $accesses, $icon = '') {
 								</p>
 								<p>
 									<i class="glyphicon glyphicon-inbox"></i>&nbsp;
-									<?php p($access); ?>
+									<?php echo $access; ?>
 								</p>
 							</td>
 							<td style="width: 30px; vertical-align: middle">
@@ -86,7 +87,7 @@ $access = Session::Get()->getAccess();
 if (count($access) == 0) {
 	$foundrows = '';
 	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
-		$foundrows = 'SQL_CALC_FOUND_ROWS ';
+		$foundrows = 'SQL_CALC_FOUND_ROWS';
 	$statement = $dbh->prepare("SELECT $foundrows * FROM bwlist ORDER BY type DESC, value ASC LIMIT :offset, :limit;");
 	$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 	$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
@@ -94,7 +95,7 @@ if (count($access) == 0) {
 	while ($row = $statement->fetch())
 		$result[] = $row;
 	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
-		$total = $dbh->query('SELECT FOUND_ROWS()');
+		$total = $dbh->query('SELECT FOUND_ROWS();');
 		$total = (int)$total->fetchColumn();
 	}
 } else {
@@ -104,7 +105,7 @@ if (count($access) == 0) {
 	$in = implode(',', array_keys($in_access));
 	$foundrows = '';
 	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
-		$foundrows = 'SQL_CALC_FOUND_ROWS ';
+		$foundrows = 'SQL_CALC_FOUND_ROWS';
 	$sql = "SELECT $foundrows * FROM bwlist WHERE access IN ({$in}) ORDER BY type DESC, value ASC LIMIT :offset, :limit;";
 	$statement = $dbh->prepare($sql);
 	$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
@@ -115,7 +116,7 @@ if (count($access) == 0) {
 	while ($row = $statement->fetch())
 		$result[] = $row;
 	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
-		$total = $dbh->query('SELECT FOUND_ROWS()');
+		$total = $dbh->query('SELECT FOUND_ROWS();');
 		$total = (int)$total->fetchColumn();
 	}
 }
