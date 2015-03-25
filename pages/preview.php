@@ -14,8 +14,8 @@ if ($type == 'log') {
 	$mail = $dbBackend->getMail($id);
 	if (!$mail) die('Invalid mail');
 
-	// If in queue, get it from SOAP if possible (so that we get more info)
-	if ($mail->msgaction == 'QUEUE' || $mail->msgaction == 'QUARANTINE')
+	// If in queue, quarantine or if text-log is enabled, get it from SOAP if possible (so that we get more info)
+	if ($mail->msgaction == 'QUEUE' || $mail->msgaction == 'QUARANTINE' || $settings->getDisplayTextlog() == true)
 		$node = $settings->getNodeBySerial($mail->serialno);
 	if ($node !== null) {
 		$client = $node->soap();
