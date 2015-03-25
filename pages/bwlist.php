@@ -20,9 +20,11 @@ function checkAccess($perm)
 $dbh = $settings->getDatabase();
 
 if ($_GET['list'] == 'delete') {
-	if (checkAccess($_GET['access'])) {
+	foreach (explode(',', $_GET['access']) as $a) {
+		if (!checkAccess($a))
+			die('invalid access');
 		$statement = $dbh->prepare("DELETE FROM bwlist WHERE access = :access AND bwlist.type = :type AND bwlist.value = :value;");
-		$statement->execute(array(':access' => $_GET['access'], ':type' => $_GET['type'], ':value' => $_GET['value']));
+		$statement->execute(array(':access' => $a, ':type' => $_GET['type'], ':value' => $_GET['value']));
 	}
 	header("Location: ?page=bwlist");
 	die();
@@ -55,6 +57,7 @@ $row_classes = array(
 function print_row($type, $value, $accesses, $icon = '') {
 	$access = implode(', ', $accesses);
 ?>
+							<td class="hidden-xs" style="width:30px"><?php echo $icon ?></td>
 							<td class="hidden-xs"><?php p($type); ?></td>
 							<td class="hidden-xs"><?php p($value); ?></td>
 							<td class="hidden-xs"><?php p($access); ?></td>
@@ -69,10 +72,7 @@ function print_row($type, $value, $accesses, $icon = '') {
 								</p>
 							</td>
 							<td style="width: 30px; vertical-align: middle">
-								<?php echo $icon ?>
-							<?php if (count($accesses) == 1) { ?>
-								<a title="Remove" href="?page=bwlist&list=delete&access=<?php echo urlencode($accesses[0]) ?>&type=<?php p($type) ?>&value=<?php echo urlencode($value) ?>"><i class="glyphicon glyphicon-remove"></i></a>
-							<?php } ?>
+								<a title="Remove" href="?page=bwlist&list=delete&access=<?php echo urlencode(implode(',', $accesses)) ?>&type=<?php p($type) ?>&value=<?php echo urlencode($value) ?>"><i class="glyphicon glyphicon-remove"></i></a>
 							</td>
 <?php
 }
@@ -92,14 +92,14 @@ if (count($access) == 0) {
 } else {
 	$in_access = array();
 	foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => $v)
-		$in_access[] = ':access'.$k;
-	$in = implode(',', $in_access);
+		$in_access[':access'.$k] = $v;
+	$in = implode(',', array_keys($in_access));
 	$sql = 'SELECT * FROM bwlist WHERE access IN ('.$in.') ORDER BY type DESC, value ASC LIMIT :offset, :limit;';
 	$statement = $dbh->prepare($sql);
 	$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 	$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-	foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => $id)
-		$statement->bindValue(':access'.$k, $id);
+	foreach ($in_access as $k => $v)
+		$statement->bindValue($k, $v);
 	$statement->execute();
 	while ($row = $statement->fetch())
 		$result[] = $row;
@@ -123,6 +123,7 @@ foreach ($result as $row)
 				<table class="table">
 					<thead class="hidden-xs">
 						<tr>
+							<th class="hidden-xs" style="width: 30px"></th>
 							<th class="hidden-xs" style="width: 100px">Type</th>
 							<th class="hidden-xs">Sender</th>
 							<th class="hidden-xs">For recipient</th>
@@ -145,7 +146,7 @@ foreach ($result as $row)
 									foreach ($accesses as $access) {
 						?>
 						<tr style="display:none" class="hidden-<?php p($id) ?> <?php p($row_classes[$type] ?: 'info'); ?>">
-						<?php print_row($type, $value, array($access)) ?>
+						<?php print_row($type, $value, array($access), '<sup style="opacity:.5">L</sup>') ?>
 						</tr>
 						<?php
 									}
