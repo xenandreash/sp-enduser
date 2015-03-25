@@ -81,20 +81,31 @@ $result = array();
 $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 500;
 
+$total = null;
 $access = Session::Get()->getAccess();
 if (count($access) == 0) {
-	$statement = $dbh->prepare("SELECT * FROM bwlist ORDER BY type DESC, value ASC LIMIT :offset, :limit;");
+	$foundrows = '';
+	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
+		$foundrows = 'SQL_CALC_FOUND_ROWS ';
+	$statement = $dbh->prepare("SELECT $foundrows * FROM bwlist ORDER BY type DESC, value ASC LIMIT :offset, :limit;");
 	$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 	$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 	$statement->execute();
 	while ($row = $statement->fetch())
 		$result[] = $row;
+	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
+		$total = $dbh->query('SELECT FOUND_ROWS()');
+		$total = (int)$total->fetchColumn();
+	}
 } else {
 	$in_access = array();
 	foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => $v)
 		$in_access[':access'.$k] = $v;
 	$in = implode(',', array_keys($in_access));
-	$sql = 'SELECT * FROM bwlist WHERE access IN ('.$in.') ORDER BY type DESC, value ASC LIMIT :offset, :limit;';
+	$foundrows = '';
+	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
+		$foundrows = 'SQL_CALC_FOUND_ROWS ';
+	$sql = "SELECT $foundrows * FROM bwlist WHERE access IN ({$in}) ORDER BY type DESC, value ASC LIMIT :offset, :limit;";
 	$statement = $dbh->prepare($sql);
 	$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 	$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
@@ -103,10 +114,33 @@ if (count($access) == 0) {
 	$statement->execute();
 	while ($row = $statement->fetch())
 		$result[] = $row;
+	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
+		$total = $dbh->query('SELECT FOUND_ROWS()');
+		$total = (int)$total->fetchColumn();
+	}
 }
 $pagemore = count($result) > $limit;
 if ($pagemore)
 	array_pop($result);
+if ($total) {
+	$currpage = intval($offset/$limit);
+	$lastpage = intval(($total-1)/$limit);
+	$pages = range(0, $lastpage);
+	if (count($pages) == 1) $pages = array();
+	if ($lastpage > 10) {
+		// start or end (first4 ... last4)
+		$pages = array_merge(range(0, 2), array('...', intval($lastpage/2), '...'), range($lastpage - 2, $lastpage));
+		// middle (first .. middle5 .. last)
+		if ($currpage > 2 && $currpage < ($lastpage - 2))
+			$pages = array_merge(array(0, '...'), range($currpage - 2, $currpage + 2), array('...', $lastpage));
+		// beginning (first5 ... last3)
+		if ($currpage > 1 && $currpage < 4)
+			$pages = array_merge(range(0, 4), array('...'), range($lastpage - 2, $lastpage));
+		// ending (first3 .. last5)
+		if ($currpage > ($lastpage - 4) && $currpage < ($lastpage - 1))
+			$pages = array_merge(range(0, 2), array('...'), range($lastpage - 4, $lastpage));
+	}
+}
 
 // For users with many access levels; print them more condensed
 $result2 = array();
@@ -166,10 +200,24 @@ foreach ($result as $row)
 				</table>
 			</div>
 			<nav>
+				<?php if ($total) { // MySQL SQL_CALC_FOUND_ROWS version?>
+				<ul class="pagination">
+					<?php foreach ($pages as $p) { ?>
+						<?php if ($p === '...') { ?>
+						<li class="disabled"><a href="#">...</a></li>
+						<?php } else if ($p == $currpage) { ?>
+						<li class="active"><a href="#"><?php p($p+1)?></a></li>
+						<?php } else { ?>
+						<li><a href="?page=bwlist&offset=<?php p($limit*$p) ?>&limit=<?php p($limit); ?>"><?php p($p+1)?></a></li>
+						<?php } ?>
+					<?php } ?>
+				</ul>
+				<?php } else { ?>
 				<ul class="pager">
 					<li class="previous<?php if ($offset == 0) p(" disabled") ?>"><a href="javascript:history.go(-1);"><span aria-hidden="true">&larr;</span> Previous</a></li>
 					<li class="next<?php if (!$pagemore) p(" disabled") ?>"><a href="?page=bwlist&offset=<?php p($offset + $limit); ?>&limit=<?php p($limit); ?>">Next <span aria-hidden="true">&rarr;</span></a></li>
 				</ul>
+				<?php } ?>
 			</nav>
 		</div>
 		<div class="col-md-6 col-lg-4">
