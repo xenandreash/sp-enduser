@@ -195,11 +195,10 @@ foreach ($result as $row)
 							<div class="col-md-9">
 								<?php
 									$_access = array();
-									foreach (Session::Get()->getAccess() as $a) {
-										foreach ($a as $type) {
-											$_access[] = $type;
-										}
-									}
+									foreach (Session::Get()->getAccess() as $type => $accesses)
+										if ($type == 'mail' || $type == 'domain')
+											foreach ($accesses as $a)
+												$_access[] = $a;
 									if (count($_access) == 1) {
 								?>
 									<input type="hidden" class="form-control" name="access[]" value="<?php p($_access[0]); ?>">
