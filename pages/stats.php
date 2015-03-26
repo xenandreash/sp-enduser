@@ -77,35 +77,64 @@ $javascript[] = 'static/js/jquery.flot.selection.min.js';
 $javascript[] = 'static/js/jquery.flot.stack.min.js';
 require_once BASE.'/partials/header.php';
 ?>
-		<div class="container">
-			<?php foreach (Session::Get()->getAccess('domain') as $d) { $id = uniqid(); ?>
-			<div class="panel panel-default">
+		<div class="container" id="panel-container">
+			<div class="btn-group">
+				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+					Add chart <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#" class="add-all">All</a></li>
+					<li class="divider"></li>
+					<?php foreach (Session::Get()->getAccess('domain') as $d) { $id = uniqid(); ?>
+					<li><a href="#" data-domain="<?php p($d) ?>" class="add-domain"><?php p($d) ?></a></li>
+					<?php } ?>
+				</ul>
+			</div>
+			<span class="text-muted pull-right many-domains" style="display:none">Because you have more than 5 domains, you need to choose them specifically.</span>
+			<br><br>
+			<div class="panel panel-default template" style="display:none">
 				<div class="panel-heading">
-					<h3 class="panel-title"><?php p($d) ?></h3>
+					<h3 class="panel-title">
+						<span></span>
+						<button type="button" class="close"><span>&times;</span></button>
+					</h3>
 				</div>
-				<div class="panel-body draw-charts" id="<?php p($id) ?>" data-domain="<?php p($d) ?>">
+				<div class="panel-body draw-charts" iid="<?php p($id) ?>" ddata-domain="<?php p($d) ?>">
 					<div class="row"><div class="col-md-6">
-						<div id="rrd-<?php p($id) ?>" style="height:200px;display:none;"></div>
-						<div id="realrrd-<?php p($id) ?>" data-domain="<?php p($d) ?>" style="height:200px"></div>
+						<div class="rrd-id" style="height:200px;display:none;"></div>
+						<div class="realrrd" style="height:200px"></div>
 					</div><div class="col-md-6">
-						<div id="pie-<?php p($id) ?>" style="height:200px"></div>
-						<div class="text-muted pull-right" id="since-<?php p($id)?>">Loading...</div>
+						<div class="pie" style="height:200px"></div>
+						<div class="since text-muted pull-right">Loading...</div>
 					</div></div>
 				</div>
 			</div>
-			<?php } ?>
 		</div>
 	<script>
+	var chartid = 0;
 	$(document).ready(function() {
-		$(".draw-charts").each(function() {
+		$(".add-all").click(function() {
+			$(".add-domain").click();
+		});
+		$(".add-domain").click(function() {
 			var that = this;
+			var panel = $(".template").clone();
+			panel.removeClass("template");
+			panel.attr("id", "chart" + chartid++);
+			panel.appendTo("#panel-container");
+			panel.show();
+			panel.find(".panel-title > span").text($(this).data("domain"));
+			panel.find(".rrd-id").attr("id", "rrd-" + panel.attr("id"));
+			panel.find("button.close").click(function() {
+				$(this).parent().parent().parent().remove();
+			});
 			$.ajax({
 				url: "?page=stats",
 				dataType: "json",
 				data: {"ajax-pie": $(this).data("domain")}
 			}).done(function(data) {
-				$("#since-" + that.id).text("Since " + new Date(data.since * 1000).toDateString());
-				$.plot($("#pie-" + that.id), data.flot, {
+				panel.find(".since").text("Since " + new Date(data.since * 1000).toDateString());
+				$.plot(panel.find(".pie"), data.flot, {
 					series: {
 						pie: {
 							show: true,
@@ -161,15 +190,18 @@ require_once BASE.'/partials/header.php';
 					scale_width: "70%",
 					scale_height: "50px"
 				};
-				new rrdFlot("rrd-" + that.id, rrd, flot_opts, ds_opt, rrd_opts);
+				var rrdid = "rrd-" + panel.attr("id");
+				new rrdFlot(rrdid, rrd, flot_opts, ds_opt, rrd_opts);
 
 				// Move the elements that we like to a div
-				$("#rrd-" + that.id + "_graph").appendTo($("#realrrd-" + that.id));
-				$("#rrd-" + that.id + "_scale").appendTo($("#realrrd-" + that.id)).css("width", "70%").css("float", "right");
-				$("#rrd-" + that.id + "_res").appendTo($("#realrrd-" + that.id)).addClass("form-control").css("width", "30%").css("float", "left");
-				$("#rrd-" + that.id + "_res").trigger("change"); // We need to .draw() the flot again to make axis fit, etc
+				$("#" + rrdid + "_graph").appendTo(panel.find(".realrrd"));
+				$("#" + rrdid + "_scale").appendTo(panel.find(".realrrd")).css("width", "70%").css("float", "right");
+				$("#" + rrdid + "_res").appendTo(panel.find(".realrrd")).addClass("form-control").css("width", "30%").css("float", "left");
+				$("#" + rrdid + "_res").trigger("change"); // We need to .draw() the flot again to make axis fit, etc
 			});
 		});
+		if ($(".add-domain").length < 6) $(".add-domain").click();
+		else $(".many-domains").show();
 
 	});
 	</script>
