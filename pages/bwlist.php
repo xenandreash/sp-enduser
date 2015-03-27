@@ -64,11 +64,11 @@ function print_row($type, $value, $accesses, $icon = '') {
 							<td class="hidden-xs"><?php echo $access; ?></td>
 							<td class="visible-xs">
 								<p>
-									<i class="glyphicon glyphicon-pencil"></i>&nbsp;
+									<span class="glyphicon glyphicon-pencil"></span>&nbsp;
 									<?php p($value); ?>
 								</p>
 								<p>
-									<i class="glyphicon glyphicon-inbox"></i>&nbsp;
+									<span class="glyphicon glyphicon-inbox"></span>&nbsp;
 									<?php echo $access; ?>
 								</p>
 							</td>
@@ -84,13 +84,18 @@ $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 500;
 
 $total = null;
 $access = Session::Get()->getAccess();
+$search = $_GET['search'];
 if (count($access) == 0) {
-	$foundrows = '';
+	$foundrows = $where = '';
 	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
 		$foundrows = 'SQL_CALC_FOUND_ROWS';
-	$statement = $dbh->prepare("SELECT $foundrows * FROM bwlist ORDER BY type DESC, value ASC LIMIT :offset, :limit;");
+	if ($search)
+		$where = 'WHERE value LIKE :search';
+	$statement = $dbh->prepare("SELECT $foundrows * FROM bwlist $where ORDER BY type DESC, value ASC LIMIT :offset, :limit;");
 	$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 	$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+	if ($search)
+		$statement->bindValue(':search', $search);
 	$statement->execute();
 	while ($row = $statement->fetch())
 		$result[] = $row;
@@ -103,13 +108,17 @@ if (count($access) == 0) {
 	foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => $v)
 		$in_access[':access'.$k] = $v;
 	$in = implode(',', array_keys($in_access));
-	$foundrows = '';
+	$foundrows = $where = '';
 	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
 		$foundrows = 'SQL_CALC_FOUND_ROWS';
-	$sql = "SELECT $foundrows * FROM bwlist WHERE access IN ({$in}) ORDER BY type DESC, value ASC LIMIT :offset, :limit;";
+	if ($search)
+		$where = 'AND value LIKE :search';
+	$sql = "SELECT $foundrows * FROM bwlist WHERE access IN ({$in}) $where ORDER BY type DESC, value ASC LIMIT :offset, :limit;";
 	$statement = $dbh->prepare($sql);
 	$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 	$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+	if ($search)
+		$statement->bindValue(':search', $search);
 	foreach ($in_access as $k => $v)
 		$statement->bindValue($k, $v);
 	$statement->execute();
@@ -153,8 +162,25 @@ foreach ($result as $row)
 		<div class="col-md-6 col-lg-8">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Black/whitelist</h3>
+					<h3 class="panel-title">
+						Black/whitelist
+						<a class="pull-right" data-toggle="collapse" href="#search">
+							<span class="glyphicon glyphicon-search"></span>
+						</a>
+					</h3>
 				</div>
+				<div id="search" class="<?php if (!$search) echo 'collapse'; ?>"><div class="panel-body">
+					<form class="form-horizontal" method="get">
+						<input type="hidden" name="page" value="bwlist">
+						<div class="input-group">
+							<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+							<input type="text" class="form-control" placeholder="Search for..." name="search" value="<?php p($search) ?>">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="search">Search</button>
+							</span>
+						</div>
+					</form>
+				</div></div>
 				<table class="table">
 					<thead class="hidden-xs">
 						<tr>
@@ -209,14 +235,14 @@ foreach ($result as $row)
 						<?php } else if ($p == $currpage) { ?>
 						<li class="active"><a href="#"><?php p($p+1)?></a></li>
 						<?php } else { ?>
-						<li><a href="?page=bwlist&offset=<?php p($limit*$p) ?>&limit=<?php p($limit); ?>"><?php p($p+1)?></a></li>
+						<li><a href="?page=bwlist&offset=<?php p($limit*$p) ?>&limit=<?php p($limit); ?>&search=<?php p($search); ?>"><?php p($p+1)?></a></li>
 						<?php } ?>
 					<?php } ?>
 				</ul>
 				<?php } else { ?>
 				<ul class="pager">
 					<li class="previous<?php if ($offset == 0) p(" disabled") ?>"><a href="javascript:history.go(-1);"><span aria-hidden="true">&larr;</span> Previous</a></li>
-					<li class="next<?php if (!$pagemore) p(" disabled") ?>"><a href="?page=bwlist&offset=<?php p($offset + $limit); ?>&limit=<?php p($limit); ?>">Next <span aria-hidden="true">&rarr;</span></a></li>
+					<li class="next<?php if (!$pagemore) p(" disabled") ?>"><a href="?page=bwlist&offset=<?php p($offset + $limit); ?>&limit=<?php p($limit); ?>&search=<?php p($search); ?>">Next <span aria-hidden="true">&rarr;</span></a></li>
 				</ul>
 				<?php } ?>
 			</nav>
