@@ -85,49 +85,33 @@ $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 500;
 $total = null;
 $access = Session::Get()->getAccess();
 $search = $_GET['search'];
-if (count($access) == 0) {
-	$foundrows = $where = '';
-	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
-		$foundrows = 'SQL_CALC_FOUND_ROWS';
-	if ($search)
-		$where = 'WHERE value LIKE :search';
-	$statement = $dbh->prepare("SELECT $foundrows * FROM bwlist $where ORDER BY type DESC, value ASC LIMIT :offset, :limit;");
-	$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
-	$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-	if ($search)
-		$statement->bindValue(':search', $search);
-	$statement->execute();
-	while ($row = $statement->fetch())
-		$result[] = $row;
-	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
-		$total = $dbh->query('SELECT FOUND_ROWS();');
-		$total = (int)$total->fetchColumn();
-	}
-} else {
-	$in_access = array();
-	foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => $v)
-		$in_access[':access'.$k] = $v;
-	$in = implode(',', array_keys($in_access));
-	$foundrows = $where = '';
-	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
-		$foundrows = 'SQL_CALC_FOUND_ROWS';
-	if ($search)
-		$where = 'AND value LIKE :search';
-	$sql = "SELECT $foundrows * FROM bwlist WHERE access IN ({$in}) $where ORDER BY type DESC, value ASC LIMIT :offset, :limit;";
-	$statement = $dbh->prepare($sql);
-	$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
-	$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-	if ($search)
-		$statement->bindValue(':search', $search);
-	foreach ($in_access as $k => $v)
-		$statement->bindValue($k, $v);
-	$statement->execute();
-	while ($row = $statement->fetch())
-		$result[] = $row;
-	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
-		$total = $dbh->query('SELECT FOUND_ROWS();');
-		$total = (int)$total->fetchColumn();
-	}
+$in_access = array();
+foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => $v)
+	$in_access[':access'.$k] = $v;
+$foundrows = $where = '';
+$wheres = array();
+if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
+	$foundrows = 'SQL_CALC_FOUND_ROWS';
+if ($search)
+	$wheres[] = 'value LIKE :search';
+if (count($access) != 0)
+	$wheres[] = 'access IN ('.implode(',', array_keys($in_access)).')';
+if (count($wheres))
+	$where = 'WHERE '.implode(' AND ', $wheres);
+$sql = "SELECT $foundrows * FROM bwlist $where ORDER BY type DESC, value ASC LIMIT :offset, :limit;";
+$statement = $dbh->prepare($sql);
+$statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
+$statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+if ($search)
+	$statement->bindValue(':search', '%'.$search.'%');
+foreach ($in_access as $k => $v)
+	$statement->bindValue($k, $v);
+$statement->execute();
+while ($row = $statement->fetch())
+	$result[] = $row;
+if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
+	$total = $dbh->query('SELECT FOUND_ROWS();');
+	$total = (int)$total->fetchColumn();
 }
 $pagemore = count($result) > $limit;
 if ($pagemore)
