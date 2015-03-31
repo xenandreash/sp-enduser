@@ -49,6 +49,7 @@
 //$settings['default-source'] = 'all';
 //$settings['display-scores'] = false;
 //$settings['display-textlog'] = false;
+//$settings['display-stats'] = false;
 //$settings['display-history'] = true;
 //$settings['display-queue'] = true;
 //$settings['display-quarantine'] = true;
