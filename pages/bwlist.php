@@ -92,7 +92,7 @@ $foundrows = $where = '';
 $wheres = array();
 if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
 	$foundrows = 'SQL_CALC_FOUND_ROWS';
-if ($search)
+if ($search != '')
 	$wheres[] = 'value LIKE :search';
 if (count($access) != 0)
 	$wheres[] = 'access IN ('.implode(',', array_keys($in_access)).')';
@@ -102,7 +102,7 @@ $sql = "SELECT $foundrows * FROM bwlist $where ORDER BY type DESC, value ASC LIM
 $statement = $dbh->prepare($sql);
 $statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-if ($search)
+if ($search != '')
 	$statement->bindValue(':search', '%'.$search.'%');
 foreach ($in_access as $k => $v)
 	$statement->bindValue($k, $v);
@@ -118,7 +118,7 @@ if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite') {
 		$total = count($result);
 	} else {
 		$total = $dbh->prepare("SELECT COUNT(*) FROM bwlist $where;");
-		if ($search)
+		if ($search != '')
 			$total->bindValue(':search', '%'.$search.'%');
 		foreach ($in_access as $k => $v)
 			$total->bindValue($k, $v);
