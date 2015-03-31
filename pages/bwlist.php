@@ -113,6 +113,20 @@ if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
 	$total = $dbh->query('SELECT FOUND_ROWS();');
 	$total = (int)$total->fetchColumn();
 }
+if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite') {
+	if ($offset == 0 && count($result) < $limit + 1) {
+		$total = count($result);
+	} else {
+		$a = microtime(true);
+		$total = $dbh->prepare("SELECT COUNT(*) FROM bwlist $where;");
+		if ($search)
+			$total->bindValue(':search', '%'.$search.'%');
+		foreach ($in_access as $k => $v)
+			$total->bindValue($k, $v);
+		$total->execute();
+		$total = (int)$total->fetchColumn();
+	}
+}
 $pagemore = count($result) > $limit;
 if ($pagemore)
 	array_pop($result);
