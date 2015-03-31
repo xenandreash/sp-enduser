@@ -32,15 +32,31 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 					if (substr($line, 3, 1) == ' ')
 						break;
 				}
-				fwrite($fp, "EHLO halon-sp-enduser\r\n");
 				$method = 'plain';
+				$starttls = false;
+				smtp_ehlo:
+				fwrite($fp, "EHLO halon-sp-enduser\r\n");
+				$found_auth = $found_starttls = false;
 				while ($line = fgets($fp)) {
 					if (substr($line, 0, 1) != '2')
 						goto smtp_fail;
 					if (substr($line, 4, 5) == 'AUTH ' && strpos($line, 'CRAM-MD5') !== false)
 						$method = 'md5';
+					if (substr($line, 4, 5) == 'AUTH ')
+						$found_auth = true;
+					if (substr($line, 4, 8) == 'STARTTLS')
+						$found_starttls = true;
 					if (substr($line, 3, 1) == ' ')
 						break;
+				}
+				if (!$starttls && $found_starttls) {
+					fwrite($fp, "STARTTLS\r\n");
+					$line = fgets($fp);
+					if (substr($line, 0, 3) != '220')
+						goto smtp_fail;
+					stream_socket_enable_crypto($fp, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+					$starttls = true;
+					goto smtp_ehlo;
 				}
 				if ($method == 'md5') {
 					fwrite($fp, "AUTH CRAM-MD5\r\n");
