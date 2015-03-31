@@ -117,7 +117,6 @@ if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite') {
 	if ($offset == 0 && count($result) < $limit + 1) {
 		$total = count($result);
 	} else {
-		$a = microtime(true);
 		$total = $dbh->prepare("SELECT COUNT(*) FROM bwlist $where;");
 		if ($search)
 			$total->bindValue(':search', '%'.$search.'%');
