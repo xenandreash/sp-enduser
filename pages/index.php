@@ -399,7 +399,7 @@ $has_multiple_sources = count($sources) > 1;
 								</small>
 								<?php p($m['data']->msgfrom) or pp('<span class="text-muted">Empty sender</span>'); ?>
 								<?php if ($has_multiple_addresses) { ?>
-									<br /><small>&rarr;&nbsp;<?php p($m['data']->msgto); ?></small>
+									<br><small>&rarr;&nbsp;<?php p($m['data']->msgto); ?></small>
 								<?php } ?>
 							</h4>
 							<p class="list-group-item-text clearfix">

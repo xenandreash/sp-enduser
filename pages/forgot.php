@@ -59,7 +59,7 @@ require_once BASE.'/partials/header.php';
 					<?php if ($settings->getForgotText() !== null) { ?>
 					<p>
 						<?php p($settings->getForgotText()); ?>
-						<hr />
+						<hr>
 					</p>
 					<?php } ?>
 					

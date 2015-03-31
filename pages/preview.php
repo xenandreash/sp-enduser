@@ -87,7 +87,7 @@ $listeners = $settings->getDisplayListener();
 if (isset($transports[$mail->msgtransport])) $transport = $transports[$mail->msgtransport];
 if (isset($listeners[$mail->msglistener])) $listener = $listeners[$mail->msglistener];
 if ($mail->msgaction == 'QUEUE')
-	$desc = 'In queue (retry '.$mail->msgretries.')<br /><span class="text-muted">'.htmlspecialchars($mail->msgerror).'</span>';
+	$desc = 'In queue (retry '.$mail->msgretries.')<br><span class="text-muted">'.htmlspecialchars($mail->msgerror).'</span>';
 else
 	$desc = htmlspecialchars($mail->msgdescription);
 if ($type == 'queue') {
@@ -242,7 +242,7 @@ require_once BASE.'/partials/header.php';
 					</div>
 					<?php
 					if (!isset($body))
-						echo '<div class="panel-body msg-body"><p class="text-muted text-center">Content unavailable<br /><small>Message is not in queue or quarantine</small></p></div>';
+						echo '<div class="panel-body msg-body"><p class="text-muted text-center">Content unavailable<br><small>Message is not in queue or quarantine</small></p></div>';
 					else if ($encode == 'TEXT')
 						echo '<pre class="panel-body msg-body">'.$body.'</pre>';
 					else if ($encode == 'HTML')

@@ -157,7 +157,7 @@ require_once BASE.'/partials/header.php';
 					<?php if ($settings->getLoginText() !== null) { ?>
 					<p>
 						<?php p($settings->getLoginText()); ?>
-						<hr />
+						<hr>
 					</p>
 					<?php } ?>
 					<form class="form-horizontal" method="post" action="?page=login">
