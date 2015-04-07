@@ -23,8 +23,11 @@ $query['filter'] = 'queueid='.$queueid;
 $query['offset'] = 0;
 $query['limit'] = 1;
 $queue = $client->mailQueue($query);
-if (count($queue->result->item) == 1)
+if (count($queue->result->item) == 1) {
 	$msgid = $queue->result->item[0]->msgid;
+	$msgfrom = $queue->result->item[0]->msgfrom;
+	$msgto = $queue->result->item[0]->msgto;
+}
 
 // Validate signature
 $message = $node.$queueid.$time.$msgid;
@@ -32,6 +35,11 @@ $hash = hash_hmac('sha256', $message, $settings->getDigestSecret());
 if ($hash !== $sign) die('Failed to release message');
 
 // Perform action and close window
+if ($_GET['whitelist'] == 'true') {
+	$dbh = $settings->getDatabase();
+	$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
+	$statement->execute(array(':access' => strtolower($msgto), ':type' => 'whitelist', ':value' => strtolower($msgfrom)));
+}
 $client->mailQueueRetry(array('id' => $queueid));
 ?>
 <html>

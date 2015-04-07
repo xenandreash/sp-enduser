@@ -178,6 +178,7 @@ foreach ($users as $email => $access) {
 				$message = $m['id'].$m['data']->id.$time.$m['data']->msgid;
 				$hash = hash_hmac('sha256', $message, $settings->getDigestSecret());
 				$mail['release-url'] = $settings->getPublicURL().'/?page=digest&amp;queueid='.$m['data']->id.'&amp;node='.$m['id'].'&amp;time='.$time.'&amp;sign='.$hash;
+				$mail['release-url-whitelist'] = $settings->getPublicURL().'/?page=digest&amp;queueid='.$m['data']->id.'&amp;node='.$m['id'].'&amp;time='.$time.'&amp;whitelist=true&amp;sign='.$hash;
 			}
 			$mail['time'] = $m['data']->msgts;
 			$mail['from'] = $m['data']->msgfrom;
@@ -209,9 +210,14 @@ foreach ($users as $email => $access) {
 
 	$th = '<th style="border-bottom: 2px solid #999; text-align: left;">';
 	if ($one_recipient !== null)
-		$data .= "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}Subject</th>${th}&nbsp;</th></tr>";
+		$data .= "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}Subject</th>";
 	else
-		$data .= "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}To</th>${th}Subject</th>${th}&nbsp;</th></tr>";
+		$data .= "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}To</th>${th}Subject</th>";
+	if ($mail['release-url'])
+		$data .= "${th}&nbsp;</th>";
+	if ($mail['release-url-whitelist'])
+		$data .= "${th}&nbsp;</th>";
+	$data .= '</tr>';
 	foreach ($maillist as $i => $mail) {
 		$td = '<td style="white-space: nowrap; border-bottom: 1px solid #999;">';
 		$data .= $i % 2 == 0 ? '<tr style="background-color: #eee;">' : '<tr>';
@@ -222,6 +228,8 @@ foreach ($users as $email => $access) {
 		$data .= $td.htmlspecialchars(substrdots($mail['subject'], $one_recipient === null ? 30 : 60)).'</td>';
 		if ($mail['release-url'])
 			$data .= $td.'<a href="'.$mail['release-url'].'">Release</a></td>';
+		if ($mail['release-url-whitelist'])
+			$data .= $td.'<a href="'.$mail['release-url-whitelist'].'">Release and whitelist</a></td>';
 		$data .= '</tr>';
 	}
 	$data .= '</table>';
