@@ -8,12 +8,13 @@ function checkAccess($perm)
 	$access = Session::Get()->getAccess();
 	if (count($access) == 0)
 		return true;
-	foreach ($access as $type) {
-		foreach ($type as $item) {
+	foreach ($access as $type)
+		foreach ($type as $item)
 			if ($item == $perm)
 				return true;
-		}
-	}
+	if (strpos($perm, '@') !== false)
+		if (Session::Get()->checkAccessMail($perm))
+			return true;
 	return false;
 }
 
@@ -85,17 +86,25 @@ $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 500;
 $total = null;
 $access = Session::Get()->getAccess();
 $search = $_GET['search'];
-$in_access = array();
+$in_access = $domain_access = array();
 foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => $v)
 	$in_access[':access'.$k] = $v;
+foreach ((array)$access['domain'] as $k => $v)
+	$domain_access[':domain'.$k] = '%@'.$v;
 $foundrows = $where = '';
 $wheres = array();
 if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
 	$foundrows = 'SQL_CALC_FOUND_ROWS';
 if ($search != '')
 	$wheres[] = 'value LIKE :search';
-if (count($access) != 0)
-	$wheres[] = 'access IN ('.implode(',', array_keys($in_access)).')';
+if (count($access) != 0) {
+	$restrict = '(access IN ('.implode(',', array_keys($in_access)).')';
+	foreach (array_keys($domain_access) as $v)
+		$restrict .= ' OR access LIKE '.$v;
+	$restrict .= ')';
+	$wheres[] = $restrict;
+}
+
 if (count($wheres))
 	$where = 'WHERE '.implode(' AND ', $wheres);
 $sql = "SELECT $foundrows * FROM bwlist $where ORDER BY type DESC, value ASC LIMIT :offset, :limit;";
@@ -105,6 +114,8 @@ $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 if ($search != '')
 	$statement->bindValue(':search', '%'.$search.'%');
 foreach ($in_access as $k => $v)
+	$statement->bindValue($k, $v);
+foreach ($domain_access as $k => $v)
 	$statement->bindValue($k, $v);
 $statement->execute();
 while ($row = $statement->fetch())
@@ -283,9 +294,11 @@ foreach ($result as $row)
 									} else if (count($_access) > 0) {
 								?>
 									<button id="check-all" class="btn btn-info">Select all</button>
+									<button id="add-access" class="btn btn-default">Add custom</button>
 									<?php if (count($_access) > 5) { ?>
 									<div class="panel panel-default" style="height: 115px; padding-left: 10px; margin-top: 5px; overflow-y: scroll;">
 									<?php } ?>
+									<div id="extra-accesses"></div>
 									<?php foreach ($_access as $a) { ?>
 									<div class="checkbox">
 										<label>
@@ -329,6 +342,10 @@ foreach ($result as $row)
 		$('#check-all').click(function() {
 				$('input.recipient').prop('checked', true);
 				return false;
+		});
+		$('#add-access').click(function() {
+			$("#extra-accesses").prepend("<div class='checkbox'><input type='text' name='access[]' class='form-control' placeholder='Email or domain'></div>");
+			return false;
 		});
 		$(".toggle").click(function() {
 			$(".hidden-" + $(this).data("toggle")).toggle();
