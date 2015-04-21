@@ -213,9 +213,9 @@ foreach ($users as $email => $access) {
 		$data .= "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}Subject</th>";
 	else
 		$data .= "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}To</th>${th}Subject</th>";
-	if ($mail['release-url'])
+	if ($maillist[0]['release-url'])
 		$data .= "${th}&nbsp;</th>";
-	if ($mail['release-url-whitelist'])
+	if ($maillist[0]['release-url-whitelist'])
 		$data .= "${th}&nbsp;</th>";
 	$data .= '</tr>';
 	foreach ($maillist as $i => $mail) {
