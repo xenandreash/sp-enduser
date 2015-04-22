@@ -11,4 +11,4 @@ Requirements
  * soap
  * ldap
  * pdo
- * pdo-(database, mysql, pgsql, sqlite...)
+ * pdo-(database; mysql, pgsql, sqlite...)
