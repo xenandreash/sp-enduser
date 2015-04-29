@@ -283,7 +283,7 @@ $has_multiple_sources = count($sources) > 1;
 			<table class="table table-hover hidden-xs">
 				<thead>
 					<tr>
-						<th style="width:30px">&nbsp;</th>
+						<th style="width:30px"><input type="checkbox" id="select-all" class="hidden-sm"></th>
 						<th>From</th>
 						<?php if ($has_multiple_addresses) { $cols++ ?><th>To</th><?php } ?>
 						<th>Subject</th>

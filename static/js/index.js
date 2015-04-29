@@ -29,6 +29,13 @@ $(document).ready(function() {
 	$('td[data-href], tr[data-href] td').wrapInner(function() {
 		return '<a class="data-link" href="' + ($(this).data('href') || $(this).parent().data('href')) + '"></a>';
 	});
+
+	// Add a select all checkbox on mail listing...
+	$('#select-all').change(function() {
+		$(this).closest('table').find('tbody').find('input[type=checkbox]').prop('checked', $(this).prop('checked'));
+	});
+	if ($('#select-all').closest('table').find('tbody').find('input[type=checkbox]').length == 0)
+		$('#select-all').hide();
 	
 	// This is for some reason needed to get the source list dropdown to
 	// work on iOS, I don't have the faintest idea why...
