@@ -518,6 +518,11 @@ $has_multiple_sources = count($sources) > 1;
 				<div class="col-sm-8"><input type="text" class="form-control" id="query_ip" placeholder="0.0.0.0"></div>
 			</div>
 			<div class="form-group">
+				<label class="col-sm-2 control-label">Username</label>
+				<div class="col-sm-2"><select class="form-control" id="query_sasl_op"><option value="=">is</option><option value="~">contains</option></select></div>
+				<div class="col-sm-8"><input type="text" class="form-control" id="query_sasl" placeholder=""></div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-2 control-label">Subject</label>
 				<div class="col-sm-2"><select class="form-control" id="query_subject_op"><option value="=">is</option><option value="~" selected>contains</option></select></div>
 				<div class="col-sm-8"><input type="text" class="form-control" id="query_subject" placeholder=""></div>
