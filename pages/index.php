@@ -15,11 +15,15 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 		if (!$node) die('Invalid mail');
 
 		$nodeBackend = new NodeBackend($node);
+		$errors = array();
 		$mail = $nodeBackend->getMailInQueue('queueid='.$m[1], $errors);
-		if (!$mail || $errors) die('Invalid mail');
+		if (!$mail || $errors)
+			continue;
 
 		$actions[$node->getId()][] = $mail->id;
 	}
+	if (empty($actions))
+		die('Invalid mail');
 	foreach ($actions as $soapid => $list)
 	{
 		try {
