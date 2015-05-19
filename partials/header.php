@@ -54,7 +54,7 @@ $access = Session::Get()->getAccess();
 				</div>
 				<div class="collapse navbar-collapse" id="navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li class="mail<?php header_active('index'); ?>"><a href="."><i class="glyphicon glyphicon-envelope"></i>&nbsp;Messages</a></li>
+						<li class="mail<?php header_active('index'); ?>"><a href="?"><i class="glyphicon glyphicon-envelope"></i>&nbsp;Messages</a></li>
 						<?php if ($dbCredentials['dsn'] && $settings->getDisplayBWList()) { ?>
 						<li class="bwlist<?php header_active('bwlist'); ?>"><a href="?page=bwlist"><i class="glyphicon glyphicon-list"></i>&nbsp;Black/whitelist</a></li>
 						<?php } ?>

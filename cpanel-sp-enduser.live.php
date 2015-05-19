@@ -74,6 +74,7 @@ class Session
 	}
 }
 
+define('BASE', dirname(__FILE__));
 require BASE."/inc/core.php";
 
 if (Session::Get()->getUsername() === null) {
@@ -86,7 +87,6 @@ if (!isset($_COOKIE['timezone']))
 $_SESSION['timezone'] = $_COOKIE['timezone'];
 
 define('SP_ENDUSER', true);
-define('BASE', dirname(__FILE__));
 
 switch (@$_GET['page'])
 {
