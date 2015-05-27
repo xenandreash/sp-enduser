@@ -136,7 +136,7 @@ require_once BASE.'/partials/header.php';
 				<a id="history_back" class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
-				<?php if ($logs && $node) { ?>
+				<?php if ($logs && $node && $mail->msgid) { ?>
 					<li><a href="?page=log&id=<?php p($mail->id) ?>&node=<?php p($node->getId()) ?>&type=<?php p($type) ?>"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
 				<?php } ?>
 					<?php if ($type == 'queue' && $node) { ?>
