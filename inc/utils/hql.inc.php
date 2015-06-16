@@ -25,7 +25,7 @@ function hql_transform($string)
 				return "from~$string or to~$string";
 		}
 		/* looks like a domain */
-		if (preg_match("/^[a-z0-9-]+\.[a-z]{2,5}/", $string))
+		if (preg_match("/^[A-Za-z0-9-]+\.[A-Za-z]{2,5}/", $string))
 				return "from~%@$string or to~%@$string";
 		/* add quotes */
 		if (strpos($string, " ") !== false)
