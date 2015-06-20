@@ -54,6 +54,7 @@
 //$settings['display-queue'] = true;
 //$settings['display-quarantine'] = true;
 //$settings['display-all'] = true;
+//$settings['display-bwlist'] = true;
 //$settings['display-listener']['mailserver:1'] = 'Inbound';
 //$settings['display-transport']['mailtransport:2'] = 'Internet';
 
