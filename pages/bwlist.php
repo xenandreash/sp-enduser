@@ -38,8 +38,10 @@ if ($_GET['list'] == 'add') {
 		if (strpos($access, ' ') !== false) die('Invalid email address or domain name.');
 		if ($_POST['value'][0] == '@') $_POST['value'] = substr($_POST['value'], 1);
 		if ($access[0] == '@') $access = substr($access, 1);
-		if (!checkAccess($access))
-			die('invalid access');
+		if (!checkAccess($access)) {
+			header("Location: ?page=bwlist&error=perm");
+			die();
+		}
 		if ($_POST['type'] == 'whitelist' || $_POST['type'] == 'blacklist') {
 			$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
 			$statement->execute(array(':access' => strtolower($access), ':type' => $_POST['type'], ':value' => strtolower($_POST['value'])));
@@ -166,6 +168,16 @@ if ($total) {
 $result2 = array();
 foreach ($result as $row)
 	$result2[$row['type']][$row['value']][] = $row['access'];
+
+if ($_GET['error'] == 'perm') {
+?>
+	<div class="container-fluid">
+		<div class="alert alert-danger" role="alert">
+			You are not allowed to add a black/whitelist entry for that recipient.
+		</div>
+	</div>
+<?php
+}
 
 ?>
 	<div class="container-fluid">
