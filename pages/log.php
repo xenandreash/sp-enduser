@@ -42,7 +42,7 @@ if ($_GET['type'] == 'log')
 	// Resolv SOAP node
 	$node = $settings->getNodeBySerial($mail->serialno);
 	if (!$node) die('Unable to find SOAP node');
-	$args = array('searchlog', $mail->msgid, '-'.$mail->msgts);
+	$args = array('searchlog', '-a', $mail->msgts, '--', $mail->msgid);
 } else {
 	$node = $settings->getNode($_GET['node']);
 	if (!$node) die('Invalid mail');
@@ -53,7 +53,7 @@ if ($_GET['type'] == 'log')
 	else
 		$mail = $nodeBackend->getMailInQueue('queueid='.$id, $errors);
 	if (!$mail || $errors) die('Invalid mail');
-	$args = array('searchlog', $mail->msgid.':'.$id, '-'.$mail->msgts);
+	$args = array('searchlog', '-a', $mail->msgts, '--', $mail->msgid.':'.$id);
 }
 
 $client = $node->soap();
