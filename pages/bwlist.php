@@ -38,7 +38,9 @@ if ($_GET['list'] == 'add') {
 		if (strpos($access, ' ') !== false) die('Invalid email address or domain name.');
 		if ($_POST['value'][0] == '@') $_POST['value'] = substr($_POST['value'], 1);
 		if ($access[0] == '@') $access = substr($access, 1);
-		if (checkAccess($access) && ($_POST['type'] == 'whitelist' || $_POST['type'] == 'blacklist')) {
+		if (!checkAccess($access))
+			die('invalid access');
+		if ($_POST['type'] == 'whitelist' || $_POST['type'] == 'blacklist') {
 			$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
 			$statement->execute(array(':access' => strtolower($access), ':type' => $_POST['type'], ':value' => strtolower($_POST['value'])));
 		}
