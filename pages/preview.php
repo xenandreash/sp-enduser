@@ -92,7 +92,11 @@ else
 	$desc = htmlspecialchars($mail->msgdescription);
 if ($type == 'queue') {
 	$uniq = uniqid();
-	$command = array('previewmessage', $mail->msgpath, $uniq);
+	$command = array('previewmessage');
+	if ($_GET['type'] == 'text')
+		$command[] = '-t';
+	$command[] = $mail->msgpath;
+	$command[] = $uniq;
 	if ($mail->msgdeltapath)
 		$command[] = $mail->msgdeltapath;
 	$data = soap_exec($command, $client);
@@ -248,7 +252,6 @@ require_once BASE.'/partials/header.php';
 					else if ($encode == 'HTML')
 						echo '<div class="panel-body msg-body">'.$body.'</div>';
 					?>
-					
 					<?php if (count($attachments) > 0) { ?>
 					<div class="panel-footer">
 						<ul class="list-inline">
@@ -262,7 +265,25 @@ require_once BASE.'/partials/header.php';
 					</div>
 					<?php } ?>
 				</div>
-				
+				<?php if (isset($body) && $encode == 'HTML' || $_GET['type'] == 'text') { ?>
+					<p style="float:right;">
+					<?php if ($encode == 'HTML') { ?>
+						Switch to <a href="<?php
+						$f = $_GET;
+						$f['type'] = 'text';
+						echo '?'.http_build_query($f);
+						?>">plain text</a> version
+					<?php } ?>
+					<?php if ($_GET['type'] == 'text') { ?>
+						Switch to <a href="<?php
+						$f = $_GET;
+						unset($f['type']);
+						echo '?'.http_build_query($f);
+						?>">HTML</a> version
+					<?php } ?>
+					</p>
+					<br style="clear:both">
+				<?php } ?>
 				<?php if ($header != '') { ?>
 				<div class="panel panel-default">
 					<div class="panel-heading">
