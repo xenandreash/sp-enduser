@@ -16,7 +16,7 @@ if (isset($_GET['ajax-rrd'])) {
 		die('access denied');
 	$listener = 'mailserver:1';
 	$listener = str_replace(':', '-', $listener);
-	$domain = str_replace('.', '-', $_GET['ajax-rrd']);
+	$domain = $_GET['ajax-rrd'];
 	$data = array();
 	foreach ($settings->getNodes() as $node) {
 		try {
