@@ -12,3 +12,7 @@ Requirements
  * ldap
  * pdo
  * pdo-(database; mysql, pgsql, sqlite...)
+
+Plugins
+-------
+ * cPanel https://github.com/halonsecurity/sp-enduser-cpanel
