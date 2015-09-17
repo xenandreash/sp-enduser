@@ -2,10 +2,6 @@
 
 /**
  * Singleton wrapper for the user's session.
- * 
- * Note that the cPanel LivePHP version uses a different implementation of
- * this class, defined in cpanel-sp-enduser.live.php, that uses the cPanel
- * user's session instead.
  */
 class Session
 {
