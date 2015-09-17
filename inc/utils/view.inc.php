@@ -35,18 +35,6 @@ function strftime2($format, $timestamp = NULL)
 	return strftime($format, $timestamp != NULL ? $timestamp : time());
 }
 
-function p_select($name, $selected, $options, $extra = "")
-{
-	echo '<select id="'.$name.'" name="'.$name.'" '.$extra.'>';
-	foreach ($options as $value => $label) {
-		$extra = '';
-		if ((string)$value == $selected)
-			$extra = ' selected';
-		echo '<option value="'.$value.'"'.$extra.'>'.$label.'</option>';
-	}
-	echo '</select>';
-}
-
 /**
  * Parses a status string, returning an array of the status message and
  * the extended description. Can handle either SMTP status lines or freeform
