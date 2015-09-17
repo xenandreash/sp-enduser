@@ -285,6 +285,7 @@ $has_multiple_sources = count($sources) > 1;
 					overflow: hidden;
 				}
 			</style>
+			<form method="post" id="multiform">
 			<table class="table table-hover hidden-xs">
 				<thead>
 					<tr>
@@ -301,7 +302,6 @@ $has_multiple_sources = count($sources) > 1;
 					</tr>
 				</thead>
 				<tbody>
-				<form method="post" id="multiform">
 				<?php
 				$i = 1;
 				foreach ($timesort as $t) {
@@ -374,9 +374,9 @@ $has_multiple_sources = count($sources) > 1;
 						<td colspan="<?php p($cols) ?>" class="text-muted text-center">No matches</td>
 					</tr>
 				<?php } ?>
-				</form>
 				</tbody>
 			</table>
+			</form>
 			<div class="list-group not-rounded visible-xs">
 				<?php
 				$i = 1;
