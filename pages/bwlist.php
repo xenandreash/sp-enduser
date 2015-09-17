@@ -59,7 +59,8 @@ $row_classes = array(
 	'blacklist' => 'danger',
 );
 
-function print_row($type, $value, $accesses, $icon = '') {
+function print_row($type, $value, $accesses, $icon = '')
+{
 	$access = implode(', ', array_map(function($v) { return $v === '' ? '<span class="text-muted">everyone</span>' : htmlspecialchars($v);}, $accesses));
 	if (count($accesses) > 1) $access = '<span class="badge">'.count($accesses).'</span> '.$access;
 ?>

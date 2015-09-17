@@ -1,14 +1,17 @@
 <?php
 
-class SoapClientAsync extends SoapClient {
-	function __construct($wsdl, $options = array()) {
+class SoapClientAsync extends SoapClient
+{
+	function __construct($wsdl, $options = array())
+	{
 		$this->login = $options['login'];
 		$this->password = $options['password'];
 		$this->connection_timeout = $options['connection_timeout'];
 		parent::__construct($wsdl, $options);
 	}
 
-	function __doRequest($request, $location, $action, $version, $one_way = 0) {
+	function __doRequest($request, $location, $action, $version, $one_way = 0)
+	{
 		global $_soapResponses;
 		global $_soapRequests;
 

@@ -4,7 +4,8 @@
 $_soapRequests = array();
 $_soapResponses = array();
 
-function soap_dispatch() {
+function soap_dispatch()
+{
 	global $_soapRequests;
 	global $_soapResponses;
 

@@ -51,7 +51,8 @@ function access_level_merge($a, $b)
 	return array_merge_recursive($a, $b);
 }
 
-function substrdots($text, $len) {
+function substrdots($text, $len)
+{
 	if (strlen($text) > $len)
 		return substr($text, 0, $len - 3) . '...';
 	return $text;

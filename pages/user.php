@@ -4,7 +4,8 @@ if (!defined('SP_ENDUSER')) die('File not included');
 require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
-function do_change_password() {
+function do_change_password()
+{
 	global $settings, $error, $changedPassword;
 	
 	if ($_POST['password'] != $_POST['password2']) {

@@ -1,6 +1,7 @@
 <?php
 
-function soap_client($n, $async = false, $username = null, $password = null) {
+function soap_client($n, $async = false, $username = null, $password = null)
+{
 	$settings = Settings::Get();
 	$r = $settings->getNode($n);
 	if (!$r)

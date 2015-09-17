@@ -7,7 +7,8 @@ require_once BASE.'/inc/utils.php';
 date_default_timezone_set('UTC');
 
 // Autoload our classes from /classes/
-function halon_autoloader($class) {
+function halon_autoloader($class)
+{
 	@include BASE.'/classes/'.$class.'.class.php';
 }
 spl_autoload_register('halon_autoloader');

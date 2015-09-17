@@ -1,6 +1,7 @@
 <?php
 
-class LDAPDatabase {
+class LDAPDatabase
+{
 	private $uri = '';
 	private $basedn = '';
 	private $schema = '';
@@ -8,7 +9,8 @@ class LDAPDatabase {
 	private $query = '';
 	private $access_override = array();
 
-	public function __construct($uri, $basedn, $schema, $options, $query, $access_override) {
+	public function __construct($uri, $basedn, $schema, $options, $query, $access_override)
+	{
 		$this->uri = $uri;
 		$this->basedn = $basedn;
 		$this->schema = $schema;
@@ -16,7 +18,8 @@ class LDAPDatabase {
 		$this->query = $query;
 		if (is_array($access_override)) $this->access_override = $access_override;
 	}
-	public function check($username, $password) {
+	public function check($username, $password)
+	{
 		// If username and password are not specified,
 		// an anonymous bind is attempted. 
 		if ($username == "" || $password == "")

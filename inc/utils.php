@@ -130,7 +130,8 @@ if (!function_exists('ldap_escape'))
 	}
 }
 
-function has_auth_database() {
+function has_auth_database()
+{
 	$settings = Settings::Get();
 	foreach ($settings->getAuthSources() as $a)
 		if ($a['type'] == 'database')
@@ -169,7 +170,8 @@ function has_auth_database() {
  *     'c' => array($c1),
  * );
  */
-function merge_2d($a1, $a2) {
+function merge_2d($a1, $a2)
+{
 	foreach ($a2 as $k => $v) {
 		if (!isset($a1[$k])) {
 			$a1[$k] = $v;
@@ -181,7 +183,8 @@ function merge_2d($a1, $a2) {
 	return $a1;
 }
 
-function mkquery($a1, $a2 = array(), $amps = false) {
+function mkquery($a1, $a2 = array(), $amps = false)
+{
 	$arr = array_filter(array_merge($a1, $a2));
 	return http_build_query($arr, '', ($amps ? '&amp;' : '&'));
 }

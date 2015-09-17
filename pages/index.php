@@ -77,7 +77,8 @@ $action_icons = array(
 	'DEFER' => 'warning-sign',
 );
 
-function get_preview_link($m) {
+function get_preview_link($m)
+{
 	return '?'.http_build_query(array(
 		'page' => 'preview',
 		'node' => $m['id'],
