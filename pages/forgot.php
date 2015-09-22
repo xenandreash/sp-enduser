@@ -27,36 +27,41 @@ if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password']
 	$statement->execute(array(':username' => $_POST['reset']));
 	if (!($row = $statement->fetch()))
 		$error = 'Unknown user';
-	else if (abs($row['reset_password_timestamp'] - time()) > 3600)
+	else if ($row['reset_password_timestamp'] !== NULL && abs($row['reset_password_timestamp'] - time()) > 3600)
 		$error = 'The token is only valid for one hour';
-	else if (hash_hmac('sha256', $row['password'], $row['reset_password_token']) !== $_POST['token'])
+	else if ($row['reset_password_token'] === NULL || hash_hmac('sha256', $row['password'], $row['reset_password_token']) !== $_POST['token'])
 		$error = 'Invalid token';
 	else if ($_POST['password'] !== $_POST['password2'])
 		$error = 'The passwords doesn\'t match';
 	else if (!password_policy($_POST['password'], $error2))
 		$error = $error2;
 	if (!isset($error)) {	
-		$statement = $dbh->prepare("UPDATE users SET password = :password, reset_password_timestamp = 0 WHERE username = :username;");
+		$statement = $dbh->prepare("UPDATE users SET password = :password, reset_password_token = NULL, reset_password_timestamp = NULL WHERE username = :username;");
 		$statement->execute(array(':username' => $_POST['reset'], ':password' => crypt($_POST['password'])));
 		$reset = true;
 	}
 }
 
-$title = 'Reset password';
+function accountSetup()
+{
+	return ($_GET['type'] == 'create' || $_POST['type'] == 'create');
+}
+
+$title = accountSetup() ? 'Create password' : 'Reset password';
 require_once BASE.'/partials/header.php';
 ?>
 	<div class="container">
 		<div class="col-md-offset-3 col-md-6">
 			<div class="panel panel-default" style="margin-top:40px;">
 				<div class="panel-heading">
-					<h3 class="panel-title">Forgot password</h3>
+					<h3 class="panel-title"><?php p(accountSetup() ? 'Create password' : 'Forgot password'); ?></h3>
 				</div>
 				<div class="panel-body">
 					<?php if (isset($error)) { ?>
 					<div class="alert alert-danger"><?php p($error) ?></div>
 					<?php } ?>
 					
-					<?php if ($settings->getForgotText() !== null) { ?>
+					<?php if (!accountSetup() && $settings->getForgotText() !== null) { ?>
 					<p>
 						<?php p($settings->getForgotText()); ?>
 						<hr>
@@ -64,12 +69,13 @@ require_once BASE.'/partials/header.php';
 					<?php } ?>
 					
 					<?php if (isset($reset)) { ?>
-						<p class="alert alert-success">Your password has been reset!</p>
+						<p class="alert alert-success">Your password has been <?php p(accountSetup() ? 'created' : 'reset'); ?>!</p>
 						<div class="col-sm-offset-3 col-sm-9">
 							<a class="btn btn-primary" href="?page=login">Sign in</a>
 						</div>
 					<?php } else if ((isset($_GET['forgot']) && !isset($error)) || isset($_POST['reset'])) { ?>
 					<form class="form-horizontal" method="post" action="?page=forgot">
+						<input type="hidden" name="type" value="<?php p($_GET['type'] ?: $_POST['type']) ?>">
 						<input type="hidden" name="reset" value="<?php p($_GET['forgot'] ?: $_POST['reset']) ?>">
 						<?php if (isset($_GET['token']) || isset($_POST['token'])) { ?>
 							<p>Choose a new password.</p>
@@ -97,7 +103,7 @@ require_once BASE.'/partials/header.php';
 						</div>
 						<div class="form-group">
 							<div class="col-sm-offset-3 col-sm-9">
-								<button type="submit" class="btn btn-primary">Change password</button>
+								<button type="submit" class="btn btn-primary"><?php p(accountSetup() ? 'Create password' : 'Change password'); ?></button>
 							</div>
 						</div>
 					</form>

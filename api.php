@@ -23,19 +23,22 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 	$statement->execute(array(':username' => $recipient));
 	if (!$statement->fetch()) {
 
-		$password = generate_random_password();
+		$password = crypt(generate_random_password());
 		$url = $settings->getPublicURL();
 
+		$token = uniqid();
+		$publictoken = hash_hmac('sha256', $password, $token);
+
 		$dbh->beginTransaction();
-		$statement = $dbh->prepare("INSERT INTO users (username, password) VALUES (:username, :password);");
-		$statement->execute(array(':username' => $recipient, 'password' => crypt($password)));
+		$statement = $dbh->prepare("INSERT INTO users (username, password, reset_password_token) VALUES (:username, :password, :token);");
+		$statement->execute(array(':username' => $recipient, 'password' => $password, 'token' => $token));
 		$statement = $dbh->prepare("INSERT INTO users_relations (username, type, access) VALUES (:username, 'mail', :username);");
 		$statement->execute(array(':username' => $recipient));
 
 		if (!$dbh->commit())
 			die('Database INSERT failed');
 
-		mail2($recipient, "New account information", "An account has been created for you in the end-user interface at $url\r\n\r\nUsername: $recipient\r\nPassword: $password");
+		mail2($recipient, 'New account information', "Hi $recipient, an account has been created for you in the end-user interface, choose your password and login by visiting this url $url/?page=forgot&forgot=$recipient&type=create&token=$publictoken");
 	}
 	die('ok');
 }
