@@ -408,9 +408,6 @@ $has_multiple_sources = count($sources) > 1;
 								<?php } ?>
 							</h4>
 							<p class="list-group-item-text clearfix">
-								<?php if ($m['type'] != 'log' && false) { ?>
-									<small class="pull-right text-right"><?php p(long_msg_status($m)); ?></small>
-								<?php } ?>
 								<?php p($m['data']->msgsubject); ?>
 							</p>
 						</td></tr></table>

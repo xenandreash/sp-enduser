@@ -36,29 +36,6 @@ function strftime2($format, $timestamp = NULL)
 }
 
 /**
- * Parses a status string, returning an array of the status message and
- * the extended description. Can handle either SMTP status lines or freeform
- * strings where the first word is the action.
- * 
- * @param $part If given, the index of the array to return alone (0 or 1)
- */
-function parse_status($status, $part = NULL)
-{
-	// This needs a stricter implementation, and unit tests around it
-	/*$parts0 = explode(' ', $status, 2);
-	$parts1 = explode(':', $parts0[1], 2);
-	
-	$parts = array();
-	if (count($parts1) != 2)
-		$parts = array($parts0[0], $status);
-	else
-		$parts = array($parts1[0], ucfirst(trim($parts1[1])));*/
-	
-	$parts = array($status, "");
-	return $part !== NULL ? $parts[$part] : $parts;
-}
-
-/**
  * Returns a short status string for a message, such as "Ok" or
  * "In queue".
  */
@@ -69,7 +46,7 @@ function short_msg_status($m)
 	else if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER')
 		return "In queue";
 	else
-		return parse_status($m['data']->msgdescription, 0);
+		return $m['data']->msgdescription;
 }
 
 /**
@@ -81,5 +58,5 @@ function long_msg_status($m)
 	if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER')
 		return "Retry ".$m['data']->msgretries;
 	else
-		return parse_status($m['data']->msgdescription, 1) ?: $m['data']->msgdescription;
+		return $m['data']->msgdescription;
 }
