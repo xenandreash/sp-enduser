@@ -112,6 +112,15 @@ if (isset($dbCredentials['dsn'])) {
 	<p>
 		<strong>You should now remove <code>install.php</code> or create a blank file next to it called <code>installed.txt</code> to proceed.</strong>
 	</p>
+<?php if (count($settings->getNodes()) > 0) { ?>
+	<p>
+		<em>INFO:</em> This is a sample authentication script (API script) to be used on your Halon email gateway.<br>
+		<pre><?php
+			require_once BASE.'/inc/hsl.php';
+			echo hsl_script();
+		?></pre>
+	</p>
+<?php } ?>
 <?php } else { ?>
 	<p>
 		<strong>System configuration is incomplete. Edit settings.php</strong>
