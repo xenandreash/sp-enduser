@@ -9,7 +9,7 @@ if (!$settings->getDigestSecret())
 	die('No digest secret');
 
 $node = intval($_GET['node']);
-$queueid = intval($_GET['queueid']);
+$queueid = preg_replace('/[^0-9]/', '', $_GET['queueid']);
 $time = intval($_GET['time']);
 $sign = $_GET['sign'];
 $client = soap_client($node);
