@@ -180,7 +180,19 @@ require_once BASE.'/partials/header.php';
 				var flot_opts = {
 					grid: { borderWidth: 1 },
 					series: { stack: true },
-					yaxis: { tickFormatter: function(v) { return Math.round(v * 3600) + " /h"; }}
+					yaxis: { tickFormatter: function(v) { return Math.round(v * 3600) + " /h"; }},
+					legend: {
+						labelFormatter: function(label, series) {
+							var hasValue = false;
+							for (var i = 0; i < series.data.length; ++i) {
+								if (series.data[i][1] != 0) {
+									hasValue = true;
+									break;
+								}
+							}
+							return hasValue ? label : null;
+						}
+					}
 				};
 				var rrd_opts = {
 					checked_DSs: ["reject", "deliver", "quarantine", "defer"],
