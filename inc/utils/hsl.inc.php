@@ -59,5 +59,3 @@ $str .=<<<'EOF'
 EOF;
 	return $str;
 }
-
-?>
