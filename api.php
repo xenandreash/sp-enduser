@@ -1,6 +1,5 @@
 <?php
 
-define('SP_ENDUSER', true);
 define('BASE', dirname(__FILE__));
 
 require_once BASE.'/inc/core.php';
