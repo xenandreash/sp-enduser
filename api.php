@@ -20,7 +20,7 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare("SELECT 1 FROM users WHERE username = :username;");
 	$statement->execute(array(':username' => $recipient));
-	if (!$statement->fetch()) {
+	if (!$statement->fetch(PDO::FETCH_ASSOC)) {
 
 		$password = crypt(generate_random_password());
 		$url = $settings->getPublicURL();
@@ -118,7 +118,7 @@ if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sende
 	$statement->execute(array(':recipient' => $recipient, ':recipientdomain' => $recipientdomain, ':senderip' => $senderip, ':senderdomain' => $senderdomain, ':sender' => $sender));
 	$blacklist = array();
 	$whitelist = array();
-	while ($row = $statement->fetch()) {
+	while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 		if ($row['type'] == 'blacklist')
 			$blacklist[] = $row['value'];
 		if ($row['type'] == 'whitelist')

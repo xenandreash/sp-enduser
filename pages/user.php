@@ -21,7 +21,7 @@ function do_change_password()
 	
 	$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
 	$statement->execute(array(':username' => Session::Get()->getUsername()));
-	$row = $statement->fetch();
+	$row = $statement->fetch(PDO::FETCH_ASSOC);
 	
 	if (!$row || $row['password'] !== crypt($_POST['old_password'], $row['password'])) {
 		$error = "Your old password is incorrect!";

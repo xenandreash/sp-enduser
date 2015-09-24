@@ -89,7 +89,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 				$dbh = $settings->getDatabase();
 				$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
 					$statement->execute(array(':username' => $username));
-				$row = $statement->fetch();
+				$row = $statement->fetch(PDO::FETCH_ASSOC);
 				if (!$row || $row['password'] !== crypt($password, $row['password']))
 					break;
 
@@ -98,7 +98,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 				$_SESSION['access'] = array();
 				$statement = $dbh->prepare("SELECT * FROM users_relations WHERE username = :username;");
 				$statement->execute(array(':username' => $row['username']));
-				while ($row = $statement->fetch()) {
+				while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
 					$_SESSION['access'][$row['type']][] = $row['access'];
 				}
 				break 2;

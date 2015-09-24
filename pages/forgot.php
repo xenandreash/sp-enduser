@@ -8,7 +8,7 @@ if (isset($_GET['forgot']) && !isset($_GET['token'])) {
 	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
 	$statement->execute(array(':username' => $_GET['forgot']));
-	if (!($row = $statement->fetch()))
+	if (!($row = $statement->fetch(PDO::FETCH_ASSOC)))
 		$error = 'That e-mail is not registered in the local database';
 	else if (abs($row['reset_password_timestamp'] - time()) < 300)
 		$error = 'You can only send one reset request every 15 minutes';
@@ -25,7 +25,7 @@ if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password']
 	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
 	$statement->execute(array(':username' => $_POST['reset']));
-	if (!($row = $statement->fetch()))
+	if (!($row = $statement->fetch(PDO::FETCH_ASSOC)))
 		$error = 'Unknown user';
 	else if ($row['reset_password_timestamp'] !== NULL && abs($row['reset_password_timestamp'] - time()) > 3600)
 		$error = 'The token is only valid for one hour';

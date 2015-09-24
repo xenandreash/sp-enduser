@@ -123,7 +123,7 @@ foreach ($in_access as $k => $v)
 foreach ($domain_access as $k => $v)
 	$statement->bindValue($k, $v);
 $statement->execute();
-while ($row = $statement->fetch())
+while ($row = $statement->fetch(PDO::FETCH_ASSOC))
 	$result[] = $row;
 if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
 	$total = $dbh->query('SELECT FOUND_ROWS();');
