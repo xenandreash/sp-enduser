@@ -134,7 +134,7 @@ if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sende
 
 if ($_GET['type'] == 'bwlist') {
 	$dbh = $settings->getDatabase();
-	$statement = $dbh->prepare("SELECT * FROM bwlist");
+	$statement = $dbh->prepare("SELECT * FROM bwlist;");
 	$statement->execute();
 	die(json_encode($statement->fetchAll(PDO::FETCH_OBJ)));
 }
