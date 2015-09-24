@@ -116,7 +116,7 @@ if (isset($dbCredentials['dsn'])) {
 	<p>
 		<em>INFO:</em> This is a sample authentication script (API script) to be used on your Halon email gateway.<br>
 		<pre><?php
-			require_once BASE.'/inc/hsl.php';
+			require_once BASE.'/inc/utils/hsl.inc.php';
 			echo hsl_script();
 		?></pre>
 	</p>
