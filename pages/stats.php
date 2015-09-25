@@ -4,7 +4,6 @@ if (!defined('SP_ENDUSER')) die('File not included');
 require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
-
 /* TODO
  * Use SOAP "future" instead for parallell config call
  * Support "outbound" aka more listeners
@@ -75,6 +74,7 @@ $javascript[] = 'static/js/jquery.flot.resize.min.js';
 $javascript[] = 'static/js/jquery.flot.time.min.js';
 $javascript[] = 'static/js/jquery.flot.selection.min.js';
 $javascript[] = 'static/js/jquery.flot.stack.min.js';
+$javascript[] = 'static/js/stats.js';
 
 require_once BASE.'/inc/smarty.php';
 
