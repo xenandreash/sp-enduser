@@ -100,6 +100,5 @@ $(document).ready(function() {
 		});
 	});
 	if ($(".add-domain").length < 6) $(".add-domain").click();
-	else $(".many-domains").show();
 
 });

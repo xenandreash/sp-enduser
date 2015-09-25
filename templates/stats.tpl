@@ -12,7 +12,11 @@
 			{/foreach}
 		</ul>
 	</div>
-	<span class="text-muted pull-right many-domains" style="display:none">Because you have more than 5 domains, you need to choose them specifically.</span>
+	{if $domains|@count gt 5}
+	<span class="text-muted pull-right many-domains">
+		Because you have more than 5 domains, you need to choose them specifically.
+	</span>
+	{/if}
 	<br><br>
 	<div class="panel panel-default template" style="display:none">
 		<div class="panel-heading">
