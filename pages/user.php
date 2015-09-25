@@ -33,102 +33,17 @@ function do_change_password()
 	$changedPassword = true;
 }
 
-$source = Session::Get()->getSource();
 $changedPassword = false;
 $error = NULL;
-if ($source == 'database' && isset($_POST['password']))
+if (Session::Get()->getSource() == 'database' && isset($_POST['password']))
 	do_change_password();
 
-$access = Session::Get()->getAccess();
-$access_mail = (is_array($access['mail']) ? $access['mail'] : array());
-$access_domain = (is_array($access['domain']) ? $access['domain'] : array());
+require_once BASE.'/inc/smarty.php';
 
-$title = 'Account';
-require_once BASE.'/partials/header.php';
-?>
-		<div class="container">
-			<div class="col-md-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Permissions</h3>
-					</div>
-					<div class="panel-body">
-						<?php if (empty($access_mail) && empty($access_domain)) { ?>
-						<p>
-							You have no restrictions, you may view messages to/from any domain.
-						</p>
-						<?php } else { ?>
-						<p>
-							You are authorized to view messages sent from/to the following <?php if (!empty($access_domain)) { p('domains'); } else { p('users'); } ?>:
-						</p>
-						<ul>
-							<?php
-							foreach (!empty($access_domain)?$access_domain:$access_mail as $a) {
-								echo "<li>";
-								p($a);
-								echo "</li>";
-							}
-							?>
-						</ul>
-							<?php if (!empty($access_domain) && !empty($access_mail)) { ?>
-							<p>
-								And the following users:
-							</p>
-							<ul>
-								<?php
-								foreach ($access_mail as $mail) {
-									echo "<li>";
-									p($mail);
-									echo "</li>";
-								}
-								?>
-							</ul>
-							<?php } ?>
-						<?php } ?>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Change password</h3>
-					</div>
-					<div class="panel-body">
-						<?php if ($changedPassword) { ?>
-						<div class="alert alert-success">Password changed</div>
-						<?php } ?>
-						<?php if ($error) { ?>
-						<div class="alert alert-danger"><?php p($error); ?></div>
-						<?php } ?>
-						
-						<?php if ($source == 'database') { ?>
-							<form class="form-horizontal" method="post" action="?page=user">
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="old_password">Old Password</label>
-									<div class="col-sm-9">
-										<input type="password" class="form-control" name="old_password" id="old_password" placeholder="Your old password">
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="password">New Password</label>
-									<div class="col-sm-9">
-										<input type="password" class="form-control" name="password" id="password" placeholder="Your new password">
-										<input type="password" class="form-control" name="password2" id="password2" placeholder="And again, just to be sure">
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-sm-offset-2 col-sm-10">
-										<button type="submit" class="btn btn-primary">Change</button>
-									</div>
-								</div>
-							</form>
-						<?php } else { ?>
-							<p>
-								You are authenticated externally, so password changes are not done here.
-							</p>
-						<?php } ?>
-					</div>
-				</div>
-			</div>
-		</div>
-<?php require_once BASE.'/partials/footer.php'; ?>
+if (is_array($access['mail'])) $smarty->assign('access_mail', $access['mail']);
+if (is_array($access['domain'])) $smarty->assign('access_domain', $access['domain']);
+if ($changedPassword) $smarty->assign('password_changed', true);
+if (Session::Get()->getSource() == 'database') $smarty->assign('password_changeable', true);
+if ($error) $smarty->assign('error', $error);
+
+$smarty->display('user.tpl');

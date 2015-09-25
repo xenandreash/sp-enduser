@@ -140,54 +140,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 	session_destroy();
 }
 
-$title = 'Sign in';
-require_once BASE.'/partials/header.php';
-?>
-	<div class="container">
-		<div class="col-md-offset-3 col-md-6">
-			<div class="panel panel-default" style="margin-top:40px;">
-				<div class="panel-heading">
-					<h3 class="panel-title">Sign in</h3>
-				</div>
-				<div class="panel-body">
-					<?php if (isset($error)) { ?>
-					<div class="alert alert-danger"><?php p($error) ?></div>
-					<?php } ?>
-					
-					<?php if ($settings->getLoginText() !== null) { ?>
-					<p>
-						<?php p($settings->getLoginText()); ?>
-						<hr>
-					</p>
-					<?php } ?>
-					<form class="form-horizontal" method="post" action="?page=login">
-						<input type="hidden" name="timezone" id="timezone">
-						<div class="form-group">
-							<label for="username" class="control-label col-sm-3">Username</label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" name="username" id="username" autofocus="autofocus">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="username" class="control-label col-sm-3">Password</label>
-							<div class="col-sm-9">
-								<input type="password" class="form-control" name="password" id="password">
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-offset-3 col-sm-9">
-								<button type="submit" class="btn btn-primary">Sign in</button>
-								<?php if (has_auth_database()) { ?>
-									<a class="btn btn-default" href="?page=forgot">Forgot password</a>
-								<?php } ?>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script>
-		$("#timezone").val(new Date().getTimezoneOffset());
-	</script>
-<?php require_once BASE.'/partials/footer.php'; ?>
+require_once BASE.'/inc/smarty.php';
+
+if ($settings->getLoginText() !== null) $smarty->assign('login_text', $settings->getLoginText());
+if ($error) $smarty->assign('error', $error);
+if (has_auth_database()) $smarty->assign('forgot_password', true);
+
+$smarty->display('login.tpl');
