@@ -64,23 +64,11 @@ try {
 }
 $_SESSION['logs_id'][] = $cmd_id->result;
 
-$title = 'Text log';
-$show_back = true;
 $javascript[] = 'static/js/log.js';
-require_once BASE.'/partials/header.php';
-?>
-	<nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a id="history_back" class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
-			</div>
-		</div>
-	</nav>
-	<div class="container-fluid">
-		<pre id="log"><span class="text-info" id="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span></pre>
-	</div>
-	<script>
-		cmd_id = <?php echo json_encode($cmd_id->result); ?>;
-		cmd_node = <?php echo json_encode($node->getId()); ?>;
-	</script>
-<?php require_once BASE.'/partials/footer.php'; ?>
+
+require_once BASE.'/inc/smarty.php';
+
+$smarty->assign('id', json_encode($cmd_id->result));
+$smarty->assign('node', json_encode($node->getId()));
+
+$smarty->display('log.tpl');
