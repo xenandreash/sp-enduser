@@ -12,7 +12,7 @@
 			{/foreach}
 		</ul>
 	</div>
-	{if $domains|@count gt 5}
+	{if count($domains) > 5}
 	<span class="text-muted pull-right many-domains">
 		Because you have more than 5 domains, you need to choose them specifically.
 	</span>
