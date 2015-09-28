@@ -64,7 +64,7 @@
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-9">
 							<button type="submit" class="btn btn-primary">Reset password</button>
-							<a class="btn btn-default" href=".">Login</a>
+							<a class="btn btn-default" href="?page=login">Login</a>
 						</div>
 					</div>
 				</form>
