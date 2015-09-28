@@ -146,8 +146,10 @@ require_once BASE.'/inc/smarty.php';
 
 if ($error) $smarty->assign('error', $error);
 if ($search) $smarty->assign('search', $search);
-$access = Session::Get()->getAccess();
-$smarty->assign('useraccess', empty($access)?array():@array_merge($access['mail'], $access['domain']));
+$access = array();
+foreach (Session::Get()->getAccess() as $a)
+	$access = array_merge($access, $a);
+$smarty->assign('useraccess', $access);
 $smarty->assign('items', $result2);
 if ($total) $smarty->assign('total', $total);
 if ($pages) $smarty->assign('pages', $pages);
