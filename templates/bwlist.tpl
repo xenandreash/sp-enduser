@@ -173,7 +173,6 @@
 								</div>
 								{/foreach}
 								{if count($useraccess) > 5}</div>{/if}
-							</select>
 							{else}
 								<input type="text" class="form-control" name="access[]" placeholder="everyone">
 							{/if}
