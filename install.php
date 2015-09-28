@@ -6,8 +6,14 @@ if (!file_exists(BASE.'/settings.php'))
 
 $title = 'Install';
 require_once BASE.'/inc/core.php';
-require_once BASE.'/partials/header.php';
-
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Install</title>
+</head>
+<body>
+<?php
 $ok = true;
 ?>
 	<div style="padding: 10px;"> 
@@ -127,6 +133,5 @@ if (isset($dbCredentials['dsn'])) {
 	</p>
 <?php } ?>
 	</div>
-<?php
-require_once BASE.'/partials/footer.php';
-?>
+</body>
+</html>
