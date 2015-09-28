@@ -106,7 +106,7 @@
 						{/if}
 					{/foreach}
 				{foreachelse}
-					<tr><td colspan="4" class="text-muted">No black/whitelist</td></tr>
+					<tr><td colspan="6" class="text-muted">No black/whitelist</td></tr>
 				{/foreach}
 				</tbody>
 			</table>
