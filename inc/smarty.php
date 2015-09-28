@@ -1,8 +1,5 @@
 <?php
 
-define('SMARTY_DIR', BASE . '/vendor/smarty-3.1.27/libs/');
-require_once(SMARTY_DIR . 'Smarty.class.php');
-
 $smarty = new Smarty();
 $smarty->compile_dir = '/tmp/';
 $smarty->template_dir = './templates/';
