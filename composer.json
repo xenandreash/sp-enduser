@@ -1,5 +1,7 @@
 {
 	"require": {
-		"ezyang/htmlpurifier": "4.6.*"
+		"ezyang/htmlpurifier": "4.6.*",
+		"smarty/smarty": "~3.1",
+		"smarty-gettext/smarty-gettext": "~1.2.0"
 	}
 }
