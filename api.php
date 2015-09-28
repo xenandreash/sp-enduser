@@ -37,7 +37,7 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 		if (!$dbh->commit())
 			die('Database INSERT failed');
 
-		mail2($recipient, 'New account information', "Hi $recipient, an account has been created for you in the end-user interface, choose your password and login by visiting this url $url/?page=forgot&forgot=$recipient&type=create&token=$publictoken");
+		mail2($recipient, 'New account information', "Hi $recipient, an account has been created for you in the end-user interface, choose your password and login by visiting this url $url/?page=forgot&reset=$recipient&type=create&token=$publictoken");
 	}
 	die('ok');
 }

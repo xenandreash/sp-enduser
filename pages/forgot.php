@@ -4,10 +4,10 @@ if (!defined('SP_ENDUSER')) die('File not included');
 require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
-if (isset($_GET['forgot']) && !isset($_GET['token'])) {
+if (isset($_GET['reset']) && !isset($_GET['token'])) {
 	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");
-	$statement->execute(array(':username' => $_GET['forgot']));
+	$statement->execute(array(':username' => $_GET['reset']));
 	if (!($row = $statement->fetch(PDO::FETCH_ASSOC)))
 		$error = 'That e-mail is not registered in the local database';
 	else if (abs($row['reset_password_timestamp'] - time()) < 300)
@@ -16,8 +16,8 @@ if (isset($_GET['forgot']) && !isset($_GET['token'])) {
 		$token = uniqid();
 		$publictoken = hash_hmac('sha256', $row['password'], $token);
 		$statement = $dbh->prepare("UPDATE users SET reset_password_token = :token, reset_password_timestamp = :timestamp WHERE username = :username;");
-		$statement->execute(array(':username' => $_GET['forgot'], ':token' => $token, ':timestamp' => time()));
-		mail2($_GET['forgot'], 'Reset password', wordwrap("Someone (hopefully you) have requested a password reset (from IP {$_SERVER['REMOTE_ADDR']}).\r\n\r\nThe token is:\r\n$publictoken \r\n\r\nDirect URL:\r\n".$settings->getPublicURL()."/?page=forgot&forgot={$_GET['forgot']}&token=$publictoken", 70, "\r\n"));
+		$statement->execute(array(':username' => $_GET['reset'], ':token' => $token, ':timestamp' => time()));
+		mail2($_GET['reset'], 'Reset password', wordwrap("Someone (hopefully you) have requested a password reset (from IP {$_SERVER['REMOTE_ADDR']}).\r\n\r\nThe token is:\r\n$publictoken \r\n\r\nDirect URL:\r\n".$settings->getPublicURL()."/?page=forgot&reset={$_GET['reset']}&token=$publictoken", 70, "\r\n"));
 	}
 }
 
@@ -47,84 +47,17 @@ function accountSetup()
 	return ($_GET['type'] == 'create' || $_POST['type'] == 'create');
 }
 
-$title = accountSetup() ? 'Create password' : 'Reset password';
-require_once BASE.'/partials/header.php';
-?>
-	<div class="container">
-		<div class="col-md-offset-3 col-md-6">
-			<div class="panel panel-default" style="margin-top:40px;">
-				<div class="panel-heading">
-					<h3 class="panel-title"><?php p(accountSetup() ? 'Create password' : 'Forgot password'); ?></h3>
-				</div>
-				<div class="panel-body">
-					<?php if (isset($error)) { ?>
-					<div class="alert alert-danger"><?php p($error) ?></div>
-					<?php } ?>
-					
-					<?php if (!accountSetup() && $settings->getForgotText() !== null) { ?>
-					<p>
-						<?php p($settings->getForgotText()); ?>
-						<hr>
-					</p>
-					<?php } ?>
-					
-					<?php if (isset($reset)) { ?>
-						<p class="alert alert-success">Your password has been <?php p(accountSetup() ? 'created' : 'reset'); ?>!</p>
-						<div class="col-sm-offset-3 col-sm-9">
-							<a class="btn btn-primary" href="?page=login">Sign in</a>
-						</div>
-					<?php } else if ((isset($_GET['forgot']) && !isset($error)) || isset($_POST['reset'])) { ?>
-					<form class="form-horizontal" method="post" action="?page=forgot">
-						<input type="hidden" name="type" value="<?php p($_GET['type'] ?: $_POST['type']) ?>">
-						<input type="hidden" name="reset" value="<?php p($_GET['forgot'] ?: $_POST['reset']) ?>">
-						<?php if (isset($_GET['token']) || isset($_POST['token'])) { ?>
-							<p>Choose a new password.</p>
-							<input type="hidden" name="token" value="<?php p($_GET['token'] ?: $_POST['token']) ?>">
-						<?php } else { ?>
-							<p class="alert alert-success">Enter the token you received in your inbox, and choose a new password.</p>
-							<div class="form-group">
-								<label class="control-label col-sm-3" for="token">Token</label>
-								<div class="col-sm-9">
-									<input type="text" class="form-control" name="token" autofocus value="<?php //print $publictoken; ?>">
-								</div>
-							</div>
-						<?php } ?>
-						<div class="form-group">
-							<label class="control-label col-sm-3" for="password">Password</label>
-							<div class="col-sm-9">
-								<input type="password" class="form-control" name="password" autofocus>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-sm-3" for="password2">Repeat password</label>
-							<div class="col-sm-9">
-								<input type="password" class="form-control" name="password2">
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-offset-3 col-sm-9">
-								<button type="submit" class="btn btn-primary"><?php p(accountSetup() ? 'Create password' : 'Change password'); ?></button>
-							</div>
-						</div>
-					</form>
-					<?php } else { ?>
-					<form class="form-horizontal" method="get">
-						<input type="hidden" name="page" value="forgot">
-						<div class="form-group">
-							<label class="control-label col-sm-3" for="forgot">E-mail</label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" name="forgot" autofocus>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-offset-3 col-sm-9">
-								<button type="submit" class="btn btn-primary">Reset password</button>
-								<a class="btn btn-default" href=".">I remembered!</a>
-							</div>
-						</div>
-					</form>
-					<?php } ?>
-				</div>
-			</div>
-		</div>
-<?php require_once BASE.'/partials/footer.php'; ?>
+require_once BASE.'/inc/smarty.php';
+
+if ($error) $smarty->assign('error', $error);
+if (!accountSetup() && $settings->getForgotText() !== null) $smarty->assign('forgot_text', $settings->getForgotText());
+$smarty->assign('title', accountSetup() ? 'Create password' : 'Reset password');
+$smarty->assign('title_button', accountSetup() ? 'Create password' : 'Change password');
+
+if ($reset) $smarty->assign('password_reset_text', accountSetup() ? 'created' : 'reset');
+
+if (isset($_GET['token']) || isset($_POST['token'])) $smarty->assign('token', $_GET['token'] ?: $_POST['token']);
+if (isset($_GET['type']) || isset($_POST['type'])) $smarty->assign('type', $_GET['type'] ?: $_POST['type']);
+if (isset($_GET['reset']) || isset($_POST['reset'])) $smarty->assign('reset', $_GET['reset'] ?: $_POST['reset']);
+
+$smarty->display('forgot.tpl');
