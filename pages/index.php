@@ -44,7 +44,11 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 
 $title = 'Messages';
 $javascript[] = 'static/js/index.js';
-require_once BASE.'/partials/header.php';
+
+require_once BASE.'/inc/smarty.php';
+$smarty->assign('page_active', 'index');
+$smarty->assign('title', 'Messages');
+$smarty->display('header.tpl');
 
 $action_colors = array(
 	'DELIVER' => '#8c1',
@@ -603,4 +607,5 @@ $has_multiple_sources = count($sources) > 1;
 			});
 		});
 	</script>
-<?php require_once BASE.'/partials/footer.php'; ?>
+	</body>
+</html>
