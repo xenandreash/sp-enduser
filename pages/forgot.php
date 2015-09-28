@@ -42,19 +42,11 @@ if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password']
 	}
 }
 
-function accountSetup()
-{
-	return ($_GET['type'] == 'create' || $_POST['type'] == 'create');
-}
-
 require_once BASE.'/inc/smarty.php';
 
 if ($error) $smarty->assign('error', $error);
-if (!accountSetup() && $settings->getForgotText() !== null) $smarty->assign('forgot_text', $settings->getForgotText());
-$smarty->assign('title', accountSetup() ? 'Create password' : 'Reset password');
-$smarty->assign('title_button', accountSetup() ? 'Create password' : 'Change password');
-
-if ($reset) $smarty->assign('password_reset_text', accountSetup() ? 'created' : 'reset');
+if ($_GET['type'] != 'create' && $_POST['type'] != 'create' && $settings->getForgotText() !== null) $smarty->assign('forgot_text', $settings->getForgotText());
+if ($reset) $smarty->assign('password_reset', true);
 
 if (isset($_GET['token']) || isset($_POST['token'])) $smarty->assign('token', $_GET['token'] ?: $_POST['token']);
 if (isset($_GET['type']) || isset($_POST['type'])) $smarty->assign('type', $_GET['type'] ?: $_POST['type']);

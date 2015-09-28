@@ -1,3 +1,4 @@
+{if $type=='create'}{$title='Create password'}{else}{$title='Reset password'}{/if}
 {include file='header.tpl'}
 <div class="container">
 	<div class="col-md-offset-3 col-md-6">
@@ -12,8 +13,8 @@
 				{if $forgot_text}
 					<p>{$forgot_text}</p><hr>
 				{/if}
-				{if $password_reset_text}
-					<p class="alert alert-success">Your password has been {$password_reset_text}.</p>
+				{if $password_reset}
+					<p class="alert alert-success">Your password has been {if $type=='create'}created{else}reset{/if}.</p>
 					<div class="col-sm-offset-3 col-sm-9">
 						<a class="btn btn-primary" href="?page=login">Sign in</a>
 					</div>
@@ -47,7 +48,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-9">
-							<button type="submit" class="btn btn-primary">{$title_button}</button>
+							<button type="submit" class="btn btn-primary">{if $type=='create'}Create password{else}Change password{/if}</button>
 						</div>
 					</div>
 				</form>
