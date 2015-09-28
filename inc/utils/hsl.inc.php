@@ -35,7 +35,9 @@ if ($settings->getDisplayTextlog()) {
 $str .=<<<'EOF'
     if ($soapcall == "commandRun" and
         $soapargs["argv"][0] == "searchlog" and
-        $soapargs["argv"][1] =~ "/^([0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(:[0-9]+)?$/")
+        $soapargs["argv"][1] == "-a" and
+        $soapargs["argv"][3] == "--" and
+        $soapargs["argv"][4] =~ "/^([0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12})(:[0-9]+)?$/")
             $ok = true;
 
 EOF;
