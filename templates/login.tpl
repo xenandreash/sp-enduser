@@ -10,7 +10,7 @@
 					<div class="alert alert-danger">{$error|escape}</div>
 				{/if}
 				{if $login_text}
-					<p>{$login_text}<hr></p>
+					<p>{$login_text}</p><hr>
 				{/if}
 				<form class="form-horizontal" method="post" action="?page=login">
 					<input type="hidden" name="timezone" id="timezone">

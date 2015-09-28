@@ -10,7 +10,7 @@
 					<div class="alert alert-danger">{$error|escape}</div>
 				{/if}
 				{if $forgot_text}
-					<p>{$forgot_text}<hr></p>
+					<p>{$forgot_text}</p><hr>
 				{/if}
 				{if $password_reset_text}
 					<p class="alert alert-success">Your password has been {$password_reset_text}.</p>
@@ -63,7 +63,7 @@
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-9">
 							<button type="submit" class="btn btn-primary">Reset password</button>
-							<a class="btn btn-default" href=".">I remembered!</a>
+							<a class="btn btn-default" href=".">Login</a>
 						</div>
 					</div>
 				</form>
@@ -71,4 +71,5 @@
 			</div>
 		</div>
 	</div>
+</div>
 {include file='footer.tpl'}
