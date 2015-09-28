@@ -1,52 +1,5 @@
 [
     {
-        "name": "ezyang/htmlpurifier",
-        "version": "v4.6.0",
-        "version_normalized": "4.6.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ezyang/htmlpurifier.git",
-            "reference": "6f389f0f25b90d0b495308efcfa073981177f0fd"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/6f389f0f25b90d0b495308efcfa073981177f0fd",
-            "reference": "6f389f0f25b90d0b495308efcfa073981177f0fd",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2"
-        },
-        "time": "2013-11-30 08:25:19",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "HTMLPurifier": "library/"
-            },
-            "files": [
-                "library/HTMLPurifier.composer.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL"
-        ],
-        "authors": [
-            {
-                "name": "Edward Z. Yang",
-                "email": "admin@htmlpurifier.org",
-                "homepage": "http://ezyang.com",
-                "role": "Developer"
-            }
-        ],
-        "description": "Standards compliant HTML filter written in PHP",
-        "homepage": "http://htmlpurifier.org/",
-        "keywords": [
-            "html"
-        ]
-    },
-    {
         "name": "smarty-gettext/smarty-gettext",
         "version": "1.2.0",
         "version_normalized": "1.2.0.0",
@@ -150,6 +103,52 @@
         "homepage": "http://www.smarty.net",
         "keywords": [
             "templating"
+        ]
+    },
+    {
+        "name": "ezyang/htmlpurifier",
+        "version": "v4.7.0",
+        "version_normalized": "4.7.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ezyang/htmlpurifier.git",
+            "reference": "ae1828d955112356f7677c465f94f7deb7d27a40"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/ae1828d955112356f7677c465f94f7deb7d27a40",
+            "reference": "ae1828d955112356f7677c465f94f7deb7d27a40",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2"
+        },
+        "time": "2015-08-05 01:03:42",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "HTMLPurifier": "library/"
+            },
+            "files": [
+                "library/HTMLPurifier.composer.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL"
+        ],
+        "authors": [
+            {
+                "name": "Edward Z. Yang",
+                "email": "admin@htmlpurifier.org",
+                "homepage": "http://ezyang.com"
+            }
+        ],
+        "description": "Standards compliant HTML filter written in PHP",
+        "homepage": "http://htmlpurifier.org/",
+        "keywords": [
+            "html"
         ]
     }
 ]

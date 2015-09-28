@@ -6,7 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
     $vendorDir . '/smarty-gettext/smarty-gettext/block.t.php',
     $vendorDir . '/smarty-gettext/smarty-gettext/function.locale.php',
+    $vendorDir . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
 );
