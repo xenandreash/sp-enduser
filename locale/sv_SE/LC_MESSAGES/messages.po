@@ -1,6 +1,126 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8\n"
 
+#: templates/header.tpl:30
+msgid "Back"
+msgstr "Tillbaka"
+
+#: templates/preview.tpl:10 templates/preview.tpl:31
+msgid "Text log"
+msgstr "Textlogg"
+
+#: templates/preview.tpl:13 templates/preview.tpl:34
+msgid "Download"
+msgstr "Ladda ner"
+
+#: templates/preview.tpl:15 templates/preview.tpl:36
+msgid "Delete"
+msgstr "Ta bort"
+
+#: templates/preview.tpl:16 templates/preview.tpl:37
+msgid "Bounce"
+msgstr "Studsa"
+
+#: templates/preview.tpl:17 templates/preview.tpl:38
+msgid "Retry/release"
+msgstr "Försök igen/släpp"
+
+#: templates/preview.tpl:28
+msgid "Actions"
+msgstr "Åtgärder"
+
+#: templates/preview.tpl:51 templates/preview.tpl:63
+msgid "Details"
+msgstr "Detaljer"
+
+#: templates/bwlist.tpl:36 templates/bwlist.tpl:143
+msgid "Action"
+msgstr "Åtgärd"
+
+#: templates/preview.tpl:59
+msgid "From"
+msgstr "Från"
+
+#: templates/preview.tpl:60
+msgid "To"
+msgstr "Till"
+
+#: templates/preview.tpl:61
+msgid "Date"
+msgstr "Datum"
+
+#: templates/preview.tpl:62
+msgid "Size"
+msgstr "Storlek"
+
+#: templates/preview.tpl:69
+msgid "Received by"
+msgstr "Mottaget av"
+
+#: templates/preview.tpl:70
+msgid "Server"
+msgstr "Server"
+
+#: templates/preview.tpl:71
+msgid "User"
+msgstr "Användare"
+
+#: templates/preview.tpl:72
+msgid "Destination"
+msgstr "Destination"
+
+#: templates/preview.tpl:80
+msgid "Scores"
+msgstr "Poäng"
+
+#: templates/preview.tpl:85
+msgid "Engine"
+msgstr "Motor"
+
+#: templates/preview.tpl:86
+msgid "Result"
+msgstr "Resultat"
+
+#: templates/preview.tpl:87
+msgid "Signature"
+msgstr "Signatur"
+
+#: templates/preview.tpl:99
+msgid "No Scores"
+msgstr "Inga poäng"
+
+#: templates/preview.tpl:110
+msgid "No Subject"
+msgstr "Ingen ämnesrad"
+
+#: templates/preview.tpl:113
+msgid "Content unavailable"
+msgstr "Innehållet ej tillgängligt"
+
+#: templates/preview.tpl:113
+msgid "Message is not in queue or quarantine"
+msgstr "Meddelandet är inte i kön eller karantänen"
+
+#: templates/preview.tpl:135
+msgid "Switch to <a href=\"%1\">plain text</a> version"
+msgstr "Byt till <a href=\"%1\">text</a> versionen"
+
+#: templates/preview.tpl:138
+msgid "Switch to <a href=\"%1\">HTML</a> version"
+msgstr "Byt till <a href=\"%1\">HTML</a> versionen"
+
+#: templates/preview.tpl:148
+msgid "Added"
+msgstr "Tillagda"
+
+#: templates/preview.tpl:150
+msgid "Removed"
+msgstr "Borttagna"
+
+#: templates/preview.tpl:152
+msgid "Headers"
+msgstr "Brevhuvuden"
+
 #: templates/login.tpl:6 templates/login.tpl:31
 msgid "Sign in"
 msgstr "Logga in"
@@ -16,10 +136,6 @@ msgstr "Lösenord"
 #: templates/login.tpl:33
 msgid "Forgot password"
 msgstr "Glömt lösenordet"
-
-#: templates/header.tpl:30
-msgid "Back"
-msgstr "Tillbaka"
 
 #: templates/header.tpl:35
 msgid "Messages"
@@ -44,10 +160,6 @@ msgstr "Sök efter..."
 #: templates/bwlist.tpl:27
 msgid "Search"
 msgstr "Sök"
-
-#: templates/bwlist.tpl:36 templates/bwlist.tpl:143
-msgid "Action"
-msgstr "Åtgärd"
 
 #: templates/bwlist.tpl:37 templates/bwlist.tpl:152
 msgid "Sender"
@@ -116,7 +228,9 @@ msgstr "Rättigheter"
 
 #: templates/user.tpl:11
 msgid "You have no restrictions, you may view messages to/from any domain."
-msgstr "Du har inga begränsningar, och kan därför se meddelenanden till och från alla domäner."
+msgstr ""
+"Du har inga begränsningar, och kan därför se meddelenanden till och från "
+"alla domäner."
 
 #: templates/user.tpl:15
 msgid "You are authorized to view messages sent from/to the following"
@@ -157,5 +271,4 @@ msgstr "Ändra"
 #: templates/user.tpl:73
 msgid ""
 "You are authenticated externally, so password changes are not done here."
-msgstr ""
-"Du är autentiserad externt, så lösenordet kan inte ändras här."
+msgstr "Du är autentiserad externt, så lösenordet kan inte ändras här."

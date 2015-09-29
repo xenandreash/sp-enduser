@@ -2,19 +2,19 @@
 <nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<a id="history_back" class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;Back</a>
+			<a id="history_back" class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;{t}Back{/t}</a>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
 			{if isset($node)}
 				{if $support_log}
-					<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+					<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="glyphicon glyphicon-book"></i>&nbsp;{t}Text log{/t}</a></li>
 				{/if}
 				{if $type == 'queue'}
-					<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;Download</a></li>
+					<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;{t}Download{/t}</a></li>
 					<li class="divider"></li>
-					<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
-					<li><a data-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Bounce</a></li>
-					<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;Retry/release</a></li>
+					<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;{t}Delete{/t}</a></li>
+					<li><a data-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;{t}Bounce{/t}</a></li>
+					<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;{t}Retry/release{/t}</a></li>
 				{/if}
 			{/if}
 		</ul>
@@ -25,17 +25,17 @@
 	<div class="container-fluid">
 		<ul class="nav navbar-nav">
 			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions <span class="caret"></span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{t}Actions{/t} <span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					{if $support_log}
-						<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="glyphicon glyphicon-book"></i>&nbsp;Text log</a></li>
+						<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="glyphicon glyphicon-book"></i>&nbsp;{t}Text log{/t}</a></li>
 					{/if}
 					{if $type == 'queue'}
-						<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;Download</a></li>
+						<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;{t}Download{/t}</a></li>
 						<li class="divider"></li>
-						<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;Delete</a></li>
-						<li><a data-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Bounce</a></li>
-						<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;Retry/release</a></li>
+						<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;{t}Delete{/t}</a></li>
+						<li><a data-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;{t}Bounce{/t}</a></li>
+						<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;{t}Retry/release{/t}</a></li>
 					{/if}
 				</ul>
 			</li>
@@ -48,28 +48,28 @@
 		<div class="col-md-5 col-md-push-7">
 			<div class="panel panel-default panel-{$action_class}">
 				<div class="panel-heading">
-					<h3 class="panel-title">Details</h3>
+					<h3 class="panel-title">{t}Details{/t}</h3>
 				</div>
 				<div class="panel-body">
 					<dl class="dl-horizontal">
-						<dt>Action</dt><dd>
+						<dt>{t}Action{/t}</dt><dd>
 							<span class="glyphicon glyphicon-{$action_icon}"></span>
 							{$mail->msgaction}
 						</dd>
-						<dt>From</dt><dd class="wrap">{$mail->msgfrom|escape}&nbsp;</dd>
-						<dt>To</dt><dd class="wrap">{$mail->msgto|escape}&nbsp;</dd>
-						<dt>Date</dt><dd>{$date}</dd>
-						<dt>Size</dt><dd class="wrap" title="{$mail->msgsize} bytes">{$mail->msgsize|format_size}&nbsp;</dd>
-						<dt>Details</dt><dd>
+						<dt>{t}From{/t}</dt><dd class="wrap">{$mail->msgfrom|escape}&nbsp;</dd>
+						<dt>{t}To{/t}</dt><dd class="wrap">{$mail->msgto|escape}&nbsp;</dd>
+						<dt>{t}Date{/t}</dt><dd>{$date}</dd>
+						<dt>{t}Size{/t}</dt><dd class="wrap" title="{$mail->msgsize} bytes">{$mail->msgsize|format_size}&nbsp;</dd>
+						<dt>{t}Details{/t}</dt><dd>
 						{if $mail->msgaction == 'QUEUE'}
 							In queue (retry {$mail->msgretries})<br><span class="text-muted">{$mail->msgerror|escape}</span>
 						{else}
 							{$mail->msgdescription|escape}
 						{/if}
-						{if $listener}<dt>Received by</dt><dd>{$listener}</dd>{/if}
-						<dt>Server</dt><dd>{$mail->msgfromserver}&nbsp;</dd>
-						{if $mail->msgsasl}<dt>User</dt><dd>{$mail->msgsasl|escape}</dd>{/if}
-						{if $transport}<dt>Destination</dt><dd>{$transport}</dd>{/if}
+						{if $listener}<dt>{t}Received by{/t}</dt><dd>{$listener}</dd>{/if}
+						<dt>{t}Server{/t}</dt><dd>{$mail->msgfromserver}&nbsp;</dd>
+						{if $mail->msgsasl}<dt>{t}User{/t}</dt><dd>{$mail->msgsasl|escape}</dd>{/if}
+						{if $transport}<dt>{t}Destination{/t}</dt><dd>{$transport}</dd>{/if}
 						<dt>ID</dt><dd>{$mail->msgid}</dd>
 					</dl>
 				</div>
@@ -77,14 +77,14 @@
 			{if $scores}
 			<div class="panel panel-default hidden-xs">
 				<div class="panel-heading">
-					<h3 class="panel-title">Scores</h3>
+					<h3 class="panel-title">{t}Scores{/t}</h3>
 				</div>
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Engine</th>
-							<th>Result</th>
-							<th class="hidden-xs">Signature</th>
+							<th>{t}Engine{/t}</th>
+							<th>{t}Result{/t}</th>
+							<th class="hidden-xs">{t}Signature{/t}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -96,7 +96,7 @@
 						</tr>
 					{foreachelse}
 						<tr>
-							<td colspan="3" class="text-muted text-center">No Scores</td>
+							<td colspan="3" class="text-muted text-center">{t}No Scores{/t}</td>
 						</tr>
 					{/foreach}
 					</tbody>
@@ -107,10 +107,10 @@
 		<div class="col-md-7 col-md-pull-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title" style="white-space: nowrap;">{if $mail->msgsubject}{$mail->msgsubject|escape}{else}<span class="text-muted">No Subject</span>{/if}</h3>
+					<h3 class="panel-title" style="white-space: nowrap;">{if $mail->msgsubject}{$mail->msgsubject|escape}{else}<span class="text-muted">{t}No Subject{/t}</span>{/if}</h3>
 				</div>
 				{if ! isset($body)}
-					<div class="panel-body msg-body"><p class="text-muted text-center">Content unavailable<br><small>Message is not in queue or quarantine</small></p></div>
+					<div class="panel-body msg-body"><p class="text-muted text-center">{t}Content unavailable{/t}<br><small>{t}Message is not in queue or quarantine{/t}</small></p></div>
 				{elseif $encode == 'TEXT'}
 					<pre class="panel-body msg-body">{$body}</pre>
 				{elseif $encode == 'HTML'}
@@ -132,10 +132,10 @@
 			{if (isset($body) && $encode == 'HTML') or $show_text}
 				<p style="float:right;">
 				{if $encode == 'HTML'}
-					Switch to <a href="{$show_text_link}">plain text</a> version
+					{t escape=no url=$show_text_link}Switch to <a href="%1">plain text</a> version{/t}
 				{/if}
 				{if $show_text}
-					Switch to <a href="{$show_html_link}">HTML</a> version
+					{t escape=no url=$show_html_link}Switch to <a href="%1">HTML</a> version{/t}
 				{/if}
 				</p>
 				<br style="clear:both">
@@ -145,11 +145,11 @@
 				<div class="panel-heading">
 					<div class="pull-right preview-headers-legend">
 						<div style="background-color: #ddffdd; border: 1px solid #ccc;"></div>
-						<p style="color: green;">Added</p>
+						<p style="color: green;">{t}Added{/t}</p>
 						<div style="background-color: #ffdddd; border: 1px solid #ccc;"></div>
-						<p style="color: red;">Removed</p>
+						<p style="color: red;">{t}Removed{/t}</p>
 					</div>
-					<h3 class="panel-title">Headers</h3>
+					<h3 class="panel-title">{t}Headers{/t}</h3>
 				</div>
 				<div class="panel-body preview-headers-container">
 					<div class="preview-headers wrap" id="preview-headers-go-here"></div>
