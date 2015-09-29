@@ -53,6 +53,10 @@ msgstr "Datum"
 msgid "Size"
 msgstr "Storlek"
 
+#: templates/preview.tpl:65
+msgid "In queue (retry %1)"
+msgstr "I kö (återförsök %1)"
+
 #: templates/preview.tpl:69
 msgid "Received by"
 msgstr "Mottaget av"

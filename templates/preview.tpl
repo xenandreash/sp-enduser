@@ -62,7 +62,7 @@
 						<dt>{t}Size{/t}</dt><dd class="wrap" title="{$mail->msgsize} bytes">{$mail->msgsize|format_size}&nbsp;</dd>
 						<dt>{t}Details{/t}</dt><dd>
 						{if $mail->msgaction == 'QUEUE'}
-							In queue (retry {$mail->msgretries})<br><span class="text-muted">{$mail->msgerror|escape}</span>
+							{t retry=$mail->msgretries}In queue (retry %1){/t}<br><span class="text-muted">{$mail->msgerror|escape}</span>
 						{else}
 							{$mail->msgdescription|escape}
 						{/if}
