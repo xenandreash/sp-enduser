@@ -277,13 +277,22 @@ msgid ""
 "You are authenticated externally, so password changes are not done here."
 msgstr "Du är autentiserad externt, så lösenordet kan inte ändras här."
 
+#: templates/forgot.tpl:51
+msgid "Create password"
+msgstr "Skapa lösenord"
+
+#: templates/forgot.tpl:66
+msgid "Reset password"
+msgstr "Återställ lösenord"
+
 #: templates/forgot.tpl:26
 msgid "Choose a new password."
 msgstr "Välj ett nytt lösenord."
 
 #: templates/forgot.tpl:29
 msgid "Enter the token you received in your inbox, and choose a new password."
-msgstr "Skriv in koden som du fick till din inkorg, och välj ett nytt lösenord."
+msgstr ""
+"Skriv in koden som du fick till din inkorg, och välj ett nytt lösenord."
 
 #: templates/forgot.tpl:31
 msgid "Token"
@@ -293,17 +302,9 @@ msgstr "Koden"
 msgid "Repeat password"
 msgstr "Upprepa lösenordet"
 
-#: templates/forgot.tpl:51
-msgid "Create password"
-msgstr "Skapa lösenord"
-
 #: templates/forgot.tpl:59
 msgid "E-mail"
 msgstr "E-post"
-
-#: templates/forgot.tpl:66
-msgid "Reset password"
-msgstr "Återställ lösenordet"
 
 #: templates/forgot.tpl:67
 msgid "Login"
