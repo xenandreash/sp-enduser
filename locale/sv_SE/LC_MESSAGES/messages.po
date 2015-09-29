@@ -1,6 +1,22 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8\n"
 
+#: templates/login.tpl:6 templates/login.tpl:31
+msgid "Sign in"
+msgstr "Logga in"
+
+#: templates/login.tpl:18
+msgid "Username"
+msgstr "Användarnamn"
+
+#: templates/login.tpl:24
+msgid "Password"
+msgstr "Lösenord"
+
+#: templates/login.tpl:33
+msgid "Forgot password"
+msgstr "Glömt lösenordet"
+
 #: templates/header.tpl:30
 msgid "Back"
 msgstr "Tillbaka"
