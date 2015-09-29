@@ -48,7 +48,7 @@
 							{$id = $id + 1}
 							<tr style="cursor:pointer" data-toggle="{$id}" class="toggle {if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">
 								<td class="hidden-xs" style="width:30px"><span class="expand-icon glyphicon glyphicon-expand"></span></td>
-								<td class="hidden-xs">{$type}</td>
+								<td class="hidden-xs">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</td>
 								<td class="hidden-xs">{$value|escape}</td>
 								<td class="hidden-xs"><span class="badge">{count($accesses)}</span></td>
 								<td class="visible-xs">
@@ -67,7 +67,7 @@
 							{foreach $accesses as $access}
 							<tr style="display:none" class="hidden-{$id} {if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">
 								<td class="hidden-xs" style="width:30px"><sup style="opacity:.5">L</sup></td>
-								<td class="hidden-xs">{$type}</td>
+								<td class="hidden-xs">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</td>
 								<td class="hidden-xs">{$value|escape}</td>
 								<td class="hidden-xs">{if $access}{$access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</td>
 								<td class="visible-xs">
@@ -87,7 +87,7 @@
 						{else}
 							<tr class="{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">
 								<td class="hidden-xs" style="width:30px"></td>
-								<td class="hidden-xs">{$type}</td>
+								<td class="hidden-xs">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</td>
 								<td class="hidden-xs">{$value|escape}</td>
 								<td class="hidden-xs">{if $accesses.0}{$accesses.0|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</td>
 								<td class="visible-xs">
