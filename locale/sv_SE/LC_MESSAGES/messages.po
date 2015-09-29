@@ -20,3 +20,76 @@ msgstr "Statistik"
 #: templates/header.tpl:45
 msgid "Sign out"
 msgstr "Logga ut"
+
+#: templates/bwlist.tpl:25
+msgid "Search for..."
+msgstr "Sök efter..."
+
+#: templates/bwlist.tpl:27
+msgid "Search"
+msgstr "Sök"
+
+#: templates/bwlist.tpl:36 templates/bwlist.tpl:143
+msgid "Action"
+msgstr "Åtgärd"
+
+#: templates/bwlist.tpl:37 templates/bwlist.tpl:152
+msgid "Sender"
+msgstr "Avsändare"
+
+#: templates/bwlist.tpl:38 templates/bwlist.tpl:158
+msgid "For recipient"
+msgstr "För mottagare"
+
+#: templates/bwlist.tpl:64 templates/bwlist.tpl:83 templates/bwlist.tpl:103
+msgid "Remove"
+msgstr "Ta bort"
+
+#: templates/bwlist.tpl:72 templates/bwlist.tpl:79 templates/bwlist.tpl:92
+#: templates/bwlist.tpl:99
+msgid "everyone"
+msgstr "alla"
+
+#: templates/bwlist.tpl:109
+msgid "No black/whitelist"
+msgstr "Ingen svart- eller vitlista"
+
+#: templates/bwlist.tpl:129
+msgid "Previous"
+msgstr "Föregående"
+
+#: templates/bwlist.tpl:130
+msgid "Next"
+msgstr "Nästa"
+
+#: templates/bwlist.tpl:138
+msgid "Add..."
+msgstr "Lägg till..."
+
+#: templates/bwlist.tpl:146
+msgid "Blacklist"
+msgstr "Svartlista"
+
+#: templates/bwlist.tpl:147
+msgid "Whitelist"
+msgstr "Vitlista"
+
+#: templates/bwlist.tpl:164
+msgid "Select all"
+msgstr "Markera alla"
+
+#: templates/bwlist.tpl:165
+msgid "Add custom"
+msgstr "Lägg till egen"
+
+#: templates/bwlist.tpl:180
+msgid ""
+"Sender may be an IP address, an e-mail address, a domain name or a wildcard "
+"domain name starting with a dot (eg. .co.uk)."
+msgstr ""
+"Avsändaren kan vara en IP-adress, en e-post adress, ett domännamn eller ett "
+"wildcard-domännamn (t.ex. .co.uk)."
+
+#: templates/bwlist.tpl:185
+msgid "Add"
+msgstr "Lägg till"
