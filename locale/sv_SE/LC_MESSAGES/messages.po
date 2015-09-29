@@ -233,7 +233,7 @@ msgstr "Rättigheter"
 #: templates/user.tpl:11
 msgid "You have no restrictions, you may view messages to/from any domain."
 msgstr ""
-"Du har inga begränsningar, och kan därför se meddelenanden till och från "
+"Du har inga begränsningar, och kan därför se meddelanden till och från "
 "alla domäner."
 
 #: templates/user.tpl:15
