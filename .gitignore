@@ -3,7 +3,6 @@
 ._*
 
 .vagrant
-*.sublime-workspace
 
 /enduser.db
 /settings.php
