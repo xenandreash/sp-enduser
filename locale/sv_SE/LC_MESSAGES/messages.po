@@ -173,6 +173,14 @@ msgstr "Avsändare"
 msgid "For recipient"
 msgstr "För mottagare"
 
+#: templates/bwlist.tpl:147
+msgid "Whitelist"
+msgstr "Vitlista"
+
+#: templates/bwlist.tpl:146
+msgid "Blacklist"
+msgstr "Svartlista"
+
 #: templates/bwlist.tpl:64 templates/bwlist.tpl:83 templates/bwlist.tpl:103
 msgid "Remove"
 msgstr "Ta bort"
@@ -197,14 +205,6 @@ msgstr "Nästa"
 #: templates/bwlist.tpl:138
 msgid "Add..."
 msgstr "Lägg till..."
-
-#: templates/bwlist.tpl:146
-msgid "Blacklist"
-msgstr "Svartlista"
-
-#: templates/bwlist.tpl:147
-msgid "Whitelist"
-msgstr "Vitlista"
 
 #: templates/bwlist.tpl:164
 msgid "Select all"
@@ -233,8 +233,8 @@ msgstr "Rättigheter"
 #: templates/user.tpl:11
 msgid "You have no restrictions, you may view messages to/from any domain."
 msgstr ""
-"Du har inga begränsningar, och kan därför se meddelanden till och från "
-"alla domäner."
+"Du har inga begränsningar, och kan därför se meddelanden till och från alla "
+"domäner."
 
 #: templates/user.tpl:15
 msgid "You are authorized to view messages sent from/to the following"
@@ -276,3 +276,35 @@ msgstr "Ändra"
 msgid ""
 "You are authenticated externally, so password changes are not done here."
 msgstr "Du är autentiserad externt, så lösenordet kan inte ändras här."
+
+#: templates/forgot.tpl:26
+msgid "Choose a new password."
+msgstr "Välj ett nytt lösenord."
+
+#: templates/forgot.tpl:29
+msgid "Enter the token you received in your inbox, and choose a new password."
+msgstr "Skriv in koden som du fick till din inkorg, och välj ett nytt lösenord."
+
+#: templates/forgot.tpl:31
+msgid "Token"
+msgstr "Koden"
+
+#: templates/forgot.tpl:44
+msgid "Repeat password"
+msgstr "Upprepa lösenordet"
+
+#: templates/forgot.tpl:51
+msgid "Create password"
+msgstr "Skapa lösenord"
+
+#: templates/forgot.tpl:59
+msgid "E-mail"
+msgstr "E-post"
+
+#: templates/forgot.tpl:66
+msgid "Reset password"
+msgstr "Återställ lösenordet"
+
+#: templates/forgot.tpl:67
+msgid "Login"
+msgstr "Logga in"
