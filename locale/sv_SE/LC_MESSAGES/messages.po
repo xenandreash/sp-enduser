@@ -109,3 +109,53 @@ msgstr ""
 #: templates/bwlist.tpl:185
 msgid "Add"
 msgstr "Lägg till"
+
+#: templates/user.tpl:6
+msgid "Permissions"
+msgstr "Rättigheter"
+
+#: templates/user.tpl:11
+msgid "You have no restrictions, you may view messages to/from any domain."
+msgstr "Du har inga begränsningar, och kan därför se meddelenanden till och från alla domäner."
+
+#: templates/user.tpl:15
+msgid "You are authorized to view messages sent from/to the following"
+msgstr "Du har rättigheter att se brev från och till följande"
+
+#: templates/user.tpl:17
+msgid "domains:"
+msgstr "domäner:"
+
+#: templates/user.tpl:24
+msgid "And the following users:"
+msgstr "Och följade användare:"
+
+#: templates/user.tpl:27
+msgid "users:"
+msgstr "användare:"
+
+#: templates/user.tpl:41
+msgid "Change password"
+msgstr "Ändra lösenord"
+
+#: templates/user.tpl:45
+msgid "Password changed"
+msgstr "Lösenordet är ändrat"
+
+#: templates/user.tpl:53
+msgid "Old Password"
+msgstr "Nuvarande lösenord"
+
+#: templates/user.tpl:59
+msgid "New Password"
+msgstr "Nya lösenordet"
+
+#: templates/user.tpl:67
+msgid "Change"
+msgstr "Ändra"
+
+#: templates/user.tpl:73
+msgid ""
+"You are authenticated externally, so password changes are not done here."
+msgstr ""
+"Du är autentiserad externt, så lösenordet kan inte ändras här."

@@ -1,5 +1,5 @@
 php vendor/bin/tsmarty2c.php templates > new.po
 msgcat new.po locale/sv_SE/LC_MESSAGES/messages.po > new2.po
-diff new2.po locale/sv_SE/LC_MESSAGES/messages.po
+diff locale/sv_SE/LC_MESSAGES/messages.po new2.po
 mv new2.po locale/sv_SE/LC_MESSAGES/messages.po
 msgfmt -o locale/sv_SE/LC_MESSAGES/messages.mo locale/sv_SE/LC_MESSAGES/messages.po
