@@ -1,0 +1,22 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
+#: templates/header.tpl:30
+msgid "Back"
+msgstr "Tillbaka"
+
+#: templates/header.tpl:35
+msgid "Messages"
+msgstr "Meddelanden"
+
+#: templates/header.tpl:37
+msgid "Black/whitelist"
+msgstr "Svart- och vitlista"
+
+#: templates/header.tpl:40
+msgid "Stats"
+msgstr "Statistik"
+
+#: templates/header.tpl:45
+msgid "Sign out"
+msgstr "Logga ut"

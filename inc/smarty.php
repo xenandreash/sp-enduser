@@ -1,5 +1,7 @@
 <?php
 
+include 'gettext.php';
+
 $smarty = new Smarty();
 $smarty->compile_dir = '/tmp/';
 $smarty->template_dir = './templates/';
