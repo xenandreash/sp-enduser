@@ -3,6 +3,8 @@ if (!defined('SP_ENDUSER')) die('File not included');
 
 require_once BASE.'/inc/core.php';
 
+if (!$settings->getDisplayBWlist()) die("The setting display-bwlist isn't enabled");
+
 function checkAccess($perm)
 {
 	$access = Session::Get()->getAccess();
