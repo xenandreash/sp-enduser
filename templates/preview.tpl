@@ -60,12 +60,14 @@
 						<dt>{t}To{/t}</dt><dd class="wrap">{$mail->msgto|escape}&nbsp;</dd>
 						<dt>{t}Date{/t}</dt><dd>{$time|date_format:"%Y-%m-%d %H:%M:%S"}</dd>
 						<dt>{t}Size{/t}</dt><dd class="wrap" title="{$mail->msgsize} bytes">{$mail->msgsize|format_size}&nbsp;</dd>
-						<dt>{t}Details{/t}</dt><dd>
+						<dt>{t}Details{/t}</dt>
+						<dd>
 						{if $mail->msgaction == 'QUEUE'}
 							{t retry=$mail->msgretries}In queue (retry %1){/t}<br><span class="text-muted">{$mail->msgerror|escape}</span>
 						{else}
-							{$mail->msgdescription|escape}
+							{$mail->msgdescription|escape}&nbsp;
 						{/if}
+						</dd>
 						{if $listener}<dt>{t}Received by{/t}</dt><dd>{$listener}</dd>{/if}
 						<dt>{t}Server{/t}</dt><dd>{$mail->msgfromserver}&nbsp;</dd>
 						{if $mail->msgsasl}<dt>{t}User{/t}</dt><dd>{$mail->msgsasl|escape}</dd>{/if}
