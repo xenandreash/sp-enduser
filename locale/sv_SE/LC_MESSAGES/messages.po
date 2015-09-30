@@ -195,7 +195,7 @@ msgstr "Återförsök/släpp markerade"
 
 #: templates/index.tpl:96
 msgid "Some messages might not be available at the moment due to maintenance."
-msgstr "Visas meddelanden kan inte visas för tillfället pga. underhåll."
+msgstr "Vissa meddelanden kan inte visas för tillfället pga. underhåll."
 
 #: templates/index.tpl:103 templates/index.tpl:262
 msgid "Subject"
