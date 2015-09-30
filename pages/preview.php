@@ -151,6 +151,6 @@ $transports = $settings->getDisplayTransport();
 if (isset($transports[$mail->msgtransport])) $smarty->assign('transport', $transports[$mail->msgtransport]);
 $listeners = $settings->getDisplayListener();
 if (isset($listeners[$mail->msglistener])) $smarty->assign('listener', $listeners[$mail->msglistener]);
-$smarty->assign('date', strftime2('%Y-%m-%d %H:%M:%S', $mail->msgts0 - $_SESSION['timezone'] * 60));
+$smarty->assign('time', $mail->msgts0 - $_SESSION['timezone'] * 60, '%Y-%m-%d %H:%M:%S');
 
 $smarty->display('preview.tpl');

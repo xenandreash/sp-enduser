@@ -58,7 +58,7 @@
 						</dd>
 						<dt>{t}From{/t}</dt><dd class="wrap">{$mail->msgfrom|escape}&nbsp;</dd>
 						<dt>{t}To{/t}</dt><dd class="wrap">{$mail->msgto|escape}&nbsp;</dd>
-						<dt>{t}Date{/t}</dt><dd>{$date}</dd>
+						<dt>{t}Date{/t}</dt><dd>{$time|date_format:"%Y-%m-%d %H:%M:%S"}</dd>
 						<dt>{t}Size{/t}</dt><dd class="wrap" title="{$mail->msgsize} bytes">{$mail->msgsize|format_size}&nbsp;</dd>
 						<dt>{t}Details{/t}</dt><dd>
 						{if $mail->msgaction == 'QUEUE'}

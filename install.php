@@ -53,7 +53,7 @@ if ($settings->getAPIKey() === null) {
 ?>
 	<p><em>WARNING:</em> No api-key, dynamic user creation and black/whitelist lookups will not work until you specify one.</p>
 <?php } else { ?>
-	<p><em>INFO:</em> The API URL for this setup is: <code><?php p($settings->getPublicURL()); ?>api.php?api-key=<i>secret-api-key</i></code></p>
+	<p><em>INFO:</em> The API URL for this setup is: <code><?php echo htmlspecialchars($settings->getPublicURL()); ?>api.php?api-key=<i>secret-api-key</i></code></p>
 <?php } ?>
 <?php
 if (count($settings->getAuthSources()) == 0) {

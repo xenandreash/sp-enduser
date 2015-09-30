@@ -31,13 +31,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	// Make the checkboxes show/hide the action bar
-	$('[name^=multiselect-]').change(function() {
-		var count = $('[name^=multiselect-]:checked').length;
-		$('#bottom-bar').toggle(count > 0);
-		$('body').toggleClass('has-bottom-bar', count > 0);
-	});
-	
 	$('td[data-href], tr[data-href] td').wrapInner(function() {
 		return '<a class="data-link" href="' + ($(this).data('href') || $(this).parent().data('href')) + '"></a>';
 	});

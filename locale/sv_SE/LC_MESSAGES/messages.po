@@ -157,13 +157,121 @@ msgstr "Statistik"
 msgid "Sign out"
 msgstr "Logga ut"
 
-#: templates/bwlist.tpl:25
-msgid "Search for..."
-msgstr "Sök efter..."
+#: templates/index.tpl:19 templates/index.tpl:43
+msgid "History"
+msgstr "Historik"
+
+#: templates/index.tpl:20 templates/index.tpl:44
+msgid "Queue"
+msgstr "Kö"
+
+#: templates/index.tpl:21 templates/index.tpl:45
+msgid "Quarantine"
+msgstr "Karantän"
+
+#: templates/index.tpl:22 templates/index.tpl:46
+msgid "All"
+msgstr "Alla"
 
 #: templates/bwlist.tpl:27
 msgid "Search"
 msgstr "Sök"
+
+#: templates/index.tpl:59 templates/index.tpl:205
+msgid "Search filter"
+msgstr "Sökfilter"
+
+#: templates/index.tpl:81
+msgid "Delete selected"
+msgstr "Ta bort markerande"
+
+#: templates/index.tpl:82
+msgid "Bounce selected"
+msgstr "Studsa markerade"
+
+#: templates/index.tpl:83
+msgid "Retry/release selected"
+msgstr "Återförsök/släpp markerade"
+
+#: templates/index.tpl:96
+msgid "Some messages might not be available at the moment due to maintenance."
+msgstr "Visas meddelanden kan inte visas för tillfället pga. underhåll."
+
+#: templates/index.tpl:103 templates/index.tpl:262
+msgid "Subject"
+msgstr "Ämne"
+
+#: templates/index.tpl:104
+msgid "Status"
+msgstr "Status"
+
+#: templates/index.tpl:129
+msgid "Release/retry"
+msgstr "Släpp/återförsök"
+
+#: templates/index.tpl:134 templates/index.tpl:161
+msgid "No matches"
+msgstr "Inga träffar"
+
+#: templates/index.tpl:152
+msgid "Empty sender"
+msgstr "Tom avsändare"
+
+#: templates/index.tpl:169
+msgid "Newer"
+msgstr "Nyare"
+
+#: templates/index.tpl:170
+msgid "Older"
+msgstr "Äldre"
+
+#: templates/index.tpl:182
+msgid "Results per page:"
+msgstr "Resultat per sida:"
+
+#: templates/index.tpl:192
+msgid "Diagnostic information:"
+msgstr "Diagnostisk information:"
+
+#: templates/index.tpl:222
+msgid ""
+"Even more fields and operator types are documented on the <a href="
+"\"%1\">search filter</a> page."
+msgstr "Ännu fler sökargument kan ges och finns dokumenterade på <a href=\"%1\">sök filter</a> sidan."
+
+#: templates/index.tpl:228
+msgid "between"
+msgstr "mellan"
+
+#: templates/index.tpl:233
+msgid "and"
+msgstr "och"
+
+#: templates/index.tpl:237
+msgid "ID"
+msgstr "ID"
+
+#: templates/index.tpl:238 templates/index.tpl:243 templates/index.tpl:248
+#: templates/index.tpl:253 templates/index.tpl:258 templates/index.tpl:263
+msgid "is"
+msgstr "är"
+
+#: templates/index.tpl:243 templates/index.tpl:248 templates/index.tpl:253
+#: templates/index.tpl:258 templates/index.tpl:263
+msgid "contains"
+msgstr "innehåller"
+
+#: templates/index.tpl:252
+msgid "IP"
+msgstr "IP"
+
+#: templates/index.tpl:269
+msgid "Close"
+msgstr "Stäng"
+
+#: templates/bwlist.tpl:25
+msgid "Search for..."
+msgstr "Sök efter..."
 
 #: templates/bwlist.tpl:37 templates/bwlist.tpl:152
 msgid "Sender"

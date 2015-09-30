@@ -183,12 +183,6 @@ function merge_2d($a1, $a2)
 	return $a1;
 }
 
-function mkquery($a1, $a2 = array(), $amps = false)
-{
-	$arr = array_filter(array_merge($a1, $a2));
-	return http_build_query($arr, '', ($amps ? '&amp;' : '&'));
-}
-
 function format_size($size)
 {
 	$base = log($size, 1024);
