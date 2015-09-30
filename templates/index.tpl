@@ -145,7 +145,7 @@
 						{if $mail.action == 'QUARANTINE'}
 							{t}Quarantine{/t}
 						{elseif $mail.action == 'QUEUE'}
-							{t retry=$mail.retry}In queue (retry %1){/t}<br><span class="text-muted">{$mail.description|escape}</span>
+							{t retry=$mail.retry}In queue (retry %1){/t} <span class="text-muted">{$mail.description|escape}</span>
 						{else}
 							{$mail.description|escape}
 						{/if}
