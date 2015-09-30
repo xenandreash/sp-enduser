@@ -7,6 +7,9 @@
 				<i class="glyphicon glyphicon-search"></i>
 			</button>
 			<div class="navbar-brand visible-xs">
+				{if count($sources) == 1}
+					{t}{$source_name}{/t}
+				{else}
 				<div class="dropdown">
 					<a class="dropdown-toggle navbar-brand-link" id="source-select" data-toggle="dropdown" aria-expanded="true">
 						{t}{$source_name}{/t}
@@ -26,6 +29,7 @@
 						{/foreach}
 					</ul>
 				</div>
+				{/if}
 			</div>
 			{if count($sources) == 1}
 				<a class="navbar-brand hidden-xs">{t}{$source_name}{/t}</a>
