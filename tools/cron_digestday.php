@@ -178,8 +178,8 @@ foreach ($users as $email => $access) {
 				$time = time();
 				$message = $m['id'].$m['data']->id.$time.$m['data']->msgid;
 				$hash = hash_hmac('sha256', $message, $settings->getDigestSecret());
-				$mail['release-url'] = $settings->getPublicURL().'/?page=digest&amp;queueid='.$m['data']->id.'&amp;node='.$m['id'].'&amp;time='.$time.'&amp;sign='.$hash;
-				$mail['release-url-whitelist'] = $settings->getPublicURL().'/?page=digest&amp;queueid='.$m['data']->id.'&amp;node='.$m['id'].'&amp;time='.$time.'&amp;whitelist=true&amp;sign='.$hash;
+				$mail['release_url'] = $settings->getPublicURL().'/?page=digest&amp;queueid='.$m['data']->id.'&amp;node='.$m['id'].'&amp;time='.$time.'&amp;sign='.$hash;
+				$mail['release_url_whitelist'] = $settings->getPublicURL().'/?page=digest&amp;queueid='.$m['data']->id.'&amp;node='.$m['id'].'&amp;time='.$time.'&amp;whitelist=true&amp;sign='.$hash;
 			}
 			$mail['time'] = $m['data']->msgts;
 			$mail['from'] = $m['data']->msgfrom;
@@ -204,40 +204,18 @@ foreach ($users as $email => $access) {
 	 * start printing email below this line.
 	 * $one_recipient contains an email if all messages were only to one recipient
 	 */
-	if ($one_recipient !== null)
-		$data = '<p>You have '.$i.' message(s) received to '.htmlspecialchars($one_recipient).' in your <a href="'.$settings->getPublicURL().'/?source=quarantine">quarantine</a> during the last 24 hours.</p>';
-	else
-		$data = '<p>You have '.$i.' message(s) received in your <a href="'.$settings->getPublicURL().'/?source=quarantine">quarantine</a> during the last 24 hours.</p>';
 
-	$th = '<th style="border-bottom: 2px solid #999; text-align: left;">';
-	if ($one_recipient !== null)
-		$data .= "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}Subject</th>";
-	else
-		$data .= "<table style=\"border-collapse: collapse;\" cellpadding=\"4\"><tr>${th}Date</th>${th}From</th>${th}To</th>${th}Subject</th>";
-	if ($maillist[0]['release-url'])
-		$data .= "${th}&nbsp;</th>";
-	if ($maillist[0]['release-url-whitelist'])
-		$data .= "${th}&nbsp;</th>";
-	$data .= '</tr>';
-	foreach ($maillist as $i => $mail) {
-		$td = '<td style="white-space: nowrap; border-bottom: 1px solid #999;">';
-		$data .= $i % 2 == 0 ? '<tr style="background-color: #eee;">' : '<tr>';
-		$data .= $td.strftime2($mail['time'], '%b %e %Y %H:%M:%S').'</td>';
-		$data .= $td.htmlspecialchars(substrdots($mail['from'], 30)).'</td>';
-		if ($one_recipient === null)
-			$data .= $td.htmlspecialchars(substrdots($mail['to'], 30)).'</td>';
-		$data .= $td.htmlspecialchars(substrdots($mail['subject'], $one_recipient === null ? 30 : 60)).'</td>';
-		if ($mail['release-url'])
-			$data .= $td.'<a href="'.$mail['release-url'].'">Release</a></td>';
-		if ($mail['release-url-whitelist'])
-			$data .= $td.'<a href="'.$mail['release-url-whitelist'].'">Release and whitelist</a></td>';
-		$data .= '</tr>';
-	}
-	$data .= '</table>';
+	$smarty = new Smarty();
+	$smarty->compile_dir = '/tmp/';
+	$smarty->template_dir = dirname(__FILE__);
+
+	if ($one_recipient !== null) $smarty->assign('recipient', $one_recipient);
+	$smarty->assign('mails', $maillist);
+	$smarty->assign('quarantine_url', $settings->getPublicURL().'/?source=quarantine');
 
 	echo "Digest to $email with ".count($maillist)." messages\n";
 	$headers = array();
 	$headers[] = 'Content-Type: text/html; charset=UTF-8';
 	$headers[] = 'Content-Transfer-Encoding: base64';
-	mail2($email, "Quarantine digest, ".count($maillist)." new messages", chunk_split(base64_encode($data)), $headers);
+	mail2($email, "Quarantine digest, ".count($maillist)." new messages", chunk_split(base64_encode($smarty->fetch('cron_digestday.tpl'))), $headers);
 }
