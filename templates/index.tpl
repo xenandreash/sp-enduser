@@ -84,7 +84,7 @@
 					<ul class="dropdown-menu" role="menu">
 						<li><a data-bulk-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;{t}Delete selected{/t}</a></li>
 						<li><a data-bulk-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;{t}Bounce selected{/t}</a></li>
-						<li><a data-bulk-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;{t}Retry/release selected{/t}</a></li>
+						<li><a data-bulk-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;{t}Release/retry selected{/t}</a></li>
 					</ul>
 				</li>
 			</ul>

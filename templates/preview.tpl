@@ -14,7 +14,7 @@
 					<li class="divider"></li>
 					<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;{t}Delete{/t}</a></li>
 					<li><a data-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;{t}Bounce{/t}</a></li>
-					<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;{t}Retry/release{/t}</a></li>
+					<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;{if $mail->msgaction=='QUARANTINE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
 				{/if}
 			{/if}
 		</ul>
@@ -35,7 +35,7 @@
 						<li class="divider"></li>
 						<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;{t}Delete{/t}</a></li>
 						<li><a data-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;{t}Bounce{/t}</a></li>
-						<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;{t}Retry/release{/t}</a></li>
+						<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;{if $mail->msgaction=='QUARANTINE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
 					{/if}
 				</ul>
 			</li>

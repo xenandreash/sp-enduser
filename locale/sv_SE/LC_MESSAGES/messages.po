@@ -22,8 +22,12 @@ msgid "Bounce"
 msgstr "Studsa"
 
 #: templates/preview.tpl:17 templates/preview.tpl:38
-msgid "Retry/release"
-msgstr "Försök igen/släpp"
+msgid "Release"
+msgstr "Släpp"
+
+#: templates/preview.tpl:17 templates/preview.tpl:38
+msgid "Retry"
+msgstr "Försök igen"
 
 #: templates/preview.tpl:28
 msgid "Actions"
@@ -190,8 +194,8 @@ msgid "Bounce selected"
 msgstr "Studsa markerade"
 
 #: templates/index.tpl:83
-msgid "Retry/release selected"
-msgstr "Återförsök/släpp markerade"
+msgid "Release/retry selected"
+msgstr "Släpp/återförsök markerade"
 
 #: templates/index.tpl:96
 msgid "Some messages might not be available at the moment due to maintenance."
@@ -237,7 +241,14 @@ msgstr "Diagnostisk information:"
 msgid ""
 "Even more fields and operator types are documented on the <a href="
 "\"%1\">search filter</a> page."
-msgstr "Ännu fler sökargument kan ges och finns dokumenterade på <a href=\"%1\">sök filter</a> sidan."
+msgstr ""
+"Ännu fler sökargument kan ges och finns dokumenterade på <a href=\"%1\">sök "
+"filter</a> sidan."
+
+#: templates/index.tpl:238 templates/index.tpl:243 templates/index.tpl:248
+#: templates/index.tpl:253 templates/index.tpl:258 templates/index.tpl:263
+msgid "is"
+msgstr "är"
 
 #: templates/index.tpl:228
 msgid "between"
@@ -250,11 +261,6 @@ msgstr "och"
 #: templates/index.tpl:237
 msgid "ID"
 msgstr "ID"
-
-#: templates/index.tpl:238 templates/index.tpl:243 templates/index.tpl:248
-#: templates/index.tpl:253 templates/index.tpl:258 templates/index.tpl:263
-msgid "is"
-msgstr "är"
 
 #: templates/index.tpl:243 templates/index.tpl:248 templates/index.tpl:253
 #: templates/index.tpl:258 templates/index.tpl:263
@@ -413,7 +419,3 @@ msgstr "Upprepa lösenordet"
 #: templates/forgot.tpl:59
 msgid "E-mail"
 msgstr "E-post"
-
-#: templates/forgot.tpl:67
-msgid "Login"
-msgstr "Logga in"
