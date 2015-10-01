@@ -1,6 +1,3 @@
-Translate
-=========
-
 The enduser project supports translation of the web interface and daily digest messages. Its translation support is based on the Smarty template engine using gettext (.po) style language files.
 
 Adding a new language
