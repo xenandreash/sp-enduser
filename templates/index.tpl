@@ -241,8 +241,8 @@
 		<form class="form-horizontal">
 			{if $source != 'queue' and $source != 'quarantine'}
 			<div class="form-group">
-				<label class="col-sm-2 control-label">Action</label>
-				<label class="col-sm-2 control-label">is</label>
+				<label class="col-sm-2 control-label">{t}Action{/t}</label>
+				<label class="col-sm-2 control-label">{t}is{/t}</label>
 				<div class="col-sm-8"><select class="form-control" id="query_action">
 					<option></option>
 					{if $source != 'history'}<option>QUARANTINE</option>{/if}
