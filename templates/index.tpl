@@ -59,7 +59,7 @@
 			<form class="navbar-form navbar-left" role="search">
 				<input type="hidden" name="source" value="{$source}">
 				<div class="form-group">
-					<input type="search" class="form-control" size="40" placeholder="Search" id="search" name="search" value="{$search|escape}">
+					<input type="search" class="form-control" size="40" placeholder="{t}Search for...{/t}" id="search" name="search" value="{$search|escape}">
 					<div class="btn-group">
 						<button class="btn btn-default" id="dosearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> {t}Search{/t}</button>
 						{if $search_domains}
