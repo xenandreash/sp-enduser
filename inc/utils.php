@@ -209,3 +209,10 @@ function strftime2($timestamp, $format)
 		$format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
 	return strftime($format, $timestamp != NULL ? $timestamp : time());
 }
+
+function emptyspace($str)
+{
+	if ($str == '')
+		return '&nbsp;';
+	return $str;
+}

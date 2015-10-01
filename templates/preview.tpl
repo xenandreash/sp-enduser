@@ -56,20 +56,20 @@
 							<span class="glyphicon glyphicon-{$action_icon}"></span>
 							{$mail->msgaction}
 						</dd>
-						<dt>{t}From{/t}</dt><dd class="wrap">{$mail->msgfrom|escape}&nbsp;</dd>
-						<dt>{t}To{/t}</dt><dd class="wrap">{$mail->msgto|escape}&nbsp;</dd>
+						<dt>{t}From{/t}</dt><dd class="wrap">{$mail->msgfrom|escape|emptyspace}</dd>
+						<dt>{t}To{/t}</dt><dd class="wrap">{$mail->msgto|escape|emptyspace}</dd>
 						<dt>{t}Date{/t}</dt><dd>{$time|date_format:"%Y-%m-%d %H:%M:%S"}</dd>
-						<dt>{t}Size{/t}</dt><dd class="wrap" title="{$mail->msgsize} bytes">{$mail->msgsize|format_size}&nbsp;</dd>
+						<dt>{t}Size{/t}</dt><dd class="wrap" title="{$mail->msgsize} bytes">{$mail->msgsize|format_size}</dd>
 						<dt>{t}Details{/t}</dt>
 						<dd>
 						{if $mail->msgaction == 'QUEUE'}
 							{t retry=$mail->msgretries}In queue (retry %1){/t}<br><span class="text-muted">{$mail->msgerror|escape}</span>
 						{else}
-							{$mail->msgdescription|escape}&nbsp;
+							{$mail->msgdescription|escape|emptyspace}
 						{/if}
 						</dd>
 						{if $listener}<dt>{t}Received by{/t}</dt><dd>{$listener}</dd>{/if}
-						<dt>{t}Server{/t}</dt><dd>{$mail->msgfromserver}&nbsp;</dd>
+						<dt>{t}Server{/t}</dt><dd>{$mail->msgfromserver|escape|emptyspace}</dd>
 						{if $mail->msgsasl}<dt>{t}User{/t}</dt><dd>{$mail->msgsasl|escape}</dd>{/if}
 						{if $transport}<dt>{t}Destination{/t}</dt><dd>{$transport}</dd>{/if}
 						<dt>ID</dt><dd>{$mail->msgid}</dd>

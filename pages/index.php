@@ -188,13 +188,6 @@ if ($has_multiple_addresses) $smarty->assign('mailhasmultipleaddresses', $has_mu
 if (count(Session::Get()->getAccess('domain')) > 0 && count(Session::Get()->getAccess('domain')) < 30) $smarty->assign('search_domains', Session::Get()->getAccess('domain'));
 if ($settings->getDisplayScores()) $smarty->assign('feature_scores', true);
 
-function emptyspace($str)
-{
-	if ($str == '')
-		return '&nbsp;';
-	return $str;
-}
-
 $mails = array();
 
 $i = 1;
