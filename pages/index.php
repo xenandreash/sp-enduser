@@ -213,24 +213,22 @@ foreach ($timesort as $t) {
 		if ($m['type'] == 'queue' && $m['data']->msgaction == 'DELIVER') $m['data']->msgaction = 'QUEUE';
 
 		$mail = array();
-		$mail['preview'] = $preview;
-		$mail['tr'] = $tr;
-		$mail['td'] = $td;
+
+		$mail['mail'] = $m['data'];
 		$mail['type'] = $m['type'];
-		$mail['action'] = $m['data']->msgaction;
-		$mail['id'] = $m['data']->id;
-		$mail['action_icon'] = $action_icons[$m['data']->msgaction];
-		$mail['action_class'] = $action_classes[$m['data']->msgaction];
-		$mail['action_color'] = $action_colors[$m['data']->msgaction];
-		if ($m['data']->msgfrom) $mail['from'] = $m['data']->msgfrom;
-		$mail['to'] = $m['data']->msgto;
-		if ($m['data']->msgsubject) $mail['subject'] = $m['data']->msgsubject;
-		$mail['description'] = $m['data']->msgerror ?: $m['data']->msgdescription;
-		$mail['retry'] = $m['data']->msgretries;
 		$mail['node'] = $m['id'];
+
 		if ($m['data']->msgts0 + (3600 * 24) > time())
 			$mail['today'] = true;
 		$mail['time'] = $m['data']->msgts0 - $_SESSION['timezone'] * 60;
+
+		$mail['preview'] = $preview;
+		$mail['tr'] = $tr;
+		$mail['td'] = $td;
+		$mail['action_icon'] = $action_icons[$m['data']->msgaction];
+		$mail['action_class'] = $action_classes[$m['data']->msgaction];
+		$mail['action_color'] = $action_colors[$m['data']->msgaction];
+		$mail['description'] = $m['data']->msgerror ?: $m['data']->msgdescription;
 		if ($settings->getDisplayScores()) {
 			$printscores = array();
 			$scores = history_parse_scores($m['data']);

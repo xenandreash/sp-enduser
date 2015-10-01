@@ -132,20 +132,20 @@
 				<tr class="{$mail.action_class}" {$mail.tr}>
 					<td>
 						{if $mail.type == 'queue'}
-							<input class="hidden-sm" type="checkbox" name="multiselect-{$mail.id}" value="{$mail.node}">
+							<input class="hidden-sm" type="checkbox" name="multiselect-{$mail.mail->id}" value="{$mail.node}">
 							<span class="visible-sm glyphicon glyphicon-{$mail.action_icon}"></span>
 						{else}
 							<span class="glyphicon glyphicon-{$mail.action_icon}"></span>
 						{/if}
 					</td>
-					<td {$mail.td}>{$mail.from|escape|emptyspace}</td>
-					{if $mailhasmultipleaddresses}<td {$mail.td}>{$mail.to|escape|emptyspace}</td>{/if}
-					<td {$mail.td}>{$mail.subject|escape|emptyspace}</td>
+					<td {$mail.td}>{$mail.mail->msgfrom|escape|emptyspace}</td>
+					{if $mailhasmultipleaddresses}<td {$mail.td}>{$mail.mail->msgto|escape|emptyspace}</td>{/if}
+					<td {$mail.td}>{$mail.mail->msgsubject|escape|emptyspace}</td>
 					<td class="hidden-sm" {$mail.td}><span title="{$mail.description|escape}">
-						{if $mail.action == 'QUARANTINE'}
+						{if $mail.mail->msgaction == 'QUARANTINE'}
 							{t}Quarantine{/t}
-						{elseif $mail.action == 'QUEUE'}
-							{t retry=$mail.retry}In queue (retry %1){/t} <span class="text-muted">{$mail.description|escape}</span>
+						{elseif $mail.mail->msgaction == 'QUEUE'}
+							{t retry=$mail.mail->msgretries}In queue (retry %1){/t} <span class="text-muted">{$mail.description|escape}</span>
 						{else}
 							{$mail.description|escape}
 						{/if}
@@ -181,11 +181,11 @@
 				<td style="padding: 5px;">
 					<h4 class="list-group-item-heading">
 						<small class="pull-right">{if $mail.today}{$mail.time|strftime2:'%H:%M'}{else}{$mail.time|strftime2:'%b %e %Y'}{/if}</small>
-						{if $mail.from}{$mail.from|escape}{else}<span class="text-muted">{t}Empty sender{/t}</span>{/if}
-						{if $mailhasmultipleaddresses}<br><small>&rarr;&nbsp;{$mail.to}</small>{/if}
+						{if $mail.mail->msgfrom}{$mail.mail->msgfrom|escape}{else}<span class="text-muted">{t}Empty sender{/t}</span>{/if}
+						{if $mailhasmultipleaddresses}<br><small>&rarr;&nbsp;{$mail.mail->msgto}</small>{/if}
 					</h4>
 					<p class="list-group-item-text clearfix">
-						{$mail.subject|escape}
+						{$mail.mail->msgsubject|escape}
 					</p>
 				</td></tr></table>
 				</a>
