@@ -1,8 +1,6 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
-
-$logs = $settings->getDisplayTextlog();
-if (!$logs) die('logs disabled');
+if (!$settings->getDisplayTextlog()) die("The setting display-textlog isn't enabled");
 
 if (isset($_GET['ajax']))
 {

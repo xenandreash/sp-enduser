@@ -1,11 +1,11 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
+if (!$settings->getDisplayStats()) die("The setting display-stats isn't enabled");
 
 /* TODO
  * Use SOAP "future" instead for parallell config call
  * Support "outbound" aka more listeners
  */
-if (!$settings->getDisplayStats()) die("The setting display-stats isn't enabled");
 
 if (isset($_GET['ajax-rrd'])) {
 	if (!Session::Get()->checkAccessDomain($_GET['ajax-rrd']))

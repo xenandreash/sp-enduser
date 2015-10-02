@@ -1,8 +1,6 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
-
-if (!$settings->getDigestSecret())
-	die('No digest secret');
+if (!$settings->getDigestSecret()) die('No digest secret');
 
 $node = intval($_GET['node']);
 $queueid = preg_replace('/[^0-9]/', '', $_GET['queueid']);

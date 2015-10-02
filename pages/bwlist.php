@@ -1,6 +1,5 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
-
 if (!$settings->getDisplayBWlist()) die("The setting display-bwlist isn't enabled");
 
 function checkAccess($perm)
