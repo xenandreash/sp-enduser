@@ -28,6 +28,7 @@ class Settings
 	private $displayQuarantine = true;
 	private $displayAll = true;
 	private $displayBWList = true;
+	private $displaySpamSettings = false;
 	private $displayStats = false;
 	private $displayListener = array('mailserver:1' => "Inbound");
 	private $displayTransport = array('mailtransport:2' => "Internet");
@@ -75,6 +76,7 @@ class Settings
 		$this->extract($this->displayQuarantine, 'display-quarantine');
 		$this->extract($this->displayAll, 'display-all');
 		$this->extract($this->displayBWList, 'display-bwlist');
+		$this->extract($this->displaySpamSettings, 'display-spamsettings');
 		$this->extract($this->displayStats, 'display-stats');
 		$this->extract($this->displayListener, 'display-listener');
 		$this->extract($this->displayTransport, 'display-transport');
@@ -315,6 +317,14 @@ class Settings
 	public function getDisplayBWList()
 	{
 		return $this->displayBWList;
+	}
+
+	/**
+	 * Returns whether the spam settings tab should be displayed.
+	 */
+	public function getDisplaySpamSettings()
+	{
+		return $this->displaySpamSettings;
 	}
 
 	/**

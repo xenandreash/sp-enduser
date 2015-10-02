@@ -1,6 +1,6 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
-if (!$settings->getDisplayBWlist()) die("The setting display-bwlist isn't enabled");
+if (!$settings->getDisplaySpamSettings()) die("The setting display-spamsettings isn't enabled");
 
 function checkAccess($perm)
 {
@@ -137,7 +137,7 @@ foreach ($result as $row)
 	$result2[$row['type']][$row['value']][] = $row['access'];
 
 if ($_GET['error'] == 'perm')
-	$error = true;
+	$error = 'You are not allowed to add a black/whitelist entry for that recipient.';
 
 $javascript[] = 'static/js/bwlist.js';
 
@@ -157,4 +157,4 @@ $smarty->assign('limit', $limit);
 $smarty->assign('offset', $offset);
 if ($pagemore) $smarty->assign('pagemore', true);
 
-$smarty->display('bwlist.tpl');
+$smarty->display('spam.tpl');

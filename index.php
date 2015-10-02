@@ -30,6 +30,9 @@ switch (@$_GET['page'])
 	case 'bwlist':
 		require_once BASE.'/pages/bwlist.php';
 	break;
+	case 'spam':
+		require_once BASE.'/pages/spam.php';
+	break;
 	case 'download':
 		require_once BASE.'/pages/download.php';
 	break;

@@ -2,7 +2,7 @@
 {if $error}
 <div class="container-fluid">
 	<div class="alert alert-danger" role="alert">
-		{t}You are not allowed to add a black/whitelist entry for that recipient.{/t}
+		{$error}
 	</div>
 </div>
 {/if}
@@ -47,7 +47,7 @@
 						{if count($accesses) > 1}
 							{$id = $id + 1}
 							<tr style="cursor:pointer" data-toggle="{$id}" class="toggle {if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">
-								<td class="hidden-xs"><span class="expand-icon glyphicon glyphicon-expand"></span></td>
+								<td class="hidden-xs" style="width:30px"><span class="expand-icon glyphicon glyphicon-expand"></span></td>
 								<td class="hidden-xs">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</td>
 								<td class="hidden-xs">{$value|escape}</td>
 								<td class="hidden-xs"><span class="badge">{count($accesses)}</span></td>
@@ -60,7 +60,7 @@
 										<span class="badge">{count($accesses)}</span>
 									</p>
 								</td>
-								<td style="vertical-align: middle">
+								<td style="width: 30px; vertical-align: middle">
 									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for {count($accesses)} recipients?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&access={implode(',', $accesses)|urlencode}&type={$type}&value={$value|urlencode}"><i class="glyphicon glyphicon-remove"></i></a>
 								</td>
 							</tr>
