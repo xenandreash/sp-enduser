@@ -142,7 +142,8 @@ if ($_GET['type'] == 'spamsettings') {
 	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare("SELECT * FROM spamsettings;");
 	$statement->execute();
-	die(json_encode($statement->fetchAll(PDO::FETCH_OBJ)));
+	$result = array_map(function ($r) { $r['settings'] = json_decode($r['settings']); return $r; }, $statement->fetchAll(PDO::FETCH_ASSOC));
+	die(json_encode($result));
 }
 
 die('ok');

@@ -1,4 +1,15 @@
 {include file='header.tpl' title='Spam settings' page_active='spam'}
+
+{$levels = array()}
+{capture assign="level"}{t}Disabled{/t}{/capture}
+{$levels[''] = $level}
+{capture assign="level"}{t}Low{/t}{/capture}
+{$levels['low'] = $level}
+{capture assign="level"}{t}Medium{/t}{/capture}
+{$levels['medium'] = $level}
+{capture assign="level"}{t}High{/t}{/capture}
+{$levels['high'] = $level}
+
 {if $error}
 <div class="container-fluid">
 	<div class="alert alert-danger" role="alert">
@@ -46,10 +57,10 @@
 					<tr>
 						<td class="hidden-xs" data-href="{$edit_url}"></td>
 						<td class="hidden-xs" data-href="{$edit_url}">{if $item.access}{$item.access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</td>
-						<td class="hidden-xs" data-href="{$edit_url}">{$item.settings|escape}</td>
+						<td class="hidden-xs" data-href="{$edit_url}">{$levels[$item.settings->level]}</td>
 						<td class="visible-xs" data-href="{$edit_url}">
 							<p>
-								<span class="glyphicon glyphicon-pencil"></span>&nbsp; {$item.settings|escape}
+								<span class="glyphicon glyphicon-pencil"></span>&nbsp; {$levels[$item.settings->level]}
 							</p>
 							<p>
 								<span class="glyphicon glyphicon-inbox"></span>&nbsp;
@@ -102,10 +113,7 @@
 						<div class="col-md-9">
 							<select name="level" class="form-control">
 								<option value="">{t}Select level{/t}</option>
-								<option value="disabled">{t}Disabled{/t}</option>
-								<option value="low">{t}Low{/t}</option>
-								<option value="medium">{t}Medium{/t}</option>
-								<option value="high">{t}High{/t}</option>
+								{html_options options=$levels selected=$edit.settings->level}
 							</select>
 						</div>
 					</div>
@@ -113,8 +121,8 @@
 						<label class="control-label col-md-3" style="white-space: nowrap;">{t}For recipient{/t}</label>
 						<div class="col-md-9">
 							{if $edit}
-								<input type="hidden" class="form-control" name="access[]" value="{$edit|escape}">
-								<p class="form-control-static">{$edit|escape}</p>
+								<input type="hidden" class="form-control" name="access[]" value="{$edit.access|escape}">
+								<p class="form-control-static">{if $edit.access}{$edit.access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</p>
 							{else}
 								{if count($useraccess) == 1}
 									<input type="hidden" class="form-control" name="access[]" value="{$useraccess.0|escape}">

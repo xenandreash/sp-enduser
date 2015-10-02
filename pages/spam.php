@@ -30,6 +30,9 @@ if ($_GET['list'] == 'delete') {
 	die();
 }
 
+$spamsettings = array();
+$spamsettings['level'] = $_POST['level'];
+
 if ($_GET['list'] == 'add') {
 	foreach ($_POST['access'] as $access)
 	{
@@ -39,10 +42,8 @@ if ($_GET['list'] == 'add') {
 			header("Location: ?page=spam&error=perm");
 			die();
 		}
-		if ($_POST['level'] != '') {
-			$statement = $dbh->prepare("INSERT INTO spamsettings (access, settings) VALUES(:access, :settings);");
-			$statement->execute(array(':access' => strtolower($access), ':settings' => $_POST['level']));
-		}
+		$statement = $dbh->prepare("INSERT INTO spamsettings (access, settings) VALUES(:access, :settings);");
+		$statement->execute(array(':access' => strtolower($access), ':settings' => json_encode($spamsettings)));
 	}
 	header("Location: ?page=spam");
 	die();
@@ -50,12 +51,15 @@ if ($_GET['list'] == 'add') {
 
 $edit = null;
 if ($_GET['list'] == 'edit') {
-	if ($_GET['access']) {
+	if (isset($_GET['access'])) {
 		if (!checkAccess($_GET['access'])) {
 			header("Location: ?page=spam&error=perm");
 			die();
 		}
-		$edit = $_GET['access'];
+		$statement = $dbh->prepare("SELECT * FROM spamsettings WHERE access = :access;");
+		$statement->execute(array(':access' => strtolower($_GET['access'])));
+		if ($row = $statement->fetch(PDO::FETCH_ASSOC))
+			$edit = array('access' => $row['access'], 'settings' => json_decode($row['settings']));
 	} else {
 		foreach ($_POST['access'] as $access)
 		{
@@ -65,17 +69,14 @@ if ($_GET['list'] == 'edit') {
 				header("Location: ?page=spam&error=perm");
 				die();
 			}
-			if ($_POST['level'] != '') {
-				$statement = $dbh->prepare("UPDATE spamsettings SET settings = :settings WHERE access = :access;");
-				$statement->execute(array(':access' => strtolower($access), ':settings' => $_POST['level']));
-			}
+			$statement = $dbh->prepare("UPDATE spamsettings SET settings = :settings WHERE access = :access;");
+			$statement->execute(array(':access' => strtolower($access), ':settings' => json_encode($spamsettings)));
 		}
 		header("Location: ?page=spam");
 		die();
 	}
 }
 
-$result = array();
 $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 500;
 
@@ -114,8 +115,9 @@ foreach ($in_access as $k => $v)
 foreach ($domain_access as $k => $v)
 	$statement->bindValue($k, $v);
 $statement->execute();
+$result = array();
 while ($row = $statement->fetch(PDO::FETCH_ASSOC))
-	$result[] = $row;
+	$result[] = array('access' => $row['access'], 'settings' => json_decode($row['settings']));
 if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
 	$total = $dbh->query('SELECT FOUND_ROWS();');
 	$total = (int)$total->fetchColumn();
