@@ -153,6 +153,10 @@ msgstr "Meddelanden"
 msgid "Black/whitelist"
 msgstr "Svart- och vitlista"
 
+#: templates/header.tpl:40 templates/spam.tpl:14
+msgid "Spam settings"
+msgstr "Spaminställningar"
+
 #: templates/header.tpl:40
 msgid "Stats"
 msgstr "Statistik"
@@ -176,6 +180,10 @@ msgstr "Karantän"
 #: templates/index.tpl:22 templates/index.tpl:46
 msgid "All"
 msgstr "Alla"
+
+#: templates/bwlist.tpl:25
+msgid "Search for..."
+msgstr "Sök efter..."
 
 #: templates/bwlist.tpl:27
 msgid "Search"
@@ -275,9 +283,9 @@ msgstr "IP"
 msgid "Close"
 msgstr "Stäng"
 
-#: templates/bwlist.tpl:25
-msgid "Search for..."
-msgstr "Sök efter..."
+#: templates/bwlist.tpl:5
+msgid "You are not allowed to add a black/whitelist entry for that recipient."
+msgstr "Du har inte rättigheter att lägga till svart- och vitlistor för den mottagaren."
 
 #: templates/bwlist.tpl:37 templates/bwlist.tpl:152
 msgid "Sender"
@@ -419,3 +427,47 @@ msgstr "Upprepa lösenordet"
 #: templates/forgot.tpl:59
 msgid "E-mail"
 msgstr "E-post"
+
+#: templates/spam.tpl:5
+msgid "You are not allowed to add a spam settings entry for that recipient"
+msgstr "Du har inte rättigheter att ändra spaminställningar för den mottagaren."
+
+#: templates/spam.tpl:37
+msgid "Settings"
+msgstr "Inställningar"
+
+#: templates/spam.tpl:67
+msgid "No spam settings"
+msgstr "Inga spaminställningar"
+
+#: templates/spam.tpl:96
+msgid "Edit"
+msgstr "Ändra"
+
+#: templates/spam.tpl:104
+msgid "Select level"
+msgstr "Välj nivå"
+
+#: templates/spam.tpl:105
+msgid "Disabled"
+msgstr "Ingen"
+
+#: templates/spam.tpl:106
+msgid "Low"
+msgstr "Låg"
+
+#: templates/spam.tpl:107
+msgid "Medium"
+msgstr "Mellan"
+
+#: templates/spam.tpl:108
+msgid "High"
+msgstr "Hög"
+
+#: templates/spam.tpl:143
+msgid "Save"
+msgstr "Spara"
+
+#: templates/spam.tpl:144
+msgid "Cancel"
+msgstr "Avbryt"
