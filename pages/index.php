@@ -170,10 +170,6 @@ foreach ($timesort as $t)
 if ($c > $size)
 	$next_button = ''; // enable "next" page button
 
-if (count(Session::Get()->getAccess('mail')) != 1 or count(Session::Get()->getAccess('domain')) > 0)
-	$has_multiple_addresses = true;
-$has_multiple_sources = count($sources) > 1;
-
 $javascript[] = 'static/js/index.js';
 require_once BASE.'/inc/smarty.php';
 
@@ -183,8 +179,8 @@ $smarty->assign('sources', array_keys($sources));
 $smarty->assign('search', $search);
 $smarty->assign('size', $size);
 $smarty->assign('errors', $errors);
-if ($hasMailWithActions) $smarty->assign('mailwithaction', $hasMailWithActions);
-if ($has_multiple_addresses) $smarty->assign('mailhasmultipleaddresses', $has_multiple_addresses);
+$smarty->assign('mailwithaction', $hasMailWithActions);
+$smarty->assign('mailhasmultipleaddresses', count(Session::Get()->getAccess('mail')) != 1 or count(Session::Get()->getAccess('domain')) > 0);
 if (count(Session::Get()->getAccess('domain')) > 0 && count(Session::Get()->getAccess('domain')) < 30) $smarty->assign('search_domains', Session::Get()->getAccess('domain'));
 if ($settings->getDisplayScores()) $smarty->assign('feature_scores', true);
 
