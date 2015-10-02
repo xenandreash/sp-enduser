@@ -23,31 +23,56 @@ if ($_GET['list'] == 'delete') {
 	foreach (explode(',', $_GET['access']) as $a) {
 		if (!checkAccess($a))
 			die('invalid access');
-		$statement = $dbh->prepare("DELETE FROM bwlist WHERE access = :access AND bwlist.type = :type AND bwlist.value = :value;");
-		$statement->execute(array(':access' => $a, ':type' => $_GET['type'], ':value' => $_GET['value']));
+		$statement = $dbh->prepare("DELETE FROM spamsettings WHERE access = :access;");
+		$statement->execute(array(':access' => $a));
 	}
-	header("Location: ?page=bwlist");
+	header("Location: ?page=spam");
 	die();
 }
 
 if ($_GET['list'] == 'add') {
 	foreach ($_POST['access'] as $access)
 	{
-		if (strpos($_POST['value'], ' ') !== false) die('Invalid email address, domain name or IP address.');
 		if (strpos($access, ' ') !== false) die('Invalid email address or domain name.');
-		if ($_POST['value'][0] == '@') $_POST['value'] = substr($_POST['value'], 1);
 		if ($access[0] == '@') $access = substr($access, 1);
 		if (!checkAccess($access)) {
-			header("Location: ?page=bwlist&error=perm");
+			header("Location: ?page=spam&error=perm");
 			die();
 		}
-		if ($_POST['type'] == 'whitelist' || $_POST['type'] == 'blacklist') {
-			$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
-			$statement->execute(array(':access' => strtolower($access), ':type' => $_POST['type'], ':value' => strtolower($_POST['value'])));
+		if ($_POST['level'] != '') {
+			$statement = $dbh->prepare("INSERT INTO spamsettings (access, settings) VALUES(:access, :settings);");
+			$statement->execute(array(':access' => strtolower($access), ':settings' => $_POST['level']));
 		}
 	}
-	header("Location: ?page=bwlist");
+	header("Location: ?page=spam");
 	die();
+}
+
+$edit = null;
+if ($_GET['list'] == 'edit') {
+	if ($_GET['access']) {
+		if (!checkAccess($_GET['access'])) {
+			header("Location: ?page=spam&error=perm");
+			die();
+		}
+		$edit = $_GET['access'];
+	} else {
+		foreach ($_POST['access'] as $access)
+		{
+			if (strpos($access, ' ') !== false) die('Invalid email address or domain name.');
+			if ($access[0] == '@') $access = substr($access, 1);
+			if (!checkAccess($access)) {
+				header("Location: ?page=spam&error=perm");
+				die();
+			}
+			if ($_POST['level'] != '') {
+				$statement = $dbh->prepare("UPDATE spamsettings SET settings = :settings WHERE access = :access;");
+				$statement->execute(array(':access' => strtolower($access), ':settings' => $_POST['level']));
+			}
+		}
+		header("Location: ?page=spam");
+		die();
+	}
 }
 
 $result = array();
@@ -67,7 +92,7 @@ $wheres = array();
 if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
 	$foundrows = 'SQL_CALC_FOUND_ROWS';
 if ($search != '')
-	$wheres[] = 'value LIKE :search';
+	$wheres[] = 'access LIKE :search';
 if (count($access) != 0) {
 	$restrict = '(access IN ('.implode(',', array_keys($in_access)).')';
 	foreach (array_keys($domain_access) as $v)
@@ -78,7 +103,7 @@ if (count($access) != 0) {
 
 if (count($wheres))
 	$where = 'WHERE '.implode(' AND ', $wheres);
-$sql = "SELECT $foundrows * FROM bwlist $where ORDER BY type DESC, value ASC LIMIT :offset, :limit;";
+$sql = "SELECT $foundrows * FROM spamsettings $where ORDER BY access DESC LIMIT :offset, :limit;";
 $statement = $dbh->prepare($sql);
 $statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
@@ -99,7 +124,7 @@ if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite') {
 	if ($offset == 0 && count($result) < $limit + 1) {
 		$total = count($result);
 	} else {
-		$total = $dbh->prepare("SELECT COUNT(*) FROM bwlist $where;");
+		$total = $dbh->prepare("SELECT COUNT(*) FROM spamsettings $where;");
 		if ($search != '')
 			$total->bindValue(':search', '%'.$search.'%');
 		foreach ($in_access as $k => $v)
@@ -131,13 +156,8 @@ if ($total) {
 	}
 }
 
-// For users with many access levels; print them more condensed
-$result2 = array();
-foreach ($result as $row)
-	$result2[$row['type']][$row['value']][] = $row['access'];
-
 if ($_GET['error'] == 'perm')
-	$error = 'You are not allowed to add a black/whitelist entry for that recipient.';
+	$error = true;
 
 $javascript[] = 'static/js/bwlist.js';
 
@@ -145,11 +165,12 @@ require_once BASE.'/inc/smarty.php';
 
 if ($error) $smarty->assign('error', $error);
 if ($search) $smarty->assign('search', $search);
+if ($edit) $smarty->assign('edit', $edit);
 $access = array();
 foreach (Session::Get()->getAccess() as $a)
 	$access = array_merge($access, $a);
 $smarty->assign('useraccess', $access);
-$smarty->assign('items', $result2);
+$smarty->assign('items', $result);
 if ($total) $smarty->assign('total', $total);
 if ($pages) $smarty->assign('pages', $pages);
 $smarty->assign('currpage', $currpage);

@@ -85,6 +85,11 @@ if (isset($dbCredentials['dsn'])) {
 			$notes[] = 'Adding table bwlist';
 			$dbh->exec('CREATE TABLE bwlist (access VARCHAR(128), type VARCHAR(32), value VARCHAR(128), PRIMARY KEY(access, type, value));');
 		}
+		$statement = $dbh->prepare('SELECT * FROM spamsettings LIMIT 1;');
+		if (!$statement || $statement->execute() === false) {
+			$notes[] = 'Adding table spamsettings';
+			$dbh->exec('CREATE TABLE spamsettings (access VARCHAR(128), settings TEXT, PRIMARY KEY(access));');
+		}
 		if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
 			$statement = $dbh->prepare('SELECT * FROM messagelog LIMIT 1;');
 			if (!$statement || $statement->execute() === false) {

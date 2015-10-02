@@ -138,4 +138,11 @@ if ($_GET['type'] == 'bwlist') {
 	die(json_encode($statement->fetchAll(PDO::FETCH_OBJ)));
 }
 
+if ($_GET['type'] == 'spamsettings') {
+	$dbh = $settings->getDatabase();
+	$statement = $dbh->prepare("SELECT * FROM spamsettings;");
+	$statement->execute();
+	die(json_encode($statement->fetchAll(PDO::FETCH_OBJ)));
+}
+
 die('ok');
