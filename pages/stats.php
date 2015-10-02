@@ -1,9 +1,6 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once BASE.'/inc/core.php';
-require_once BASE.'/inc/utils.php';
-
 /* TODO
  * Use SOAP "future" instead for parallell config call
  * Support "outbound" aka more listeners

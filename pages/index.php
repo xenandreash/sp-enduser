@@ -1,9 +1,6 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once BASE.'/inc/core.php';
-require_once BASE.'/inc/utils.php';
-
 if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])) {
 	$actions = array();
 	foreach ($_POST as $k => $v)

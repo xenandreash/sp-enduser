@@ -8,7 +8,7 @@ if (file_exists(BASE.'/install.php') and !file_exists(BASE.'/installed.txt')) {
 	die();
 }
 
-require BASE."/inc/core.php";
+require_once BASE.'/inc/core.php';
 
 if (Session::Get()->getUsername() === null && (!isset($_GET['page']) || ($_GET['page'] != 'login' && $_GET['page'] != 'forgot' && $_GET['page'] != 'digest'))) {
 	session_destroy();

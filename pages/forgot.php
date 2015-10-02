@@ -1,9 +1,6 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once BASE.'/inc/core.php';
-require_once BASE.'/inc/utils.php';
-
 if (isset($_GET['reset']) && !isset($_GET['token'])) {
 	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare("SELECT * FROM users WHERE username = :username;");

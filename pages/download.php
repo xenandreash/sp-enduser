@@ -1,8 +1,6 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once BASE.'/inc/utils.php';
-
 header('Content-type: text/plain');
 
 $id = preg_replace('/[^0-9]/', '', $_GET['id']);

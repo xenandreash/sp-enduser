@@ -1,9 +1,6 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once BASE.'/inc/core.php';
-require_once BASE.'/inc/utils.php';
-
 $id = preg_replace('/[^0-9]/', '', $_GET['id']);
 $type = $_GET['type'];
 $node = null;

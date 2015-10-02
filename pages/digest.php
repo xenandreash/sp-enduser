@@ -1,10 +1,6 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-require_once BASE.'/inc/core.php';
-require_once BASE.'/inc/utils.php';
-
-$settings = Settings::Get();
 if (!$settings->getDigestSecret())
 	die('No digest secret');
 
