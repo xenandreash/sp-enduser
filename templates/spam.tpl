@@ -2,7 +2,7 @@
 
 {$levels = array()}
 {capture assign="level"}{t}Disabled{/t}{/capture}
-{$levels[''] = $level}
+{$levels['disabled'] = $level}
 {capture assign="level"}{t}Low{/t}{/capture}
 {$levels['low'] = $level}
 {capture assign="level"}{t}Medium{/t}{/capture}
