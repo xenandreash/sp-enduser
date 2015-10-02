@@ -45,7 +45,7 @@
 					<tr>
 						<th class="hidden-xs" style="width: 30px"></th>
 						<th class="hidden-xs">{t}For recipient{/t}</th>
-						<th class="hidden-xs">{t}Settings{/t}</th>
+						<th class="hidden-xs">{t}Level{/t}</th>
 						<th class="visible-xs"></th>
 						<th style="width: 30px"></th>
 						<th style="width: 30px"></th>
@@ -109,7 +109,7 @@
 			<div class="panel-body">
 				<form class="form-horizontal" action="?page=spam&list={if $edit}edit{else}add{/if}" method="post">
 					<div class="form-group">
-						<label for="type" class="control-label col-md-3">{t}Action{/t}</label>
+						<label for="type" class="control-label col-md-3">{t}Level{/t}</label>
 						<div class="col-md-9">
 							<select name="level" class="form-control">
 								<option value="">{t}Select level{/t}</option>
