@@ -217,5 +217,8 @@ foreach ($users as $email => $access) {
 	$headers = array();
 	$headers[] = 'Content-Type: text/html; charset=UTF-8';
 	$headers[] = 'Content-Transfer-Encoding: base64';
-	mail2($email, "Quarantine digest, ".count($maillist)." new messages", chunk_split(base64_encode($smarty->fetch('cron_digestday.tpl'))), $headers);
+
+	$subject = '';
+	$body = preg_replace_callback('/\\s*<subject>(.*?)<\/subject>\\s*/', function ($s) { global $subject; $subject = $s[1]; return ""; }, $smarty->fetch('cron_digestday.tpl'));
+	mail2($email, $subject, chunk_split(base64_encode($body)), $headers);
 }
