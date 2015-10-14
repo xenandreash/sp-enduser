@@ -26,8 +26,8 @@ if (isset($_GET['reset']) && !isset($_GET['token'])) {
 		$headers[] = 'Content-Type: text/html; charset=UTF-8';
 		$headers[] = 'Content-Transfer-Encoding: base64';
 
-		$subject = '';
-		$body = preg_replace_callback('/\\s*<subject>(.*?)<\/subject>\\s*/', function ($s) { global $subject; $subject = $s[1]; return ""; }, $smarty->fetch('forgot.mail.tpl'));
+		$body = $smarty->fetch('forgot.mail.tpl');
+		$subject = $smarty->getTemplateVars('subject');
 
 		mail2($_GET['reset'], $subject, chunk_split(base64_encode($body)), $headers);
 	}

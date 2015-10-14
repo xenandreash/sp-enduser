@@ -1,4 +1,5 @@
-<subject>{t}Reset password{/t}</subject>
+{capture assign="subject"}{t}Reset password{/t}{/capture}
+{assign var="subject" value=$subject scope=root}
 <p>
 	{t escape=no url=$public_url}You have requested to reset your password on <a href="%1">%1</a>. Click the link to reset your password.{/t}
 </p>

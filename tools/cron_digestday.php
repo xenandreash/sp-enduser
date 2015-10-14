@@ -207,7 +207,7 @@ foreach ($users as $email => $access) {
 
 	$smarty = new Smarty();
 	$smarty->compile_dir = '/tmp/';
-	$smarty->template_dir = dirname(__FILE__);
+	$smarty->template_dir = dirname(__FILE__).'/../templates/';
 
 	if ($one_recipient !== null) $smarty->assign('recipient', $one_recipient);
 	$smarty->assign('mails', $maillist);
@@ -218,7 +218,8 @@ foreach ($users as $email => $access) {
 	$headers[] = 'Content-Type: text/html; charset=UTF-8';
 	$headers[] = 'Content-Transfer-Encoding: base64';
 
-	$subject = '';
-	$body = preg_replace_callback('/\\s*<subject>(.*?)<\/subject>\\s*/', function ($s) { global $subject; $subject = $s[1]; return ""; }, $smarty->fetch('cron_digestday.tpl'));
+	$body = $smarty->fetch('digestday.mail.tpl');
+	$subject = $smarty->getTemplateVars('subject');
+
 	mail2($email, $subject, chunk_split(base64_encode($body)), $headers);
 }

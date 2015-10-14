@@ -1,4 +1,4 @@
-<subject>Quarantine digest, {count($mails)} new messages</subject>
+{assign var="subject" value="Quarantine digest, {count($mails)} new messages" scope=root}
 <p>You have {count($mails)} messages(s) received {if $recipient}to {$recipient|escape} {/if}in your <a href="{$quarantine_url}">quarantine</a> during the last 24 hours.</p>
 <table style="border-collapse: collapse;" cellpadding="4">
 	<tr>
