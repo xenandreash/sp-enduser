@@ -3,5 +3,5 @@
 if (!isset($_SERVER['argc']))
 	die('this file can only be run from command line');
 
-if ($argv[1] == 'digestday') require_once 'tools/cron_digestday.php';
-if ($argv[1] == 'cleanmessagelog') require_once 'tools/cron_cleanmessagelog.php';
+if ($argv[1] == 'digestday') require_once 'cron/digestday.php';
+if ($argv[1] == 'cleanmessagelog') require_once 'cron/cleanmessagelog.php';
