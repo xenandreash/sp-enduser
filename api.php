@@ -5,16 +5,14 @@ define('BASE', dirname(__FILE__));
 require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
-header('Content-Type: text/plain');
-
 // verify API key
 if (!isset($_GET['api-key']) || $settings->getAPIKey() !== $_GET['api-key'])
-	die('Invalid API-key');
+	panic('Invalid API-key');
 
 // add recipient (user) to local database, send password by mail
 if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'] !== '') {
 	if (!has_auth_database())
-		die('No database authentication source');
+		panic('No database authentication source');
 
 	$recipient = $_GET['recipient'];
 	$dbh = $settings->getDatabase();
@@ -35,11 +33,12 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 		$statement->execute(array(':username' => $recipient));
 
 		if (!$dbh->commit())
-			die('Database INSERT failed');
+			panic('Database INSERT failed');
 
 		mail2($recipient, 'New account information', "Hi $recipient, an account has been created for you in the end-user interface, choose your password and login by visiting this url $url/?page=forgot&reset=$recipient&type=create&token=$publictoken");
 	}
-	die('ok');
+	// 'ok' response is checked by deprecated Quarantine implementaton
+	success_text('ok');
 }
 
 // add message to local (SQL) history log
@@ -79,7 +78,7 @@ if ($_GET['type'] == 'log') {
 	$scores['clam'] = $_POST['score_clam'];
 	$statement->bindValue(':scores', json_encode($scores));
 	$statement->execute();
-	die('ok');
+	success_json(array('status'=>'success'));
 }
 
 // Update message in local (SQL) history log
@@ -92,11 +91,11 @@ if ($_GET['type'] == 'logupdate') {
 	$statement->bindValue(':serialno', $_POST['serialno']);
 	$statement->bindValue(':msgactionid', $_POST['msgactionid']);
 	$statement->execute();
-	die('ok');
+	success_json(array('status'=>'success'));
 }
 
 // check bwlist
-if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sender']) || isset($_GET['recipient'])) {
+if ($_GET['type'] == 'bwcheck' && (isset($_GET['senderip']) || isset($_GET['sender']) || isset($_GET['recipient']))) {
 	$dbh = $settings->getDatabase();
 
 	$senderip = $_GET['senderip'];
@@ -124,18 +123,20 @@ if ($_GET['type'] == 'bwcheck' && isset($_GET['senderip']) || isset($_GET['sende
 		if ($row['type'] == 'whitelist')
 			$whitelist[] = $row['value'];
 	}
+
+	// 'text' response is checked by deprecated ScanBWList implementaton
 	if (count($whitelist))
-		die('whitelist');
+		success_text('whitelist');
 	if (count($blacklist))
-		die('blacklist');
-	die('unknown');
+		success_text('blacklist');
+	succes_text('unknown');
 }
 
 if ($_GET['type'] == 'bwlist') {
 	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare("SELECT * FROM bwlist;");
 	$statement->execute();
-	die(json_encode($statement->fetchAll(PDO::FETCH_OBJ)));
+	success_json($statement->fetchAll(PDO::FETCH_OBJ));
 }
 
 if ($_GET['type'] == 'spamsettings') {
@@ -143,7 +144,26 @@ if ($_GET['type'] == 'spamsettings') {
 	$statement = $dbh->prepare("SELECT * FROM spamsettings;");
 	$statement->execute();
 	$result = array_map(function ($r) { $r['settings'] = json_decode($r['settings']); return $r; }, $statement->fetchAll(PDO::FETCH_ASSOC));
-	die(json_encode($result));
+	success_json($result);
 }
 
-die('ok');
+panic('Unsupported API call');
+
+function panic($message)
+{
+	http_response_code(503);
+	header('Content-Type: application/json; charset=UTF-8');
+	die(json_encode(array('error' => $message)));
+}
+
+function success_json($data)
+{
+	header('Content-Type: application/json; charset=UTF-8');
+	die(json_encode($data));
+}
+
+function success_text($data)
+{
+	header('Content-Type: text/plain; charset=UTF-8');
+	die($data);
+}
