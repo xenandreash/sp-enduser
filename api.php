@@ -21,7 +21,6 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 	if (!$statement->fetch(PDO::FETCH_ASSOC)) {
 
 		$password = crypt(generate_random_password());
-		$url = $settings->getPublicURL();
 
 		$token = uniqid();
 		$publictoken = hash_hmac('sha256', $password, $token);
@@ -35,7 +34,18 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 		if (!$dbh->commit())
 			panic('Database INSERT failed');
 
-		mail2($recipient, 'New account information', "Hi $recipient, an account has been created for you in the end-user interface, choose your password and login by visiting this url $url/?page=forgot&reset=$recipient&type=create&token=$publictoken");
+		require BASE.'/inc/smarty.php';
+		$smarty->assign('email', $recipient);
+		$smarty->assign('register_url', $settings->getPublicURL()."/?page=forgot&reset=$recipient&type=create&token=$publictoken");
+
+		$headers = array();
+		$headers[] = 'Content-Type: text/html; charset=UTF-8';
+		$headers[] = 'Content-Transfer-Encoding: base64';
+
+		$subject = '';
+		$body = preg_replace_callback('/\\s*<subject>(.*?)<\/subject>\\s*/', function ($s) { global $subject; $subject = $s[1]; return ""; }, $smarty->fetch('newuser.mail.tpl'));
+
+		mail2($recipient, $subject, chunk_split(base64_encode($body)), $headers);
 	}
 	// 'ok' response is checked by deprecated Quarantine implementaton
 	success_text('ok');
