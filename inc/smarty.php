@@ -1,6 +1,6 @@
 <?php
 
-include 'gettext.php';
+require_once 'gettext.php';
 
 $smarty = new Smarty();
 $smarty->compile_dir = '/tmp/';

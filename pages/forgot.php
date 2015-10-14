@@ -14,7 +14,22 @@ if (isset($_GET['reset']) && !isset($_GET['token'])) {
 		$publictoken = hash_hmac('sha256', $row['password'], $token);
 		$statement = $dbh->prepare("UPDATE users SET reset_password_token = :token, reset_password_timestamp = :timestamp WHERE username = :username;");
 		$statement->execute(array(':username' => $_GET['reset'], ':token' => $token, ':timestamp' => time()));
-		mail2($_GET['reset'], 'Reset password', wordwrap("Someone (hopefully you) have requested a password reset (from IP {$_SERVER['REMOTE_ADDR']}).\r\n\r\nThe token is:\r\n$publictoken \r\n\r\nDirect URL:\r\n".$settings->getPublicURL()."/?page=forgot&reset={$_GET['reset']}&token=$publictoken", 70, "\r\n"));
+
+		require BASE.'/inc/smarty.php';
+		$smarty->assign('ipaddress', $_SERVER['REMOTE_ADDR']);
+		$smarty->assign('publictoken', $publictoken);
+		$smarty->assign('email', $_GET['reset']);
+		$smarty->assign('public_url', $settings->getPublicURL());
+		$smarty->assign('reset_url', $settings->getPublicURL()."/?page=forgot&reset={$_GET['reset']}&token=$publictoken");
+
+		$headers = array();
+		$headers[] = 'Content-Type: text/html; charset=UTF-8';
+		$headers[] = 'Content-Transfer-Encoding: base64';
+
+		$subject = '';
+		$body = preg_replace_callback('/\\s*<subject>(.*?)<\/subject>\\s*/', function ($s) { global $subject; $subject = $s[1]; return ""; }, $smarty->fetch('forgot.mail.tpl'));
+
+		mail2($_GET['reset'], $subject, chunk_split(base64_encode($body)), $headers);
 	}
 }
 
@@ -39,7 +54,7 @@ if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password']
 	}
 }
 
-require_once BASE.'/inc/smarty.php';
+require BASE.'/inc/smarty.php';
 
 if ($error) $smarty->assign('error', $error);
 if ($_GET['type'] != 'create' && $_POST['type'] != 'create' && $settings->getForgotText() !== null) $smarty->assign('forgot_text', $settings->getForgotText());
