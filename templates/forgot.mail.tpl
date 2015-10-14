@@ -1,6 +1,6 @@
 <subject>{t}Reset password{/t}</subject>
 <p>
-	{t escape=no url=$public_url}You have requested to reset your password on <a href="%1">%1</a>. Click the link to reset your password!{/t}
+	{t escape=no url=$public_url}You have requested to reset your password on <a href="%1">%1</a>. Click the link to reset your password.{/t}
 </p>
 <p>
 	<a href="{$reset_url}">{t}Reset password{/t}</a>
