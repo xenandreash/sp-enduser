@@ -34,6 +34,7 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 		if (!$dbh->commit())
 			panic('Database INSERT failed');
 
+		$smarty_no_assign = true;
 		require BASE.'/inc/smarty.php';
 		$smarty->assign('email', $recipient);
 		$smarty->assign('register_url', $settings->getPublicURL()."/?page=forgot&reset=$recipient&type=create&token=$publictoken");

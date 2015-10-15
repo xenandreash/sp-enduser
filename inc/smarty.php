@@ -6,6 +6,11 @@ $smarty = new Smarty();
 $smarty->compile_dir = '/tmp/';
 $smarty->template_dir = './templates/';
 
+if ($smarty_no_assign) {
+	unset($smart_no_assign);
+	return;
+}
+
 $smarty->assign('pagename', $settings->getPageName());
 if (Session::Get()->getUsername()) $smarty->assign('username', Session::Get()->getUsername());
 

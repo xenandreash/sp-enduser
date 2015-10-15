@@ -15,6 +15,7 @@ if (isset($_GET['reset']) && !isset($_GET['token'])) {
 		$statement = $dbh->prepare("UPDATE users SET reset_password_token = :token, reset_password_timestamp = :timestamp WHERE username = :username;");
 		$statement->execute(array(':username' => $_GET['reset'], ':token' => $token, ':timestamp' => time()));
 
+		$smarty_no_assign = true;
 		require BASE.'/inc/smarty.php';
 		$smarty->assign('ipaddress', $_SERVER['REMOTE_ADDR']);
 		$smarty->assign('publictoken', $publictoken);
