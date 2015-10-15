@@ -37,7 +37,7 @@
 							<li class="bwlist{if $page_active=="bwlist"} active{/if}"><a href="?page=bwlist"><i class="glyphicon glyphicon-list"></i>&nbsp;{t}Black/whitelist{/t}</a></li>
 						{/if}
 						{if $feature_spam}
-							<li class="bwlist{if $page_active=="spam"} active{/if}"><a href="?page=spam"><i class="glyphicon glyphicon-list"></i>&nbsp;{t}Spam settings{/t}</a></li>
+							<li class="bwlist{if $page_active=="spam"} active{/if}"><a href="?page=spam"><i class="glyphicon glyphicon-cog"></i>&nbsp;{t}Spam settings{/t}</a></li>
 						{/if}
 						{if $feature_stats}
 							<li class="users{if $page_active=="stats"} active{/if}"><a href="?page=stats"><i class="glyphicon glyphicon-stats"></i>&nbsp;{t}Stats{/t}</a></li>
