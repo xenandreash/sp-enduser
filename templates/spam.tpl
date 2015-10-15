@@ -67,10 +67,10 @@
 								{if $item.access}{$item.access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}
 							</p>
 						</td>
-						<td style="vertical-align: middle">
+						<td style="width: 30px; vertical-align: middle">
 							<a href="{$edit_url}"><i class="glyphicon glyphicon-edit"></i></a>
 						</td>
-						<td style="vertical-align: middle">
+						<td style="width: 30px; vertical-align: middle">
 							<a onclick="return confirm('Really delete spam settings for {$item.access|escape}?')" title="{t}Remove{/t}" href="?page=spam&list=delete&access={$item.access|urlencode}"><i class="glyphicon glyphicon-remove"></i></a>
 						</td>
 					</tr>
