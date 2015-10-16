@@ -7,12 +7,12 @@
 		<link rel="icon" type="image/png" href="static/img/favicon.png" sizes="32x32">
 		<link rel="apple-touch-icon" href="static/img/apple-touch-icon.png">
 		<title>{$title|gettext|escape} | {$pagename|escape}</title>
-		<link rel="stylesheet" href="static/css/bootstrap.min.css">
+		<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css?v=3.4-r1-rocky-amd64">
 		<link rel="stylesheet" href="{$styles}">
 		<script src="static/js/jquery.min.js"></script>
 		{foreach $javascript as $js}<script src="{$js}"></script>{/foreach}
-		<script src="static/js/bootstrap.min.js"></script>
+		<script src="vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
 	</head>
 	<body class="{$body_class}">
 	{if $username}
