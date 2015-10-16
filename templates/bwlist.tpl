@@ -13,7 +13,7 @@
 				<h3 class="panel-title">
 					{t}Black/whitelist{/t}
 					<a class="pull-right" data-toggle="collapse" href="#search">
-						<span class="glyphicon glyphicon-search"></span>
+						<span class="fa fa-search"></span>
 					</a>
 				</h3>
 			</div>
@@ -21,7 +21,7 @@
 				<form class="form-horizontal" method="get">
 					<input type="hidden" name="page" value="bwlist">
 					<div class="input-group">
-						<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+						<span class="input-group-addon"><span class="fa fa-search"></span></span>
 						<input type="text" class="form-control" placeholder="{t}Search for...{/t}" name="search" value="{$search|escape}">
 						<span class="input-group-btn">
 							<button class="btn btn-default" type="search">{t}Search{/t}</button>
@@ -47,21 +47,21 @@
 						{if count($accesses) > 1}
 							{$id = $id + 1}
 							<tr style="cursor:pointer" data-toggle="{$id}" class="toggle {if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">
-								<td class="hidden-xs"><span class="expand-icon glyphicon glyphicon-expand"></span></td>
+								<td class="hidden-xs"><span class="expand-icon fa fa-expand"></span></td>
 								<td class="hidden-xs">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</td>
 								<td class="hidden-xs">{$value|escape}</td>
 								<td class="hidden-xs"><span class="badge">{count($accesses)}</span></td>
 								<td class="visible-xs">
 									<p>
-										<span class="glyphicon glyphicon-pencil"></span>&nbsp; {$value|escape}
+										<span class="fa fa-user"></span>&nbsp; {$value|escape}
 									</p>
 									<p>
-										<span class="glyphicon glyphicon-inbox"></span>&nbsp;
+										<span class="fa fa-inbox"></span>&nbsp;
 										<span class="badge">{count($accesses)}</span>
 									</p>
 								</td>
 								<td style="vertical-align: middle">
-									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for {count($accesses)} recipients?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&access={implode(',', $accesses)|urlencode}&type={$type}&value={$value|urlencode}"><i class="glyphicon glyphicon-remove"></i></a>
+									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for {count($accesses)} recipients?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&access={implode(',', $accesses)|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 							{foreach $accesses as $access}
@@ -72,15 +72,15 @@
 								<td class="hidden-xs">{if $access}{$access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</td>
 								<td class="visible-xs">
 									<p>
-										<span class="glyphicon glyphicon-pencil"></span>&nbsp; {$value|escape}
+										<span class="fa fa-user"></span>&nbsp; {$value|escape}
 									</p>
 									<p>
-										<span class="glyphicon glyphicon-inbox"></span>&nbsp;
+										<span class="fa fa-inbox"></span>&nbsp;
 										{if $access}{$access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}
 									</p>
 								</td>
 								<td style="width: 30px; vertical-align: middle">
-									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for 1 recipient?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&access={$access|urlencode}&type={$type}&value={$value|urlencode}"><i class="glyphicon glyphicon-remove"></i></a>
+									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for 1 recipient?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&access={$access|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 							{/foreach}
@@ -92,15 +92,15 @@
 								<td class="hidden-xs">{if $accesses.0}{$accesses.0|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</td>
 								<td class="visible-xs">
 									<p>
-										<span class="glyphicon glyphicon-pencil"></span>&nbsp; {$value|escape}
+										<span class="fa fa-user"></span>&nbsp; {$value|escape}
 									</p>
 									<p>
-										<span class="glyphicon glyphicon-inbox"></span>&nbsp;
+										<span class="fa fa-inbox"></span>&nbsp;
 										{if $accesses.0}{$accesses.0|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}
 									</p>
 								</td>
 								<td style="width: 30px; vertical-align: middle">
-									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for {count($accesses)} recipients?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&access={$accesses.0|urlencode}&type={$type}&value={$value|urlencode}"><i class="glyphicon glyphicon-remove"></i></a>
+									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for {count($accesses)} recipients?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&access={$accesses.0|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 						{/if}

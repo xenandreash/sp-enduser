@@ -24,7 +24,7 @@
 				<h3 class="panel-title">
 					{t}Spam settings{/t}
 					<a class="pull-right" data-toggle="collapse" href="#search">
-						<span class="glyphicon glyphicon-search"></span>
+						<span class="fa fa-search"></span>
 					</a>
 				</h3>
 			</div>
@@ -32,7 +32,7 @@
 				<form class="form-horizontal" method="get">
 					<input type="hidden" name="page" value="spam">
 					<div class="input-group">
-						<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+						<span class="input-group-addon"><span class="fa fa-search"></span></span>
 						<input type="text" class="form-control" placeholder="{t}Search for...{/t}" name="search" value="{$search|escape}">
 						<span class="input-group-btn">
 							<button class="btn btn-default" type="search">{t}Search{/t}</button>
@@ -60,18 +60,18 @@
 						<td class="hidden-xs" data-href="{$edit_url}">{$levels[$item.settings->level]}</td>
 						<td class="visible-xs" data-href="{$edit_url}">
 							<p>
-								<span class="glyphicon glyphicon-pencil"></span>&nbsp; {$levels[$item.settings->level]}
+								<span class="fa fa-pencil"></span>&nbsp; {$levels[$item.settings->level]}
 							</p>
 							<p>
-								<span class="glyphicon glyphicon-inbox"></span>&nbsp;
+								<span class="fa fa-inbox"></span>&nbsp;
 								{if $item.access}{$item.access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}
 							</p>
 						</td>
 						<td style="width: 30px; vertical-align: middle">
-							<a href="{$edit_url}"><i class="glyphicon glyphicon-edit"></i></a>
+							<a href="{$edit_url}"><i class="fa fa-pencil-square-o"></i></a>
 						</td>
 						<td style="width: 30px; vertical-align: middle">
-							<a onclick="return confirm('Really delete spam settings for {$item.access|escape}?')" title="{t}Remove{/t}" href="?page=spam&list=delete&access={$item.access|urlencode}"><i class="glyphicon glyphicon-remove"></i></a>
+							<a onclick="return confirm('Really delete spam settings for {$item.access|escape}?')" title="{t}Remove{/t}" href="?page=spam&list=delete&access={$item.access|urlencode}"><i class="fa fa-remove"></i></a>
 						</td>
 					</tr>
 				{foreachelse}

@@ -28,7 +28,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-9">
-							<button type="submit" class="btn btn-primary">{t}Sign in{/t}</button>
+							<button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i>&nbsp;{t}Sign in{/t}</button>
 							{if $forgot_password}
 								<a class="btn btn-default" href="?page=forgot">{t}Forgot password{/t}</a>
 							{/if}

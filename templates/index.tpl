@@ -4,7 +4,7 @@
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toolbar-collapse">
 				<span class="sr-only">Toggle navigation</span>
-				<i class="glyphicon glyphicon-search"></i>
+				<i class="fa fa-search"></i>
 			</button>
 			<div class="navbar-brand visible-xs">
 				{if count($sources) == 1}
@@ -59,7 +59,7 @@
 			<form class="navbar-form navbar-left" role="search">
 				<input type="hidden" name="source" value="{$source}">
 				<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+					<span class="input-group-addon"><span class="fa fa-search"></span></span>
 					<input type="search" class="form-control" size="40" placeholder="{t}Search for...{/t}" id="search" name="search" value="{$search|escape}">
 					<div class="input-group-btn">
 						<button class="btn btn-default" id="dosearch">{t}Search{/t}</button>
@@ -75,7 +75,7 @@
 				</div>
 			</form>
 			<ul class="nav navbar-nav">
-				<li><a href="#" data-toggle="modal" data-target="#querybuilder"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span> {t}Search filter{/t}</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#querybuilder"><span class="fa fa-filter" aria-hidden="true"></span> {t}Search filter{/t}</a></li>
 			</ul>
 			{if $mailwithaction}
 			<ul class="nav navbar-nav navbar-left hidden-xs hidden-sm">

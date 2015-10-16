@@ -16,7 +16,7 @@
 				{if $password_reset}
 					<p class="alert alert-success">Your password has been {if $type=='create'}created{else}reset{/if}.</p>
 					<div class="col-sm-offset-3 col-sm-9">
-						<a class="btn btn-primary" href="?page=login">{t}Sign in{/t}</a>
+						<a class="btn btn-primary" href="?page=login"><i class="fa fa-sign-in"></i>&nbsp;{t}Sign in{/t}</a>
 					</div>
 				{elseif $reset and (not $error or $token)}
 				<form class="form-horizontal" method="post" action="?page=forgot">
@@ -64,7 +64,7 @@
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-9">
 							<button type="submit" class="btn btn-primary">{t}Reset password{/t}</button>
-							<a class="btn btn-default" href="?page=login">{t}Sign in{/t}</a>
+							<a class="btn btn-default" href="?page=login"><i class="fa fa-sign-in"></i>&nbsp;{t}Sign in{/t}</a>
 						</div>
 					</div>
 				</form>
