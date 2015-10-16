@@ -50,26 +50,15 @@ $action_colors = array(
 	'DEFER' => '#b5b',
 );
 
-$action_classes = array(
-	'DELIVER' => 'default',
-	'QUEUE' => 'info',
-	'QUARANTINE' => 'warning',
-	'REJECT' => 'danger',
-	'DELETE' => 'danger',
-	'BOUNCE' => 'warning',
-	'ERROR' => 'warning',
-	'DEFER' => 'warning',
-);
-
 $action_icons = array(
-	'DELIVER' => 'ok',
-	'QUEUE' => 'transfer',
+	'DELIVER' => 'check',
+	'QUEUE' => 'exchange',
 	'QUARANTINE' => 'inbox',
-	'REJECT' => 'ban-circle',
-	'DELETE' => 'trash',
-	'BOUNCE' => 'exclamation-sign',
-	'ERROR' => 'exclamation-sign',
-	'DEFER' => 'warning-sign',
+	'REJECT' => 'ban',
+	'DELETE' => 'trash-o',
+	'BOUNCE' => 'mail-reply',
+	'ERROR' => 'exclamation',
+	'DEFER' => 'clock-o',
 );
 
 function get_preview_link($m)
@@ -212,7 +201,6 @@ foreach ($timesort as $t) {
 		$mail['tr'] = $tr;
 		$mail['td'] = $td;
 		$mail['action_icon'] = $action_icons[$m['data']->msgaction];
-		$mail['action_class'] = $action_classes[$m['data']->msgaction];
 		$mail['action_color'] = $action_colors[$m['data']->msgaction];
 		$mail['description'] = $m['data']->msgerror ?: $m['data']->msgdescription;
 		if ($settings->getDisplayScores()) {

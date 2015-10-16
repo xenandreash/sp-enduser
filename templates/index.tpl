@@ -83,9 +83,9 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{t}Actions{/t} <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a data-bulk-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;{t}Delete selected{/t}</a></li>
-						<li><a data-bulk-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;{t}Bounce selected{/t}</a></li>
-						<li><a data-bulk-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;{t}Release/retry selected{/t}</a></li>
+						<li><a data-bulk-action="delete"><i class="fa fa-trash-o"></i>&nbsp;{t}Delete selected{/t}</a></li>
+						<li><a data-bulk-action="bounce"><i class="fa fa-mail-reply"></i>&nbsp;{t}Bounce selected{/t}</a></li>
+						<li><a data-bulk-action="retry"><i class="fa fa-mail-forward"></i>&nbsp;{t}Release/retry selected{/t}</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -111,12 +111,19 @@
 				white-space: nowrap;
 				overflow: hidden;
 			}
+			.nopad > a {
+				padding-left: 0px;
+				padding-right: 0px;
+				padding-top: 6px;
+				padding-bottom: 0px;
+			}
 		</style>
 		<form method="post" id="multiform">
 		<table class="table table-hover hidden-xs">
 			<thead>
 				<tr>
-					<th style="width:30px"><input type="checkbox" id="select-all" class="hidden-sm"></th>
+					<th style="width:25px"><input type="checkbox" id="select-all" class="hidden-sm"></th>
+					<th style="width:30px"></th>
 					<th>{t}From{/t}</th>
 					{if $mailhasmultipleaddresses}<th>{t}To{/t}</th>{/if}
 					<th>{t}Subject{/t}</th>
@@ -130,14 +137,17 @@
 			</thead>
 			<tbody>
 				{foreach $mails as $mail}
-				<tr class="{$mail.action_class}" {$mail.tr}>
+				<tr {$mail.tr}>
 					<td>
 						{if $mail.type == 'queue'}
 							<input class="hidden-sm" type="checkbox" name="multiselect-{$mail.mail->id}" value="{$mail.node}">
-							<span class="visible-sm glyphicon glyphicon-{$mail.action_icon}"></span>
-						{else}
-							<span class="glyphicon glyphicon-{$mail.action_icon}"></span>
 						{/if}
+					</td>
+					<td {$mail.td} class="nopad">
+						<span class="fa-stack" style="font-size:12px;">
+							<i class="fa fa-square fa-stack-2x" style="color: {$mail.action_color};"></i>
+							<i class="fa fa-lg fa-{$mail.action_icon} fa-stack-1x" style="color:#fff;"></i>
+						</span>
 					</td>
 					<td {$mail.td}>{$mail.mail->msgfrom|escape|emptyspace}</td>
 					{if $mailhasmultipleaddresses}<td {$mail.td}>{$mail.mail->msgto|escape|emptyspace}</td>{/if}
@@ -159,12 +169,12 @@
 						{$mail.time|strftime2:'%b %e %Y<span class="hidden-sm">, %H:%M:%S</span>'}
 					{/if}
 					</td>
-					<td class="hidden-sm">{if $mail.type == 'queue'}<a title="{t}Release/retry{/t}" data-action="retry"><i class="glyphicon glyphicon-play-circle"></i></a>{/if}</td>
+					<td class="hidden-sm">{if $mail.type == 'queue'}<a title="{t}Release/retry{/t}" data-action="retry"><i class="fa fa-mail-forward"></i></a>{/if}</td>
 					<td>&nbsp;</td>
 				</tr>
 				{foreachelse}
 				<tr>
-					<td colspan="9" class="text-muted text-center">{t}No matches{/t}</td>
+					<td colspan="10" class="text-muted text-center">{t}No matches{/t}</td>
 				</tr>
 				{/foreach}
 			</tbody>
@@ -177,7 +187,7 @@
 				<table cellspacing="0" cellpadding="0" style="width: 100%;">
 				<tr>
 				<td style="background-color: {$mail.action_color}; text-align: center; width: 20px;">
-					<span style="color: #fff;" class="glyphicon glyphicon-{$mail.action_icon}"></span>
+					<span style="color: #fff;" class="fa fa-{$mail.action_icon}"></span>
 				</td>
 				<td style="padding: 5px;">
 					<h4 class="list-group-item-heading">

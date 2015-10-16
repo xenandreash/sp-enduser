@@ -2,19 +2,19 @@
 <nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<a id="history_back" class="navbar-brand" href="javascript:history.go(-1);">&larr;&nbsp;{t}Back{/t}</a>
+			<a id="history_back" class="navbar-brand" href="javascript:history.go(-1);"><i class="fa fa-long-arrow-left"></i>&nbsp;{t}Back{/t}</a>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
 			{if isset($node)}
 				{if $support_log}
-					<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="glyphicon glyphicon-book"></i>&nbsp;{t}Text log{/t}</a></li>
+					<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
 				{/if}
 				{if $type == 'queue'}
-					<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;{t}Download{/t}</a></li>
+					<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>
 					<li class="divider"></li>
-					<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;{t}Delete{/t}</a></li>
-					<li><a data-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;{t}Bounce{/t}</a></li>
-					<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;{if $mail->msgaction=='QUARANTINE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
+					<li><a data-action="delete"><i class="fa fa-trash-o"></i>&nbsp;{t}Delete{/t}</a></li>
+					<li><a data-action="bounce"><i class="fa fa-mail-reply"></i>&nbsp;{t}Bounce{/t}</a></li>
+					<li><a data-action="retry"><i class="fa fa-mail-forward"></i>&nbsp;{if $mail->msgaction=='QUARANTINE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
 				{/if}
 			{/if}
 		</ul>
@@ -28,14 +28,14 @@
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{t}Actions{/t} <span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					{if $support_log}
-						<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="glyphicon glyphicon-book"></i>&nbsp;{t}Text log{/t}</a></li>
+						<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
 					{/if}
 					{if $type == 'queue'}
-						<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="glyphicon glyphicon-download-alt"></i>&nbsp;{t}Download{/t}</a></li>
+						<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>
 						<li class="divider"></li>
-						<li><a data-action="delete"><i class="glyphicon glyphicon-trash"></i>&nbsp;{t}Delete{/t}</a></li>
-						<li><a data-action="bounce"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;{t}Bounce{/t}</a></li>
-						<li><a data-action="retry"><i class="glyphicon glyphicon-play-circle"></i>&nbsp;{if $mail->msgaction=='QUARANTINE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
+						<li><a data-action="delete"><i class="fa fa-trash-o"></i>&nbsp;{t}Delete{/t}</a></li>
+						<li><a data-action="bounce"><i class="fa fa-mail-reply"></i>&nbsp;{t}Bounce{/t}</a></li>
+						<li><a data-action="retry"><i class="fa fa-mail-forward"></i>&nbsp;{if $mail->msgaction=='QUARANTINE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
 					{/if}
 				</ul>
 			</li>
@@ -46,14 +46,17 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-5 col-md-push-7">
-			<div class="panel panel-default panel-{$action_class}">
+			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">{t}Details{/t}</h3>
 				</div>
 				<div class="panel-body">
 					<dl class="dl-horizontal">
 						<dt>{t}Action{/t}</dt><dd>
-							<span class="glyphicon glyphicon-{$action_icon}"></span>
+							<span class="fa-stack" style="font-size: 9px;">
+								<i class="fa fa-square fa-stack-2x" style="color: {$action_color};"></i>
+								<i class="fa fa-lg fa-{$action_icon} fa-stack-1x" style="color:#fff;"></i>
+							</span>
 							{$mail->msgaction}
 						</dd>
 						<dt>{t}From{/t}</dt><dd class="wrap">{$mail->msgfrom|escape|emptyspace}</dd>
@@ -123,7 +126,7 @@
 					<ul class="list-inline">
 						{foreach $attachments as $attachment}
 							<li class="nowrap">
-								<i class="glyphicon glyphicon-paperclip"></i>
+								<i class="fa fa-paperclip"></i>
 								{$attachment.2|escape}&nbsp;<small class="text-muted">({$attachment.1|format_size})</small>
 							</li>
 						{/foreach}

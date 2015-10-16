@@ -8,6 +8,7 @@
 		<link rel="apple-touch-icon" href="static/img/apple-touch-icon.png">
 		<title>{$title|gettext|escape} | {$pagename|escape}</title>
 		<link rel="stylesheet" href="static/css/bootstrap.min.css">
+		<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css?v=3.4-r1-rocky-amd64">
 		<link rel="stylesheet" href="{$styles}">
 		<script src="static/js/jquery.min.js"></script>
 		{foreach $javascript as $js}<script src="{$js}"></script>{/foreach}
@@ -27,7 +28,7 @@
 					{if not $show_back}
 						<a class="navbar-brand visible-xs" data-toggle="collapse" data-target="#navbar-collapse">{$title|gettext|escape}</a>
 					{else}
-						<a class="navbar-brand visible-xs" href="javascript:history.go(-1);">&larr;&nbsp;{t}Back{/t}</a>
+						<a class="navbar-brand visible-xs" href="javascript:history.go(-1);"><i class="fa fa-long-arrow-left"></i>&nbsp;{t}Back{/t}</a>
 					{/if}
 				</div>
 				<div class="collapse navbar-collapse" id="navbar-collapse">

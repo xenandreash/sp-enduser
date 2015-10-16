@@ -54,26 +54,28 @@ if ($type == 'log') {
 	}
 }
 
-$action_classes = array(
-	'DELIVER' => 'success',
-	'QUEUE' => 'info',
-	'QUARANTINE' => 'warning',
-	'REJECT' => 'danger',
-	'DELETE' => 'danger',
-	'BOUNCE' => 'warning',
-	'ERROR' => 'warning',
-	'DEFER' => 'warning',
+$action_colors = array(
+	'DELIVER' => '#8c1',
+	'QUEUE' => '#1ad',
+	'QUARANTINE' => '#f70',
+	'REJECT' => '#ba0f4b',
+	'DELETE' => '#333',
+	'BOUNCE' => '#333',
+	'ERROR' => '#333',
+	'DEFER' => '#b5b',
 );
+
 $action_icons = array(
-	'DELIVER' => 'ok',
-	'QUEUE' => 'transfer',
+	'DELIVER' => 'check',
+	'QUEUE' => 'exchange',
 	'QUARANTINE' => 'inbox',
-	'REJECT' => 'ban-circle',
-	'DELETE' => 'trash',
-	'BOUNCE' => 'exclamation-sign',
-	'ERROR' => 'exclamation-sign',
-	'DEFER' => 'warning-sign',
+	'REJECT' => 'ban',
+	'DELETE' => 'trash-o',
+	'BOUNCE' => 'mail-reply',
+	'ERROR' => 'exclamation',
+	'DEFER' => 'clock-o',
 );
+
 if ($type == 'queue' && $mail->msgaction == 'DELIVER') $mail->msgaction = 'QUEUE';
 
 // Prepare data
@@ -142,7 +144,7 @@ if ($header) {
 	$smarty->assign('headerdelta', json_encode($headerdelta));
 }
 $smarty->assign('referer', isset($_POST['referer']) ? $_POST['referer'] : $_SERVER['HTTP_REFERER']);
-$smarty->assign('action_class', $action_classes[$mail->msgaction]);
+$smarty->assign('action_color', $action_colors[$mail->msgaction]);
 $smarty->assign('action_icon', $action_icons[$mail->msgaction]);
 $transports = $settings->getDisplayTransport();
 if (isset($transports[$mail->msgtransport])) $smarty->assign('transport', $transports[$mail->msgtransport]);
