@@ -39,6 +39,11 @@ if (!in_array('dom', get_loaded_extensions())) {
 	<p><em>WARNING:</em> DOM extension is missing. Without it, email previews may be incomplete. <em>(This usually means you're running on CentOS, and need to install the <code>php-xml</code> package.)</em></p>
 <?php
 }
+if (!in_array('hash', get_loaded_extensions())) {
+?>
+	<p><em>WARNING:</em> HASH extension is missing. Without it, we are unable to securily store passwords. <em>(This usually means you're running on CentOS, and need to install the <code>php-hash</code> package.)</em></p>
+<?php
+}
 if (!in_array('gettext', get_loaded_extensions())) {
 ?>
 	<p><em>WARNING:</em> GETTEXT extension is missing. Without it, you will be unable to get correct character encodings. <em>(This usually means you're running on CentOS, and need to install the <code>php-gettext</code> package.)</em></p>

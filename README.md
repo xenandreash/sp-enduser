@@ -9,6 +9,7 @@ Requirements
  * openssl
  * dom
  * gettext
+ * hash
  * session
  * soap
  * ldap
