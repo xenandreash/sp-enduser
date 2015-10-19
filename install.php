@@ -39,6 +39,17 @@ if (!in_array('dom', get_loaded_extensions())) {
 	<p><em>WARNING:</em> DOM extension is missing. Without it, email previews may be incomplete. <em>(This usually means you're running on CentOS, and need to install the <code>php-xml</code> package.)</em></p>
 <?php
 }
+if (!in_array('gettext', get_loaded_extensions())) {
+?>
+	<p><em>WARNING:</em> GETTEXT extension is missing. Without it, you will be unable to get correct character encodings. <em>(This usually means you're running on CentOS, and need to install the <code>php-gettext</code> package.)</em></p>
+<?php
+}
+if (!in_array('session', get_loaded_extensions())) {
+# Soap requires session
+?>
+	<p><em>WARNING:</em> SESSION extension is missing. Without it, you will be unable to keep track of the users supplied credentials. <em>(This usually means you're running on CentOS, and need to install the <code>php-session</code> package.)</em></p>
+<?php
+}
 if (!in_array('soap', get_loaded_extensions())) {
 ?>
 	<p><em>WARNING:</em> SOAP extension is missing. Without it, you will be unable to connect directly to nodes. <em>(This usually means you're running on CentOS, and need to install the <code>php-soap</code> package.)</em></p>

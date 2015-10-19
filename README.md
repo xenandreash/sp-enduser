@@ -8,6 +8,8 @@ Requirements
  * curl
  * openssl
  * dom
+ * gettext
+ * session
  * soap
  * ldap
  * pdo
