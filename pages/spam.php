@@ -37,6 +37,7 @@ if ($_GET['list'] == 'add') {
 	foreach ($_POST['access'] as $access)
 	{
 		if (strpos($access, ' ') !== false) die('Invalid email address or domain name.');
+		if ($spamsettings['level'] == '') die('You need to select a level.');
 		if ($access[0] == '@') $access = substr($access, 1);
 		if (!checkAccess($access)) {
 			header("Location: ?page=spam&error=perm");
@@ -64,6 +65,7 @@ if ($_GET['list'] == 'edit') {
 		foreach ($_POST['access'] as $access)
 		{
 			if (strpos($access, ' ') !== false) die('Invalid email address or domain name.');
+			if ($spamsettings['level'] == '') die('You need to select a level.');
 			if ($access[0] == '@') $access = substr($access, 1);
 			if (!checkAccess($access)) {
 				header("Location: ?page=spam&error=perm");
