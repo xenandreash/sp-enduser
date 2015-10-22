@@ -78,6 +78,10 @@ function extension_icon($name)
 	$extension['torrent']   = 'cloud-download';
 	$extension['ics']   = 'calendar';
 	$extension['p7s']   = 'certificate';
+	$extension['pem']	= 'certificate';
+	$extension['der']	= 'certificate';
+	$extension['crt']	= 'certificate';
+	$extension['key']	= 'certificate';
 	if (isset($extension[$ext])) $icon = $extension[$ext];
 	return $icon;
 }
