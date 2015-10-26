@@ -8,7 +8,7 @@
 		<link rel="apple-touch-icon" href="static/img/apple-touch-icon.png">
 		<title>{$title|gettext|escape} | {$pagename|escape}</title>
 		<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css?v=3.4-r1-rocky-amd64">
+		<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{$styles}">
 		<script src="static/js/jquery.min.js"></script>
 		{foreach $javascript as $js}<script src="{$js}"></script>{/foreach}
