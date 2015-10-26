@@ -150,14 +150,10 @@ $result2 = array();
 foreach ($result as $row)
 	$result2[$row['type']][$row['value']][] = $row['access'];
 
-if ($_GET['error'] == 'perm')
-	$error = true;
-
 $javascript[] = 'static/js/bwlist.js';
 
 require_once BASE.'/inc/smarty.php';
 
-if ($error) $smarty->assign('error', $error);
 if ($search) $smarty->assign('search', $search);
 $access = array();
 foreach (Session::Get()->getAccess() as $a)

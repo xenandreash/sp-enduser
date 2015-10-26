@@ -1,11 +1,4 @@
 {include file='header.tpl' title='Black/whitelist' page_active='bwlist'}
-{if $error}
-<div class="container-fluid">
-	<div class="alert alert-danger" role="alert">
-		{t}You are not allowed to add a black/whitelist entry for that recipient.{/t}
-	</div>
-</div>
-{/if}
 <div class="container-fluid">
 	<div class="col-md-6 col-lg-8">
 		<div class="panel panel-default">
