@@ -41,7 +41,7 @@
 							<li class="bwlist{if $page_active=="spam"} active{/if}"><a href="?page=spam"><i class="fa fa-cog"></i>&nbsp;{t}Spam settings{/t}</a></li>
 						{/if}
 						{if $feature_stats}
-							<li class="users{if $page_active=="stats"} active{/if}"><a href="?page=stats"><i class="fa fa-pie-chart"></i>&nbsp;{t}Stats{/t}</a></li>
+							<li class="users{if $page_active=="stats"} active{/if}"><a href="?page=stats"><i class="fa fa-pie-chart"></i>&nbsp;{t}Statistics{/t}</a></li>
 						{/if}
 					</ul>
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">
