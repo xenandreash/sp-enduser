@@ -35,4 +35,23 @@ $(document).ready(function() {
 		})
 		return false;
 	});
+	$('#spam_add').submit(function() {
+		$.post("?page=spam&list=" + $("#action").val(), {
+			"level": $("#level").val(),
+			"access": $('#spam_add input[type="checkbox"].recipient:checked, #spam_add input[type="text"].recipient').map(function(){ return $(this).val(); }).get()
+		}, function(data) {
+			if (data.error) {
+				if (data.error == 'syntax')
+					alert('Syntax error on field ' + data.field + ': ' + data.reason);
+				if (data.error == 'permission')
+					alert('No permission for ' + data.value);
+				return;
+			}
+			window.location.reload();
+			return;
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert('Error: ' + errorThrown);
+		})
+		return false;
+	});
 });
