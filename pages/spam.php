@@ -112,7 +112,7 @@ if ($total) {
 	}
 }
 
-$javascript[] = 'static/js/bwlist.js';
+$javascript[] = 'static/js/spam.js';
 
 require_once BASE.'/inc/smarty.php';
 
