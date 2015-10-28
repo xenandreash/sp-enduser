@@ -131,7 +131,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 		}
 	}
 	if (isset($_SESSION['username'])) {
-		header("Location: .");
+		if ($_POST['query'])
+			header("Location: ?".$_POST['query']);
+		else
+			header("Location: .");
 		die();
 	}
 	$error = 'Login failed';
@@ -143,5 +146,6 @@ require_once BASE.'/inc/smarty.php';
 if ($settings->getLoginText() !== null) $smarty->assign('login_text', $settings->getLoginText());
 if ($error) $smarty->assign('error', $error);
 if (has_auth_database()) $smarty->assign('forgot_password', true);
+if ($_GET['query']) $smarty->assign('query', $_GET['query']);
 
 $smarty->display('login.tpl');
