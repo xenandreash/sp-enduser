@@ -22,10 +22,10 @@ if ($_POST['page'] == 'bwlist')
 {
 	if (!$settings->getDisplayBWlist())
 		die(json_encode(array('error' => "The setting display-bwlist isn't enabled")));
+	$dbh = $settings->getDatabase();
 
 	if ($_POST['list'] == 'delete')
 	{
-		$dbh = $settings->getDatabase();
 		foreach (explode(',', $_POST['access']) as $a)
 		{
 			if (!checkAccess($a))
@@ -39,8 +39,6 @@ if ($_POST['page'] == 'bwlist')
 
 	if ($_POST['list'] == 'add')
 	{
-		$dbh = $settings->getDatabase();
-
 		$value = strtolower(trim($_POST['value']));
 		if ($value[0] == '@') $value = substr($value, 1);
 
@@ -77,6 +75,7 @@ if ($_POST['page'] == 'spam')
 {
 	if (!$settings->getDisplaySpamSettings())
 		die(json_encode(array('error' => "The setting display-spamsettings isn't enabled")));
+	$dbh = $settings->getDatabase();
 
 	if ($_POST['list'] == 'delete')
 	{
