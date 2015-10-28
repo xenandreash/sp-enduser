@@ -19,22 +19,25 @@ function checkAccess($perm)
 
 $dbh = $settings->getDatabase();
 
-if ($_GET['list'] == 'delete') {
-	foreach (explode(',', $_GET['access']) as $a) {
+if ($_POST['list'] == 'delete') {
+	header('Content-Type: application/json; charset=UTF-8');
+
+	foreach (explode(',', $_POST['access']) as $a)
+	{
 		if (!checkAccess($a))
-			die('invalid access');
+			die(json_encode(array('error' => 'permission', 'value' => $a)));
+
 		$statement = $dbh->prepare("DELETE FROM spamsettings WHERE access = :access;");
 		$statement->execute(array(':access' => $a));
 	}
-	header("Location: ?page=spam&limit=".intval($_GET['limit']).'&offset='.intval($_GET['offset']));
-	die();
+	die(json_encode(array('status' => 'ok')));
 }
 
-$spamsettings = array();
-$spamsettings['level'] = $_POST['level'];
-
-if ($_GET['list'] == 'add') {
+if ($_POST['list'] == 'add' || $_POST['list'] == 'edit') {
 	header('Content-Type: application/json; charset=UTF-8');
+
+	$spamsettings = array();
+	$spamsettings['level'] = $_POST['level'];
 
 	$added = false;
 	foreach ($_POST['access'] as $access)
@@ -50,8 +53,14 @@ if ($_GET['list'] == 'add') {
 		if (!checkAccess($access))
 			die(json_encode(array('error' => 'permission', 'value' => $access)));
 
-		$statement = $dbh->prepare("INSERT INTO spamsettings (access, settings) VALUES(:access, :settings);");
-		$statement->execute(array(':access' => strtolower($access), ':settings' => json_encode($spamsettings)));
+		if ($_POST['list'] == 'add') {
+			$statement = $dbh->prepare("INSERT INTO spamsettings (access, settings) VALUES(:access, :settings);");
+			$statement->execute(array(':access' => strtolower($access), ':settings' => json_encode($spamsettings)));
+		}
+		if ($_POST['list'] == 'edit') {
+			$statement = $dbh->prepare("UPDATE spamsettings SET settings = :settings WHERE access = :access;");
+			$statement->execute(array(':access' => strtolower($access), ':settings' => json_encode($spamsettings)));
+		}
 		$added = true;
 	}
 	if (!$added)
@@ -60,32 +69,15 @@ if ($_GET['list'] == 'add') {
 }
 
 $edit = null;
-if ($_GET['list'] == 'edit') {
-	if (isset($_GET['access'])) {
-		if (!checkAccess($_GET['access'])) {
-			header("Location: ?page=spam&error=perm");
-			die();
-		}
-		$statement = $dbh->prepare("SELECT * FROM spamsettings WHERE access = :access;");
-		$statement->execute(array(':access' => strtolower($_GET['access'])));
-		if ($row = $statement->fetch(PDO::FETCH_ASSOC))
-			$edit = array('access' => $row['access'], 'settings' => json_decode($row['settings']));
-	} else {
-		foreach ($_POST['access'] as $access)
-		{
-			if (strpos($access, ' ') !== false) die('Invalid email address or domain name.');
-			if ($spamsettings['level'] == '') die('You need to select a level.');
-			if ($access[0] == '@') $access = substr($access, 1);
-			if (!checkAccess($access)) {
-				header("Location: ?page=spam&error=perm");
-				die();
-			}
-			$statement = $dbh->prepare("UPDATE spamsettings SET settings = :settings WHERE access = :access;");
-			$statement->execute(array(':access' => strtolower($access), ':settings' => json_encode($spamsettings)));
-		}
-		header("Location: ?page=spam");
+if (isset($_GET['edit'])) {
+	if (!checkAccess($_GET['edit'])) {
+		header("Location: ?page=spam&error=perm");
 		die();
 	}
+	$statement = $dbh->prepare("SELECT * FROM spamsettings WHERE access = :access;");
+	$statement->execute(array(':access' => strtolower($_GET['edit'])));
+	if ($row = $statement->fetch(PDO::FETCH_ASSOC))
+		$edit = array('access' => $row['access'], 'settings' => json_decode($row['settings']));
 }
 
 $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;

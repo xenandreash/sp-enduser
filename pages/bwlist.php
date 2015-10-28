@@ -19,18 +19,21 @@ function checkAccess($perm)
 
 $dbh = $settings->getDatabase();
 
-if ($_GET['list'] == 'delete') {
-	foreach (explode(',', $_GET['access']) as $a) {
+if ($_POST['list'] == 'delete') {
+	header('Content-Type: application/json; charset=UTF-8');
+
+	foreach (explode(',', $_POST['access']) as $a)
+	{
 		if (!checkAccess($a))
-			die('invalid access');
+			die(json_encode(array('error' => 'permission', 'value' => $a)));
+
 		$statement = $dbh->prepare("DELETE FROM bwlist WHERE access = :access AND bwlist.type = :type AND bwlist.value = :value;");
-		$statement->execute(array(':access' => $a, ':type' => $_GET['type'], ':value' => $_GET['value']));
+		$statement->execute(array(':access' => $a, ':type' => $_POST['type'], ':value' => $_POST['value']));
 	}
-	header("Location: ?page=bwlist&limit=".intval($_GET['limit']).'&offset='.intval($_GET['offset']));
-	die();
+	die(json_encode(array('status' => 'ok')));
 }
 
-if ($_GET['list'] == 'add') {
+if ($_POST['list'] == 'add') {
 	header('Content-Type: application/json; charset=UTF-8');
 
 	$value = strtolower(trim($_POST['value']));

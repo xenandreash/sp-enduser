@@ -16,10 +16,11 @@ $(document).ready(function() {
 			icon.addClass('glyphicon-expand').removeClass('glyphicon-collapse-down');
 	});
 	$('#bwlist_add').submit(function() {
-		$.post("?page=bwlist&list=add", {
+		$.post("?page=bwlist", {
+			"list": "add",
 			"value": $("#value").val(),
 			"type": $("#type").val(),
-			"access": $('#bwlist_add input[type="checkbox"].recipient:checked, #bwlist_add input[type="text"].recipient').map(function(){ return $(this).val(); }).get()
+			"access": $('#bwlist_add input[type="checkbox"].recipient:checked, #bwlist_add input[type="text"].recipient, #bwlist_add input[type="hidden"].recipient').map(function(){ return $(this).val(); }).get()
 		}, function(data) {
 			if (data.error) {
 				if (data.error == 'syntax')
@@ -29,16 +30,16 @@ $(document).ready(function() {
 				return;
 			}
 			window.location.reload();
-			return;
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			alert('Error: ' + errorThrown);
 		})
 		return false;
 	});
 	$('#spam_add').submit(function() {
-		$.post("?page=spam&list=" + $("#action").val(), {
+		$.post("?page=spam", {
+			"list": $("#action").val(),
 			"level": $("#level").val(),
-			"access": $('#spam_add input[type="checkbox"].recipient:checked, #spam_add input[type="text"].recipient').map(function(){ return $(this).val(); }).get()
+			"access": $('#spam_add input[type="checkbox"].recipient:checked, #spam_add input[type="text"].recipient, #spam_add input[type="hidden"].recipient').map(function(){ return $(this).val(); }).get()
 		}, function(data) {
 			if (data.error) {
 				if (data.error == 'syntax')
@@ -48,10 +49,53 @@ $(document).ready(function() {
 				return;
 			}
 			window.location.reload();
-			return;
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			alert('Error: ' + errorThrown);
 		})
+		return false;
+	});
+	$(".bwlist_delete").click(function() {
+		var value = $(this).data('value');
+		var type = $(this).data('type');
+		var access = $(this).data('access');
+		if (!confirm('Delete ' + type + ' item "' + value + '" for: ' + access + '?'))
+			return false;
+
+		$.post("?page=bwlist", {
+			"list": "delete",
+			"value": value,
+			"type": type,
+			"access": access
+		}, function(data) {
+			if (data.error) {
+				if (data.error == 'permission')
+					alert('No permission for ' + data.value);
+				return;
+			}
+			window.location.reload();
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert('Error: ' + errorThrown);
+		});
+		return false;
+	});
+	$(".spam_delete").click(function() {
+		var access = $(this).data('access');
+		if (!confirm('Delete ' + access + '?'))
+			return false;
+
+		$.post("?page=spam", {
+			"list": "delete",
+			"access": access
+		}, function(data) {
+			if (data.error) {
+				if (data.error == 'permission')
+					alert('No permission for ' + data.value);
+				return;
+			}
+			window.location.reload();
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			alert('Error: ' + errorThrown);
+		});
 		return false;
 	});
 });

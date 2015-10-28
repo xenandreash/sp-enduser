@@ -46,7 +46,7 @@
 				</thead>
 				<tbody>
 				{foreach $items as $item}
-					{$edit_url="?page=spam&list=edit&access={$item.access|escape}"}
+					{$edit_url="?page=spam&edit={$item.access|escape}"}
 					<tr>
 						<td class="hidden-xs" data-href="{$edit_url}"></td>
 						<td class="hidden-xs" data-href="{$edit_url}">{if $item.access}{$item.access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</td>
@@ -64,7 +64,7 @@
 							<a href="{$edit_url}"><i class="fa fa-pencil-square-o"></i></a>
 						</td>
 						<td style="width: 30px; vertical-align: middle">
-							<a onclick="return confirm('Really delete spam settings for {$item.access|escape}?')" title="{t}Remove{/t}" href="?page=spam&list=delete&limit={$limit}&offset={$offset}&access={$item.access|urlencode}"><i class="fa fa-remove"></i></a>
+							<a data-access="{$item.access|escape}" class="spam_delete" title="{t}Remove{/t}" href="#"><i class="fa fa-remove"></i></a>
 						</td>
 					</tr>
 				{foreachelse}
@@ -143,7 +143,7 @@
 					<div class="col-md-offset-3 col-md-9">
 						{if $edit}
 						<button type="submit" class="btn btn-primary">{t}Save{/t}</button>
-						<a href="?page=spam"><button class="btn btn-info">{t}Cancel{/t}</button></a>
+						<a href="?page=spam"><button type="button" class="btn btn-info">{t}Cancel{/t}</button></a>
 						{else}
 						<button type="submit" class="btn btn-primary">{t}Add{/t}</button>
 						{/if}

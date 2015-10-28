@@ -54,7 +54,7 @@
 									</p>
 								</td>
 								<td style="vertical-align: middle">
-									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for {count($accesses)} recipients?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&limit={$limit}&offset={$offset}&access={implode(',', $accesses)|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
+									<a data-type="{$type|escape}" data-value="{$value|escape}" data-access="{implode(',', $accesses)|escape}" class="bwlist_delete" title="{t}Remove{/t}" href="#"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 							{foreach $accesses as $access}
@@ -73,7 +73,7 @@
 									</p>
 								</td>
 								<td style="width: 30px; vertical-align: middle">
-									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for 1 recipient?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&limit={$limit}&offset={$offset}&access={$access|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
+									<a data-type="{$type|escape}" data-value="{$value|escape}" data-access="{$access|escape}" class="bwlist_delete" title="{t}Remove{/t}" href="#"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 							{/foreach}
@@ -93,7 +93,7 @@
 									</p>
 								</td>
 								<td style="width: 30px; vertical-align: middle">
-									<a onclick="return confirm('Really delete {$type} {$value|addslashes} for {count($accesses)} recipients?')" title="{t}Remove{/t}" href="?page=bwlist&list=delete&limit={$limit}&offset={$offset}&access={$accesses.0|urlencode}&type={$type}&value={$value|urlencode}"><i class="fa fa-remove"></i></a>
+									<a data-type="{$type|escape}" data-value="{$value|escape}" data-access="{$accesses.0|escape}" class="bwlist_delete" title="{t}Remove{/t}" href="#"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 						{/if}
