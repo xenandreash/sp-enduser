@@ -10,6 +10,12 @@ if (file_exists(BASE.'/install.php') and !file_exists(BASE.'/installed.txt')) {
 
 require_once BASE.'/inc/core.php';
 
+if (Session::Get()->getUsername() !== null && $_SERVER['QUERY_STRING'] == 'xhr')
+{
+	require_once BASE.'/xhr.php';
+	die();
+}
+
 if (Session::Get()->getUsername() === null && (!isset($_GET['page']) || ($_GET['page'] != 'login' && $_GET['page'] != 'forgot' && $_GET['page'] != 'digest'))) {
 	session_destroy();
 	header("Location: ?page=login&query=".urlencode($_SERVER['QUERY_STRING']));

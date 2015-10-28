@@ -16,7 +16,8 @@ $(document).ready(function() {
 			icon.addClass('glyphicon-expand').removeClass('glyphicon-collapse-down');
 	});
 	$('#bwlist_add').submit(function() {
-		$.post("?page=bwlist", {
+		$.post("?xhr", {
+			"page": "bwlist",
 			"list": "add",
 			"value": $("#value").val(),
 			"type": $("#type").val(),
@@ -36,7 +37,8 @@ $(document).ready(function() {
 		return false;
 	});
 	$('#spam_add').submit(function() {
-		$.post("?page=spam", {
+		$.post("?xhr", {
+			"page": "spam",
 			"list": $("#action").val(),
 			"level": $("#level").val(),
 			"access": $('#spam_add input[type="checkbox"].recipient:checked, #spam_add input[type="text"].recipient, #spam_add input[type="hidden"].recipient').map(function(){ return $(this).val(); }).get()
@@ -61,7 +63,8 @@ $(document).ready(function() {
 		if (!confirm('Delete ' + type + ' item "' + value + '" for: ' + access + '?'))
 			return false;
 
-		$.post("?page=bwlist", {
+		$.post("?xhr", {
+			"page": "bwlist",
 			"list": "delete",
 			"value": value,
 			"type": type,
@@ -83,7 +86,8 @@ $(document).ready(function() {
 		if (!confirm('Delete ' + access + '?'))
 			return false;
 
-		$.post("?page=spam", {
+		$.post("?xhr", {
+			"page": "spam",
 			"list": "delete",
 			"access": access
 		}, function(data) {

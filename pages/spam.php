@@ -19,55 +19,6 @@ function checkAccess($perm)
 
 $dbh = $settings->getDatabase();
 
-if ($_POST['list'] == 'delete') {
-	header('Content-Type: application/json; charset=UTF-8');
-
-	foreach (explode(',', $_POST['access']) as $a)
-	{
-		if (!checkAccess($a))
-			die(json_encode(array('error' => 'permission', 'value' => $a)));
-
-		$statement = $dbh->prepare("DELETE FROM spamsettings WHERE access = :access;");
-		$statement->execute(array(':access' => $a));
-	}
-	die(json_encode(array('status' => 'ok')));
-}
-
-if ($_POST['list'] == 'add' || $_POST['list'] == 'edit') {
-	header('Content-Type: application/json; charset=UTF-8');
-
-	$spamsettings = array();
-	$spamsettings['level'] = $_POST['level'];
-
-	$added = false;
-	foreach ($_POST['access'] as $access)
-	{
-		if ($spamsettings['level'] == '')
-			die(json_encode(array('error' => 'syntax', 'field' => 'level', 'reason' => 'No level selected')));
-		if (strpos($access, ' ') !== false)
-			die(json_encode(array('error' => 'syntax', 'field' => 'access', 'reason' => 'Field contained whitespace')));
-
-		if ($access[0] == '@')
-			$access = substr($access, 1);
-
-		if (!checkAccess($access))
-			die(json_encode(array('error' => 'permission', 'value' => $access)));
-
-		if ($_POST['list'] == 'add') {
-			$statement = $dbh->prepare("INSERT INTO spamsettings (access, settings) VALUES(:access, :settings);");
-			$statement->execute(array(':access' => strtolower($access), ':settings' => json_encode($spamsettings)));
-		}
-		if ($_POST['list'] == 'edit') {
-			$statement = $dbh->prepare("UPDATE spamsettings SET settings = :settings WHERE access = :access;");
-			$statement->execute(array(':access' => strtolower($access), ':settings' => json_encode($spamsettings)));
-		}
-		$added = true;
-	}
-	if (!$added)
-		die(json_encode(array('error' => 'syntax', 'field' => 'access', 'reason' => 'No recipients')));
-	die(json_encode(array('status' => 'ok')));
-}
-
 $edit = null;
 if (isset($_GET['edit'])) {
 	if (!checkAccess($_GET['edit'])) {
