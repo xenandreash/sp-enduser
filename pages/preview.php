@@ -82,7 +82,7 @@ if ($type == 'queue' && $mail->msgaction == 'DELIVER') $mail->msgaction = 'QUEUE
 if ($type == 'queue') {
 	$uniq = uniqid();
 	$command = array('previewmessage');
-	if ($_GET['type'] == 'text')
+	if ($_GET['preview'] == 'text')
 		$command[] = '-t';
 	$command[] = $mail->msgpath;
 	$command[] = $uniq;
@@ -114,7 +114,7 @@ if ($type == 'queue') {
 		$body = trim($purifier->purify($body));
 		$encode = isset($result['TEXT']) ? 'TEXT' : 'HTML';
 	} else {
-		$encode = 'HTML';
+		$encode = 'ERROR';
 		$body = '<p class="text-center text-muted">Preview unavailable</p>';
 	}
 }
@@ -131,14 +131,14 @@ if ($node) $smarty->assign('node', $node->getId());
 if ($attachments) $smarty->assign('attachments', $attachments);
 if (isset($body)) $smarty->assign('body', $body);
 if ($encode) $smarty->assign('encode', $encode);
-if ($_GET['type'] == 'text') $smarty->assign('show_text', true);
+if ($_GET['preview'] == 'text') $smarty->assign('show_text', true);
 
 $f = $_GET;
-$f['type'] = 'text';
+$f['preview'] = 'text';
 $smarty->assign('show_text_link', '?'.http_build_query($f));
 
 $f = $_GET;
-unset($f['type']);
+unset($f['preview']);
 $smarty->assign('show_html_link', '?'.http_build_query($f));
 
 $smarty->assign('mail', $mail);

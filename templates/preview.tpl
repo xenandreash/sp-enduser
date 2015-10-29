@@ -118,7 +118,7 @@
 					<div class="panel-body msg-body"><p class="text-muted text-center">{t}Content unavailable{/t}<br><small>{t}Message is not in queue or quarantine{/t}</small></p></div>
 				{elseif $encode == 'TEXT'}
 					<pre class="panel-body msg-body">{$body}</pre>
-				{elseif $encode == 'HTML'}
+				{elseif $encode == 'HTML' or $encode == 'ERROR'}
 					<div class="panel-body msg-body">{$body}</div>
 				{/if}
 				{if $attachments}
