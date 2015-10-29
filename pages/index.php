@@ -84,7 +84,7 @@ $size = $size > 5000 ? 5000 : $size;
 $source = isset($_GET['source']) ? $_GET['source'] : $settings->getDefaultSource();
 
 // Select box arrays
-$pagesize = array(10, 50, 100, 500, 1000, 5000);
+$pagesize = array(50, 100, 500, 1000, 5000);
 $sources = array();
 if ($settings->getUseDatabaseLog())
 	$sources += array('log' => 'Log');
