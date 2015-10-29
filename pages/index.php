@@ -135,7 +135,7 @@ if ($source == 'log') {
 	$results = $dbBackend->loadMailHistory($real_search, $size, $param['log'], $errors);
 	$timesort = merge_2d($timesort, $results);
 }
-if ($source == 'history' || $source == 'all') {
+if (($source == 'history' || $source == 'all') && $settings->getDisplayHistory()) {
 	$results = $nodeBackend->loadMailHistory($real_search, $size, $param['history'], $errors);
 	$timesort = merge_2d($timesort, $results);
 }
