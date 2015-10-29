@@ -94,14 +94,12 @@
 	</div>
 </nav>
 <div class="container-fluid">
+	{if $errors}
+	<p class="text-muted">
+		{t}Some messages might not be available at the moment due to maintenance.{/t}
+	</p>
+	{/if}
 	<div class="row">
-		{if $errors}
-		<div class="col-sm-12">
-			<p class="text-muted">
-				{t}Some messages might not be available at the moment due to maintenance.{/t}
-			</p>
-		</div>
-		{/if}
 		<style>
 			table {
 				table-layout: fixed;
