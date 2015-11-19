@@ -4,7 +4,7 @@ function extension_icon($name)
 {
 	$icon = 'paperclip';
 	$ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-	$extension = []; 
+	$extension = array();
 	$extension['apk']   = 'android';
 	$extension['ipa']   = 'apple';
 	$extension['zip']   = 'file-archive-o';
