@@ -21,6 +21,7 @@ class Settings
 	private $loginText = null;
 	private $forgotText = null;
 	private $defaultSource = 'all';
+	private $rateLimits = array();
 	private $displayScores = false;
 	private $displayTextlog = false;
 	private $displayHistory = true;
@@ -30,6 +31,7 @@ class Settings
 	private $displayBWList = true;
 	private $displaySpamSettings = false;
 	private $displayStats = false;
+	private $displayRateLimits = false;
 	private $displayListener = array('mailserver:1' => "Inbound");
 	private $displayTransport = array('mailtransport:2' => "Internet");
 	private $useDatabaseLog = false;
@@ -69,6 +71,7 @@ class Settings
 		$this->extract($this->loginText, 'logintext');
 		$this->extract($this->forgotText, 'forgottext');
 		$this->extract($this->defaultSource, 'default-source');
+		$this->extract($this->rateLimits, 'ratelimits');
 		$this->extract($this->displayScores, 'display-scores');
 		$this->extract($this->displayTextlog, 'display-textlog');
 		$this->extract($this->displayHistory, 'display-history');
@@ -78,6 +81,7 @@ class Settings
 		$this->extract($this->displayBWList, 'display-bwlist');
 		$this->extract($this->displaySpamSettings, 'display-spamsettings');
 		$this->extract($this->displayStats, 'display-stats');
+		$this->extract($this->displayRateLimits, 'display-ratelimits');
 		$this->extract($this->displayListener, 'display-listener');
 		$this->extract($this->displayTransport, 'display-transport');
 		$this->extract($this->useDatabaseLog, 'database-log');
@@ -254,6 +258,14 @@ class Settings
 			return 'log';
 		return $this->defaultSource;
 	}
+
+	/**
+	 * Returns all configured rate limits.
+	 */
+	public function getRateLimits()
+	{
+		return $this->rateLimits;
+	}
 	
 	/**
 	 * Returns whether scores should be displayed.
@@ -333,6 +345,14 @@ class Settings
 	public function getDisplayStats()
 	{
 		return $this->displayStats;
+	}
+
+	/**
+	 * Returns whether the rate limits tab should be displayed.
+	 */
+	public function getDisplayRateLimits()
+	{
+		return $this->displayRateLimits;
 	}
 	
 	/**

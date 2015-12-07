@@ -223,4 +223,20 @@ class NodeBackend extends Backend
 		}
 		return $globalfilter.($globalfilter?" && ":"").$filter;
 	}
+	public function getRate($args, &$errors = array())
+	{
+		foreach ($this->nodes as $n => &$node)
+			$params[] = $args;
+
+		$results = $this->soapCall('hslRate', $params, $errors);
+		return $results;
+	}
+	public function clearRate($args, &$errors = array())
+	{
+		foreach ($this->nodes as $n => &$node)
+			$params[] = $args;
+
+		$results = $this->soapCall('hslRateClear', $params, $errors);
+		return $results;
+	}
 }

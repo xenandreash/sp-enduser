@@ -31,6 +31,13 @@ $str .=<<<'EOF'
 
 EOF;
 }
+if ($settings->getDisplayRateLimits()) {
+$str .=<<<'EOF'
+    if ($soapcall == "hslRate") $ok = true;
+    if ($soapcall == "hslRateClear") $ok = true;
+
+EOF;
+}
 if ($settings->getDisplayTextlog()) {
 $str .=<<<'EOF'
     if ($soapcall == "commandRun" and

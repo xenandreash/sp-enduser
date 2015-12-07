@@ -125,4 +125,16 @@ if ($_POST['page'] == 'spam')
 	}
 }
 
+if ($_POST['page'] == 'rates')
+{
+	if ($_POST['list'] == 'clear')
+	{
+		$nodeBackend = new NodeBackend($settings->getNodes());
+		$results = $nodeBackend->clearRate(['ns' => $_POST['ns'], 'entry' => $_POST['entry']], $errors);
+		if ($errors)
+			die(json_encode(array('error' => 'soap', 'value' => $errors)));
+		die(json_encode(array('status' => 'ok')));
+	}
+}
+
 die(json_encode(array('error' => 'unsupported request')));

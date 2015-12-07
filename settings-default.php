@@ -56,6 +56,7 @@
 //$settings['display-all'] = true;
 //$settings['display-bwlist'] = true;
 //$settings['display-spamsettings'] = false;
+//$settings['display-ratelimits'] = false;
 //$settings['display-listener']['mailserver:1'] = 'Inbound';
 //$settings['display-transport']['mailtransport:2'] = 'Internet';
 
@@ -140,6 +141,20 @@
  */
 
 //$settings['filter-pattern'] = '{from} server=mailserver:2 or {to} server=mailserver:1';
+
+/*
+ * The rate limits to display on the "rate limit" page.
+ * All parameters in the array for a namespace are optional and can be omittied if not applicable.
+ */
+
+//$settings['ratelimits'] = array(
+//		'outbound-spammers' => array(
+//				'count_min' => 10,			// Minimum count required for entry to show
+//				'count_limit' => 100,			// At which number the limit is exceeded 
+//				'action' => 'DEFER',			// Action taken if limit is exceeded
+//				'search_filter' => 'sender=$entry'	// Search filter for the "messages" page
+//				),
+//		);
 
 /*
  * It's possible to send "digest" messages with a list of what's in

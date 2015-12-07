@@ -1,6 +1,76 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8\n"
 
+#: templates/login.tpl:6 templates/login.tpl:31
+msgid "Sign in"
+msgstr "Logga in"
+
+#: templates/login.tpl:18
+msgid "Username"
+msgstr "Användarnamn"
+
+#: templates/login.tpl:24
+msgid "Password"
+msgstr "Lösenord"
+
+#: templates/login.tpl:33
+msgid "Forgot password"
+msgstr "Glömt lösenordet"
+
+#: templates/forgot.tpl:51
+msgid "Create password"
+msgstr "Skapa lösenord"
+
+#: templates/forgot.tpl:66
+msgid "Reset password"
+msgstr "Återställ lösenord"
+
+#: templates/forgot.tpl:26
+msgid "Choose a new password."
+msgstr "Välj ett nytt lösenord."
+
+#: templates/forgot.tpl:29
+msgid "Enter the token you received in your inbox, and choose a new password."
+msgstr ""
+"Skriv in koden som du fick till din inkorg, och välj ett nytt lösenord."
+
+#: templates/forgot.tpl:31
+msgid "Token"
+msgstr "Koden"
+
+#: templates/forgot.tpl:44
+msgid "Repeat password"
+msgstr "Upprepa lösenordet"
+
+#: templates/user.tpl:41
+msgid "Change password"
+msgstr "Ändra lösenord"
+
+#: templates/forgot.tpl:59
+msgid "E-mail"
+msgstr "E-post"
+
+#: templates/stats.tpl:1
+msgid "Statistics"
+msgstr "Statistik"
+
+#: templates/bwlist.tpl:138
+msgid "Add..."
+msgstr "Lägg till..."
+
+#: templates/index.tpl:22 templates/index.tpl:46
+msgid "All"
+msgstr "Alla"
+
+#: templates/stats.tpl:18
+msgid ""
+"Because you have more than 5 domains, you need to choose them specifically."
+msgstr "Eftersom du har fler än 5 domäner måste du lägga till dom manuellt."
+
+#: templates/stats.tpl:35
+msgid "Loading..."
+msgstr "Laddar..."
+
 #: templates/header.tpl:30
 msgid "Back"
 msgstr "Tillbaka"
@@ -129,103 +199,9 @@ msgstr "Borttagna"
 msgid "Headers"
 msgstr "Brevhuvuden"
 
-#: templates/login.tpl:6 templates/login.tpl:31
-msgid "Sign in"
-msgstr "Logga in"
-
-#: templates/login.tpl:18
-msgid "Username"
-msgstr "Användarnamn"
-
-#: templates/login.tpl:24
-msgid "Password"
-msgstr "Lösenord"
-
-#: templates/login.tpl:33
-msgid "Forgot password"
-msgstr "Glömt lösenordet"
-
-#: templates/forgot.tpl:66
-msgid "Reset password"
-msgstr "Återställ lösenord"
-
-#: templates/forgot.mail.tpl:3
-msgid ""
-"You have requested to reset your password on <a href=\"%1\">%1</a>. Click "
-"the link to reset your password."
-msgstr ""
-"Du har begärt att återställa lösenordet för <a href=\"%1\">%1</a>. Klicka på "
-"länken nedan för att återställa ditt lösenord."
-
-#: templates/forgot.mail.tpl:9
-msgid ""
-"Important! If you didn't request a new password, ignore and delete this "
-"message. Another user might have typed your email by mistake."
-msgstr ""
-"Viktigt! Om du inte har begärt att återställa lösenordet, bortse från och ta "
-"bort detta meddelandet. En annan användare kan ha skrivit in din e-"
-"postadress av misstag."
-
-#: templates/forgot.tpl:59
-msgid "E-mail"
-msgstr "E-post"
-
-#: templates/forgot.tpl:31
-msgid "Token"
-msgstr "Koden"
-
-#: templates/index.tpl:252
-msgid "IP"
-msgstr "IP"
-
-#: templates/stats.tpl:1
-msgid "Statistics"
-msgstr "Statistik"
-
-#: templates/bwlist.tpl:138
-msgid "Add..."
-msgstr "Lägg till..."
-
-#: templates/index.tpl:22 templates/index.tpl:46
-msgid "All"
-msgstr "Alla"
-
-#: templates/stats.tpl:18
-msgid ""
-"Because you have more than 5 domains, you need to choose them specifically."
-msgstr "Eftersom du har fler än 5 domäner måste du lägga till dom manuellt."
-
-#: templates/stats.tpl:35
-msgid "Loading..."
-msgstr "Laddar..."
-
-#: templates/header.tpl:35
-msgid "Messages"
-msgstr "Meddelanden"
-
 #: templates/header.tpl:37
 msgid "Black/whitelist"
 msgstr "Svart- och vitlista"
-
-#: templates/header.tpl:40 templates/spam.tpl:14
-msgid "Spam settings"
-msgstr "Spaminställningar"
-
-#: templates/header.tpl:45
-msgid "Sign out"
-msgstr "Logga ut"
-
-#: templates/index.tpl:19 templates/index.tpl:43
-msgid "History"
-msgstr "Historik"
-
-#: templates/index.tpl:20 templates/index.tpl:44
-msgid "Queue"
-msgstr "Kö"
-
-#: templates/index.tpl:21 templates/index.tpl:45
-msgid "Quarantine"
-msgstr "Karantän"
 
 #: templates/bwlist.tpl:25
 msgid "Search for..."
@@ -234,96 +210,6 @@ msgstr "Sök efter..."
 #: templates/bwlist.tpl:27
 msgid "Search"
 msgstr "Sök"
-
-#: templates/index.tpl:59 templates/index.tpl:205
-msgid "Search filter"
-msgstr "Sökfilter"
-
-#: templates/index.tpl:81
-msgid "Delete selected"
-msgstr "Ta bort markerande"
-
-#: templates/index.tpl:82
-msgid "Bounce selected"
-msgstr "Studsa markerade"
-
-#: templates/index.tpl:83
-msgid "Release/retry selected"
-msgstr "Släpp/återförsök markerade"
-
-#: templates/index.tpl:96
-msgid "Some messages might not be available at the moment due to maintenance."
-msgstr "Vissa meddelanden kan inte visas för tillfället pga. underhåll."
-
-#: templates/index.tpl:103 templates/index.tpl:262
-msgid "Subject"
-msgstr "Ämne"
-
-#: templates/index.tpl:104
-msgid "Status"
-msgstr "Status"
-
-#: templates/index.tpl:129
-msgid "Release/retry"
-msgstr "Släpp/återförsök"
-
-#: templates/index.tpl:134 templates/index.tpl:161
-msgid "No matches"
-msgstr "Inga träffar"
-
-#: templates/index.tpl:152
-msgid "Empty sender"
-msgstr "Tom avsändare"
-
-#: templates/index.tpl:169
-msgid "Newer"
-msgstr "Nyare"
-
-#: templates/index.tpl:170
-msgid "Older"
-msgstr "Äldre"
-
-#: templates/index.tpl:182
-msgid "Results per page:"
-msgstr "Resultat per sida:"
-
-#: templates/index.tpl:192
-msgid "Diagnostic information:"
-msgstr "Diagnostisk information:"
-
-#: templates/index.tpl:222
-msgid ""
-"Even more fields and operator types are documented on the <a href="
-"\"%1\">search filter</a> page."
-msgstr ""
-"Ännu fler sökargument kan ges och finns dokumenterade på <a href=\"%1\">sök "
-"filter</a> sidan."
-
-#: templates/index.tpl:238 templates/index.tpl:243 templates/index.tpl:248
-#: templates/index.tpl:253 templates/index.tpl:258 templates/index.tpl:263
-msgid "is"
-msgstr "är"
-
-#: templates/index.tpl:228
-msgid "between"
-msgstr "mellan"
-
-#: templates/index.tpl:233
-msgid "and"
-msgstr "och"
-
-#: templates/index.tpl:237
-msgid "ID"
-msgstr "ID"
-
-#: templates/index.tpl:243 templates/index.tpl:248 templates/index.tpl:253
-#: templates/index.tpl:258 templates/index.tpl:263
-msgid "contains"
-msgstr "innehåller"
-
-#: templates/index.tpl:269
-msgid "Close"
-msgstr "Stäng"
 
 #: templates/bwlist.tpl:37 templates/bwlist.tpl:152
 msgid "Sender"
@@ -382,77 +268,156 @@ msgstr ""
 msgid "Add"
 msgstr "Lägg till"
 
-#: templates/user.tpl:1
-msgid "Account"
-msgstr "Konto"
+#: templates/index.tpl:96
+msgid "Some messages might not be available at the moment due to maintenance."
+msgstr "Vissa meddelanden kan inte visas för tillfället pga. underhåll."
 
-#: templates/user.tpl:6
-msgid "Permissions"
-msgstr "Rättigheter"
+#: templates/rates.tpl:29
+msgid "Entry"
+msgstr "Inlägg"
 
-#: templates/user.tpl:11
-msgid "You have no restrictions, you may view messages to/from any domain."
-msgstr ""
-"Du har inga begränsningar, och kan därför se meddelanden till och från alla "
-"domäner."
+#: templates/rates.tpl:30
+msgid "Count"
+msgstr "Träffar"
 
-#: templates/user.tpl:15
-msgid "You are authorized to view messages sent from/to the following"
-msgstr "Du har rättigheter att se brev från och till följande"
+#: templates/rates.tpl:56
+msgid "Clear"
+msgstr "Rensa"
 
-#: templates/user.tpl:17
-msgid "domains:"
-msgstr "domäner:"
+#: templates/index.tpl:134 templates/index.tpl:161
+msgid "No matches"
+msgstr "Inga träffar"
 
-#: templates/user.tpl:24
-msgid "And the following users:"
-msgstr "Och följade användare:"
+#: templates/index.tpl:192
+msgid "Diagnostic information:"
+msgstr "Diagnostisk information:"
 
-#: templates/user.tpl:27
-msgid "users:"
-msgstr "användare:"
+#: templates/index.tpl:19 templates/index.tpl:43
+msgid "History"
+msgstr "Historik"
 
-#: templates/user.tpl:41
-msgid "Change password"
-msgstr "Ändra lösenord"
+#: templates/index.tpl:20 templates/index.tpl:44
+msgid "Queue"
+msgstr "Kö"
 
-#: templates/user.tpl:45
-msgid "Password changed"
-msgstr "Lösenordet är ändrat"
+#: templates/index.tpl:21 templates/index.tpl:45
+msgid "Quarantine"
+msgstr "Karantän"
 
-#: templates/user.tpl:53
-msgid "Old Password"
-msgstr "Nuvarande lösenord"
+#: templates/index.tpl:59 templates/index.tpl:205
+msgid "Search filter"
+msgstr "Sökfilter"
 
-#: templates/user.tpl:59
-msgid "New Password"
-msgstr "Nya lösenordet"
+#: templates/index.tpl:81
+msgid "Delete selected"
+msgstr "Ta bort markerande"
 
-#: templates/user.tpl:67
-msgid "Change"
-msgstr "Ändra"
+#: templates/index.tpl:82
+msgid "Bounce selected"
+msgstr "Studsa markerade"
 
-#: templates/user.tpl:73
+#: templates/index.tpl:83
+msgid "Release/retry selected"
+msgstr "Släpp/återförsök markerade"
+
+#: templates/index.tpl:103 templates/index.tpl:262
+msgid "Subject"
+msgstr "Ämne"
+
+#: templates/index.tpl:104
+msgid "Status"
+msgstr "Status"
+
+#: templates/index.tpl:129
+msgid "Release/retry"
+msgstr "Släpp/återförsök"
+
+#: templates/index.tpl:152
+msgid "Empty sender"
+msgstr "Tom avsändare"
+
+#: templates/index.tpl:169
+msgid "Newer"
+msgstr "Nyare"
+
+#: templates/index.tpl:170
+msgid "Older"
+msgstr "Äldre"
+
+#: templates/index.tpl:182
+msgid "Results per page:"
+msgstr "Resultat per sida:"
+
+#: templates/index.tpl:222
 msgid ""
-"You are authenticated externally, so password changes are not done here."
-msgstr "Du är autentiserad externt, så lösenordet kan inte ändras här."
-
-#: templates/forgot.tpl:51
-msgid "Create password"
-msgstr "Skapa lösenord"
-
-#: templates/forgot.tpl:26
-msgid "Choose a new password."
-msgstr "Välj ett nytt lösenord."
-
-#: templates/forgot.tpl:29
-msgid "Enter the token you received in your inbox, and choose a new password."
+"Even more fields and operator types are documented on the <a href="
+"\"%1\">search filter</a> page."
 msgstr ""
-"Skriv in koden som du fick till din inkorg, och välj ett nytt lösenord."
+"Ännu fler sökargument kan ges och finns dokumenterade på <a href=\"%1\">sök "
+"filter</a> sidan."
 
-#: templates/forgot.tpl:44
-msgid "Repeat password"
-msgstr "Upprepa lösenordet"
+#: templates/index.tpl:238 templates/index.tpl:243 templates/index.tpl:248
+#: templates/index.tpl:253 templates/index.tpl:258 templates/index.tpl:263
+msgid "is"
+msgstr "är"
+
+#: templates/index.tpl:228
+msgid "between"
+msgstr "mellan"
+
+#: templates/index.tpl:233
+msgid "and"
+msgstr "och"
+
+#: templates/index.tpl:237
+msgid "ID"
+msgstr "ID"
+
+#: templates/index.tpl:243 templates/index.tpl:248 templates/index.tpl:253
+#: templates/index.tpl:258 templates/index.tpl:263
+msgid "contains"
+msgstr "innehåller"
+
+#: templates/index.tpl:252
+msgid "IP"
+msgstr "IP"
+
+#: templates/index.tpl:269
+msgid "Close"
+msgstr "Stäng"
+
+#: templates/forgot.mail.tpl:3
+msgid ""
+"You have requested to reset your password on <a href=\"%1\">%1</a>. Click "
+"the link to reset your password."
+msgstr ""
+"Du har begärt att återställa lösenordet för <a href=\"%1\">%1</a>. Klicka på "
+"länken nedan för att återställa ditt lösenord."
+
+#: templates/forgot.mail.tpl:9
+msgid ""
+"Important! If you didn't request a new password, ignore and delete this "
+"message. Another user might have typed your email by mistake."
+msgstr ""
+"Viktigt! Om du inte har begärt att återställa lösenordet, bortse från och ta "
+"bort detta meddelandet. En annan användare kan ha skrivit in din e-"
+"postadress av misstag."
+
+#: templates/header.tpl:35
+msgid "Messages"
+msgstr "Meddelanden"
+
+#: templates/header.tpl:40 templates/spam.tpl:14
+msgid "Spam settings"
+msgstr "Spaminställningar"
+
+#: templates/header.tpl:47
+msgid "Rate limit"
+msgstr ""
+
+#: templates/header.tpl:45
+msgid "Sign out"
+msgstr "Logga ut"
 
 #: templates/spam.tpl:105
 msgid "Disabled"
@@ -493,6 +458,57 @@ msgstr "Spara"
 #: templates/spam.tpl:144
 msgid "Cancel"
 msgstr "Avbryt"
+
+#: templates/user.tpl:1
+msgid "Account"
+msgstr "Konto"
+
+#: templates/user.tpl:6
+msgid "Permissions"
+msgstr "Rättigheter"
+
+#: templates/user.tpl:11
+msgid "You have no restrictions, you may view messages to/from any domain."
+msgstr ""
+"Du har inga begränsningar, och kan därför se meddelanden till och från alla "
+"domäner."
+
+#: templates/user.tpl:15
+msgid "You are authorized to view messages sent from/to the following"
+msgstr "Du har rättigheter att se brev från och till följande"
+
+#: templates/user.tpl:17
+msgid "domains:"
+msgstr "domäner:"
+
+#: templates/user.tpl:24
+msgid "And the following users:"
+msgstr "Och följade användare:"
+
+#: templates/user.tpl:27
+msgid "users:"
+msgstr "användare:"
+
+#: templates/user.tpl:45
+msgid "Password changed"
+msgstr "Lösenordet är ändrat"
+
+#: templates/user.tpl:53
+msgid "Old Password"
+msgstr "Nuvarande lösenord"
+
+#: templates/user.tpl:59
+msgid "New Password"
+msgstr "Nya lösenordet"
+
+#: templates/user.tpl:67
+msgid "Change"
+msgstr "Ändra"
+
+#: templates/user.tpl:73
+msgid ""
+"You are authenticated externally, so password changes are not done here."
+msgstr "Du är autentiserad externt, så lösenordet kan inte ändras här."
 
 #: templates/spam.tpl:5
 msgid "You are not allowed to add a spam settings entry for that recipient"

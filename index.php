@@ -57,6 +57,9 @@ switch (@$_GET['page'])
 	case 'digest':
 		require_once BASE.'/pages/digest.php';
 	break;
+	case 'rates':
+		require_once BASE.'/pages/rates.php';
+	break;
 	default:
 	case 'index':
 		require_once BASE.'/pages/index.php';

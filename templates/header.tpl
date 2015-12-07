@@ -43,6 +43,9 @@
 						{if $feature_stats}
 							<li class="users{if $page_active=="stats"} active{/if}"><a href="?page=stats"><i class="fa fa-pie-chart"></i>&nbsp;{t}Statistics{/t}</a></li>
 						{/if}
+						{if $feature_rates}
+							<li class="bwlist{if $page_active=="rates"} active{/if}"><a href="?page=rates"><i class="fa fa fa-tachometer"></i>&nbsp;{t}Rate limit{/t}</a></li>
+						{/if}
 					</ul>
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">
 						<li class="user{if $page_active=="user"} active{/if}"><a href="?page=user"><i class="fa fa-user"></i>&nbsp;{$username|escape}</a></li>
