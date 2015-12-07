@@ -152,7 +152,7 @@
 //				'count_min' => 10,			// Minimum count required for entry to show
 //				'count_limit' => 100,			// At which number the limit is exceeded 
 //				'action' => 'DEFER',			// Action taken if limit is exceeded
-//				'search_filter' => 'sender=$entry'	// Search filter for the "messages" page
+//				'search_filter' => 'from=$entry'	// Search filter for the "messages" page
 //				),
 //		);
 

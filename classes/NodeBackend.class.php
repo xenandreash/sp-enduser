@@ -225,6 +225,7 @@ class NodeBackend extends Backend
 	}
 	public function getRate($args, &$errors = array())
 	{
+		$params = array();
 		foreach ($this->nodes as $n => &$node)
 			$params[] = $args;
 
@@ -233,6 +234,7 @@ class NodeBackend extends Backend
 	}
 	public function clearRate($args, &$errors = array())
 	{
+		$params = array();
 		foreach ($this->nodes as $n => &$node)
 			$params[] = $args;
 
