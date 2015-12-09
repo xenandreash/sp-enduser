@@ -189,7 +189,10 @@ if ($_POST['page'] == 'rates')
 		}
 
 		function cmp($a, $b) {
-			return $b['count'] - $a['count'];
+			$x = $b['count'] - $a['count'];
+			if ($x != 0)
+				return $x;
+			return strnatcmp($a['entry'], $b['entry']);
 		}
 		usort($items, 'cmp');
 
