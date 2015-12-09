@@ -26,7 +26,11 @@
 						<th>{t}Count{/t}</th>
 						<th style="width: 30px"></th>
 					</tr></thead>
-					<tbody></tbody>
+					<tbody>
+						<tr>
+							<td colspan="6" class="text-muted">{t}Loading...{/t}</td>
+						</tr>
+					</tbody>
 					<tfoot></tfoot>
 				</table>
 			</div>
