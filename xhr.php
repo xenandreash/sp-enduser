@@ -168,6 +168,7 @@ if ($_POST['page'] == 'rates')
 			foreach ($result->result->item as $item) {
 				$items[] = array(
 						'entry' => $item->entry,
+						'ns' => $item->ns,
 						'count' => $item->count,
 						'search_filter' => urlencode(str_replace('$entry', $item->entry, $rate['search_filter'])),
 						);

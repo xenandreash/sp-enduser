@@ -43,7 +43,7 @@ function populateRateTable(id, data)
 	}
 	$.each(data.items, function (index, item) {
 		var tr = $('<tr>');
-		if (data.count_limit && item.count > data.count_limit) {
+		if (data.count_limit && item.count >= data.count_limit) {
 			var icon = $('<span>')
 							.addClass('fa-stack')
 							.css('font-size', '12px')
@@ -122,7 +122,7 @@ function rateDelete()
 			return;
 		}
 		$.each(views, function (index, view) {
-				if (view.ns == this.ns)
+				if (view.ns == ns)
 					loadRateTable(view.id);
 			});
 	}).fail(function(jqXHR, textStatus, errorThrown) {
