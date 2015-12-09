@@ -152,27 +152,40 @@ if ($_POST['page'] == 'rates')
 		if (isset($rate['count_min']))
 			$rate['count_min'] = max($rate['count_min'] - 1, 0);
 
-		$errors = array();
+		$limit = 10000;
+		$params = array('ns' => $rate['ns'], 'matchexact' => array('ns' => true, 'entry' => false));
 		if ($_POST['search'])
-			$result = $nodeBackend->getRate(array('ns' => $rate['ns'], 'entry' => $_POST['search'], 'matchexact' => array('ns' => true, 'entry' => false)), $errors)[0];
-		else
-			$result = $nodeBackend->getRate(array('ns' => $rate['ns'], 'count' => $rate['count_min']), $errors)[0];
+			$params['entry'] = $_POST['search'];
+		$params['count'] = intval($rate['count_min']);
+		$params['paging'] = array('limit' => $limit);
 
-		if ($errors)
-			die(json_encode(array('error' => 'soap', 'value' => $errors)));
+		$result = array();
+		while (true)
+		{
+			$errors = array();
+			$r = $nodeBackend->getRate($params, $errors)[0];
+			if ($errors)
+				die(json_encode(array('error' => 'soap', 'value' => $errors)));
+			if (!$r->result->item)
+				break;
+
+			$result = array_merge($result, $r->result->item);
+			if (count($r->result->item) < $limit)
+				break;
+
+			$last = end($r->result->item);
+			$params['paging']['ns'] = $last->ns;
+			$params['paging']['entry'] = $last->entry;
+		}
 
 		$items = array();
-
-		if (count($result->result->item) > 0)
-		{
-			foreach ($result->result->item as $item) {
-				$items[] = array(
-						'entry' => $item->entry,
-						'ns' => $item->ns,
-						'count' => $item->count,
-						'search_filter' => urlencode(str_replace('$entry', $item->entry, $rate['search_filter'])),
-						);
-			}
+		foreach ($result as $item) {
+			$items[] = array(
+					'entry' => $item->entry,
+					'ns' => $item->ns,
+					'count' => $item->count,
+					'search_filter' => urlencode(str_replace('$entry', $item->entry, $rate['search_filter'])),
+					);
 		}
 
 		function cmp($a, $b) {
@@ -195,7 +208,10 @@ if ($_POST['page'] == 'rates')
 		$data['action_icon'] = isset($actions[$action]['icon']) ? $actions[$action]['icon'] : 'exclamation';
 		$data['action_color'] = isset($actions[$action]['color']) ? $actions[$action]['color'] : '#9d9d9d';
 		$data['count_limit'] = intval($rate['count_limit']);
-		$data['items'] = $items;
+		$data['page_limit'] = 10;
+		$data['page_start'] = intval($_POST['paging']);
+		$data['items'] = array_slice($items, $data['page_start'], $data['page_limit']);
+		$data['items_count'] = count($items);
 
 		die(json_encode($data));
 	}

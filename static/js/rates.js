@@ -2,6 +2,7 @@ $(document).ready(function() {
 	$("#search_form").submit(function() {
 		search = $("#search").val();
 		$.each(views, function (index, view) {
+			view.paging = 0;
 			loadRateTable(view.id);
 		});
 		return false;
@@ -22,6 +23,7 @@ function loadRateTable(id)
 		"page": "rates",
 		"rate": id,
 		"search": search,
+		"paging": views[id].paging,
 	}, function (data) {
 		populateRateTable(id, data);
 		views[id].timer = setTimeout(function () {
@@ -35,12 +37,16 @@ function loadRateTable(id)
 function populateRateTable(id, data)
 {
 	var tbody = $("#rate_" + id + " tbody");
-
 	tbody.empty();
+
+	var tfoot = $("#rate_" + id + " tfoot");
+	tfoot.empty();
+
 	if (data.items.length == 0) {
 		tbody.append($('<tr>').append($('<td>').attr('colspan', 6).addClass('text-muted').text(text_nomatch)));
 		return;
 	}
+
 	$.each(data.items, function (index, item) {
 		var tr = $('<tr>');
 		if (data.count_limit && item.count >= data.count_limit) {
@@ -101,6 +107,37 @@ function populateRateTable(id, data)
 		);
 		tbody.append(tr);
 	});
+
+	var nav = $("<nav>").append(
+			$("<ul>")
+			.addClass("pager")
+			.append(
+					$("<li>")
+					.addClass("previous" + (data.page_start == 0?' disabled':''))
+					.append(
+						$("<a>").attr('href', '#').text(text_previous).click(function() {
+							views[id].paging = data.page_start - data.page_limit;
+							loadRateTable(id);
+							return false;
+						})
+					)
+			)
+			.append(
+					$("<li>")
+					.addClass("next" + (data.page_start + data.items.length == data.items_count?' disabled':''))
+					.append(
+						$("<a>").attr('href', '#').text(text_next).click(function() {
+							views[id].paging = data.page_start + data.items.length;
+							loadRateTable(id);
+							return false;
+						})
+					)
+			)
+			.append(
+					$("<span>").addClass('text-muted').text((data.page_start + 1) + '-' + (data.page_start + data.items.length) + ' (' + data.items_count + ')')
+			)
+	);
+	tfoot.append($('<tr>').append($('<td>').attr('colspan', 6).append(nav)));
 }
 
 function rateDelete()

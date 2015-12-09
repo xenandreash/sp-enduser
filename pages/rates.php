@@ -13,6 +13,7 @@ foreach ($ratelimits as $i => $rate) {
 		'name' => $rate['name'] ? $rate['name'] : $rate['ns'],
 		'ns' => $rate['ns'],
 		'id' => $i,
+		'paging' => 0,
 	);
 }
 

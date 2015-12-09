@@ -26,8 +26,8 @@
 						<th>{t}Count{/t}</th>
 						<th style="width: 30px"></th>
 					</tr></thead>
-					<tbody>
-					</body>
+					<tbody></tbody>
+					<tfoot></tfoot>
 				</table>
 			</div>
 		</div>
@@ -41,6 +41,8 @@
 	var reloadTimeout = 10;
 	var text_clear = '{t}Clear{/t}';
 	var text_nomatch = '{t}No matches{/t}';
+	var text_previous = '{t}Previous{/t}';
+	var text_next = '{t}Next{/t}';
 	var source = {$source|json_encode};
 </script>
 <style>
