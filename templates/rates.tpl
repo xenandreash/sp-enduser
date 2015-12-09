@@ -48,8 +48,8 @@
 							{/if}
 						</td>
 						<td colspan="3">
-							{if $item.search_filter}<a href="?source={$source}&search={$item.search_filter}">{$item.entry}</a>
-							{else}{$item.entry}{/if}
+							{if $item.search_filter}<a href="?source={$source}&search={$item.search_filter}">{$item.entry|escape}</a>
+							{else}{$item.entry|escape}{/if}
 						</td>
 						<td>{$item.count}</td>
 						<td style="vertical-align: middle">

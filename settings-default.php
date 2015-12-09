@@ -147,13 +147,13 @@
  * All parameters in the array for a namespace are optional and can be omittied if not applicable.
  */
 
-//$settings['ratelimits'] = array(
-//		'outbound-spammers' => array(
-//				'count_min' => 10,			// Minimum count required for entry to show
-//				'count_limit' => 100,			// At which number the limit is exceeded 
-//				'action' => 'DEFER',			// Action taken if limit is exceeded
-//				'search_filter' => 'from=$entry'	// Search filter for the "messages" page
-//				),
+//$settings['ratelimits'][] = array(
+//		'name' => 'Outbound spammers',		// Name to show in UI
+//		'ns' => 'outbound-spammers',		// Namespace
+//		'count_min' => 10,			// Minimum count required for entry to show
+//		'count_limit' => 100,			// At which number the limit is exceeded 
+//		'action' => 'DEFER',			// Action taken if limit is exceeded
+//		'search_filter' => 'from=$entry',	// Search filter for the "messages" page
 //		);
 
 /*

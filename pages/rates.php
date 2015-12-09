@@ -1,7 +1,7 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 if (!$settings->getDisplayRateLimits()) die("The setting display-ratelimits isn't enabled");
-if (count(Session::Get()->getAccess()) != 0) die('Insufficient permissions');
+if (!Session::Get()->checkAccessAll()) die('Insufficient permissions');
 
 $ratelimits = $settings->getRateLimits();
 $source = ($settings->getUseDatabaseLog() ? 'log' : 'all');
@@ -24,9 +24,13 @@ $nodeBackend = new NodeBackend($settings->getNode(0));
 $errors = array();
 $result2 = array();
 
-foreach ($ratelimits as $ns => $param) {
-	if ($search) $result = $nodeBackend->getRate(['ns' => $ns, 'entry' => $search], $errors)[0];
-	else $result = $nodeBackend->getRate(['ns' => $ns, 'count' => $param['count_min']], $errors)[0];
+foreach ($ratelimits as $param) {
+	// compensate for count being '> X' in the API
+	if (isset($param['count_min']))
+		$param['count_min'] = max($param['count_min'] - 1, 0);
+
+	if ($search) $result = $nodeBackend->getRate(['ns' => $param['ns'], 'entry' => $search], $errors)[0];
+	else $result = $nodeBackend->getRate(['ns' => $param['ns'], 'count' => $param['count_min']], $errors)[0];
 
 	$items = array();
 
@@ -46,7 +50,7 @@ foreach ($ratelimits as $ns => $param) {
 	if (!array_key_exists($action, $actions)) $action = '';
 
 	$result2[] = array(
-		'name' => $ns,
+		'name' => $param['name'] ? $param['name'] : $param['ns'],
 		'items' => array_slice($items, 0, 10),
 		'count_limit' => $param['count_limit'],
 		'action' => array(
