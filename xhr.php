@@ -127,6 +127,10 @@ if ($_POST['page'] == 'spam')
 
 if ($_POST['page'] == 'rates')
 {
+	if (!$settings->getDisplayRateLimits())
+		die(json_encode(array('error' => "The setting display-ratelimits isn't enabled")));
+	if (!Session::Get()->checkAccessAll()) die(json_encode(array('error' => 'Insufficient permissions')));
+
 	if ($_POST['list'] == 'clear')
 	{
 		$nodeBackend = new NodeBackend($settings->getNodes());
@@ -134,6 +138,65 @@ if ($_POST['page'] == 'rates')
 		if ($errors)
 			die(json_encode(array('error' => 'soap', 'value' => $errors)));
 		die(json_encode(array('status' => 'ok')));
+	}
+
+	if (isset($_POST['rate']))
+	{
+		$ratelimits = $settings->getRateLimits();
+		if (!isset($ratelimits[$_POST['rate']])) die(json_encode(array('error' => 'Invalid ratelimit')));
+		$rate = $ratelimits[$_POST['rate']];
+
+		$nodeBackend = new NodeBackend($settings->getNode(0));
+
+		// Compensate for count being '> X' in the API
+		if (isset($rate['count_min']))
+			$rate['count_min'] = max($rate['count_min'] - 1, 0);
+
+		$errors = array();
+		if ($_POST['search'])
+			$result = $nodeBackend->getRate(array('ns' => $rate['ns'], 'entry' => $_POST['search'], 'matchexact' => array('ns' => true, 'entry' => false)), $errors)[0];
+		else
+			$result = $nodeBackend->getRate(array('ns' => $rate['ns'], 'count' => $rate['count_min']), $errors)[0];
+
+		if ($errors)
+			die(json_encode(array('error' => 'soap', 'value' => $errors)));
+
+		$items = array();
+
+		if (count($result->result->item) > 0)
+		{
+			foreach ($result->result->item as $item) {
+				$items[] = array(
+						'entry' => $item->entry,
+						'count' => $item->count,
+						'search_filter' => urlencode(str_replace('$entry', $item->entry, $rate['search_filter'])),
+						);
+			}
+		}
+
+		function cmp($a, $b) {
+			return $b['count'] - $a['count'];
+		}
+		usort($items, 'cmp');
+
+		$actions = array(
+				'QUARANTINE' => array('color' => '#f70', 'icon' => 'inbox'),
+				'REJECT' => array('color' => '#ba0f4b', 'icon' => 'ban'),
+				'DELETE' => array('color' => '#333', 'icon' => 'trash-o'),
+				'DEFER' => array('color' => '#b5b', 'icon' => 'clock-o'),
+				);
+
+		$action = strtoupper($rate['action']);
+		if (!array_key_exists($action, $actions)) $action = '';
+
+		$data = [];
+		$data['action_type'] = $action;
+		$data['action_icon'] = isset($actions[$action]['icon']) ? $actions[$action]['icon'] : 'exclamation';
+		$data['action_color'] = isset($actions[$action]['color']) ? $actions[$action]['color'] : '#9d9d9d';
+		$data['count_limit'] = intval($rate['count_limit']);
+		$data['items'] = $items;
+
+		die(json_encode($data));
 	}
 }
 

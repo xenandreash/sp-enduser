@@ -7,65 +7,19 @@ $ratelimits = $settings->getRateLimits();
 $source = ($settings->getUseDatabaseLog() ? 'log' : 'all');
 $search = $_GET['search'];
 
-$actions = array(
-	'QUARANTINE' => array('color' => '#f70', 'icon' => 'inbox'),
-	'REJECT' => array('color' => '#ba0f4b', 'icon' => 'ban'),
-	'DELETE' => array('color' => '#333', 'icon' => 'trash-o'),
-	'DEFER' => array('color' => '#b5b', 'icon' => 'clock-o'),
-);
-
-// Comparison function for usort
-function cmp($a, $b) {
-    return $b['count'] - $a['count'];
-}
-
-$nodeBackend = new NodeBackend($settings->getNode(0));
-
-$errors = array();
-$result2 = array();
-
-foreach ($ratelimits as $param) {
-	// compensate for count being '> X' in the API
-	if (isset($param['count_min']))
-		$param['count_min'] = max($param['count_min'] - 1, 0);
-
-	if ($search) $result = $nodeBackend->getRate(['ns' => $param['ns'], 'entry' => $search], $errors)[0];
-	else $result = $nodeBackend->getRate(['ns' => $param['ns'], 'count' => $param['count_min']], $errors)[0];
-
-	$items = array();
-
-	if (count($result->result->item) > 0) {
-		foreach ($result->result->item as $item) {
-			$items[] = array(
-				'entry' => $item->entry,
-				'count' => $item->count,
-				'search_filter' => urlencode(str_replace('$entry', $item->entry, $param['search_filter'])),
-			);
-		}
-		usort($items, 'cmp');
-	};
-
-	// Use generic icon for action if the type is unknown
-	$action = strtoupper($param['action']);
-	if (!array_key_exists($action, $actions)) $action = '';
-
-	$result2[] = array(
-		'name' => $param['name'] ? $param['name'] : $param['ns'],
-		'items' => array_slice($items, 0, 10),
-		'count_limit' => $param['count_limit'],
-		'action' => array(
-			'type' => $action,
-			'icon' => $actions[$action]['icon'],
-			'color' => $actions[$action]['color'],
-		),
+$views = array();
+foreach ($ratelimits as $i => $rate) {
+	$views[] = array(
+		'name' => $rate['name'] ? $rate['name'] : $rate['ns'],
+		'ns' => $rate['ns'],
+		'id' => $i,
 	);
 }
 
 $javascript[] = 'static/js/rates.js';
 require_once BASE.'/inc/smarty.php';
 
-if ($errors) $smarty->assign('errors', $errors);
 if ($search) $smarty->assign('search', $search);
-$smarty->assign('namespaces', $result2);
+$smarty->assign('views', $views);
 $smarty->assign('source', $source);
 $smarty->display('rates.tpl');
