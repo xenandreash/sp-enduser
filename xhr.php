@@ -165,7 +165,7 @@ if ($_POST['page'] == 'rates')
 			$errors = array();
 			$r = $nodeBackend->getRate($params, $errors)[0];
 			if ($errors)
-				die(json_encode(array('error' => 'soap', 'value' => $errors)));
+				die(json_encode(array('error' => $errors)));
 			if (!$r->result->item)
 				break;
 

@@ -30,7 +30,9 @@ function loadRateTable(id)
 			loadRateTable(id);
 		}, reloadTimeout * 1000);
 	}).fail(function(jqXHR, textStatus, errorThrown) {
-		alert('Error: ' + errorThrown);
+		var tbody = $("#rate_" + id + " tbody");
+		tbody.empty();
+		tbody.append($('<tr>').append($('<td>').attr('colspan', 6).addClass('text-muted').text('Error: ' + jqXHR.responseText)));
 	});
 }
 
@@ -41,6 +43,11 @@ function populateRateTable(id, data)
 
 	var tfoot = $("#rate_" + id + " tfoot");
 	tfoot.empty();
+
+	if (data.error) {
+		tbody.append($('<tr>').append($('<td>').attr('colspan', 6).addClass('text-muted').text('Error: ' + data.error)));
+		return;
+	}
 
 	if (data.items.length == 0) {
 		tbody.append($('<tr>').append($('<td>').attr('colspan', 6).addClass('text-muted').text(text_nomatch)));
