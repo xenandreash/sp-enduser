@@ -50,6 +50,11 @@ function populateRateTable(id, data)
 	}
 
 	if (data.items.length == 0) {
+		if (data.page_start > 0) {
+			views[id].paging = data.page_start - data.page_limit;
+			loadRateTable(id);
+			return;
+		}
 		tbody.append($('<tr>').append($('<td>').attr('colspan', 6).addClass('text-muted').text(text_nomatch)));
 		return;
 	}
