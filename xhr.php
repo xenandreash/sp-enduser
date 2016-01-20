@@ -134,7 +134,7 @@ if ($_POST['page'] == 'rates')
 	if ($_POST['list'] == 'clear')
 	{
 		$nodeBackend = new NodeBackend($settings->getNodes());
-		$results = $nodeBackend->clearRate(['ns' => $_POST['ns'], 'entry' => $_POST['entry']], $errors);
+		$results = $nodeBackend->clearRate(array('ns' => $_POST['ns'], 'entry' => $_POST['entry']), $errors);
 		if ($errors)
 			die(json_encode(array('error' => 'soap', 'value' => $errors)));
 		die(json_encode(array('status' => 'ok')));
@@ -206,7 +206,7 @@ if ($_POST['page'] == 'rates')
 		$action = strtoupper($rate['action']);
 		if (!array_key_exists($action, $actions)) $action = '';
 
-		$data = [];
+		$data = array();
 		$data['action_type'] = $action;
 		$data['action_icon'] = isset($actions[$action]['icon']) ? $actions[$action]['icon'] : 'exclamation';
 		$data['action_color'] = isset($actions[$action]['color']) ? $actions[$action]['color'] : '#9d9d9d';
