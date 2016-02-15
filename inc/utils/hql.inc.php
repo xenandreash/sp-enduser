@@ -75,22 +75,22 @@ function hql_to_sql($str, $prefix = 'hql')
 			}
 			if (!isset($fields[$field])) die('unknown field '.htmlspecialchars($field));
 			$field = $fields[$field];
-			if ($type == '~') {
-				$type = 'LIKE';
-				if (strpos($value, '%') === false)
-					$value = '%'.$value.'%';
-			}
 			// domain search from~%@
-			if ($field == 'msgfrom' && substr($value, 0, 2) == '%@') {
+			if ($field == 'msgfrom' && substr($value, 0, 2) == '%@' && substr_count($value, '%') == 1) {
 				$field = 'msgfrom_domain';
 				$value = substr($value, 2); // strip %@
 				$type = '=';
 			}
 			// domain search to~%@
-			if ($field == 'msgto' && substr($value, 0, 2) == '%@') {
+			if ($field == 'msgto' && substr($value, 0, 2) == '%@' && substr_count($value, '%') == 1) {
 				$field = 'msgto_domain'; // strip %@
 				$value = substr($value, 2);
 				$type = '=';
+			}
+			if ($type == '~') {
+				$type = 'LIKE';
+				if (strpos($value, '%') === false)
+					$value = '%'.$value.'%';
 			}
 			// fully rewrite fulltext search
 			if ($field == 'msgsubject' && $type == 'LIKE') {
