@@ -163,7 +163,8 @@ if ($_POST['page'] == 'rates')
 		while (true)
 		{
 			$errors = array();
-			$r = $nodeBackend->getRate($params, $errors)[0];
+			$r = $nodeBackend->getRate($params, $errors);
+			$r = $r[0];
 			if ($errors)
 				die(json_encode(array('error' => $errors)));
 			if (!$r->result->item)
