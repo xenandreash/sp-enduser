@@ -225,7 +225,7 @@ function get_messagelog_table($userid)
 	{
 		if ($userid == '')
 			return 'messagelog1';
-		return 'messagelog' .((crc32($userid) % $dbCredentials['partitions']) + 1);
+		return 'messagelog' .(($userid % $dbCredentials['partitions']) + 1);
 	} else {
 		return 'messagelog';
 	}
