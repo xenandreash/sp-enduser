@@ -73,6 +73,7 @@
 //$settings['database']['dsn'] = 'mysql:host=localhost;port=5432;dbname=spenduser';
 //$settings['database']['user'] = 'root';
 //$settings['database']['password'] = '1';
+//$settings['database']['partitions'] = 1;
 
 /*
  * Logs are normally read from the nodes directly, but for performance, you can

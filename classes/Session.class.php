@@ -147,4 +147,12 @@ class Session
 	{
 		return $this->soap_password;
 	}
+
+	/**
+	 * Returns the user's assigned messagelog table
+	 */
+	public function getMessageLogTable()
+	{
+		return get_messagelog_table($this->access['userid']);
+	}
 }

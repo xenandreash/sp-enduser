@@ -21,7 +21,7 @@ class DatabaseBackend extends Backend
 		$results = array();
 		
 		// Create search/restrict query for SQL
-		$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
+		$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM '.Session::Get()->getMessageLogTable();
 		$sql_where = hql_to_sql($search);
 		$real_sql = $this->restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param);
 		$real_sql['sql'] .= ' ORDER BY id DESC LIMIT '.intval($size + 1); // don't send unnecessary
@@ -55,7 +55,7 @@ class DatabaseBackend extends Backend
 	private function restrict_mail($restrict_sql, $id)
 	{
 		$filters = array();
-		$real_sql = 'SELECT *, UNIX_TIMESTAMP(msgts0) AS msgts0 FROM messagelog';
+		$real_sql = 'SELECT *, UNIX_TIMESTAMP(msgts0) AS msgts0 FROM '.Session::Get()->getMessageLogTable();
 		$real_sql_params = $restrict_sql['params'];
 		if ($restrict_sql['filter'])
 			$filters[] = $restrict_sql['filter'];
@@ -110,6 +110,11 @@ class DatabaseBackend extends Backend
 
 		// summarize all accesses in one array
 		$accesses = array();
+		if (isset($access['userid'])) {
+			$i++;
+			$accesses[] = 'userid = :restrict'.$i;
+			$params[':restrict'.$i] = $access['userid'];
+		}
 		if (is_array($access['domain'])) {
 			foreach ($access['domain'] as $domain) {
 				$i++;

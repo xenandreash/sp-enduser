@@ -216,3 +216,30 @@ function emptyspace($str)
 		return '&nbsp;';
 	return $str;
 }
+
+function get_messagelog_table($userid)
+{
+	$settings = Settings::Get();
+	$dbCredentials = $settings->getDBCredentials();
+	if (isset($dbCredentials['partitions']) && $dbCredentials['partitions'] > 1)
+	{
+		if ($userid == '')
+			return 'messagelog1';
+		return 'messagelog' .((crc32($userid) % $dbCredentials['partitions']) + 1);
+	} else {
+		return 'messagelog';
+	}
+}
+
+function get_messagelog_tables()
+{
+	$settings = Settings::Get();
+	$dbCredentials = $settings->getDBCredentials();
+	$tables = [];
+	if (isset($dbCredentials['partitions']) && $dbCredentials['partitions'] > 1)
+		for ($i = 1; $i <= $dbCredentials['partitions']; $i++)
+			$tables[] = 'messagelog'.$i;
+	else
+		$tables[] = 'messagelog';
+	return $tables;
+}

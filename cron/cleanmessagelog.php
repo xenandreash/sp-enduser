@@ -14,22 +14,25 @@ require_once BASE.'/inc/utils.php';
 
 $max = 5000000;
 
-$dbh = $settings->getDatabase();
-$statement = $dbh->prepare('SELECT id FROM messagelog ORDER BY id DESC LIMIT 1;');
-$statement->execute();
-$item = $statement->fetchObject();
-echo 'Delete older IDs than '.$item->id."\n";
+foreach (get_messagelog_tables() as $table)
+{
+	$dbh = $settings->getDatabase();
+	$statement = $dbh->prepare('SELECT id FROM '.$table.' ORDER BY id DESC LIMIT 1;');
+	$statement->execute();
+	$item = $statement->fetchObject();
+	echo $table.': Delete older IDs than '.$item->id."\n";
 
-// Delete in chunks up to 5000*1000 in total, important not to leave gaps
-for ($i = 0; $i < 5000; $i++) {
-        $newest = $item->id - $max - ($i * 1000);
-        $oldest = $newest - 1000;
-        echo "Delete between $newest and $oldest\n";
-        $statement = $dbh->prepare('DELETE FROM messagelog WHERE id < :newest AND id >= :oldest;');
-        $statement->execute(array(':newest' => $newest, ':oldest' => $oldest));
-        $deleted = $statement->rowCount();
-        echo "Chunk $i deleted ".$deleted."\n";
-        if ($deleted == 0)
-                break;
+	// Delete in chunks up to 5000*1000 in total, important not to leave gaps
+	for ($i = 0; $i < 5000; $i++) {
+		$newest = $item->id - $max - ($i * 1000);
+		$oldest = $newest - 1000;
+		echo "$table: Delete between $newest and $oldest\n";
+		$statement = $dbh->prepare('DELETE FROM '.$table.' WHERE id < :newest AND id >= :oldest;');
+		$statement->execute(array(':newest' => $newest, ':oldest' => $oldest));
+		$deleted = $statement->rowCount();
+		echo "$table: Chunk $i deleted ".$deleted."\n";
+		if ($deleted == 0)
+			break;
+	}
+	echo "$table: Done\n";
 }
-echo "Done\n";

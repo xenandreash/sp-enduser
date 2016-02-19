@@ -55,7 +55,12 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 // add message to local (SQL) history log
 if ($_GET['type'] == 'log') {
 	$dbh = $settings->getDatabase();
-	$statement = $dbh->prepare('INSERT INTO messagelog (owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
+	if (isset($_POST['userid'])) {
+		$statement = $dbh->prepare('INSERT INTO '.get_messagelog_table($_POST['userid']).' (userid, owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:userid, :owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
+		$statement->bindValue(':userid', $_POST['userid']);
+	} else {
+		$statement = $dbh->prepare('INSERT INTO '.get_messagelog_table($_POST['userid']).' (owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
+	}
 	$statement->bindValue(':owner', $_POST['owner']);
 	$statement->bindValue(':ownerdomain', array_pop(explode('@', $_POST['owner'])));
 	$statement->bindValue(':msgts', $_POST['msgts']);
@@ -95,7 +100,7 @@ if ($_GET['type'] == 'log') {
 // Update message in local (SQL) history log
 if ($_GET['type'] == 'logupdate') {
 	$dbh = $settings->getDatabase();
-	$statement = $dbh->prepare('UPDATE messagelog SET msgaction = :msgaction, msgdescription = :msgdescription WHERE msgid = :msgid AND msgactionid = :msgactionid AND serialno = :serialno;');
+	$statement = $dbh->prepare('UPDATE '.get_messagelog_table($_POST['userid']).' SET msgaction = :msgaction, msgdescription = :msgdescription WHERE msgid = :msgid AND msgactionid = :msgactionid AND serialno = :serialno;');
 	$statement->bindValue(':msgid', $_POST['msgid']);
 	$statement->bindValue(':msgaction', $_POST['msgaction']);
 	$statement->bindValue(':msgdescription', $_POST['msgdescription']);
