@@ -84,10 +84,10 @@ class LDAPDatabase
 		if (empty($access['mail']) and !$authed)
 			return false;
 	
-		$_SESSION['username'] = $username;
-		$_SESSION['source'] = 'ldap';
-		$_SESSION['access'] = $access;
-
-		return true;
+		$result = array();
+		$result['username'] = $username;
+		$result['source'] = 'ldap';
+		$result['access'] = $access;
+		return $result;
 	}
 }
