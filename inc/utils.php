@@ -235,7 +235,7 @@ function get_messagelog_tables()
 {
 	$settings = Settings::Get();
 	$dbCredentials = $settings->getDBCredentials();
-	$tables = [];
+	$tables = array();
 	if (isset($dbCredentials['partitions']) && $dbCredentials['partitions'] > 1)
 		for ($i = 1; $i <= $dbCredentials['partitions']; $i++)
 			$tables[] = 'messagelog'.$i;
