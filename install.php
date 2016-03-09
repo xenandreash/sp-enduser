@@ -131,6 +131,11 @@ if (isset($dbCredentials['dsn'])) {
 					createMessageLog($dbh, $notes, $table);
 				}
 			}
+			$statement = $dbh->prepare('SELECT * FROM stat LIMIT 1;');
+			if (!$statement || $statement->execute() === false) {
+				$notes[] = 'Adding table stat';
+				$dbh->exec('CREATE TABLE IF NOT EXISTS stat (id	INT NOT NULL AUTO_INCREMENT PRIMARY KEY, user_id INT, domain VARCHAR(300), year	INT, month INT, reject INT, deliver INT, INDEX (user_id,domain), CONSTRAINT UNIQUE	(domain,year,month));');
+			}
 		} else {
 			$notes[] = 'Did not add messagelog because other database than MySQL was used';
 		}

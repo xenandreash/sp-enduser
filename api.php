@@ -94,6 +94,20 @@ if ($_GET['type'] == 'log') {
 	$scores['clam'] = $_POST['score_clam'];
 	$statement->bindValue(':scores', json_encode($scores));
 	$statement->execute();
+
+	// Inbound graphs, disabled for now
+	if (false && ($_POST['msgaction'] == 'QUEUE' || $_POST['msgaction'] == 'REJECT') && $_POST['msglistener'] == 'mailserver:1') {
+		$reject = $deliver = 0;
+		if ($_POST['msgaction'] == 'REJECT') $reject = 1;
+		if ($_POST['msgaction'] == 'QUEUE') $deliver = 1;
+		$statement = $dbh->prepare('INSERT INTO stat (user_id, domain, year, month, reject, deliver) VALUES (:userid, :domain, YEAR(NOW()), MONTH(NOW()), :reject, :deliver) ON DUPLICATE KEY UPDATE reject = reject + VALUES(reject), deliver = deliver + VALUES(deliver);');
+		$statement->bindValue(':userid', $_POST['userid']);
+		$statement->bindValue(':domain', array_pop(explode('@', $_POST['msgto'])));
+		$statement->bindValue(':reject', $reject);
+		$statement->bindValue(':deliver', $deliver);
+		$statement->execute();
+	}
+
 	success_json(array('status'=>'success'));
 }
 

@@ -5,3 +5,4 @@ if (!isset($_SERVER['argc']))
 
 if ($argv[1] == 'digestday') require_once 'cron/digestday.php';
 if ($argv[1] == 'cleanmessagelog') require_once 'cron/cleanmessagelog.php';
+if ($argv[1] == 'rrd') require_once 'cron/rrd.php';
