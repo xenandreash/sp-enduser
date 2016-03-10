@@ -9,7 +9,7 @@ function check_access($domain) {
 	global $dbh, $access;
 	$access = Session::Get()->getAccess();
 	$q = $dbh->prepare('SELECT domain FROM stat WHERE domain = :domain AND user_id = :userid LIMIT 1;');
-	$q->execute([':userid' => $access['userid'], ':domain' => $domain]);
+	$q->execute(array(':userid' => $access['userid'], ':domain' => $domain));
 	$rows = $q->fetch(PDO::FETCH_ASSOC);
 	if (is_array($rows) && count($rows) == 1)
 		return true;
@@ -34,16 +34,16 @@ if (isset($_GET['ajax-pie'])) {
 	// total pie
 	if (!$_GET['time']) {
 		$q = $dbh->prepare('SELECT SUM(reject) AS reject, SUM(deliver) AS deliver FROM stat WHERE user_id = :userid AND domain = :domain GROUP BY user_id,domain;');
-		$q->execute([':userid' => $access['userid'], ':domain' => $_GET['ajax-pie']]);
+		$q->execute(array(':userid' => $access['userid'], ':domain' => $_GET['ajax-pie']));
 	} else {
 		$date = explode('-', $_GET['time']);
 		$q = $dbh->prepare('SELECT reject,deliver FROM stat WHERE user_id = :userid AND domain = :domain AND year = :year AND month = :month;');
-		$q->execute([':userid' => $access['userid'], ':domain' => $_GET['ajax-pie'], ':year' => $date[0], ':month' => $date[1]]);
+		$q->execute(array(':userid' => $access['userid'], ':domain' => $_GET['ajax-pie'], ':year' => $date[0], ':month' => $date[1]));
 	}
 	$row = $q->fetch(PDO::FETCH_ASSOC);
 	$flot = [];
-	$flot[] = ['label' => 'deliver', 'data' => $row['deliver'], 'color' => '#7d6'];
-	$flot[] = ['label' => 'reject', 'data' => $row['reject'], 'color' => '#d44'];
+	$flot[] = array('label' => 'deliver', 'data' => $row['deliver'], 'color' => '#7d6');
+	$flot[] = array('label' => 'reject', 'data' => $row['reject'], 'color' => '#d44');
 	header('Content-type: application/json');
 	die(json_encode($flot));
 }
@@ -52,7 +52,7 @@ if (isset($_GET['ajax-since'])) {
 	if (!check_access($_GET['ajax-since']))
 		die('access denied');
 	$q = $dbh->prepare('SELECT year,month FROM stat WHERE user_id = :userid AND domain = :domain;');
-	$q->execute([':userid' => $access['userid'], ':domain' => $_GET['ajax-since']]);
+	$q->execute(array(':userid' => $access['userid'], ':domain' => $_GET['ajax-since']));
 	die(json_encode($q->fetchAll(PDO::FETCH_ASSOC)));
 }
 $title = 'Statistics';
@@ -71,11 +71,10 @@ $domains = Session::Get()->getAccess('domain');
 
 if (isset($access['userid'])) {
 	$q = $dbh->prepare('SELECT domain FROM stat WHERE user_id = :userid GROUP BY domain;');
-	$q->execute([':userid' => $access['userid']]);
+	$q->execute(array(':userid' => $access['userid']));
 	while ($d = $q->fetch(PDO::FETCH_ASSOC))
 		$domains[] = $d['domain'];
 }
 
 $smarty->assign('domains', $domains);
-
 $smarty->display('stats2.tpl');

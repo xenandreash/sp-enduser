@@ -12,8 +12,8 @@ $path = '../rrd/';
 $start = time();
 $q = $dbh->query('SELECT SUM(reject) AS reject, SUM(deliver) AS deliver, domain FROM stat GROUP BY domain;');
 while ($row = $q->fetch(PDO::FETCH_ASSOC)) {
-	create_rrd($path.$row['domain'].'.rrd', ['reject', 'deliver']);
-	update_rrd($path.$row['domain'].'.rrd', ['reject' => $row['reject'], 'deliver' => $row['deliver']]);
+	create_rrd($path.$row['domain'].'.rrd', array('reject', 'deliver'));
+	update_rrd($path.$row['domain'].'.rrd', array('reject' => $row['reject'], 'deliver' => $row['deliver']));
 }
 $time = time() - $start;
 if ($time < 0 || $time > 60) $time = 0; // sanity
@@ -22,6 +22,7 @@ echo "done in $time s, sleeping $sleep s\n";
 sleep($sleep);
 function create_rrd($name, $legends) {
 	if (file_exists($name)) return;
+	$cmd = array();
 	$cmd[] = '--step';
 	$cmd[] = '60';
 	foreach ($legends as $l)
@@ -32,6 +33,7 @@ function create_rrd($name, $legends) {
 	rrd_create($name, $cmd);
 }
 function update_rrd($name, $data) {
+	$cmd = array();
 	$cmd[] = '-t';
 	$cmd[] = implode(':', array_keys($data));
 	$cmd[] = 'N:'.implode(':', $data);
