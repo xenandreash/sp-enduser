@@ -65,6 +65,11 @@ if (!in_array('ldap', get_loaded_extensions())) {
 	<p><em>WARNING:</em> LDAP extension is missing. Without it, you will not be able to use LDAP for authentication.</p>
 <?php
 }
+if (!in_array('rrd', get_loaded_extensions())) {
+?>
+	<p><em>WARNING:</em> RRD extension is missing. Without it, you will be unable to show graphs.</p>
+<?php
+}
 if ($settings->getAPIKey() === null) {
 ?>
 	<p><em>WARNING:</em> No api-key, dynamic user creation and black/whitelist lookups will not work until you specify one.</p>
