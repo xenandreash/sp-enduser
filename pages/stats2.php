@@ -8,7 +8,7 @@ $access = Session::Get()->getAccess();
 function check_access($domain) {
 	global $dbh, $access;
 	$access = Session::Get()->getAccess();
-	$q = $dbh->prepare('SELECT domain FROM stat WHERE domain = :domain AND user_id = :userid LIMIT 1;');
+	$q = $dbh->prepare('SELECT domain FROM stat WHERE domain = :domain AND userid = :userid LIMIT 1;');
 	$q->execute(array(':userid' => $access['userid'], ':domain' => $domain));
 	$rows = $q->fetch(PDO::FETCH_ASSOC);
 	if (is_array($rows) && count($rows) == 1)
@@ -33,11 +33,11 @@ if (isset($_GET['ajax-pie'])) {
 	$since = null;
 	// total pie
 	if (!$_GET['time']) {
-		$q = $dbh->prepare('SELECT SUM(reject) AS reject, SUM(deliver) AS deliver FROM stat WHERE user_id = :userid AND domain = :domain GROUP BY user_id,domain;');
+		$q = $dbh->prepare('SELECT SUM(reject) AS reject, SUM(deliver) AS deliver FROM stat WHERE userid = :userid AND domain = :domain GROUP BY userid, domain;');
 		$q->execute(array(':userid' => $access['userid'], ':domain' => $_GET['ajax-pie']));
 	} else {
 		$date = explode('-', $_GET['time']);
-		$q = $dbh->prepare('SELECT reject,deliver FROM stat WHERE user_id = :userid AND domain = :domain AND year = :year AND month = :month;');
+		$q = $dbh->prepare('SELECT reject,deliver FROM stat WHERE userid = :userid AND domain = :domain AND year = :year AND month = :month;');
 		$q->execute(array(':userid' => $access['userid'], ':domain' => $_GET['ajax-pie'], ':year' => $date[0], ':month' => $date[1]));
 	}
 	$row = $q->fetch(PDO::FETCH_ASSOC);
@@ -51,7 +51,7 @@ if (isset($_GET['ajax-since'])) {
 	global $dbh, $access;
 	if (!check_access($_GET['ajax-since']))
 		die('access denied');
-	$q = $dbh->prepare('SELECT year,month FROM stat WHERE user_id = :userid AND domain = :domain;');
+	$q = $dbh->prepare('SELECT year,month FROM stat WHERE userid = :userid AND domain = :domain;');
 	$q->execute(array(':userid' => $access['userid'], ':domain' => $_GET['ajax-since']));
 	die(json_encode($q->fetchAll(PDO::FETCH_ASSOC)));
 }
@@ -70,7 +70,7 @@ require_once BASE.'/inc/smarty.php';
 $domains = Session::Get()->getAccess('domain');
 
 if (isset($access['userid'])) {
-	$q = $dbh->prepare('SELECT domain FROM stat WHERE user_id = :userid GROUP BY domain;');
+	$q = $dbh->prepare('SELECT domain FROM stat WHERE userid = :userid GROUP BY domain;');
 	$q->execute(array(':userid' => $access['userid']));
 	while ($d = $q->fetch(PDO::FETCH_ASSOC))
 		$domains[] = $d['domain'];
