@@ -217,6 +217,15 @@ function emptyspace($str)
 	return $str;
 }
 
+function get_partition_type()
+{
+	$settings = Settings::Get();
+	$dbCredentials = $settings->getDBCredentials();
+	if (isset($dbCredentials['partitiontype']))
+		return $dbCredentials['partitiontype'];
+	return 'integer';
+}
+
 function get_messagelog_table($userid)
 {
 	$settings = Settings::Get();
@@ -225,6 +234,7 @@ function get_messagelog_table($userid)
 	{
 		if ($userid == '')
 			return 'messagelog1';
+		$userid = get_partition_type() == 'string' ? crc32($userid) : $userid;
 		return 'messagelog' .(($userid % $dbCredentials['partitions']) + 1);
 	} else {
 		return 'messagelog';

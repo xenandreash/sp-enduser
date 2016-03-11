@@ -74,6 +74,7 @@
 //$settings['database']['user'] = 'root';
 //$settings['database']['password'] = '1';
 //$settings['database']['partitions'] = 1;
+//$settings['database']['partitiontype'] = 'string'; // or 'integer'
 
 /*
  * Logs are normally read from the nodes directly, but for performance, you can
