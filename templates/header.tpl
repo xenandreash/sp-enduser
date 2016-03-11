@@ -33,7 +33,7 @@
 				</div>
 				<div class="collapse navbar-collapse" id="navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li class="mail{if $page_active=="index"} active{/if}"><a href="?"><i class="fa fa-envelope-o"></i>&nbsp;{t}Messages{/t}</a></li>
+						<li class="mail{if $page_active=="index"} active{/if}"><a href="?page=index"><i class="fa fa-envelope-o"></i>&nbsp;{t}Messages{/t}</a></li>
 						{if $feature_bwlist}
 							<li class="bwlist{if $page_active=="bwlist"} active{/if}"><a href="?page=bwlist"><i class="fa fa-list"></i>&nbsp;{t}Black/whitelist{/t}</a></li>
 						{/if}
