@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * authenticate users against database users
+ */
+
 function halon_login_database($username, $password, $method, $settings)
 {
 	$dbh = $settings->getDatabase();

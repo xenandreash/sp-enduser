@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * authenticate users using SMTP+SASL
+ * - only supports mail access
+ */
+
 function halon_login_smtp($username, $password, $method, $settings)
 {
 	$fp = fsockopen($method['host'], $method['port'] ?: '25');

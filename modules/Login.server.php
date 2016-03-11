@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * authenticate users against a Halon system over SOAP
+ * - only supports full-access users
+ */
+
 function halon_login_server($username, $password, $method, $settings)
 {
 	// Loop through all the configured nodes; the primary node going
