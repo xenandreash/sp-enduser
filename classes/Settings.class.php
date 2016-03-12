@@ -421,4 +421,12 @@ class Settings
 	{
 		return $this->sessionName;
 	}
+
+	/**
+	 * Returns the rrd graph path.
+	 */
+	public function getGraphPath()
+	{
+		return BASE . '/../rrd';
+	}
 }

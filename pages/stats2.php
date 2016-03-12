@@ -21,8 +21,7 @@ function check_access($domain) {
 if ($_GET['ajax-rrd']) {
 	if (!check_access($_GET['ajax-rrd']))
 		die('access denied');
-	$path = '../rrd/';
-	echo json_encode(base64_encode(file_get_contents($path.$_GET['ajax-rrd'].'.rrd')));
+	echo json_encode(base64_encode(file_get_contents($settings->getGraphPath().'/'.$_GET['ajax-rrd'].'.rrd')));
 	die();
 }
 if (isset($_GET['ajax-pie'])) {
