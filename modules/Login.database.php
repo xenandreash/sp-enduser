@@ -19,8 +19,7 @@ function halon_login_database($username, $password, $method, $settings)
 	$result['access'] = array();
 	$statement = $dbh->prepare("SELECT * FROM users_relations WHERE username = :username;");
 	$statement->execute(array(':username' => $row['username']));
-	while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+	while ($row = $statement->fetch(PDO::FETCH_ASSOC))
 		$result['access'][$row['type']][] = $row['access'];
-	}
 	return $result;
 }

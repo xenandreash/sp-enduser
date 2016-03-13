@@ -17,7 +17,7 @@ function halon_login_smtp($username, $password, $method, $settings)
 	$method = 'plain';
 	$starttls = false;
 smtp_ehlo:
-	fwrite($fp, "EHLO halon-sp-enduser\r\n");
+	fwrite($fp, "EHLO ".gethostname()."\r\n");
 	$found_starttls = false;
 	while ($line = fgets($fp)) {
 		if (substr($line, 0, 1) != '2')
