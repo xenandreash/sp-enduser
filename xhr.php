@@ -286,7 +286,7 @@ if ($_POST['page'] == 'stats')
 				$q->execute(array(':userid' => $access['userid'], ':domain' => $_POST['domain'], ':year' => $date[0], ':month' => $date[1]));
 			}
 			$row = $q->fetch(PDO::FETCH_ASSOC);
-			$flot = [];
+			$flot = array();
 			$flot[] = array('label' => 'deliver', 'data' => $row['deliver'], 'color' => '#7d6');
 			$flot[] = array('label' => 'reject', 'data' => $row['reject'], 'color' => '#d44');
 			die(json_encode(array('flot' => $flot)));
