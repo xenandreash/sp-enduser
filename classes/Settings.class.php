@@ -439,4 +439,44 @@ class Settings
 	{
 		return BASE . '/../rrd';
 	}
+
+	/**
+	 * Returns the database partition type
+	 */
+	public function getPartitionType()
+	{
+		if (isset($this->dbCredentials['partitiontype']))
+			return $this->dbCredentials['partitiontype'];
+		return 'integer';
+	}
+
+	/**
+	 * Returns the messagelog table based on a userid
+	 */
+	function getMessagelogTable($userid)
+	{
+		if (isset($this->dbCredentials['partitions']) && $this->dbCredentials['partitions'] > 1)
+		{
+			if ($userid == '')
+				return 'messagelog1';
+			$userid = $this->getPartitionType() == 'string' ? crc32($userid) : $userid;
+			return 'messagelog' .(($userid % $this->dbCredentials['partitions']) + 1);
+		} else {
+			return 'messagelog';
+		}
+	}
+
+	/**
+	 * Returns a list of all messagelog tables
+	 */
+	function getMessagelogTables()
+	{
+		$tables = array();
+		if (isset($this->dbCredentials['partitions']) && $this->dbCredentials['partitions'] > 1)
+			for ($i = 1; $i <= $this->dbCredentials['partitions']; $i++)
+				$tables[] = 'messagelog'.$i;
+		else
+			$tables[] = 'messagelog';
+		return $tables;
+	}
 }

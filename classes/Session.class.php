@@ -153,6 +153,6 @@ class Session
 	 */
 	public function getMessageLogTable()
 	{
-		return get_messagelog_table($this->access['userid']);
+		return Settings::Get()->getMessagelogTable($this->access['userid']);
 	}
 }

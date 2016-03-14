@@ -102,22 +102,16 @@ function history_parse_scores($mail)
 
 function generate_random_password()
 {
-	$pass = '';
 	if (function_exists('openssl_random_pseudo_bytes'))
-	{
-		$pass = bin2hex(openssl_random_pseudo_bytes(32));
-	}
-	else
-	{
-		// The effective security of this is horrid, but unfortunately we can't
-		// depend on OpenSSL being available on Windows
-		$chars = '0123456789abcdef';
-		srand((float) microtime() * 10000000);
-		for ($i = 0; $i < 64; $i++) {
-			$pass .= $chars[rand(0, strlen($chars)-1)];
-		}
-	}
-	
+		return bin2hex(openssl_random_pseudo_bytes(32));
+
+	// The effective security of this is horrid, but unfortunately we can't
+	// depend on OpenSSL being available on Windows
+	$pass = '';
+	$chars = '0123456789abcdef';
+	srand((float) microtime() * 10000000);
+	for ($i = 0; $i < 64; $i++)
+		$pass .= $chars[rand(0, strlen($chars)-1)];
 	return $pass;
 }
 
@@ -207,41 +201,4 @@ function emptyspace($str)
 	if ($str == '')
 		return '&nbsp;';
 	return $str;
-}
-
-function get_partition_type()
-{
-	$settings = Settings::Get();
-	$dbCredentials = $settings->getDBCredentials();
-	if (isset($dbCredentials['partitiontype']))
-		return $dbCredentials['partitiontype'];
-	return 'integer';
-}
-
-function get_messagelog_table($userid)
-{
-	$settings = Settings::Get();
-	$dbCredentials = $settings->getDBCredentials();
-	if (isset($dbCredentials['partitions']) && $dbCredentials['partitions'] > 1)
-	{
-		if ($userid == '')
-			return 'messagelog1';
-		$userid = get_partition_type() == 'string' ? crc32($userid) : $userid;
-		return 'messagelog' .(($userid % $dbCredentials['partitions']) + 1);
-	} else {
-		return 'messagelog';
-	}
-}
-
-function get_messagelog_tables()
-{
-	$settings = Settings::Get();
-	$dbCredentials = $settings->getDBCredentials();
-	$tables = array();
-	if (isset($dbCredentials['partitions']) && $dbCredentials['partitions'] > 1)
-		for ($i = 1; $i <= $dbCredentials['partitions']; $i++)
-			$tables[] = 'messagelog'.$i;
-	else
-		$tables[] = 'messagelog';
-	return $tables;
 }

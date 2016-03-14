@@ -87,7 +87,8 @@ $dbCredentials = $settings->getDBCredentials();
 
 function createMessageLog(&$dbh, &$notes, $name)
 {
-	$useridtype = get_partition_type() == 'string' ? 'VARCHAR(256)' : 'BIGINT';
+	global $settings;
+	$useridtype = $settings->getPartitionType() == 'string' ? 'VARCHAR(256)' : 'BIGINT';
 	$notes[] = 'Adding table '.$name;
 	$dbh->exec('CREATE TABLE '.$name.' (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, userid '.$useridtype.' DEFAULT NULL, owner VARCHAR(300), owner_domain VARCHAR(300), msgts0 TIMESTAMP DEFAULT CURRENT_TIMESTAMP, msgts INT, msgid VARCHAR(100), msgactionid INT, msgaction VARCHAR(50), msglistener VARCHAR(100), msgtransport VARCHAR(100), msgsasl VARCHAR(300), msgfromserver VARCHAR(300), msgfrom VARCHAR(300), msgfrom_domain VARCHAR(300), msgto VARCHAR(300), msgto_domain VARCHAR(300), msgsubject TEXT, score_rpd NUMERIC(10,5), score_sa NUMERIC(10,5), scores TEXT, msgdescription TEXT, serialno VARCHAR(100));');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_msgid               ON '.$name.'(msgid);');
@@ -130,7 +131,7 @@ if (isset($dbCredentials['dsn'])) {
 			$dbh->exec('CREATE TABLE spamsettings (access VARCHAR(128), settings TEXT, PRIMARY KEY(access));');
 		}
 		if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
-			foreach (get_messagelog_tables() as $table)
+			foreach ($settings->getMessagelogTables() as $table)
 			{
 				$statement = $dbh->prepare('SELECT * FROM '.$table.' LIMIT 1;');
 				if (!$statement || $statement->execute() === false) {
@@ -140,7 +141,7 @@ if (isset($dbCredentials['dsn'])) {
 			$statement = $dbh->prepare('SELECT * FROM stat LIMIT 1;');
 			if (!$statement || $statement->execute() === false) {
 				$notes[] = 'Adding table stat';
-				$useridtype = get_partition_type() == 'string' ? 'VARCHAR(256)' : 'BIGINT';
+				$useridtype = $settings->getPartitionType() == 'string' ? 'VARCHAR(256)' : 'BIGINT';
 				$dbh->exec('CREATE TABLE IF NOT EXISTS stat (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, userid '.$useridtype.', domain VARCHAR(300), year INT, month INT, reject INT, deliver INT, INDEX (userid,domain), CONSTRAINT UNIQUE (domain,year,month));');
 			}
 		} else {

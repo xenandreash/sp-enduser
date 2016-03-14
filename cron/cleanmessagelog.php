@@ -14,7 +14,7 @@ require_once BASE.'/inc/utils.php';
 
 $max = 5000000;
 
-foreach (get_messagelog_tables() as $table)
+foreach ($settings->getMessagelogTables() as $table)
 {
 	$dbh = $settings->getDatabase();
 	$statement = $dbh->prepare('SELECT id FROM '.$table.' ORDER BY id DESC LIMIT 1;');
