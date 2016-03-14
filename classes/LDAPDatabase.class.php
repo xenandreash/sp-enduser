@@ -43,7 +43,7 @@ class LDAPDatabase
 		$access = array('mail' => array());
 		$authed = false;
 
-		$ldapuser = ldap_escape($username);
+		$ldapuser = $this->_ldap_escape($username);
 		switch ($this->schema) {
 			case 'msexchange':
 				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(proxyAddresses=smtp:*))", array('proxyAddresses'));
@@ -89,5 +89,15 @@ class LDAPDatabase
 		$result['source'] = 'ldap';
 		$result['access'] = $access;
 		return $result;
+	}
+
+	/*
+	 * First appeared in PHP 5.6
+	 */
+	function _ldap_escape($data)
+	{
+		if (function_exists('ldap_escape'))
+			return ldap_escape($data);
+		return str_replace(array('\\', '*', '(', ')', '\0'), array('\\5c', '\\2a', '\\28', '\\29', '\\00'), $data);
 	}
 }
