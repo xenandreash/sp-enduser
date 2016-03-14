@@ -15,9 +15,10 @@ $(document).ready(function() {
 		panel.find("button.close").click(function() {
 			$(this).parent().parent().parent().remove();
 		});
-		$.ajax({
-			dataType: "json",
-			data: {"ajax-since": $(this).data("domain")}
+		$.post("?xhr", {
+			"page": "stats",
+			"type": "since",
+			"domain": $(this).data("domain")
 		}).done(function(data) {
 			var options = "<option value=''>Total</option>";
 			for (i = 0; i < data.length; i++)
@@ -28,9 +29,10 @@ $(document).ready(function() {
 			});
 		});
 		pie(panel, domain, "");
-		$.ajax({
-			dataType: "json",
-			data: {"ajax-rrd": domain}
+		$.post("?xhr", {
+			"page": "stats",
+			"type": "rrd",
+			"domain": domain
 		}).done(function(data) {
 			var rrd = new RRDFile(new BinaryFile(atob(data)));
 			// Setup lines and colors
@@ -72,9 +74,11 @@ $(document).ready(function() {
 	if ($(".add-domain").length < 6) $(".add-domain").click();
 });
 function pie(panel, domain, time) {
-	$.ajax({
-		dataType: "json",
-		data: {"ajax-pie": domain, "time": time}
+	$.post("?xhr", {
+		"page": "stats",
+		"type": "pie",
+		"domain": domain,
+		"time": time
 	}).done(function(data) {
 		panel.find(".pie").text("");
 		$.plot(panel.find(".pie"), data, {

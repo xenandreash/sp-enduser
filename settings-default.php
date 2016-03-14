@@ -84,6 +84,13 @@
 //$settings['database-log'] = false;
 
 /*
+ * Stats are normally read from the nodes directly, but for performance, you can
+ * instead opt to configure your nodes to stat to a central database server, as
+ * described at: http://wiki.halon.se/End-user#History_log
+ */
+//$settings['database-stats'] = false;
+
+/*
  * Authentication is probably the second most important configuration
  * directive, as it specifies how end-users should identify themselves.
  * 

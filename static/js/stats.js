@@ -15,12 +15,13 @@ $(document).ready(function() {
 		panel.find("button.close").click(function() {
 			$(this).parent().parent().parent().remove();
 		});
-		$.ajax({
-			url: "?page=stats",
-			dataType: "json",
-			data: {"ajax-pie": $(this).data("domain")}
+		$.post("?xhr", {
+			"page": "stats",
+			"type": "pie",
+			"domain": $(this).data("domain")
 		}).done(function(data) {
 			panel.find(".since").text("Since " + new Date(data.since * 1000).toDateString());
+			panel.find(".pie").text("");
 			$.plot(panel.find(".pie"), data.flot, {
 				series: {
 					pie: {
@@ -37,10 +38,10 @@ $(document).ready(function() {
 				}
 			});
 		});
-		$.ajax({
-			url: "?page=stats",
-			dataType: "json",
-			data: {"ajax-rrd": $(this).data("domain")}
+		$.post("?xhr", {
+			"page": "stats",
+			"type": "rrd",
+			"domain": $(this).data("domain")
 		}).done(function(data) {
 			var binary = new Array();
 			for (i = 0; i < data.length; i++)
@@ -91,6 +92,7 @@ $(document).ready(function() {
 			};
 			var rrdid = "rrd-" + panel.attr("id");
 			new rrdFlot(rrdid, rrd, flot_opts, ds_opt, rrd_opts);
+			panel.find(".realrrd").text("");
 
 			// Move the elements that we like to a div
 			$("#" + rrdid + "_graph").appendTo(panel.find(".realrrd"));
@@ -100,5 +102,4 @@ $(document).ready(function() {
 		});
 	});
 	if ($(".add-domain").length < 6) $(".add-domain").click();
-
 });

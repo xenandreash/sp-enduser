@@ -85,6 +85,7 @@ class Settings
 		$this->extract($this->displayListener, 'display-listener');
 		$this->extract($this->displayTransport, 'display-transport');
 		$this->extract($this->useDatabaseLog, 'database-log');
+		$this->extract($this->useDatabaseStats, 'database-stats');
 		$this->extract($this->dbCredentials, 'database');
 		$this->extract($this->authSources, 'authentication');
 		$this->extract($this->quarantineFilter, 'quarantine-filter');
@@ -377,6 +378,14 @@ class Settings
 	public function getUseDatabaseLog()
 	{
 		return $this->useDatabaseLog;
+	}
+
+	/**
+	 * Returns whether or not database stats is enabled.
+	 */
+	public function getUseDatabaseStats()
+	{
+		return $this->useDatabaseStats;
 	}
 	
 	/**

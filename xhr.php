@@ -221,4 +221,124 @@ if ($_POST['page'] == 'rates')
 	}
 }
 
+if ($_POST['page'] == 'stats')
+{
+	if (!$settings->getDisplayStats())
+		die(json_encode(array('error' => "The setting display-stats isn't enabled")));
+
+	$dbh = $settings->getDatabase();
+	function stats_check_access($domain)
+	{
+		global $dbh;
+		$access = Session::Get()->getAccess();
+		$q = $dbh->prepare('SELECT domain FROM stat WHERE domain = :domain AND userid = :userid LIMIT 1;');
+		$q->execute(array(':userid' => $access['userid'], ':domain' => $domain));
+		$rows = $q->fetch(PDO::FETCH_ASSOC);
+		if (is_array($rows) && count($rows) == 1)
+			return true;
+		if (Session::Get()->checkAccessDomain($domain))
+			return true;
+		return false;
+	}
+
+	if ($_POST['type'] == 'rrd')
+	{
+		if ($settings->getUseDatabaseStats())
+		{
+			if (!stats_check_access($_POST['domain']))
+				die(json_encode(array('error' => 'Insufficient permissions')));
+
+			die(json_encode(base64_encode(file_get_contents($settings->getGraphPath().'/'.$_POST['domain'].'.rrd'))));
+		} else {
+			if (!Session::Get()->checkAccessDomain($_POST['domain']))
+				die(json_encode(array('error' => 'Insufficient permissions')));
+
+			$listener = 'mailserver:1';
+			$listener = str_replace(':', '-', $listener);
+			$domain = $_POST['domain'];
+			$data = array();
+			foreach ($settings->getNodes() as $node) {
+				try {
+					$data[] = base64_encode($node->soap()->graphFile(array('name' => 'mail-stat-'.$listener.'-'.$domain))->result);
+				} catch (SoapFault $e) {
+				}
+			}
+			die(json_encode($data));
+		}
+	}
+	if ($_POST['type'] == 'pie')
+	{
+		if ($settings->getUseDatabaseStats())
+		{
+			if (!stats_check_access($_POST['domain']))
+				die(json_encode(array('error' => 'Insufficient permissions')));
+
+			$access = Session::Get()->getAccess();
+			// total pie
+			if (!$_POST['time']) {
+				$q = $dbh->prepare('SELECT SUM(reject) AS reject, SUM(deliver) AS deliver FROM stat WHERE userid = :userid AND domain = :domain GROUP BY userid, domain;');
+				$q->execute(array(':userid' => $access['userid'], ':domain' => $_POST['domain']));
+			} else {
+				$date = explode('-', $_POST['time']);
+				$q = $dbh->prepare('SELECT reject, deliver FROM stat WHERE userid = :userid AND domain = :domain AND year = :year AND month = :month;');
+				$q->execute(array(':userid' => $access['userid'], ':domain' => $_POST['domain'], ':year' => $date[0], ':month' => $date[1]));
+			}
+			$row = $q->fetch(PDO::FETCH_ASSOC);
+			$flot = [];
+			$flot[] = array('label' => 'deliver', 'data' => $row['deliver'], 'color' => '#7d6');
+			$flot[] = array('label' => 'reject', 'data' => $row['reject'], 'color' => '#d44');
+			die(json_encode($flot));
+		} else {
+			if (!Session::Get()->checkAccessDomain($_POST['domain']))
+				die(json_encode(array('error' => 'Insufficient permissions')));
+			$listener = 'mailserver:1';
+			$keyname = 'mail:action:';
+			$stats = array();
+			$since = null;
+			foreach ($settings->getNodes() as $node) {
+				try {
+					$ss = $node->soap()->statList(array('key1' => $keyname.'%', 'key2' => $inbound, 'key3' => $_GET['ajax-pie'], 'offset' => 0, 'limit' => 10))->result->item;
+					if (!is_array($ss))
+						continue;
+					foreach ($ss as $s) {
+						$k = str_replace($keyname, '', $s->key1);
+						if (!$stats[$k]) $stats[$k] = 0;
+						$stats[$k] += $s->count;
+						if ($since === null || $s->created < $since) $since = $s->created;
+					}
+				} catch (SoapFault $e) {
+				}
+			}
+			$flot = array();
+			foreach ($stats as $k => $v) {
+				$p = array('label' => $k, 'data' => $v);
+				$color = null;
+				if ($k == 'delete') $color = '#666';
+				if ($k == 'deliver') $color = '#7d6';
+				if ($k == 'allow') $color = '#9cf';
+				if ($k == 'reject') $color = '#d44';
+				if ($k == 'block') $color = '#622';
+				if ($k == 'defer') $color = '#ed4';
+				if ($k == 'quarantine') $color = '#e96';
+				if ($color) $p['color'] = $color;
+				$flot[] = $p;
+			}
+			die(json_encode(array('since' => $since, 'flot' => $flot)));
+		}
+	}
+	if ($_POST['type'] == 'since')
+	{
+		if ($settings->getUseDatabaseStats())
+		{
+			if (!stats_check_access($_POST['domain']))
+				die(json_encode(array('error' => 'Insufficient permissions')));
+
+			$access = Session::Get()->getAccess();
+			$q = $dbh->prepare('SELECT year, month FROM stat WHERE userid = :userid AND domain = :domain;');
+			$q->execute(array(':userid' => $access['userid'], ':domain' => $_POST['domain']));
+			die(json_encode($q->fetchAll(PDO::FETCH_ASSOC)));
+		}
+	}
+}
+
 die(json_encode(array('error' => 'unsupported request')));

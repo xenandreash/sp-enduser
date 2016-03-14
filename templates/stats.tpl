@@ -29,10 +29,12 @@
 		<div class="panel-body draw-charts">
 			<div class="row"><div class="col-md-6">
 				<div class="rrd-id" style="height:200px;display:none;"></div>
-				<div class="realrrd" style="height:200px"></div>
+				<div class="realrrd" style="height:200px">{t}Loading...{/t}</div>
 			</div><div class="col-md-6">
-				<div class="pie" style="height:200px"></div>
-				<div class="since text-muted pull-right">{t}Loading...{/t}</div>
+				<div class="pie" style="height:200px">{t}Loading...{/t}</div>
+				<div style="position: absolute; z-index: 10; right: 20px">
+					<div class="since text-muted" style="margin-top: -50px; right: 40px;"></div>
+				</div>
 			</div></div>
 		</div>
 	</div>
