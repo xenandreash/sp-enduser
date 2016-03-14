@@ -21,7 +21,7 @@ class DatabaseBackend extends Backend
 		$results = array();
 		
 		// Create search/restrict query for SQL
-		$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM '.Session::Get()->getMessageLogTable();
+		$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM '.Session::Get()->getMessagelogTable();
 		$sql_where = hql_to_sql($search);
 		$real_sql = $this->restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param);
 		$real_sql['sql'] .= ' ORDER BY id DESC LIMIT '.intval($size + 1); // don't send unnecessary
@@ -55,7 +55,7 @@ class DatabaseBackend extends Backend
 	private function restrict_mail($restrict_sql, $id)
 	{
 		$filters = array();
-		$real_sql = 'SELECT *, UNIX_TIMESTAMP(msgts0) AS msgts0 FROM '.Session::Get()->getMessageLogTable();
+		$real_sql = 'SELECT *, UNIX_TIMESTAMP(msgts0) AS msgts0 FROM '.Session::Get()->getMessagelogTable();
 		$real_sql_params = $restrict_sql['params'];
 		if ($restrict_sql['filter'])
 			$filters[] = $restrict_sql['filter'];

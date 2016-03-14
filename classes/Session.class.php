@@ -151,7 +151,7 @@ class Session
 	/**
 	 * Returns the user's assigned messagelog table
 	 */
-	public function getMessageLogTable()
+	public function getMessagelogTable()
 	{
 		return Settings::Get()->getMessagelogTable($this->access['userid']);
 	}
