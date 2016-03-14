@@ -15,8 +15,7 @@ if (!function_exists('password_hash')) {
 }
 
 // 5.6.0 >=
-if (!function_exists('ldap_escape'))
-{
+if (!function_exists('ldap_escape')) {
 	function ldap_escape($data) {
 		return str_replace(array('\\', '*', '(', ')', '\0'), array('\\5c', '\\2a', '\\28', '\\29', '\\00'), $data);
 	}
