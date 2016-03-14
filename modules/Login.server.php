@@ -14,16 +14,16 @@ function halon_login_server($username, $password, $method, $settings)
 		try {
 			// Attempt to connect to the node
 			soap_client($i, false, $username, $password)->login();
-
-			// Use the user's credentials instead of the config's
-			$_SESSION['soap_username'] = $username;
-			$_SESSION['soap_password'] = $password;
 						
 			// Set the client to be logged in
 			$result = array();
 			$result['username'] = $username;
 			$result['source'] = 'server';
 			$result['access'] = array();
+
+			// Use the user's credentials instead of the config's
+			$result['soap_username'] = $username;
+			$result['soap_password'] = $password;
 			return $result;
 		} catch (SoapFault $e) {
 			// If the node is unavailable, skip to the next one

@@ -19,9 +19,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 		$result = $authmethod($username, $password, $method, $settings);
 		if ($result && is_array($result))
 		{
-			$_SESSION['username'] = $result['username'];
-			$_SESSION['source'] = $result['source'];
-			$_SESSION['access'] = $result['access'];
+			$_SESSION = array_merge($_SESSION, $result);
 			break;
 		}
 	}
