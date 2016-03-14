@@ -10,11 +10,7 @@ $javascript[] = 'static/js/jquery.flot.resize.min.js';
 $javascript[] = 'static/js/jquery.flot.time.min.js';
 $javascript[] = 'static/js/jquery.flot.selection.min.js';
 $javascript[] = 'static/js/jquery.flot.stack.min.js';
-
-if ($settings->getUseDatabaseStats())
-	$javascript[] = 'static/js/stats2.js';
-else
-	$javascript[] = 'static/js/stats.js';
+$javascript[] = 'static/js/stats.js';
 
 require_once BASE.'/inc/smarty.php';
 

@@ -248,7 +248,9 @@ if ($_POST['page'] == 'stats')
 			if (!stats_check_access($_POST['domain']))
 				die(json_encode(array('error' => 'Insufficient permissions')));
 
-			die(json_encode(base64_encode(file_get_contents($settings->getGraphPath().'/'.$_POST['domain'].'.rrd'))));
+			$data = array();
+			$data[] = base64_encode(file_get_contents($settings->getGraphPath().'/'.$_POST['domain'].'.rrd'));
+			die(json_encode($data));
 		} else {
 			if (!Session::Get()->checkAccessDomain($_POST['domain']))
 				die(json_encode(array('error' => 'Insufficient permissions')));
@@ -287,7 +289,7 @@ if ($_POST['page'] == 'stats')
 			$flot = [];
 			$flot[] = array('label' => 'deliver', 'data' => $row['deliver'], 'color' => '#7d6');
 			$flot[] = array('label' => 'reject', 'data' => $row['reject'], 'color' => '#d44');
-			die(json_encode($flot));
+			die(json_encode(array('flot' => $flot)));
 		} else {
 			if (!Session::Get()->checkAccessDomain($_POST['domain']))
 				die(json_encode(array('error' => 'Insufficient permissions')));
@@ -297,7 +299,7 @@ if ($_POST['page'] == 'stats')
 			$since = null;
 			foreach ($settings->getNodes() as $node) {
 				try {
-					$ss = $node->soap()->statList(array('key1' => $keyname.'%', 'key2' => $inbound, 'key3' => $_GET['ajax-pie'], 'offset' => 0, 'limit' => 10))->result->item;
+					$ss = $node->soap()->statList(array('key1' => $keyname.'%', 'key2' => $inbound, 'key3' => $_POST['domain'], 'offset' => 0, 'limit' => 10))->result->item;
 					if (!is_array($ss))
 						continue;
 					foreach ($ss as $s) {

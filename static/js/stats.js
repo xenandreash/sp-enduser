@@ -4,44 +4,37 @@ $(document).ready(function() {
 		$(".add-domain").click();
 	});
 	$(".add-domain").click(function() {
-		var that = this;
 		var panel = $(".template").clone();
+		var domain = $(this).data("domain");
 		panel.removeClass("template");
 		panel.attr("id", "chart" + chartid++);
 		panel.appendTo("#panel-container");
 		panel.show();
-		panel.find(".panel-title > span").text($(this).data("domain"));
+		panel.find(".panel-title > span").text(domain);
 		panel.find(".rrd-id").attr("id", "rrd-" + panel.attr("id"));
 		panel.find("button.close").click(function() {
 			$(this).parent().parent().parent().remove();
 		});
 		$.post("?xhr", {
 			"page": "stats",
-			"type": "pie",
-			"domain": $(this).data("domain")
+			"type": "since",
+			"domain": domain
 		}).done(function(data) {
-			panel.find(".since").text("Since " + new Date(data.since * 1000).toDateString());
-			panel.find(".pie").text("");
-			$.plot(panel.find(".pie"), data.flot, {
-				series: {
-					pie: {
-						show: true,
-						innerRadius: 0.5,
-					}
-				},
-				legend: {
-					show: true,
-					labelFormatter: function(label, series) {
-						var num = parseInt(series.data[0][1], 10);
-						return "&nbsp;" + label + " " + Math.round(series.percent) + "% (" + num + ")";
-					}
-				}
+			if (data.error)
+				return;
+			var options = "<option value=''>Total</option>";
+			for (i = 0; i < data.length; i++)
+				options += "<option>" + data[i].year + "-" + data[i].month + "</option>";
+			panel.find(".since").html("<select class='form-control'>" + options + "</select>");
+			panel.find(".since select").on('change', function() {
+				pie(panel, domain, $(this).val());
 			});
 		});
+		pie(panel, domain, "");
 		$.post("?xhr", {
 			"page": "stats",
 			"type": "rrd",
-			"domain": $(this).data("domain")
+			"domain": domain
 		}).done(function(data) {
 			var binary = new Array();
 			for (i = 0; i < data.length; i++)
@@ -71,6 +64,8 @@ $(document).ready(function() {
 				yaxis: { tickFormatter: function(v) { return Math.round(v * 3600) + " /h"; }},
 				legend: {
 					labelFormatter: function(label, series) {
+						//if (label == "reject") return label;
+						//if (label == "deliver") return label;
 						var hasValue = false;
 						for (var i = 0; i < series.data.length; ++i) {
 							if (series.data[i][1] != 0) {
@@ -103,3 +98,30 @@ $(document).ready(function() {
 	});
 	if ($(".add-domain").length < 6) $(".add-domain").click();
 });
+function pie(panel, domain, time) {
+	$.post("?xhr", {
+		"page": "stats",
+		"type": "pie",
+		"domain": domain,
+		"time": time
+	}).done(function(data) {
+		if (data.since)
+			panel.find(".since").text("Since " + new Date(data.since * 1000).toDateString());
+		panel.find(".pie").text("");
+		$.plot(panel.find(".pie"), data.flot, {
+			series: {
+				pie: {
+					show: true,
+					innerRadius: 0.5,
+				}
+			},
+			legend: {
+				show: true,
+				labelFormatter: function(label, series) {
+					var num = parseInt(series.data[0][1], 10);
+					return "&nbsp;" + label + " " + Math.round(series.percent) + "% (" + num + ")";
+				}
+			}
+		});
+	});
+}
