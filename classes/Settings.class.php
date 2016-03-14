@@ -35,6 +35,7 @@ class Settings
 	private $displayListener = array('mailserver:1' => "Inbound");
 	private $displayTransport = array('mailtransport:2' => "Internet");
 	private $useDatabaseLog = false;
+	private $useDatabaseStats = false;
 	private $quarantineFilter = array();
 	private $filterPattern = "{from} or {to}";
 	
