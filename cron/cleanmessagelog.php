@@ -20,7 +20,7 @@ foreach ($settings->getMessagelogTables() as $table)
 	$statement = $dbh->prepare('SELECT id FROM '.$table.' ORDER BY id DESC LIMIT 1;');
 	$statement->execute();
 	$item = $statement->fetchObject();
-	echo $table.': Delete older IDs than '.$item->id."\n";
+	echo $table.': Delete older IDs than '.($item->id - $max)."\n";
 
 	// Delete in chunks up to 5000*1000 in total, important not to leave gaps
 	for ($i = 0; $i < 5000; $i++) {
