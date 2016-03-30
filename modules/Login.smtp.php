@@ -7,7 +7,7 @@
 
 function halon_login_smtp($username, $password, $method, $settings)
 {
-	$fp = fsockopen($method['host'], $method['port'] ?: '25');
+	$fp = fsockopen($method['host'], $method['port'] ?: 25);
 	while ($line = fgets($fp)) {
 		if (substr($line, 0, 1) != '2')
 			goto smtp_fail;
