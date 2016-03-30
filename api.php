@@ -162,7 +162,7 @@ if ($_GET['type'] == 'bwcheck' && (isset($_GET['senderip']) || isset($_GET['send
 		success_text('whitelist');
 	if (count($blacklist))
 		success_text('blacklist');
-	succes_text('unknown');
+	success_text('unknown');
 }
 
 if ($_GET['type'] == 'bwlist') {
