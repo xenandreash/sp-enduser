@@ -36,10 +36,10 @@ function prefered_language ($languages, $accept)
 		}
 		// if no direct hit, try the prefix only but decrease q-value
 		// by 10% (as http_negotiate_language does)
-		else if (in_array($languageprefix,$languages) 
+		else if (in_array($langprefix,$languages) 
 			&& (($qvalue*0.9) > $bestqval)) 
 		{
-			$bestlang = $languageprefix;
+			$bestlang = $langprefix;
 			$bestqval = $qvalue*0.9;
 		}
 	}
