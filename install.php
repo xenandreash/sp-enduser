@@ -148,7 +148,7 @@ if (isset($dbCredentials['dsn'])) {
 			$notes[] = 'Did not add messagelog because other database than MySQL was used';
 		}
 		if (!empty($notes))
-			echo 'Database<ul><li>'.implode($notes, '<li>').'</ul>';
+			echo 'Database<ul><li>'.implode('<li>', $notes).'</ul>';
 	} catch (PDOException $e) {
 		$ok = false;
 		echo "<p><b>Database error: ".$e->getMessage()."</b></p>";
