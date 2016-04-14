@@ -10,7 +10,7 @@ $dbh = $settings->getDatabase();
 $fp = fopen($settings->getGraphPath().'/rrd.lock', 'w+');
 if (!$fp || !flock($fp, LOCK_EX | LOCK_NB))
 {
-	syslog(LOG_WARNING, 'RRD is running to slow (multiple executions are overlapping by cron)');
+	syslog(LOG_WARNING, 'RRD is running too slow (multiple executions are overlapping by cron)');
 	fclose($fp);
 	exit(1);
 }
