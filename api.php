@@ -76,7 +76,7 @@ if ($_GET['type'] == 'log') {
 	$statement->bindValue(':msgto', $_POST['msgto']);
 	$statement->bindValue(':msgtodomain', array_pop(explode('@', $_POST['msgto'])));
 	$statement->bindValue(':msgsubject', $_POST['msgsubject']);
-	$statement->bindValue(':msgize', $_POST['msgsize']);
+	$statement->bindValue(':msgsize', $_POST['msgsize']);
 	$statement->bindValue(':msgdescription', $_POST['msgdescription']);
 	$statement->bindValue(':serialno', $_POST['serialno']);
 	if (isset($_POST['score_rpd']))
