@@ -45,7 +45,11 @@
 {/if}
 <div class="container-fluid">
 	<div class="row">
+		{if isset($has_nodes)}
 		<div class="col-md-5 col-md-push-7">
+		{else}
+		<div class="col-md-7">
+		{/if}
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">{t}Details{/t}</h3>
@@ -61,6 +65,9 @@
 						</dd>
 						<dt>{t}From{/t}</dt><dd class="wrap">{$mail->msgfrom|escape|emptyspace}</dd>
 						<dt>{t}To{/t}</dt><dd class="wrap">{$mail->msgto|escape|emptyspace}</dd>
+						{if !isset($has_nodes)}
+						<dt>{t}Subject{/t}</dt><dd class="wrap">{$mail->msgsubject|escape|emptyspace}</dd>
+						{/if}
 						<dt>{t}Date{/t}</dt><dd>{$time|date_format:"%Y-%m-%d %H:%M:%S"}</dd>
 						<dt>{t}Size{/t}</dt><dd class="wrap" title="{$mail->msgsize} bytes">{$mail->msgsize|format_size}</dd>
 						<dt>{t}Details{/t}</dt>
@@ -79,8 +86,12 @@
 					</dl>
 				</div>
 			</div>
+		{if !isset($has_nodes)}
+		</div>
+		<div class="col-md-5">
+		{/if}
 			{if $scores}
-			<div class="panel panel-default hidden-xs">
+			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">{t}Scores{/t}</h3>
 				</div>
@@ -109,6 +120,7 @@
 			</div>
 			{/if}
 		</div>
+		{if isset($has_nodes)}
 		<div class="col-md-7 col-md-pull-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -168,6 +180,7 @@
 			</script>
 			{/if}
 		</div>
+		{/if}
 	</div>
 	{if isset($node)}
 	<form id="actionform" method="post" action="?page=preview&node={$node}&id={$mail->id}">

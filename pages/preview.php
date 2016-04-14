@@ -155,5 +155,6 @@ if (isset($transports[$mail->msgtransport])) $smarty->assign('transport', $trans
 $listeners = $settings->getDisplayListener();
 if (isset($listeners[$mail->msglistener])) $smarty->assign('listener', $listeners[$mail->msglistener]);
 $smarty->assign('time', $mail->msgts0 - $_SESSION['timezone'] * 60, '%Y-%m-%d %H:%M:%S');
+if (count($settings->getNodes())) $smarty->assign('has_nodes', true);
 
 $smarty->display('preview.tpl');
