@@ -88,9 +88,16 @@ $dbCredentials = $settings->getDBCredentials();
 function createMessageLog(&$dbh, &$notes, $name)
 {
 	global $settings;
+	global $serialtype;
 	$useridtype = $settings->getPartitionType() == 'string' ? 'VARCHAR(256)' : 'BIGINT';
+	$uuidcolumn = '';
+
+	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql')
+		$uuidcolumn = 'guid UUID UNIQUE DEFAULT gen_random_uuid(), ';
+
 	$notes[] = 'Adding table '.$name;
-	$dbh->exec('CREATE TABLE '.$name.' (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, userid '.$useridtype.' DEFAULT NULL, owner VARCHAR(300), owner_domain VARCHAR(300), msgts0 TIMESTAMP DEFAULT CURRENT_TIMESTAMP, msgts INT, msgid VARCHAR(100), msgactionid INT, msgaction VARCHAR(50), msglistener VARCHAR(100), msgtransport VARCHAR(100), msgsasl VARCHAR(300), msgfromserver VARCHAR(300), msgfrom VARCHAR(300), msgfrom_domain VARCHAR(300), msgto VARCHAR(300), msgto_domain VARCHAR(300), msgsubject TEXT, msgsize INTEGER, score_rpd NUMERIC(10,5), score_sa NUMERIC(10,5), scores TEXT, msgdescription TEXT, serialno VARCHAR(100));');
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$dbh->exec('CREATE TABLE '.$name.' (id '.$serialtype.' PRIMARY KEY, '.$uuidcolumn.'userid '.$useridtype.' DEFAULT NULL, owner VARCHAR(300), owner_domain VARCHAR(300), msgts0 TIMESTAMP DEFAULT CURRENT_TIMESTAMP, msgts INT, msgid VARCHAR(100), msgactionid INT, msgaction VARCHAR(50), msglistener VARCHAR(100), msgtransport VARCHAR(100), msgsasl VARCHAR(300), msgfromserver VARCHAR(300), msgfrom VARCHAR(300), msgfrom_domain VARCHAR(300), msgto VARCHAR(300), msgto_domain VARCHAR(300), msgsubject TEXT, msgsize INTEGER, score_rpd NUMERIC(10,5), score_sa NUMERIC(10,5), scores TEXT, msgdescription TEXT, serialno VARCHAR(100));');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_msgid               ON '.$name.'(msgid);');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_userid              ON '.$name.'(userid);');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_owner               ON '.$name.'(owner);');
@@ -100,7 +107,8 @@ function createMessageLog(&$dbh, &$notes, $name)
 	$dbh->exec('CREATE INDEX '.$name.'_ind_msgfrom_domain      ON '.$name.'(msgfrom_domain);');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_msgto               ON '.$name.'(msgto);');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_msgto_domain        ON '.$name.'(msgto_domain);');
-	$dbh->exec('CREATE FULLTEXT INDEX '.$name.'_ind_msgsubject ON '.$name.'(msgsubject);');
+	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
+		$dbh->exec('CREATE FULLTEXT INDEX '.$name.'_ind_msgsubject ON '.$name.'(msgsubject);');
 }
 
 if (isset($dbCredentials['dsn'])) {
@@ -110,42 +118,66 @@ if (isset($dbCredentials['dsn'])) {
 	$notes = array();
 	try {
 		$dbh = $settings->getDatabase();
+
+		$serialtype = 'BIGSERIAL'; // fallback
+		if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
+			$serialtype = 'BIGINT NOT NULL AUTO_INCREMENT';
+		else if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql')
+			$serialtype = 'BIGSERIAL';
+		else if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite')
+			$serialtype = 'INTEGER AUTOINCREMENT';
+		else
+			$notes[] = 'Unsupported database';
+
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 		$statement = $dbh->prepare('SELECT * FROM users LIMIT 1;');
 		if (!$statement || $statement->execute() === false) {
 			$notes[] = 'Adding table users';
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$dbh->exec('CREATE TABLE users (username VARCHAR(128), password TEXT, reset_password_token TEXT, reset_password_timestamp INTEGER, PRIMARY KEY(username));');
 		}
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 		$statement = $dbh->prepare('SELECT * FROM users_relations LIMIT 1;');
 		if (!$statement || $statement->execute() === false) {
 			$notes[] = 'Adding table users_relations';
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$dbh->exec('CREATE TABLE users_relations (username VARCHAR(128) REFERENCES users(username) ON DELETE CASCADE, type VARCHAR(32), access VARCHAR(128), PRIMARY KEY(username, type, access));');
 		}
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 		$statement = $dbh->prepare('SELECT * FROM bwlist LIMIT 1;');
 		if (!$statement || $statement->execute() === false) {
 			$notes[] = 'Adding table bwlist';
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$dbh->exec('CREATE TABLE bwlist (access VARCHAR(128), type VARCHAR(32), value VARCHAR(128), PRIMARY KEY(access, type, value));');
 		}
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 		$statement = $dbh->prepare('SELECT * FROM spamsettings LIMIT 1;');
 		if (!$statement || $statement->execute() === false) {
 			$notes[] = 'Adding table spamsettings';
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$dbh->exec('CREATE TABLE spamsettings (access VARCHAR(128), settings TEXT, PRIMARY KEY(access));');
 		}
-		if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
+		$messagelogs = $settings->getMessagelogTables();
+		if (count($messagelogs)) {
+			if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql')
+				$dbh->query('CREATE EXTENSION IF NOT EXISTS pgcrypto;');
 			foreach ($settings->getMessagelogTables() as $table)
 			{
+				$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 				$statement = $dbh->prepare('SELECT * FROM '.$table.' LIMIT 1;');
 				if (!$statement || $statement->execute() === false) {
 					createMessageLog($dbh, $notes, $table);
 				}
 			}
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 			$statement = $dbh->prepare('SELECT * FROM stat LIMIT 1;');
 			if (!$statement || $statement->execute() === false) {
 				$notes[] = 'Adding table stat';
 				$useridtype = $settings->getPartitionType() == 'string' ? 'VARCHAR(256)' : 'BIGINT';
-				$dbh->exec('CREATE TABLE IF NOT EXISTS stat (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, userid '.$useridtype.', domain VARCHAR(300), year INT, month INT, reject INT, deliver INT, INDEX (userid,domain), CONSTRAINT UNIQUE (domain,year,month));');
+				$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$dbh->exec('CREATE TABLE stat (id '.$serialtype.' PRIMARY KEY, userid '.$useridtype.', domain VARCHAR(300), year INT, month INT, reject INT, deliver INT, UNIQUE (domain,year,month));');
+				$dbh->exec('CREATE INDEX stat_ind_userid ON stat(userid);');
 			}
-		} else {
-			$notes[] = 'Did not add messagelog because other database than MySQL was used';
 		}
 		if (!empty($notes))
 			echo 'Database<ul><li>'.implode('<li>', $notes).'</ul>';
