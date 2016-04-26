@@ -88,15 +88,17 @@ function populateRateTable(id, data)
 					.append(
 						$('<a>')
 							.attr('href', '?source=' + source + '&search=' + item.search_filter)
-							.text(item.entry)
+							.text(item.entry == '' ? '(Empty)' : item.entry)
 					)
 			);
 		else
 			tr.append(
 				$('<td>')
 					.attr('colspan', 3)
-					.text(item.entry)
+					.text(item.entry == '' ? '(Empty)' : item.entry)
 			);
+		if (item.entry == '')
+			tr.find("td").css('font-style', 'italic');
 		tr.append(
 			$('<td>')
 				.text(item.count)
