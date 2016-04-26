@@ -18,7 +18,7 @@
 					<ul class="dropdown-menu" role="menu" aria-labelledby="source-select">
 						{foreach $sources as $name}
 						<li role="presentation">
-							<a role="menuitem" tabindex="-1" href="?source={$name}&search={$search|escape}&size={$size}">
+							<a role="menuitem" tabindex="-1" href="?page=index&source={$name}&search={$search|escape}&size={$size}">
 							{if $name == 'history'}{t}History{/t}
 							{elseif $name == 'queue'}{t}Queue{/t}
 							{elseif $name == 'quarantine'}{t}Quarantine{/t}
@@ -43,7 +43,7 @@
 					<ul class="dropdown-menu" role="menu">
 						{foreach $sources as $name}
 						<li>
-							<a href="?source={$name}&search={$search|escape}&size={$size}">
+							<a href="?page=index&source={$name}&search={$search|escape}&size={$size}">
 								{if $name == 'history'}{t}History{/t}
 								{elseif $name == 'queue'}{t}Queue{/t}
 								{elseif $name == 'quarantine'}{t}Quarantine{/t}
@@ -57,6 +57,7 @@
 			</ul>
 			{/if}
 			<form class="navbar-form navbar-left" role="search">
+				<input type="hidden" name="page" value="index">
 				<input type="hidden" name="source" value="{$source}">
 				<div class="input-group">
 					<span class="input-group-addon"><span class="fa fa-search"></span></span>
@@ -205,6 +206,7 @@
 
 	</div>
 	<form id="nav-form">
+		<input type="hidden" name="page" value="index">
 		<nav>
 			<ul class="pager">
 				<li class="previous {$prev_button}"><a href="#" onclick="history.go(-1); return false;"><span aria-hidden="true">&larr;</span> {t}Newer{/t}</a></li>
@@ -224,7 +226,7 @@
 	</p>
 	<div class="btn-group" role="group" aria-label="Results per page">
 		{foreach $pagesizes as $pagesize}
-			<a class="btn btn-sm btn-default{if $size==$pagesize} active{/if}" href="?size={$pagesize}&source={$source}&search={$search|escape}">{$pagesize}</a>
+			<a class="btn btn-sm btn-default{if $size==$pagesize} active{/if}" href="?page=index&size={$pagesize}&source={$source}&search={$search|escape}">{$pagesize}</a>
 		{/foreach}
 	</div>
 	{if $errors}
