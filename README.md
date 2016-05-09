@@ -15,6 +15,7 @@ Requirements
  * ldap
  * pdo
  * pdo-(database; mysql, pgsql, sqlite...)
+ * rrd
 
 Plugins
 -------
