@@ -125,7 +125,7 @@ if (isset($dbCredentials['dsn'])) {
 		else if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql')
 			$serialtype = 'BIGSERIAL';
 		else if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite')
-			$serialtype = 'INTEGER AUTOINCREMENT';
+			$serialtype = 'INTEGER PRIMARY KEY AUTOINCREMENT';
 		else
 			$notes[] = 'Unsupported database';
 
