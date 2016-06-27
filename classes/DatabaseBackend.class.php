@@ -79,6 +79,11 @@ class DatabaseBackend extends Backend
 		$params = array();
 		$i = 0;
 		$access = Session::Get()->getAccess();
+		if (isset($access['userid'])) {
+			$i++;
+			$filter[] = 'userid = :restrict'.$i;
+			$params[':restrict'.$i] = $access['userid'];
+		}
 		if (is_array($access['domain'])) {
 			foreach ($access['domain'] as $domain) {
 				$i++;
