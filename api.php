@@ -96,16 +96,24 @@ if ($_GET['type'] == 'log') {
 	$statement->bindValue(':scores', json_encode($scores));
 	$statement->execute();
 
-	// Inbound graphs
+	// Database graphs
 	if ($settings->getUseDatabaseStats())
 	{
-		if (($_POST['msgaction'] == 'QUEUE' || $_POST['msgaction'] == 'REJECT') && $_POST['msglistener'] == 'mailserver:1') {
+		$transports = $settings->getDisplayTransport();
+		$listeners = $settings->getDisplayListener();
+		if (($_POST['msgaction'] == 'QUEUE' || $_POST['msgaction'] == 'REJECT') && (isset($listeners[$_POST['msglistener']]) || isset($transports[$_POST['msgtransport']]))) {
 			$reject = $deliver = 0;
 			if ($_POST['msgaction'] == 'REJECT') $reject = 1;
 			if ($_POST['msgaction'] == 'QUEUE') $deliver = 1;
-			$statement = $dbh->prepare('INSERT INTO stat (userid, domain, year, month, reject, deliver) VALUES (:userid, :domain, YEAR(NOW()), MONTH(NOW()), :reject, :deliver) ON DUPLICATE KEY UPDATE reject = reject + VALUES(reject), deliver = deliver + VALUES(deliver);');
+			$statement = $dbh->prepare('INSERT INTO stat (userid, direction, domain, year, month, reject, deliver) VALUES (:userid, :direction, :domain, YEAR(NOW()), MONTH(NOW()), :reject, :deliver) ON DUPLICATE KEY UPDATE reject = reject + VALUES(reject), deliver = deliver + VALUES(deliver);');
 			$statement->bindValue(':userid', $_POST['userid']);
-			$statement->bindValue(':domain', array_pop(explode('@', $_POST['msgto'])));
+			if ($listeners[$_POST['msglistener']] == 'Outbound' || $transports[$_POST['msgtransport']] == 'Internet') {
+				$statement->bindValue(':direction', 'outbound');
+				$statement->bindValue(':domain', array_pop(explode('@', $_POST['msgfrom'])));
+			} else {
+				$statement->bindValue(':direction', 'inbound');
+				$statement->bindValue(':domain', array_pop(explode('@', $_POST['msgto'])));
+			}
 			$statement->bindValue(':reject', $reject);
 			$statement->bindValue(':deliver', $deliver);
 			$statement->execute();

@@ -5,12 +5,13 @@ $(document).ready(function() {
 	});
 	$(".add-domain").click(function() {
 		var panel = $(".template").clone();
+		var direction = $(this).data("direction");
 		var domain = $(this).data("domain");
 		panel.removeClass("template");
 		panel.attr("id", "chart" + chartid++);
 		panel.appendTo("#panel-container");
 		panel.show();
-		panel.find(".panel-title > span").text(domain);
+		panel.find(".panel-title > span").text(domain + (direction == "outbound" ? " (outbound)" : " (inbound)"));
 		panel.find(".rrd-id").attr("id", "rrd-" + panel.attr("id"));
 		panel.find("button.close").click(function() {
 			$(this).parent().parent().parent().remove();
@@ -18,6 +19,7 @@ $(document).ready(function() {
 		$.post("?xhr", {
 			"page": "stats",
 			"type": "since",
+			"direction": direction,
 			"domain": domain
 		}).done(function(data) {
 			if (data.error)
@@ -27,13 +29,14 @@ $(document).ready(function() {
 				options += "<option>" + data[i].year + "-" + data[i].month + "</option>";
 			panel.find(".since").html("<select class='form-control'>" + options + "</select>");
 			panel.find(".since select").on('change', function() {
-				pie(panel, domain, $(this).val());
+				pie(panel, direction, domain, $(this).val());
 			});
 		});
-		pie(panel, domain, "");
+		pie(panel, direction, domain, "");
 		$.post("?xhr", {
 			"page": "stats",
 			"type": "rrd",
+			"direction": direction,
 			"domain": domain
 		}).done(function(data) {
 			var binary = new Array();
@@ -98,10 +101,11 @@ $(document).ready(function() {
 	});
 	if ($(".add-domain").length < 6) $(".add-domain").click();
 });
-function pie(panel, domain, time) {
+function pie(panel, direction, domain, time) {
 	$.post("?xhr", {
 		"page": "stats",
 		"type": "pie",
+		"direction": direction,
 		"domain": domain,
 		"time": time
 	}).done(function(data) {

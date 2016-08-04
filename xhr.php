@@ -249,7 +249,7 @@ if ($_POST['page'] == 'stats')
 				die(json_encode(array('error' => 'Insufficient permissions')));
 
 			$data = array();
-			$data[] = base64_encode(file_get_contents($settings->getGraphPath().'/'.$_POST['domain'].'.rrd'));
+			$data[] = base64_encode(file_get_contents($settings->getGraphPath().'/'.$_POST['domain'].(($_POST['direction'] == 'outbound') ? '-outbound.rrd' : '.rrd')));
 			die(json_encode($data));
 		} else {
 			if (!Session::Get()->checkAccessDomain($_POST['domain']))
@@ -278,12 +278,12 @@ if ($_POST['page'] == 'stats')
 			$access = Session::Get()->getAccess();
 			// total pie
 			if (!$_POST['time']) {
-				$q = $dbh->prepare('SELECT SUM(reject) AS reject, SUM(deliver) AS deliver FROM stat WHERE domain = :domain GROUP BY domain;');
-				$q->execute(array(':domain' => $_POST['domain']));
+				$q = $dbh->prepare('SELECT SUM(reject) AS reject, SUM(deliver) AS deliver FROM stat WHERE direction = :direction AND domain = :domain GROUP BY domain;');
+				$q->execute(array(':direction' => $_POST['direction'], ':domain' => $_POST['domain']));
 			} else {
 				$date = explode('-', $_POST['time']);
-				$q = $dbh->prepare('SELECT reject, deliver FROM stat WHERE domain = :domain AND year = :year AND month = :month;');
-				$q->execute(array(':domain' => $_POST['domain'], ':year' => $date[0], ':month' => $date[1]));
+				$q = $dbh->prepare('SELECT reject, deliver FROM stat WHERE direction = :direction AND domain = :domain AND year = :year AND month = :month;');
+				$q->execute(array(':direction' => $_POST['direction'], ':domain' => $_POST['domain'], ':year' => $date[0], ':month' => $date[1]));
 			}
 			$row = $q->fetch(PDO::FETCH_ASSOC);
 			$flot = array();
@@ -336,8 +336,8 @@ if ($_POST['page'] == 'stats')
 				die(json_encode(array('error' => 'Insufficient permissions')));
 
 			$access = Session::Get()->getAccess();
-			$q = $dbh->prepare('SELECT year, month FROM stat WHERE domain = :domain;');
-			$q->execute(array(':domain' => $_POST['domain']));
+			$q = $dbh->prepare('SELECT year, month FROM stat WHERE direction = :direction AND domain = :domain;');
+			$q->execute(array(':direction' => $_POST['direction'], ':domain' => $_POST['domain']));
 			die(json_encode($q->fetchAll(PDO::FETCH_ASSOC)));
 		}
 	}

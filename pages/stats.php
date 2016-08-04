@@ -15,15 +15,30 @@ $javascript[] = 'static/js/stats.js';
 require_once BASE.'/inc/smarty.php';
 
 $domains = Session::Get()->getAccess('domain');
+$sorted_domains = ['inbound' => [], 'outbound' => []];
 
-if ($settings->getUseDatabaseStats() && isset($access['userid']))
-{
+if ($settings->getUseDatabaseStats()) {
 	$dbh = $settings->getDatabase();
-	$q = $dbh->prepare('SELECT domain FROM stat WHERE userid = :userid GROUP BY domain;');
-	$q->execute(array(':userid' => $access['userid']));
-	while ($d = $q->fetch(PDO::FETCH_ASSOC))
-		$domains[] = $d['domain'];
+	if (isset($access['userid'])) {
+		$q = $dbh->prepare('SELECT direction, domain FROM stat WHERE userid = :userid GROUP BY direction, domain;');
+		$q->execute(array(':userid' => $access['userid']));
+		while ($d = $q->fetch(PDO::FETCH_ASSOC)) {
+			$sorted_domains[($d['direction'] == 'outbound') ? 'outbound' : 'inbound'][] = $d['domain'];
+		}
+	} else {
+		foreach ($domains as $domain) {
+			$q = $dbh->prepare('SELECT direction, domain FROM stat WHERE domain = :domain;');
+			$q->execute(array(':domain' => $domain));
+			while ($d = $q->fetch(PDO::FETCH_ASSOC)) {
+				$sorted_domains[($d['direction'] == 'outbound') ? 'outbound' : 'inbound'][] = $d['domain'];
+			}
+		}
+	}
+} else {
+	foreach ($domains as $domain) {
+		$sorted_domains['inbound'][] = $domain;
+	}
 }
 
-$smarty->assign('domains', $domains);
+$smarty->assign('domains', $sorted_domains);
 $smarty->display('stats.tpl');

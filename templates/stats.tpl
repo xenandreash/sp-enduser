@@ -8,8 +8,11 @@
 		<ul class="dropdown-menu" role="menu">
 			<li><a href="#" class="add-all">{t}All{/t}</a></li>
 			<li class="divider"></li>
-			{foreach $domains as $domain}
-				<li><a href="#" data-domain="{$domain}" class="add-domain">{$domain}</a></li>
+			{foreach $domains.inbound as $domain}
+				<li><a href="#" data-direction="inbound" data-domain="{$domain}" class="add-domain">{$domain} (inbound)</a></li>
+			{/foreach}
+			{foreach $domains.outbound as $domain}
+				<li><a href="#" data-direction="outbound" data-domain="{$domain}" class="add-domain">{$domain} (outbound)</a></li>
 			{/foreach}
 		</ul>
 	</div>

@@ -175,7 +175,7 @@ if (isset($dbCredentials['dsn'])) {
 				$notes[] = 'Adding table stat';
 				$useridtype = $settings->getPartitionType() == 'string' ? 'VARCHAR(256)' : 'BIGINT';
 				$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$dbh->exec('CREATE TABLE stat (id '.$serialtype.' PRIMARY KEY, userid '.$useridtype.', domain VARCHAR(300), year INT, month INT, reject INT, deliver INT, UNIQUE (domain,year,month));');
+				$dbh->exec('CREATE TABLE stat (id '.$serialtype.' PRIMARY KEY, userid '.$useridtype.', direction VARCHAR(300), domain VARCHAR(300), year INT, month INT, reject INT, deliver INT, UNIQUE (direction,domain,year,month));');
 				$dbh->exec('CREATE INDEX stat_ind_userid ON stat(userid);');
 			}
 		}
