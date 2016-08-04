@@ -15,7 +15,7 @@ $javascript[] = 'static/js/stats.js';
 require_once BASE.'/inc/smarty.php';
 
 $domains = Session::Get()->getAccess('domain');
-$sorted_domains = ['inbound' => [], 'outbound' => []];
+$sorted_domains = array('inbound' => array(), 'outbound' => array());
 
 if ($settings->getUseDatabaseStats()) {
 	$dbh = $settings->getDatabase();
