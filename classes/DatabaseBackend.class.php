@@ -24,6 +24,7 @@ class DatabaseBackend extends Backend
 		$sql_select = 'UNIX_TIMESTAMP(msgts0) AS msgts0 FROM '.Session::Get()->getMessagelogTable();
 		$sql_where = hql_to_sql($search);
 		$real_sql = $this->restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param);
+		$real_sql['sql'] .= ' ORDER BY id DESC';
 		
 		// Fetch stuff
 		try {
