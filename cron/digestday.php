@@ -75,6 +75,16 @@ foreach ($settings->getAuthSources() as $a) {
 	// Send to statically configured users with e-mail address
 	if ($a['type'] == 'account' && isset($a['email']))
 		$users[$a['email']] = access_level_merge($users[$a['email']], $a['access']);
+	// Send to database users
+	if ($a['type'] == 'database') {
+		$dbh = $settings->getDatabase();
+		$statement = $dbh->prepare('SELECT * FROM users_relations;');
+		$statement->execute();
+		while ($row = $statement->fetch()) {
+			if (!strpos($row['username'], '@')) continue;
+			$users[$row['username']][$row['type']][] = $row['access'];
+		}
+	}
 	// Send to LDAP users if a bind_dn is specified
 	if ($a['type'] == 'ldap') {
 		if ($a['schema'] == 'auth-only') {
