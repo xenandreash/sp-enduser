@@ -13,6 +13,7 @@ require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
 $max = 5000000;
+$chunks = 1000;
 
 foreach ($settings->getMessagelogTables() as $table)
 {
@@ -27,12 +28,12 @@ foreach ($settings->getMessagelogTables() as $table)
 	}
 	echo $table.': Delete older IDs than '.($item->id - $max)."\n";
 
-	// Delete in chunks up to 5000*1000 in total, important not to leave gaps
-	for ($i = 0; $i < 5000; $i++) {
-		$newest = $item->id - $max - ($i * 1000);
+	// delete in chunks, important not to leave gaps
+	for ($i = 0;; $i++) {
+		$newest = $item->id - $max - ($i * $chunks);
 		if ($newest < 0)
 			break;
-		$oldest = max($newest - 1000, 0);
+		$oldest = max($newest - $chunks, 0);
 		echo "$table: Delete between $newest and $oldest\n";
 
 		$statement = $dbh->prepare('DELETE FROM '.$table.' WHERE id < :newest AND id >= :oldest;');
