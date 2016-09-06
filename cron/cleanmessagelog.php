@@ -47,11 +47,9 @@ foreach ($settings->getMessagelogTables() as $table)
 		$statement = $dbh->prepare('DELETE FROM '.$table.' WHERE id >= :f AND id < :t;');
 		$statement->execute(array(':f' => $fromId, ':t' => $toId));
 		$deleted = $statement->rowCount();
-		echo "$table: Chunk $i deleted ".$deleted."\n";
 
 		$fromId = $toId;
 	}
 
-	echo "$table: Done\n";
-	break;
+	echo "$table: done\n";
 }
