@@ -21,27 +21,37 @@ foreach ($settings->getMessagelogTables() as $table)
 	$statement = $dbh->prepare('SELECT id FROM '.$table.' ORDER BY id DESC LIMIT 1;');
 	$statement->execute();
 	$item = $statement->fetchObject();
-	if ($item->id < $max)
+	$maxId = $item->id;
+	$keepId = $maxId - $max;
+
+	$statement = $dbh->prepare('SELECT id FROM '.$table.' ORDER BY id ASC LIMIT 1;');
+	$statement->execute();
+	$item = $statement->fetchObject();
+	$minId = $item->id;
+
+	if ($keepId <= 0 || $keepId <= $minId)
 	{
-		echo "$table: id {$item->id} is less than $max (skip)\n";
+		echo "$table: range $minId to $maxId has less than $max items (skip)\n";
 		continue;
 	}
-	echo $table.': Delete older IDs than '.($item->id - $max)."\n";
 
-	// delete in chunks, important not to leave gaps
-	for ($i = 0;; $i++) {
-		$newest = $item->id - $max - ($i * $chunks);
-		if ($newest < 0)
-			break;
-		$oldest = max($newest - $chunks, 0);
-		echo "$table: Delete between $newest and $oldest\n";
+	echo "$table: deleting rows from $minId < $keepId (keeping $keepId -> $maxId)\n";
 
-		$statement = $dbh->prepare('DELETE FROM '.$table.' WHERE id < :newest AND id >= :oldest;');
-		$statement->execute(array(':newest' => $newest, ':oldest' => $oldest));
+	$fromId = $minId;
+	while ($toId != $keepId)
+	{
+		$toId = min($fromId + $chunks, $keepId);
+
+		echo "$table: deleting rows from $fromId < $toId\n";
+
+		$statement = $dbh->prepare('DELETE FROM '.$table.' WHERE id >= :f AND id < :t;');
+		$statement->execute(array(':f' => $fromId, ':t' => $toId));
 		$deleted = $statement->rowCount();
 		echo "$table: Chunk $i deleted ".$deleted."\n";
-		if ($deleted == 0)
-			break;
+
+		$fromId = $toId;
 	}
+
 	echo "$table: Done\n";
+	break;
 }
