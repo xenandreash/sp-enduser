@@ -33,23 +33,23 @@
 				</div>
 				<div class="collapse navbar-collapse" id="navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li class="mail{if $page_active=="index"} active{/if}"><a href="?page=index"><i class="fa fa-envelope-o"></i>&nbsp;{t}Messages{/t}</a></li>
+						{if $page_active=="index"}<li class="active">{else}<li>{/if}<a href="?page=index"><i class="fa fa-envelope-o"></i>&nbsp;{t}Messages{/t}</a></li>
 						{if $feature_bwlist}
-							<li class="bwlist{if $page_active=="bwlist"} active{/if}"><a href="?page=bwlist"><i class="fa fa-list"></i>&nbsp;{t}Black/whitelist{/t}</a></li>
+							{if $page_active=="bwlist"}<li class="active">{else}<li>{/if}<a href="?page=bwlist"><i class="fa fa-list"></i>&nbsp;{t}Black/whitelist{/t}</a></li>
 						{/if}
 						{if $feature_spam}
-							<li class="bwlist{if $page_active=="spam"} active{/if}"><a href="?page=spam"><i class="fa fa-cog"></i>&nbsp;{t}Spam settings{/t}</a></li>
+							{if $page_active=="spam"}<li class="active">{else}<li>{/if}<a href="?page=spam"><i class="fa fa-cog"></i>&nbsp;{t}Spam settings{/t}</a></li>
 						{/if}
 						{if $feature_stats}
-							<li class="users{if $page_active=="stats"} active{/if}"><a href="?page=stats"><i class="fa fa-pie-chart"></i>&nbsp;{t}Statistics{/t}</a></li>
+							{if $page_active=="stats"}<li class="active">{else}<li>{/if}<a href="?page=stats"><i class="fa fa-pie-chart"></i>&nbsp;{t}Statistics{/t}</a></li>
 						{/if}
 						{if $feature_rates}
-							<li class="bwlist{if $page_active=="rates"} active{/if}"><a href="?page=rates"><i class="fa fa-tachometer"></i>&nbsp;{t}Rate limit{/t}</a></li>
+							{if $page_active=="rates"}<li class="active">{else}<li>{/if}<a href="?page=rates"><i class="fa fa-tachometer"></i>&nbsp;{t}Rate limit{/t}</a></li>
 						{/if}
 					</ul>
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">
-						<li class="user{if $page_active=="user"} active{/if}"><a href="?page=user"><i class="fa fa-user"></i>&nbsp;{$username|escape}</a></li>
-						<li class="logout"><a href="?page=logout"><i class="fa fa-sign-out"></i>&nbsp;{t}Sign out{/t}</a></li>
+						{if $page_active=="user"}<li class="active">{else}<li>{/if}<a href="?page=user"><i class="fa fa-user"></i>&nbsp;{$username|escape}</a></li>
+						<li><a href="?page=logout"><i class="fa fa-sign-out"></i>&nbsp;{t}Sign out{/t}</a></li>
 					</ul>
 				</div>
 			</div>
