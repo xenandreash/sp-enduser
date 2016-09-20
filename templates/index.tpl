@@ -189,8 +189,8 @@
 					<span style="color: #fff;" class="fa fa-{$mail.action_icon}"></span>
 				</td>
 				<td style="padding: 5px;">
+					<span class="pull-right">{if $mail.today}{$mail.time|strftime2:'%H:%M'}{else}{$mail.time|strftime2:'%b %e %Y'}{/if}</span>
 					<h4 class="list-group-item-heading">
-						<small class="pull-right">{if $mail.today}{$mail.time|strftime2:'%H:%M'}{else}{$mail.time|strftime2:'%b %e %Y'}{/if}</small>
 						{if $mail.mail->msgfrom}{$mail.mail->msgfrom|escape}{else}<span class="text-muted">{t}Empty sender{/t}</span>{/if}
 						{if $mailhasmultipleaddresses}<br><small>&rarr;&nbsp;{$mail.mail->msgto}</small>{/if}
 					</h4>
