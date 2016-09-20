@@ -112,7 +112,7 @@
 //$settings['authentication'][] = array(
 //		'type' => 'database',
 //		);
-// $settings['authentication'][] = array(
+//$settings['authentication'][] = array(
 // 		'type' => 'account',
 // 		'username' => 'foo',
 // 		'password' => 'foo',
