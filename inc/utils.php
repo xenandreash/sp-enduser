@@ -199,6 +199,6 @@ function strftime2($timestamp, $format)
 function emptyspace($str)
 {
 	if ($str == '')
-		return '&nbsp;';
+		return '<br>'; // XXX: empty table-cell hack
 	return $str;
 }
