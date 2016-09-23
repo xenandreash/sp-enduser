@@ -13,7 +13,7 @@ $(document).ready(function() {
 		panel.show();
 		panel.find(".panel-title > span").text(domain + (direction == "outbound" ? " (outbound)" : " (inbound)"));
 		panel.find(".rrd-id").attr("id", "rrd-" + panel.attr("id"));
-		panel.find("button.close").click(function() {
+		panel.find("a.stat-close").click(function() {
 			$(this).parent().parent().parent().remove();
 		});
 		$.post("?xhr", {

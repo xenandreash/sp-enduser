@@ -26,7 +26,7 @@
 		<div class="panel-heading">
 			<h3 class="panel-title">
 				<span></span>
-				<button type="button" class="close"><span>&times;</span></button>
+				<a class="pull-right stat-close" href="#"><span class="fa fa-remove"></span></a>
 			</h3>
 		</div>
 		<div class="panel-body draw-charts">
