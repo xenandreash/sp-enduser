@@ -39,7 +39,7 @@
 			{if count($sources) > 1}
 			<ul class="nav navbar-nav navbar-left hidden-xs">
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-expanded="false">{t}{$source_name}{/t} <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{t}{$source_name}{/t} <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						{foreach $sources as $name}
 						<li>
