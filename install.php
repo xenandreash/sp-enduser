@@ -4,13 +4,12 @@ if (!defined('SP_ENDUSER')) die('File not included');
 if (!file_exists(BASE.'/settings.php'))
 	die('Missing '.BASE.'/settings.php; edit <b>settings-default.php</b> and rename it to <b>settings.php</b>.');
 
-$title = 'Install';
 require_once BASE.'/inc/core.php';
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Install</title>
+	<title>Install | <?php echo $settings->getPageName(); ?></title>
 </head>
 <body>
 <?php
@@ -26,48 +25,48 @@ if (count($settings->getNodes()) == 0) {
 <?php
 if (!in_array('curl', get_loaded_extensions())) {
 ?>
-	<p><em>WARNING:</em> cURL extension is missing. Without it, the UI will run slower (not being able to run searches in parallel).</p>
+	<p><em>WARNING:</em> cURL extension is missing. Without it, the UI will run slower (not being able to run searches in parallel). <em>(Install the <code>php-curl</code> package.)</em></p>
 <?php
 }
 if (!in_array('openssl', get_loaded_extensions())) {
 ?>
-	<p><em>WARNING:</em> OpenSSL extension is missing. Without it, generated passwords will be insecure!</p>
+	<p><em>WARNING:</em> OpenSSL extension is missing. Without it, generated passwords will be insecure! <em>(Install the <code>php-openssl</code> package.)</em></p>
 <?php
 }
 if (!in_array('dom', get_loaded_extensions())) {
 ?>
-	<p><em>WARNING:</em> DOM extension is missing. Without it, email previews may be incomplete. <em>(This usually means you're running on CentOS, and need to install the <code>php-xml</code> package.)</em></p>
+	<p><em>WARNING:</em> DOM extension is missing. Without it, email previews may be incomplete. <em>(Install the <code>php-xml</code> package.)</em></p>
 <?php
 }
 if (!in_array('hash', get_loaded_extensions())) {
 ?>
-	<p><em>WARNING:</em> HASH extension is missing. Without it, we are unable to securily store passwords. <em>(This usually means you're running on CentOS, and need to install the <code>php-hash</code> package.)</em></p>
+	<p><em>WARNING:</em> HASH extension is missing. Without it, we are unable to securily store passwords. <em>(Install the <code>php-hash</code> package.)</em></p>
 <?php
 }
 if (!in_array('gettext', get_loaded_extensions())) {
 ?>
-	<p><em>WARNING:</em> GETTEXT extension is missing. Without it, you will be unable to get correct character encodings. <em>(This usually means you're running on CentOS, and need to install the <code>php-gettext</code> package.)</em></p>
+	<p><em>WARNING:</em> GETTEXT extension is missing. Without it, you will be unable to get correct character encodings. <em>(Install the <code>php-gettext</code> package.)</em></p>
 <?php
 }
 if (!in_array('session', get_loaded_extensions())) {
 # Soap requires session
 ?>
-	<p><em>WARNING:</em> SESSION extension is missing. Without it, you will be unable to keep track of the users supplied credentials. <em>(This usually means you're running on CentOS, and need to install the <code>php-session</code> package.)</em></p>
+	<p><em>WARNING:</em> SESSION extension is missing. Without it, you will be unable to keep track of the users supplied credentials. <em>(Install the <code>php-session</code> package.)</em></p>
 <?php
 }
 if (!in_array('soap', get_loaded_extensions())) {
 ?>
-	<p><em>WARNING:</em> SOAP extension is missing. Without it, you will be unable to connect directly to nodes. <em>(This usually means you're running on CentOS, and need to install the <code>php-soap</code> package.)</em></p>
+	<p><em>WARNING:</em> SOAP extension is missing. Without it, you will be unable to connect directly to nodes. <em>(Install the <code>php-soap</code> package.)</em></p>
 <?php
 }
 if (!in_array('ldap', get_loaded_extensions())) {
 ?>
-	<p><em>WARNING:</em> LDAP extension is missing. Without it, you will not be able to use LDAP for authentication.</p>
+	<p><em>WARNING:</em> LDAP extension is missing. Without it, you will not be able to use LDAP for authentication. <em>(Install the <code>php-ldap</code> package.)</em></p>
 <?php
 }
 if (!in_array('rrd', get_loaded_extensions())) {
 ?>
-	<p><em>WARNING:</em> RRD extension is missing. Without it, you will be unable to show graphs.</p>
+	<p><em>WARNING:</em> RRD extension is missing. Without it, you will be unable to show graphs. <em>(Install the <code>php-rrd</code> package.)</em></p>
 <?php
 }
 if ($settings->getAPIKey() === null) {
@@ -97,7 +96,7 @@ function createMessageLog(&$dbh, &$notes, $name)
 
 	$notes[] = 'Adding table '.$name;
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$dbh->exec('CREATE TABLE '.$name.' (id '.$serialtype.' PRIMARY KEY, '.$uuidcolumn.'userid '.$useridtype.' DEFAULT NULL, owner VARCHAR(300), owner_domain VARCHAR(300), msgts0 TIMESTAMP DEFAULT CURRENT_TIMESTAMP, msgts INT, msgid VARCHAR(100), msgactionid INT, msgaction VARCHAR(50), msglistener VARCHAR(100), msgtransport VARCHAR(100), msgsasl VARCHAR(300), msgfromserver VARCHAR(300), msgfrom VARCHAR(300), msgfrom_domain VARCHAR(300), msgto VARCHAR(300), msgto_domain VARCHAR(300), msgsubject TEXT, msgsize INTEGER, score_rpd NUMERIC(10,5), score_sa NUMERIC(10,5), scores TEXT, msgdescription TEXT, serialno VARCHAR(100));');
+	$dbh->exec('CREATE TABLE '.$name.' (id '.$serialtype.', '.$uuidcolumn.'userid '.$useridtype.' DEFAULT NULL, owner VARCHAR(300), owner_domain VARCHAR(300), msgts0 TIMESTAMP DEFAULT CURRENT_TIMESTAMP, msgts INT, msgid VARCHAR(100), msgactionid INT, msgaction VARCHAR(50), msglistener VARCHAR(100), msgtransport VARCHAR(100), msgsasl VARCHAR(300), msgfromserver VARCHAR(300), msgfrom VARCHAR(300), msgfrom_domain VARCHAR(300), msgto VARCHAR(300), msgto_domain VARCHAR(300), msgsubject TEXT, msgsize INTEGER, score_rpd NUMERIC(10,5), score_sa NUMERIC(10,5), scores TEXT, msgdescription TEXT, serialno VARCHAR(100));');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_msgid               ON '.$name.'(msgid);');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_userid              ON '.$name.'(userid);');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_owner               ON '.$name.'(owner);');
@@ -119,11 +118,11 @@ if (isset($dbCredentials['dsn'])) {
 	try {
 		$dbh = $settings->getDatabase();
 
-		$serialtype = 'BIGSERIAL'; // fallback
+		$serialtype = 'BIGSERIAL PRIMARY KEY'; // fallback
 		if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
-			$serialtype = 'BIGINT NOT NULL AUTO_INCREMENT';
+			$serialtype = 'BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY';
 		else if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql')
-			$serialtype = 'BIGSERIAL';
+			$serialtype = 'BIGSERIAL PRIMARY KEY';
 		else if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite')
 			$serialtype = 'INTEGER PRIMARY KEY AUTOINCREMENT';
 		else
@@ -161,7 +160,7 @@ if (isset($dbCredentials['dsn'])) {
 		if (count($messagelogs)) {
 			if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql')
 				$dbh->query('CREATE EXTENSION IF NOT EXISTS pgcrypto;');
-			foreach ($settings->getMessagelogTables() as $table)
+			foreach ($messagelogs as $table)
 			{
 				$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 				$statement = $dbh->prepare('SELECT * FROM '.$table.' LIMIT 1;');
@@ -175,7 +174,7 @@ if (isset($dbCredentials['dsn'])) {
 				$notes[] = 'Adding table stat';
 				$useridtype = $settings->getPartitionType() == 'string' ? 'VARCHAR(256)' : 'BIGINT';
 				$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$dbh->exec('CREATE TABLE stat (id '.$serialtype.' PRIMARY KEY, userid '.$useridtype.', direction VARCHAR(300), domain VARCHAR(300), year INT, month INT, reject INT, deliver INT, UNIQUE (direction,domain,year,month));');
+				$dbh->exec('CREATE TABLE stat (id '.$serialtype.', userid '.$useridtype.', direction VARCHAR(300), domain VARCHAR(300), year INT, month INT, reject INT, deliver INT, UNIQUE (direction,domain,year,month));');
 				$dbh->exec('CREATE INDEX stat_ind_userid ON stat(userid);');
 			}
 		}
