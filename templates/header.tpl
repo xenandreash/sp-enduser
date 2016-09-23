@@ -7,7 +7,7 @@
 		<link rel="icon" type="image/png" href="static/img/favicon.png" sizes="32x32">
 		<link rel="apple-touch-icon" href="static/img/apple-touch-icon.png">
 		<title>{$title|gettext|escape} | {$pagename|escape}</title>
-		<link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="{$theme}">
 		<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{$styles}">
 		<script src="static/js/jquery.min.js"></script>

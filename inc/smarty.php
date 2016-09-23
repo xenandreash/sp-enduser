@@ -11,6 +11,7 @@ if ($smarty_no_assign) {
 	return;
 }
 
+$smarty->assign('theme', $settings->getTheme());
 $smarty->assign('pagename', $settings->getPageName());
 if (Session::Get()->getUsername()) $smarty->assign('username', Session::Get()->getUsername());
 

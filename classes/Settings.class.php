@@ -18,6 +18,7 @@ class Settings
 	private $publicURL = null;
 	
 	private $pageName = "Halon SP for end-users";
+	private $theme = null;
 	private $loginText = null;
 	private $forgotText = null;
 	private $defaultSource = 'all';
@@ -68,6 +69,7 @@ class Settings
 		$this->extract($this->apiKey, 'api-key');
 		$this->extract($this->mailSender, 'mail.from');
 		$this->extract($this->publicURL, 'public-url');
+		$this->extract($this->theme, 'theme');
 		$this->extract($this->pageName, 'pagename');
 		$this->extract($this->loginText, 'logintext');
 		$this->extract($this->forgotText, 'forgottext');
@@ -225,6 +227,18 @@ class Settings
 	public function getPublicURL()
 	{
 		return $this->publicURL;
+	}
+
+	/**
+	 * Returns the theme.
+	 */
+	public function getTheme()
+	{
+		if (file_exists('themes/'.$this->theme.'/bootstrap.min.css'))
+			return 'themes/'.$this->theme.'/bootstrap.min.css';
+		if ($this->theme && substr($this->theme, 0, 4) == 'http')
+			return $this->theme;
+		return 'vendor/twbs/bootstrap/dist/css/bootstrap.min.css';
 	}
 	
 	/**
