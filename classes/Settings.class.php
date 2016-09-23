@@ -17,7 +17,7 @@ class Settings
 	private $mailSender = null;
 	private $publicURL = null;
 	
-	private $pageName = "Halon SP for end-users";
+	private $pageName = "Halon log server";
 	private $theme = null;
 	private $loginText = null;
 	private $forgotText = null;
@@ -236,7 +236,7 @@ class Settings
 	{
 		if (file_exists('themes/'.$this->theme.'/bootstrap.min.css'))
 			return 'themes/'.$this->theme.'/bootstrap.min.css';
-		if ($this->theme && substr($this->theme, 0, 4) == 'http')
+		if ($this->theme)
 			return $this->theme;
 		return 'vendor/twbs/bootstrap/dist/css/bootstrap.min.css';
 	}
