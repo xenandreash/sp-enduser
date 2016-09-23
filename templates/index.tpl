@@ -60,12 +60,11 @@
 				<input type="hidden" name="page" value="index">
 				<input type="hidden" name="source" value="{$source}">
 				<div class="input-group">
-					<span class="input-group-addon"><span class="fa fa-search"></span></span>
 					<input type="search" class="form-control" size="40" placeholder="{t}Search for...{/t}" id="search" name="search" value="{$search|escape}">
 					<div class="input-group-btn">
-						<button class="btn btn-default" id="dosearch">{t}Search{/t}</button>
+						<button class="btn btn-primary" id="dosearch"><span class="fa fa-search"></span></button>
 						{if $search_domains}
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
 							<ul id="search_domain" class="dropdown-menu" role="menu">
 							{foreach $search_domains as $domain}
 								<li><a href="#">{$domain|escape}</a></li>
@@ -230,16 +229,16 @@
 		{/foreach}
 	</div>
 	{if $errors}
-	<div style="padding-left: 17px;">
-		<span class="text-muted">
-		{t}Diagnostic information:{/t}
-		<ul>
-		{foreach $errors as $error}
-				<li>{$error|escape}</li>
-		{/foreach}
-		</ul>
-		</span>
-	</div>
+	<p>
+		<p class="text-muted small">
+			{t}Diagnostic information:{/t}
+			<ul>
+			{foreach $errors as $error}
+					<li class="text-muted small">{$error|escape}</li>
+			{/foreach}
+			</ul>
+		</p>
+	</p>
 	{/if}
 	</div>
 	<div class="modal fade" id="querybuilder"><div class="modal-dialog"><div class="modal-content">

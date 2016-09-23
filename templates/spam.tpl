@@ -25,10 +25,9 @@
 				<form class="form-horizontal" method="get">
 					<input type="hidden" name="page" value="spam">
 					<div class="input-group">
-						<span class="input-group-addon"><span class="fa fa-search"></span></span>
 						<input type="text" class="form-control" placeholder="{t}Search for...{/t}" name="search" value="{$search|escape}">
 						<span class="input-group-btn">
-							<button class="btn btn-default" type="search">{t}Search{/t}</button>
+							<button class="btn btn-primary" type="search"><span class="fa fa-search"></span></button>
 						</span>
 					</div>
 				</form>

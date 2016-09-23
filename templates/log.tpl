@@ -2,7 +2,7 @@
 <nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<a id="history_back" class="navbar-brand" href="javascript:history.go(-1);"><i class="fa fa-long-arrow-left"></i>&nbsp;Back</a>
+			<a id="history_back" class="navbar-text" href="javascript:history.go(-1);"><i class="fa fa-long-arrow-left"></i>&nbsp;{t}Back{/t}</a>
 		</div>
 	</div>
 </nav>
