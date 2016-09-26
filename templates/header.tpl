@@ -30,7 +30,7 @@
 							<img src="{$brand_logo}" style="height: {$brand_logo_height}px;">
 						</div>
 					{else}
-						<a class="navbar-brand" data-toggle="collapse" data-target="#navbar-collapse">{$title|gettext|escape}</a>
+						<a class="navbar-brand visible-xs" data-toggle="collapse" data-target="#navbar-collapse">{$title|gettext|escape}</a>
 					{/if}
 				</div>
 				<div class="collapse navbar-collapse" id="navbar-collapse">
