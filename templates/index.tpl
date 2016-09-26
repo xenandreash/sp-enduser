@@ -130,7 +130,7 @@
 					<th>{t}Date{/t}</th>
 					<th style="width: 25px;" class="hidden-sm"></th>
 					<!-- Padding column to avoid having the OSX scrollbar cover the rightmost button -->
-					<th style="width: 20px;">&nbsp;</th>
+					<th style="width: 20px;"><br></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -168,7 +168,7 @@
 					{/if}
 					</td>
 					<td class="hidden-sm">{if $mail.type == 'queue'}<a title="{t}Release/retry{/t}" data-action="retry"><i class="fa fa-mail-forward"></i></a>{/if}</td>
-					<td>&nbsp;</td>
+					<td><br></td>
 				</tr>
 				{foreachelse}
 				<tr>
