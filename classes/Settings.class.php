@@ -19,6 +19,8 @@ class Settings
 	
 	private $pageName = "Halon log server";
 	private $theme = null;
+	private $brandLogo = null;
+	private $brandLogoHeight = null;
 	private $loginText = null;
 	private $forgotText = null;
 	private $defaultSource = 'all';
@@ -70,6 +72,8 @@ class Settings
 		$this->extract($this->mailSender, 'mail.from');
 		$this->extract($this->publicURL, 'public-url');
 		$this->extract($this->theme, 'theme');
+		$this->extract($this->brandLogo, 'brand-logo');
+		$this->extract($this->brandLogoHeight, 'brand-logo-height');
 		$this->extract($this->pageName, 'pagename');
 		$this->extract($this->loginText, 'logintext');
 		$this->extract($this->forgotText, 'forgottext');
@@ -239,6 +243,22 @@ class Settings
 		if ($this->theme)
 			return $this->theme;
 		return 'vendor/twbs/bootstrap/dist/css/bootstrap.min.css';
+	}
+
+	/**
+	 * Returns the brand logo
+	 */
+	public function getBrandLogo()
+	{
+		return $this->brandLogo;
+	}
+
+	/**
+	 * Returns the brand logo height
+	 */
+	public function getBrandLogoHeight()
+	{
+		return $this->brandLogoHeight / 2;
 	}
 	
 	/**

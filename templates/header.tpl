@@ -30,6 +30,11 @@
 					{else}
 						<a class="navbar-brand visible-xs" href="javascript:history.go(-1);"><i class="fa fa-long-arrow-left"></i>&nbsp;{t}Back{/t}</a>
 					{/if}
+					{if $brand_logo}
+						<div class="hidden-xs navbar-brand">
+							<img src="{$brand_logo}" style="height: {$brand_logo_height}px;">
+						</div>
+					{/if}
 				</div>
 				<div class="collapse navbar-collapse" id="navbar-collapse">
 					<ul class="nav navbar-nav">

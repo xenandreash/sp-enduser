@@ -196,6 +196,8 @@
  */
 
 //$settings['theme'] = 'paper'; // see themes/
+//$settings['brand-logo'] = '/brand.png';
+//$settings['brand-logo-height'] = 40; // the real heigt of the image, should be double (hidpi) the size of themes brand container
 //$settings['pagename'] = "Halon log server";
 //$settings['logintext'] = "Some text you'd like to display on the login form";
 //$settings['forgottext'] = "Some text you'd like to display on the forgot form";
