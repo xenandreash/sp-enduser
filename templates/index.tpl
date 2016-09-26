@@ -120,7 +120,7 @@
 		<table class="table table-hover hidden-xs">
 			<thead>
 				<tr>
-					<th style="width:25px"><input type="checkbox" id="select-all" class="hidden-sm"></th>
+					<th style="width:30px"><input type="checkbox" id="select-all" class="hidden-sm"></th>
 					<th style="width:30px"></th>
 					<th>{t}From{/t}</th>
 					{if $mailhasmultipleaddresses}<th>{t}To{/t}</th>{/if}
