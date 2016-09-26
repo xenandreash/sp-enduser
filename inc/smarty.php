@@ -17,8 +17,6 @@ $smarty->assign('brand_logo_height', $settings->getBrandLogoHeight());
 $smarty->assign('pagename', $settings->getPageName());
 if (Session::Get()->getUsername()) $smarty->assign('username', Session::Get()->getUsername());
 
-$smarty->assign('logo', file_exists('template/logo.png') ? 'template/logo.png' : 'static/img/logo.png');
-$smarty->assign('styles', file_exists('template/styles.css') ? 'template/styles.css' : 'static/css/styles.css');
 if (isset($javascript)) $smarty->assign('javascript', $javascript);
 
 $dbCredentials = $settings->getDBCredentials();
