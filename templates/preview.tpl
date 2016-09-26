@@ -1,9 +1,6 @@
-{include file='header.tpl' title='Message' show_back=true body_class='has-bottom-bar'}
+{include file='header.tpl' title='Message' body_class='has-bottom-bar'}
 <nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
 	<div class="container-fluid">
-		<div class="navbar-header">
-			<a id="history_back" class="navbar-text" href="javascript:history.go(-1);"><i class="fa fa-long-arrow-left"></i>&nbsp;{t}Back{/t}</a>
-		</div>
 		<ul class="nav navbar-nav navbar-right">
 			{if isset($node)}
 				{if $support_log}

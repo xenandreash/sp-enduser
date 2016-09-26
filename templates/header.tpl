@@ -25,15 +25,12 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					{if not $show_back}
-						<a class="navbar-brand visible-xs" data-toggle="collapse" data-target="#navbar-collapse">{$title|gettext|escape}</a>
-					{else}
-						<a class="navbar-brand visible-xs" href="javascript:history.go(-1);"><i class="fa fa-long-arrow-left"></i>&nbsp;{t}Back{/t}</a>
-					{/if}
 					{if $brand_logo}
-						<div class="hidden-xs navbar-brand">
+						<div class="navbar-brand">
 							<img src="{$brand_logo}" style="height: {$brand_logo_height}px;">
 						</div>
+					{else}
+						<a class="navbar-brand" data-toggle="collapse" data-target="#navbar-collapse">{$title|gettext|escape}</a>
 					{/if}
 				</div>
 				<div class="collapse navbar-collapse" id="navbar-collapse">

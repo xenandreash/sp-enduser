@@ -1,11 +1,4 @@
-{include file='header.tpl' title='Text log' show_back=true}
-<nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a id="history_back" class="navbar-text" href="javascript:history.go(-1);"><i class="fa fa-long-arrow-left"></i>&nbsp;{t}Back{/t}</a>
-		</div>
-	</div>
-</nav>
+{include file='header.tpl' title='Text log'}
 <div class="container-fluid">
 	<pre id="log"><span class="text-info" id="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span></pre>
 </div>
