@@ -14,14 +14,6 @@ body > .navbar-toolbar {
 	pointer-events: none;
 }
 
-.table .table {
-	background: none;
-	margin-bottom: 0;
-}
-.table .table td, .table .table .td {
-	border: none;
-}
-
 .table p:last-child {
 	margin-bottom: 0;
 }
