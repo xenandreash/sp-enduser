@@ -53,14 +53,14 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="old_password">{t}Old Password{/t}</label>
 							<div class="col-sm-9">
-								<input type="password" class="form-control" name="old_password" id="old_password" placeholder="Your old password">
+								<input type="password" class="form-control" name="old_password" id="old_password" placeholder="Old password">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="password">{t}New Password{/t}</label>
 							<div class="col-sm-9">
-								<input type="password" class="form-control" name="password" id="password" placeholder="Your new password">
-								<input type="password" class="form-control" name="password2" id="password2" placeholder="And again, just to be sure">
+								<input type="password" class="form-control" name="password" id="password" placeholder="New password">
+								<input type="password" class="form-control" name="password2" id="password2" placeholder="Repeat new password">
 							</div>
 						</div>
 						<div class="form-group">
