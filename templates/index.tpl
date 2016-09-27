@@ -1,61 +1,36 @@
 {include file='header.tpl' title='Messages' page_active='index'}
-<nav class="navbar navbar-toolbar navbar-static-top">
+<nav class="navbar navbar-default navbar-toolbar navbar-static-top">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#toolbar-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<i class="fa fa-search"></i>
+			<button type="button" class="navbar-toggle collapsed visible-xs fa fa-search" data-toggle="collapse" data-target="#toolbar-collapse">
 			</button>
+			{if count($sources) == 1}
 			<div class="navbar-brand visible-xs">
-				{if count($sources) == 1}
-					{t}{$source_name}{/t}
-				{else}
-				<div class="dropdown">
-					<a class="dropdown-toggle navbar-brand-link" id="source-select" data-toggle="dropdown" aria-expanded="true">
-						{t}{$source_name}{/t}
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="source-select">
-						{foreach $sources as $name}
-						<li role="presentation">
-							<a role="menuitem" tabindex="-1" href="?page=index&source={$name}&search={$search|escape}&size={$size}">
+				<!-- collapsed placeholder -->
+			</div>
+			<div class="navbar-text">
+				{t}{$source_name}{/t}
+			</div>
+			{else}
+			<div class="btn-group">
+				<a href="#" class="btn-link navbar-btn btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="text-transform:none;">{t}{$source_name}{/t}&nbsp;<span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					{foreach $sources as $name}
+					<li>
+						<a href="?page=index&source={$name}&search={$search|escape}&size={$size}">
 							{if $name == 'history'}{t}History{/t}
 							{elseif $name == 'queue'}{t}Queue{/t}
 							{elseif $name == 'quarantine'}{t}Quarantine{/t}
 							{elseif $name == 'all'}{t}All{/t}
 							{else}{$name}{/if}
-							</a>
-						</li>
-						{/foreach}
-					</ul>
-				</div>
-				{/if}
+						</a>
+					</li>
+					{/foreach}
+				</ul>
 			</div>
-			{if count($sources) == 1}
-				<a class="navbar-brand hidden-xs">{t}{$source_name}{/t}</a>
 			{/if}
 		</div>
 		<div class="collapse navbar-collapse" id="toolbar-collapse">
-			{if count($sources) > 1}
-			<ul class="nav navbar-nav navbar-left hidden-xs">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{t}{$source_name}{/t} <span class="caret"></span></a>
-					<ul class="dropdown-menu" role="menu">
-						{foreach $sources as $name}
-						<li>
-							<a href="?page=index&source={$name}&search={$search|escape}&size={$size}">
-								{if $name == 'history'}{t}History{/t}
-								{elseif $name == 'queue'}{t}Queue{/t}
-								{elseif $name == 'quarantine'}{t}Quarantine{/t}
-								{elseif $name == 'all'}{t}All{/t}
-								{else}{$name}{/if}
-							</a>
-						</li>
-						{/foreach}
-					</ul>
-				</li>
-			</ul>
-			{/if}
 			<form class="navbar-form navbar-left" role="search">
 				<input type="hidden" name="page" value="index">
 				<input type="hidden" name="source" value="{$source}">

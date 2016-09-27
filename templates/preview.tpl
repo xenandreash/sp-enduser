@@ -1,5 +1,5 @@
 {include file='header.tpl' title='Message' body_class='has-bottom-bar'}
-<nav class="navbar navbar-toolbar navbar-static-top hidden-xs">
+<nav class="navbar navbar-default navbar-toolbar navbar-static-top hidden-xs">
 	<div class="container-fluid">
 		<ul class="nav navbar-nav navbar-right">
 			{if isset($node)}

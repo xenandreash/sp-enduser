@@ -1,5 +1,5 @@
 {include file='header.tpl' title='Rate limit' page_active='rates'}
-<nav class="navbar navbar-toolbar navbar-static-top">
+<nav class="navbar navbar-default navbar-toolbar navbar-static-top">
 	<div class="container-fluid">
 		<form class="navbar-form navbar-left" role="search" id="search_form">
 			<div class="input-group">
