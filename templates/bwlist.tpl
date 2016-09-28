@@ -52,7 +52,7 @@
 										<span class="badge">{count($accesses)}</span>
 									</p>
 								</td>
-								<td style="vertical-align: middle">
+								<td style="width: 30px; vertical-align: middle">
 									<a data-type="{$type|escape}" data-value="{$value|escape}" data-access="{implode(',', $accesses)|escape}" class="bwlist_delete" title="{t}Remove{/t}" href="#"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
