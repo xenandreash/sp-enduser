@@ -10,10 +10,10 @@ $(document).ready(function() {
 	$(".toggle").click(function() {
 		$(".hidden-" + $(this).data("toggle")).toggle();
 		var icon = $(this).find(".expand-icon");
-		if (icon.hasClass('glyphicon-expand'))
-			icon.addClass('glyphicon-collapse-down').removeClass('glyphicon-expand');
+		if (icon.hasClass('fa-expand'))
+			icon.addClass('fa-compress').removeClass('fa-expand');
 		else
-			icon.addClass('glyphicon-expand').removeClass('glyphicon-collapse-down');
+			icon.addClass('fa-expand').removeClass('fa-compress');
 	});
 	$('#bwlist_add').submit(function() {
 		$.post("?xhr", {
