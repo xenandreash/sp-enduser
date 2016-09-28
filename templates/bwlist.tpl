@@ -48,7 +48,7 @@
 										<span class="fa fa-user"></span>&nbsp; {$value|escape}
 									</p>
 									<p>
-										<span class="fa fa-expand"></span>&nbsp;
+										<span class="expand-icon fa fa-expand"></span>&nbsp;
 										<span class="badge">{count($accesses)}</span>
 									</p>
 								</td>
