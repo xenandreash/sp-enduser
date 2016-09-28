@@ -41,6 +41,7 @@ if ($_POST['page'] == 'bwlist')
 	{
 		$value = strtolower(trim($_POST['value']));
 		if ($value[0] == '@') $value = substr($value, 1);
+		if (substr($value, 0, 2) == '*@') $value = substr($value, 2);
 
 		$type = $_POST['type'];
 
@@ -54,6 +55,8 @@ if ($_POST['page'] == 'bwlist')
 
 			if ($access[0] == '@')
 				$access = substr($access, 1);
+			if (substr($access, 0, 2) == '*@')
+				$access = substr($access, 2);
 
 			if (!checkAccess($access))
 				die(json_encode(array('error' => 'permission', 'value' => $access)));
