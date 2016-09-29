@@ -156,7 +156,7 @@
 	table {
 		table-layout: fixed;
 	}
-	td, td > a {
+	td, td > a, td > a > p {
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
