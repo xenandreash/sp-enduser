@@ -24,11 +24,10 @@
 			<table class="table">
 				<thead class="hidden-xs">
 					<tr>
-						<th class="hidden-xs" style="width: 30px"></th>
-						<th class="hidden-xs" style="width: 100px">{t}Action{/t}</th>
-						<th class="hidden-xs">{t}Sender{/t}</th>
-						<th class="hidden-xs">{t}For recipient{/t}</th>
-						<th class="visible-xs"></th>
+						<th style="width: 30px"></th>
+						<th style="width: 80px">{t}Action{/t}</th>
+						<th>{t}Sender{/t}</th>
+						<th>{t}For recipient{/t}</th>
 						<th style="width: 30px"></th>
 					</tr>
 				</thead>
@@ -39,8 +38,8 @@
 						{if count($accesses) > 1}
 							{$id = $id + 1}
 							<tr style="cursor:pointer" data-toggle="{$id}" class="toggle">
-								<td class="hidden-xs"><span class="expand-icon fa fa-expand"></span></td>
-								<td class="hidden-xs"><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></td>
+								<td style="width: 30px; vertical-align: bottom"><span class="expand-icon fa fa-expand"></span></td>
+								<td style="width: 80px"><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></td>
 								<td class="hidden-xs">{$value|escape}</td>
 								<td class="hidden-xs"><span class="badge">{count($accesses)}</span></td>
 								<td class="visible-xs">
@@ -48,7 +47,7 @@
 										<span class="fa fa-user"></span>&nbsp; {$value|escape}
 									</p>
 									<p>
-										<span class="expand-icon fa fa-expand"></span>&nbsp;
+										<span class="fa fa-inbox"></span>&nbsp;
 										<span class="badge">{count($accesses)}</span>
 									</p>
 								</td>
@@ -57,9 +56,9 @@
 								</td>
 							</tr>
 							{foreach $accesses as $access}
-							<tr style="display:none" class="hidden-{$id}">
-								<td class="hidden-xs" style="width:30px"><sup style="opacity:.5">L</sup></td>
-								<td class="hidden-xs"><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></td>
+							<tr style="display:none" class="active hidden-{$id}">
+								<td style="width: 30px"><sup style="opacity:.5">L</sup></td>
+								<td style="width: 80px"><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></td>
 								<td class="hidden-xs">{$value|escape}</td>
 								<td class="hidden-xs">{if $access}{$access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</td>
 								<td class="visible-xs">
@@ -78,8 +77,8 @@
 							{/foreach}
 						{else}
 							<tr>
-								<td class="hidden-xs" style="width:30px"></td>
-								<td class="hidden-xs"><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></td>
+								<td style="width: 30px"></td>
+								<td style="width: 80px"><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></td>
 								<td class="hidden-xs">{$value|escape}</td>
 								<td class="hidden-xs">{if $accesses.0}{$accesses.0|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</td>
 								<td class="visible-xs">
@@ -185,7 +184,7 @@
 	table {
 		table-layout: fixed;
 	}
-	td {
+	td, td > p {
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
