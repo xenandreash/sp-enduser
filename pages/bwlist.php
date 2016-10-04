@@ -32,7 +32,7 @@ if (count($access) != 0) {
 
 if (count($wheres))
 	$where = 'WHERE '.implode(' AND ', $wheres);
-$sql = "SELECT $foundrows * FROM bwlist $where ORDER BY type DESC, value ASC LIMIT :offset, :limit;";
+$sql = "SELECT $foundrows * FROM bwlist $where ORDER BY type DESC, value ASC LIMIT :limit OFFSET :offset;";
 $statement = $dbh->prepare($sql);
 $statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);

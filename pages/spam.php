@@ -58,7 +58,7 @@ if (count($access) != 0) {
 
 if (count($wheres))
 	$where = 'WHERE '.implode(' AND ', $wheres);
-$sql = "SELECT $foundrows * FROM spamsettings $where ORDER BY access DESC LIMIT :offset, :limit;";
+$sql = "SELECT $foundrows * FROM spamsettings $where ORDER BY access DESC LIMIT :limit OFFSET :offset;";
 $statement = $dbh->prepare($sql);
 $statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
