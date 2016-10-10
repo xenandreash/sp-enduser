@@ -105,7 +105,11 @@ if ($_GET['type'] == 'log') {
 			$reject = $deliver = 0;
 			if ($_POST['msgaction'] == 'REJECT') $reject = 1;
 			if ($_POST['msgaction'] == 'QUEUE') $deliver = 1;
-			$statement = $dbh->prepare('INSERT INTO stat (userid, direction, domain, year, month, reject, deliver) VALUES (:userid, :direction, :domain, YEAR(NOW()), MONTH(NOW()), :reject, :deliver) ON DUPLICATE KEY UPDATE reject = reject + VALUES(reject), deliver = deliver + VALUES(deliver);');
+			if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql') {
+				$statement = $dbh->prepare("INSERT INTO stat (userid, direction, domain, year, month, reject, deliver) VALUES (:userid, :direction, :domain, date_part('year', CURRENT_DATE), date_part('month', CURRENT_DATE), :reject, :deliver) ON CONFLICT (direction, domain, year, month) DO UPDATE SET reject = stat.reject + EXCLUDED.reject, deliver = stat.deliver + EXCLUDED.deliver;");
+			} else {
+				$statement = $dbh->prepare('INSERT INTO stat (userid, direction, domain, year, month, reject, deliver) VALUES (:userid, :direction, :domain, YEAR(NOW()), MONTH(NOW()), :reject, :deliver) ON DUPLICATE KEY UPDATE reject = reject + VALUES(reject), deliver = deliver + VALUES(deliver);');
+			}
 			$statement->bindValue(':userid', $_POST['userid']);
 			if ($listeners[$_POST['msglistener']] == 'Outbound' || $transports[$_POST['msgtransport']] == 'Internet') {
 				$statement->bindValue(':direction', 'outbound');
