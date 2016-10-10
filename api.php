@@ -63,7 +63,7 @@ if ($_GET['type'] == 'log') {
 	}
 	$statement->bindValue(':owner', $_POST['owner']);
 	$statement->bindValue(':ownerdomain', array_pop(explode('@', $_POST['owner'])));
-	$statement->bindValue(':msgts', $_POST['msgts']);
+	$statement->bindValue(':msgts', round($_POST['msgts']));
 	$statement->bindValue(':msgid', $_POST['msgid']);
 	$statement->bindValue(':msgactionid', $_POST['msgactionid']);
 	$statement->bindValue(':msgaction', $_POST['msgaction']);
