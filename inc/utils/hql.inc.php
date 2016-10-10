@@ -70,7 +70,7 @@ function hql_to_sql($str, $prefix = 'hql')
 			list($tmp, $field, $type, $value) = $m;
 			// unescape
 			if ($value[0] == '"' && substr($value, -1) == '"') {
-				$value = substr($value, 1, strlen($value) - 1);
+				$value = substr($value, 1, strlen($value) -2);
 				$value = str_replace('\"', '"', $value);
 			}
 			if (!isset($fields[$field])) die('unknown field '.htmlspecialchars($field));
