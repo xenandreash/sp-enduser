@@ -108,6 +108,8 @@ function createMessageLog(&$dbh, &$notes, $name)
 	$dbh->exec('CREATE INDEX '.$name.'_ind_msgto_domain        ON '.$name.'(msgto_domain);');
 	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
 		$dbh->exec('CREATE FULLTEXT INDEX '.$name.'_ind_msgsubject ON '.$name.'(msgsubject);');
+	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql')
+		$dbh->exec('CREATE INDEX '.$name.'_ind_msgsubject ON '.$name." USING gist(to_tsvector('simple', 'msgsubject'));");
 }
 
 if (isset($dbCredentials['dsn'])) {

@@ -98,7 +98,12 @@ function hql_to_sql($str, $prefix = 'hql')
 			// fully rewrite fulltext search
 			if ($field == 'msgsubject' && $type == 'LIKE' && $dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
 				$filter .= 'MATCH (msgsubject) AGAINST (:'.$prefix.$i.' IN BOOLEAN MODE)';
-				$value = str_replace('%', ' ', $value); // remove all % in fulltext search
+				$value = str_replace('%', '', $value);
+			} else if ($field == 'msgsubject' && $type == 'LIKE' && $dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql') {
+				$filter .= "to_tsvector('simple', msgsubject) @@ to_tsquery('simple', :".$prefix.$i.')';
+				$value = str_replace(array('%', '&', '|', '!'), '', $value);
+				$values = preg_split('/ /', $value, -1, PREG_SPLIT_NO_EMPTY);
+				$value = implode($values, " & ");
 			} else {
 				$filter .= $field.' '.$type.' :'.$prefix.$i.' ';
 			}
