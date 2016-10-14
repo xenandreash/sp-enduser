@@ -6,7 +6,7 @@ $dbh = $settings->getDatabase();
 
 $result = array();
 $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
-$limit = isset($_GET['limit']) ? intval($_GET['limit']) : 500;
+$limit = isset($_GET['limit']) ? intval($_GET['limit']) : 25;
 
 $total = null;
 $access = Session::Get()->getAccess();
