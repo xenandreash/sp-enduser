@@ -76,7 +76,7 @@ if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
 	$total = $dbh->query('SELECT FOUND_ROWS();');
 	$total = (int)$total->fetchColumn();
 }
-if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite') {
+if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite' || $dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql') {
 	if ($offset == 0 && count($result) < $limit + 1) {
 		$total = count($result);
 	} else {
