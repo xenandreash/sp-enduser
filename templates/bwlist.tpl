@@ -172,8 +172,10 @@
 							</p>
 						</div>
 					</div>
-					<div class="col-md-offset-3 col-md-9">
-						<button type="submit" class="btn btn-primary">{t}Add{/t}</button>
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-9">
+							<button type="submit" class="btn btn-primary">{t}Add{/t}</button>
+						</div>
 					</div>
 				</form>
 			</div>

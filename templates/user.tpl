@@ -60,11 +60,16 @@
 							<label class="col-sm-3 control-label" for="password">{t}New Password{/t}</label>
 							<div class="col-sm-9">
 								<input type="password" class="form-control" name="password" id="password" placeholder="New password">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label" for="password2">&nbsp;</label>
+							<div class="col-sm-9">
 								<input type="password" class="form-control" name="password2" id="password2" placeholder="Repeat new password">
 							</div>
 						</div>
 						<div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
+							<div class="col-sm-offset-3 col-sm-10">
 								<button type="submit" class="btn btn-primary">{t}Change{/t}</button>
 							</div>
 						</div>

@@ -139,13 +139,15 @@
 							{/if}
 						</div>
 					</div>
-					<div class="col-md-offset-3 col-md-9">
-						{if $edit}
-						<button type="submit" class="btn btn-primary">{t}Save{/t}</button>
-						<a href="?page=spam"><button type="button" class="btn btn-default">{t}Cancel{/t}</button></a>
-						{else}
-						<button type="submit" class="btn btn-primary">{t}Add{/t}</button>
-						{/if}
+					<div class="form-group">
+						<div class="col-md-offset-3 col-md-9">
+							{if $edit}
+							<button type="submit" class="btn btn-primary">{t}Save{/t}</button>
+							<a href="?page=spam"><button type="button" class="btn btn-default">{t}Cancel{/t}</button></a>
+							{else}
+							<button type="submit" class="btn btn-primary">{t}Add{/t}</button>
+							{/if}
+						</div>
 					</div>
 				</form>
 			</div>
