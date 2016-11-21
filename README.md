@@ -19,6 +19,6 @@ Requirements
 
 Plugins
 -------
- * cPanel https://github.com/halonsecurity/sp-enduser-cpanel
- * Odin (APS2) https://github.com/halonsecurity/sp-enduser-aps2
- * Plesk https://github.com/halonsecurity/sp-enduser-plesk
+ * cPanel https://github.com/halon/sp-enduser-cpanel
+ * Odin (APS2) https://github.com/halon/sp-enduser-aps2
+ * Plesk https://github.com/halon/sp-enduser-plesk
