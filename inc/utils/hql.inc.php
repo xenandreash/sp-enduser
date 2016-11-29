@@ -62,6 +62,7 @@ function hql_to_sql($str, $prefix = 'hql', $driver = '')
 	$ftok = 0; // filter token
 	foreach ($parts as $p) {
 		if ($p == 'and') { if ($ftok != 1) die('no filter condition before and'); $filter .= 'AND '; $ftok = 0; }
+		else if ($p == '&&') { if ($ftok != 1) die('no filter condition before &&'); $filter = '(' . $filter . ') AND '; $ftok = 0; }
 		else if ($p == 'or') { if ($ftok != 1) die('no filter condition before or'); $filter .= 'OR '; $ftok = 0; }
 		else if ($p == 'not') { if ($ftok == 1) $filter .= 'AND '; $filter .= 'NOT '; $ftok = 0; }
 		else if (preg_match('/^([a-z]+)([=~><])(.*?)$/', $p, $m)) {

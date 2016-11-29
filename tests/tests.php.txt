@@ -1,0 +1,31 @@
+<?php
+
+if (!isset($_SERVER['argc']))
+	die('this file can only be run from command line');
+
+require 'inc/utils/hql.inc.php';
+
+$tests = 0;
+function hql_to_sql_assert($hql, $sql, $params)
+{
+	global $tests;
+	$tests++;
+	if ($hql['filter'] != $sql)
+	{
+		echo "Expect: ($sql)\n";
+		echo "Result: (".$hql['filter'].")\n";
+		die();
+	}
+	if ($hql['params'] != $params)
+	{
+		echo $sql . ": params failed\n";
+		var_dump($hql['params']);
+		var_dump($params);
+		die();
+	}
+}
+
+hql_to_sql_assert(hql_to_sql('from=test@example.com', 'hql', 'mysql'), 'msgfrom = :hql1 ', [':hql1' => 'test@example.com']);
+hql_to_sql_assert(hql_to_sql('from=test@example.com && to=foo@example.org', 'hql', 'mysql'), '(msgfrom = :hql1 ) AND msgto = :hql2 ', [':hql1' => 'test@example.com', ':hql2' => 'foo@example.org']);
+
+echo "Successful completed $tests tests\n";
