@@ -37,11 +37,8 @@ function hql_transform($string)
 }
 
 // this function only implements a subset of HQL
-function hql_to_sql($str, $prefix = 'hql')
+function hql_to_sql($str, $prefix = 'hql', $driver = '')
 {
-	$settings = Settings::Get();
-	$dbh = $settings->getDatabase();
-
 	// allowed HQL fields, need to exist in messagelog table
 	$fields = array();
 	$fields['messageid'] = 'msgid';
@@ -96,10 +93,10 @@ function hql_to_sql($str, $prefix = 'hql')
 					$value = '%'.$value.'%';
 			}
 			// fully rewrite fulltext search
-			if ($field == 'msgsubject' && $type == 'LIKE' && $dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
+			if ($field == 'msgsubject' && $type == 'LIKE' && $driver == 'mysql') {
 				$filter .= 'MATCH (msgsubject) AGAINST (:'.$prefix.$i.' IN BOOLEAN MODE)';
 				$value = str_replace('%', '', $value);
-			} else if ($field == 'msgsubject' && $type == 'LIKE' && $dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql') {
+			} else if ($field == 'msgsubject' && $type == 'LIKE' && $driver == 'pgsql') {
 				$filter .= "to_tsvector('simple', msgsubject) @@ to_tsquery('simple', :".$prefix.$i.')';
 				$value = str_replace(array('%', '&', '|', '!'), '', $value);
 				$values = preg_split('/ /', $value, -1, PREG_SPLIT_NO_EMPTY);

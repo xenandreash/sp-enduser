@@ -27,7 +27,7 @@ class DatabaseBackend extends Backend
 			$unix_time_sql = 'UNIX_TIMESTAMP(msgts0)';
 		}
 		$sql_select = $unix_time_sql.' AS msgts0 FROM '.Session::Get()->getMessagelogTable();
-		$sql_where = hql_to_sql($search);
+		$sql_where = hql_to_sql($search, 'hql', $this->database->getAttribute(PDO::ATTR_DRIVER_NAME));
 		$real_sql = $this->restrict_select($sql_select, $sql_where, 'ORDER BY id DESC', intval($size + 1), $param);
 		if (strpos($real_sql['sql'], ') UNION (') !== false) {
 			$real_sql['sql'] .= ' ORDER BY id DESC';
