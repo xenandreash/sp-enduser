@@ -25,8 +25,8 @@ function hql_to_sql_assert($hql, $sql, $params)
 	}
 }
 
-hql_to_sql_assert(hql_to_sql('from=test@example.com', 'hql', 'mysql'), 'msgfrom = :hql1 ', [':hql1' => 'test@example.com']);
-hql_to_sql_assert(hql_to_sql('from=test@example.com && to=foo@example.org', 'hql', 'mysql'), '(msgfrom = :hql1 ) AND msgto = :hql2 ', [':hql1' => 'test@example.com', ':hql2' => 'foo@example.org']);
-hql_to_sql_assert(hql_to_sql('from~%@example.com or to~%@example.com && action=REJECT', 'hql', 'mysql'), '(msgfrom_domain = :hql1 OR msgto_domain = :hql2 ) AND msgaction = :hql3 ', [':hql1' => 'example.com', ':hql2' => 'example.com', ':hql3' => 'REJECT']);
+hql_to_sql_assert(hql_to_sql('from=test@example.com', 'mysql'), 'msgfrom = :hql1 ', [':hql1' => 'test@example.com']);
+hql_to_sql_assert(hql_to_sql('from=test@example.com && to=foo@example.org', 'mysql'), '(msgfrom = :hql1 ) AND msgto = :hql2 ', [':hql1' => 'test@example.com', ':hql2' => 'foo@example.org']);
+hql_to_sql_assert(hql_to_sql('from~%@example.com or to~%@example.com && action=REJECT', 'mysql'), '(msgfrom_domain = :hql1 OR msgto_domain = :hql2 ) AND msgaction = :hql3 ', [':hql1' => 'example.com', ':hql2' => 'example.com', ':hql3' => 'REJECT']);
 
 echo "Successful completed $tests tests\n";

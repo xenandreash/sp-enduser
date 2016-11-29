@@ -37,7 +37,7 @@ function hql_transform($string)
 }
 
 // this function only implements a subset of HQL
-function hql_to_sql($str, $prefix = 'hql', $driver = '')
+function hql_to_sql($str, $driver, $prefix = 'hql')
 {
 	// allowed HQL fields, need to exist in messagelog table
 	$fields = array();
