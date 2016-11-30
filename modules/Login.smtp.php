@@ -7,7 +7,10 @@
 
 function halon_login_smtp($username, $password, $method, $settings)
 {
-	$fp = fsockopen($method['host'], $method['port'] ?: 25);
+	$opts = $method['options'] ?: array();
+	$context = stream_context_create($opts);
+
+	$fp = stream_socket_client($method['host'].':'.$method['port'] ?: 25, $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $context);
 	while ($line = fgets($fp)) {
 		if (substr($line, 0, 1) != '2')
 			goto smtp_fail;
