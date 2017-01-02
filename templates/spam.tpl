@@ -11,7 +11,7 @@
 {$levels['high'] = $level}
 
 <div class="container-fluid">
-	<div class="col-md-6 col-lg-8">
+	<div class="col-md-7 col-lg-8">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">
@@ -93,7 +93,7 @@
 			{/if}
 		</nav>
 	</div>
-	<div class="col-md-6 col-lg-4">
+	<div class="col-md-5 col-lg-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">{if $edit}{t}Edit{/t}{else}{t}Add...{/t}{/if}</h3>
