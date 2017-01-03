@@ -81,14 +81,14 @@
 					{elseif $p === $currpage}
 					<li class="active"><a href="#">{$p+1}</a></li>
 					{else}
-					<li><a href="?page=spam&offset={$limit*$p}&limit={$limit}&search={$search|urlencode}">{$p+1}</a></li>
+					<li><a href="?page=spam&offset={$limit*$p}&limit={$limit}{if $search}&search={$search|urlencode}{/if}">{$p+1}</a></li>
 					{/if}
 				{/foreach}
 			</ul>
 			{else}
 			<ul class="pager">
 				<li class="previous{if $offset == 0} disabled{/if}"><a href="javascript:history.go(-1);"><span aria-hidden="true">&larr;</span> {t}Previous{/t}</a></li>
-				<li class="next{if !$pagemore} disabled{/if}"><a href="?page=spam&offset={$offset+$limit}&limit={$limit}&search={$search|urlencode}">{t}Next{/t} <span aria-hidden="true">&rarr;</span></a></li>
+				<li class="next{if !$pagemore} disabled{/if}"><a href="?page=spam&offset={$offset+$limit}&limit={$limit}{if $search}&search={$search|urlencode}{/if}">{t}Next{/t} <span aria-hidden="true">&rarr;</span></a></li>
 			</ul>
 			{/if}
 		</nav>
