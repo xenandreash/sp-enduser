@@ -3,7 +3,7 @@
 	<div class="container-fluid">
 		<form class="navbar-form navbar-left" role="search" id="search_form">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="{t}Search for...{/t}" id="search" value="{$search|escape}">
+				<input type="text" class="form-control" size="40" placeholder="{t}Search for...{/t}" id="search" value="{$search|escape}">
 				<span class="input-group-btn">
 					<button class="btn btn-primary" type="search"><span class="fa fa-search"></span></button>
 				</span>
