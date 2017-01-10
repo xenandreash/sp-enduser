@@ -2,34 +2,7 @@
 if (!defined('SP_ENDUSER')) die('File not included');
 if (!$settings->getDisplaySpamSettings()) die("The setting display-spamsettings isn't enabled");
 
-function checkAccess($perm)
-{
-	$access = Session::Get()->getAccess();
-	if (count($access) == 0)
-		return true;
-	foreach ($access as $type)
-		foreach ($type as $item)
-			if ($item == $perm)
-				return true;
-	if (strpos($perm, '@') !== false)
-		if (Session::Get()->checkAccessMail($perm))
-			return true;
-	return false;
-}
-
 $dbh = $settings->getDatabase();
-
-$edit = null;
-if (isset($_GET['edit'])) {
-	if (!checkAccess($_GET['edit'])) {
-		header("Location: ?page=spam&error=perm");
-		die();
-	}
-	$statement = $dbh->prepare("SELECT * FROM spamsettings WHERE access = :access;");
-	$statement->execute(array(':access' => strtolower($_GET['edit'])));
-	if ($row = $statement->fetch(PDO::FETCH_ASSOC))
-		$edit = array('access' => $row['access'], 'settings' => json_decode($row['settings']));
-}
 
 $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 25;
@@ -58,7 +31,7 @@ if (count($access) != 0) {
 
 if (count($wheres))
 	$where = 'WHERE '.implode(' AND ', $wheres);
-$sql = "SELECT $foundrows * FROM spamsettings $where ORDER BY access DESC LIMIT :limit OFFSET :offset;";
+$sql = "SELECT $foundrows * FROM spamsettings $where ORDER BY access ASC LIMIT :limit OFFSET :offset;";
 $statement = $dbh->prepare($sql);
 $statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
@@ -72,6 +45,14 @@ $statement->execute();
 $result = array();
 while ($row = $statement->fetch(PDO::FETCH_ASSOC))
 	$result[] = array('access' => $row['access'], 'settings' => json_decode($row['settings']));
+
+if ($offset > 0 and !count($result)) {
+	$redirect = $_SERVER['PHP_SELF'].'?page='.$_GET['page'];
+	if ($search) $redirect .= "&search=$search";
+	header("Location: $redirect");
+	die();
+}
+
 if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
 	$total = $dbh->query('SELECT FOUND_ROWS();');
 	$total = (int)$total->fetchColumn();
@@ -117,7 +98,6 @@ $javascript[] = 'static/js/spam.js';
 require_once BASE.'/inc/smarty.php';
 
 if ($search) $smarty->assign('search', $search);
-if ($edit) $smarty->assign('edit', $edit);
 $access = array();
 foreach (Session::Get()->getAccess() as $a)
 	$access = array_merge($access, $a);
