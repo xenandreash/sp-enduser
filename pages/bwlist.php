@@ -45,6 +45,14 @@ foreach ($domain_access as $k => $v)
 $statement->execute();
 while ($row = $statement->fetch(PDO::FETCH_ASSOC))
 	$result[] = $row;
+
+if ($offset > 0 and !count($result)) {
+	$redirect = $_SERVER['PHP_SELF'].'?page='.$_GET['page'];
+	if ($search) $redirect .= "&search=$search";
+	header("Location: $redirect");
+	die();
+}
+
 if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
 	$total = $dbh->query('SELECT FOUND_ROWS();');
 	$total = (int)$total->fetchColumn();

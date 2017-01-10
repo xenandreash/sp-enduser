@@ -1,12 +1,64 @@
 $(document).ready(function() {
-	$('#check-all').click(function() {
-			$('input.recipient').prop('checked', true);
-			return false;
+	$('#link-add').click(function() {
+		$('#btn-cancel').click();
+		$('html, body').animate({
+			scrollTop: $('#side-panel').offset().top - 100
+		}, 0);
 	});
-	$('#add-access').click(function() {
-		$("#extra-accesses").prepend("<div class='checkbox'><input type='text' class='form-control recipient' placeholder='Email or domain'></div>");
+
+	$('.item').click(function() {
+		var types = {blacklist: 0, whitelist: 1};
+		var type = $(this).data('type');
+
+		$('.item-hidden').addClass('info');
+		$(this).closest('tr').removeClass('info');
+		$(this).closest('tbody').children('tr.active').removeClass('active');
+		$(this).closest('tr').addClass('active');
+
+		$('#side-panel').removeClass('panel-default');
+		$('#side-panel').addClass('panel-primary');
+
+		$('#action').val('edit');
+		$('#value').val($(this).data('value'));
+		$('#edit-id').val($(this).attr('id'));
+		$('#edit-recipient').text($(this).closest('tr').children('.item-access').text());
+		$('#type>option:eq(' + types[type] +')').prop('selected', true);
+
+		$('.hidden-edit').addClass('hidden');
+		$('.visible-edit').removeClass('hidden');
+
+		$('html, body').animate({
+			scrollTop: $('#side-panel').offset().top - 100
+		}, 0);
+	});
+
+	$('#btn-cancel').click(function() {
+		$('.item.active').removeClass('active');
+		$('.item-hidden').addClass('info');
+
+		$('#side-panel').removeClass('panel-primary');
+		$('#side-panel').addClass('panel-default');
+
+		$('#action').val('add');
+		$('#value').val(null);
+		$('#edit-id').val(null);
+		$('#edit-recipient').text(null);
+		$('#type>option:eq("0")').prop('selected', true);
+
+		$('.visible-edit').addClass('hidden');
+		$('.hidden-edit').removeClass('hidden');
+	});
+
+	$('#check-all').click(function() {
+		$('input.recipient').prop('checked', true);
 		return false;
 	});
+
+	$('#add-access').click(function() {
+		$("#extra-accesses").prepend("<div class='checkbox'><input type='text' class='form-control recipient'></div>");
+		return false;
+	});
+
 	$(".toggle").click(function() {
 		$(".hidden-" + $(this).data("toggle")).toggle();
 		var icon = $(this).find(".expand-icon");
@@ -15,14 +67,25 @@ $(document).ready(function() {
 		else
 			icon.addClass('fa-expand').removeClass('fa-compress');
 	});
+
 	$('#bwlist_add').submit(function() {
-		$.post("?xhr", {
+		var post = {
 			"page": "bwlist",
-			"list": "add",
+			"list": $("#action").val(),
 			"value": $("#value").val(),
-			"type": $("#type").val(),
-			"access": $('#bwlist_add input[type="checkbox"].recipient:checked, #bwlist_add input[type="text"].recipient, #bwlist_add input[type="hidden"].recipient').map(function(){ return $(this).val(); }).get()
-		}, function(data) {
+			"type": $("#type").val()
+		};
+
+		if ($('#action').val() == 'add')
+			post["access"] = $('#bwlist_add input[type="checkbox"].recipient:checked, #bwlist_add input[type="text"].recipient, #bwlist_add input[type="hidden"].recipient').map(function(){return $(this).val();}).get();
+
+		if ($('#action').val() == 'edit') {
+			post["access"] = [$('#' + $('#edit-id').val()).data('access')];
+			post["old_value"] = $('#' + $('#edit-id').val()).data('value');
+			post["old_type"] = $('#' + $('#edit-id').val()).data('type');
+		}
+
+		$.post("?xhr", post, function(data) {
 			if (data.error) {
 				if (data.error == 'syntax')
 					alert('Syntax error on field ' + data.field + ': ' + data.reason);
@@ -33,13 +96,14 @@ $(document).ready(function() {
 			window.location.reload();
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			alert('Error: ' + errorThrown);
-		})
+		});
 		return false;
 	});
+
 	$(".bwlist_delete").click(function() {
-		var value = $(this).data('value');
-		var type = $(this).data('type');
-		var access = $(this).data('access');
+		var value = $(this).closest('tr').data('value');
+		var type = $(this).closest('tr').data('type');
+		var access = $(this).closest('tr').data('access');
 		if (!confirm('Delete ' + type + ' item "' + value + '" for: ' + access + '?'))
 			return false;
 

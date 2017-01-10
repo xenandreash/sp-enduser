@@ -37,13 +37,21 @@ if ($_POST['page'] == 'bwlist')
 		die(json_encode(array('status' => 'ok')));
 	}
 
-	if ($_POST['list'] == 'add')
+	if ($_POST['list'] == 'add' || $_POST['list'] == 'edit')
 	{
 		$value = strtolower(trim($_POST['value']));
 		if ($value[0] == '@') $value = substr($value, 1);
 		if (substr($value, 0, 2) == '*@') $value = substr($value, 2);
 
 		$type = $_POST['type'];
+
+		if ($_POST['list'] == 'edit') {
+			$old_value = strtolower(trim($_POST['old_value']));
+			if ($old_value[0] == '@') $old_value = substr($old_value, 1);
+			if (substr($old_value, 0, 2) == '*@') $old_value = substr($old_value, 2);
+
+			$old_type = $_POST['old_type'];
+		}
 
 		$added = false;
 		foreach ($_POST['access'] as $access)
@@ -62,8 +70,14 @@ if ($_POST['page'] == 'bwlist')
 				die(json_encode(array('error' => 'permission', 'value' => $access)));
 
 			if ($type == 'whitelist' || $type == 'blacklist') {
-				$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
-				$statement->execute(array(':access' => strtolower($access), ':type' => $type, ':value' => $value));
+				if ($_POST['list'] == 'add') {
+					$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
+					$statement->execute(array(':access' => strtolower($access), ':type' => $type, ':value' => $value));
+				}
+				if ($_POST['list'] == 'edit') {
+					$statement = $dbh->prepare("UPDATE bwlist SET type = :type, value = :value WHERE access = :access AND value = :old_value and type = :old_type;");
+					$statement->execute(array(':access' => strtolower($access), ':type' => $type, ':value' => $value, ':old_value' => $old_value, ':old_type' => $old_type));
+				}
 				$added = true;
 			} else
 				die(json_encode(array('error' => 'syntax', 'field' => 'type', 'reason' => 'Type not black or whitelist')));
