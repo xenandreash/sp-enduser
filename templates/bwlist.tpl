@@ -16,6 +16,7 @@
 			<div id="search" class="{if not $search}collapse{/if}"><div class="panel-body">
 				<form class="form-horizontal" method="get">
 					<input type="hidden" name="page" value="bwlist">
+					<input type="hidden" name="limit" value="{$limit}">
 					<div class="input-group">
 						<input type="text" class="form-control" placeholder="{t}Search for...{/t}" name="search" value="{$search|escape}">
 						<span class="input-group-btn">
@@ -101,7 +102,7 @@
 			</table>
 		</div>
 		<nav>
-			{if $total}
+			{if $total && count($pages)}
 			<ul class="pagination">
 				{foreach $pages as $p}
 					{if $p === '...'}
@@ -113,13 +114,19 @@
 					{/if}
 				{/foreach}
 			</ul>
-			{else}
+			{elseif !$total && count($items)}
 			<ul class="pager">
 				<li class="previous{if $offset == 0} disabled{/if}"><a href="javascript:history.go(-1);"><span aria-hidden="true">&larr;</span> {t}Previous{/t}</a></li>
 				<li class="next{if !$pagemore} disabled{/if}"><a href="?page=bwlist&offset={$offset+$limit}&limit={$limit}{if $search}&search={$search|urlencode}{/if}">{t}Next{/t} <span aria-hidden="true">&rarr;</span></a></li>
 			</ul>
 			{/if}
 		</nav>
+		<p class="text-muted small">{t}Results per page:{/t}</p>
+		<div class="btn-group" role="group" aria-label="Results per page" style="margin-bottom: 40px;">
+			{foreach $pagesizes as $pagesize}
+				<a class="btn btn-sm btn-default{if $limit==$pagesize} active{/if}" href="?page=bwlist&limit={$pagesize}{if $search}&search={$search|escape}{/if}">{$pagesize}</a>
+			{/foreach}
+		</div>
 	</div>
 	<div class="col-md-5 col-lg-4">
 		<div id="side-panel" class="panel panel-default">

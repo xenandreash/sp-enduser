@@ -6,6 +6,7 @@ $dbh = $settings->getDatabase();
 
 $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 25;
+$pagesize = array(25, 50, 100, 500, 1000);
 
 $total = null;
 $access = Session::Get()->getAccess();
@@ -48,6 +49,7 @@ while ($row = $statement->fetch(PDO::FETCH_ASSOC))
 
 if ($offset > 0 and !count($result)) {
 	$redirect = $_SERVER['PHP_SELF'].'?page='.$_GET['page'];
+	if (isset($_GET['limit'])) $redirect .= "&limit=$limit";
 	if ($search) $redirect .= "&search=$search";
 	header("Location: $redirect");
 	die();
@@ -108,6 +110,7 @@ if ($pages) $smarty->assign('pages', $pages);
 $smarty->assign('currpage', $currpage);
 $smarty->assign('limit', $limit);
 $smarty->assign('offset', $offset);
+$smarty->assign('pagesizes', $pagesize);
 if ($pagemore) $smarty->assign('pagemore', true);
 
 $smarty->display('spam.tpl');
