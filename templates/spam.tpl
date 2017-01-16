@@ -24,18 +24,20 @@
 					</a>
 				</h3>
 			</div>
-			<div id="search" class="{if not $search}collapse{/if}"><div class="panel-body">
-				<form class="form-horizontal" method="get">
-					<input type="hidden" name="page" value="{$pagename}">
-					<input type="hidden" name="limit" value="{$limit}">
-					<div class="input-group">
-						<input type="text" class="form-control" placeholder="{t}Search for...{/t}" name="search" value="{$search|escape}">
-						<span class="input-group-btn">
-							<button class="btn btn-primary" type="search"><span class="fa fa-search"></span></button>
-						</span>
-					</div>
-				</form>
-			</div></div>
+			<div id="search" class="{if $search}collapse in{else}collapse{/if}" aria-expanded="{if $search}true{else}false{/if}">
+				<div class="panel-body">
+					<form class="form-horizontal" method="get">
+						<input type="hidden" name="page" value="{$pagename}">
+						<input type="hidden" name="limit" value="{$limit}">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="{t}Search for...{/t}" name="search" value="{$search|escape}">
+							<span class="input-group-btn">
+								<button class="btn btn-primary" type="search"><span class="fa fa-search"></span></button>
+							</span>
+						</div>
+					</form>
+				</div>
+			</div>
 			<table class="table table-hover">
 				<thead class="hidden-xs">
 					<tr>
