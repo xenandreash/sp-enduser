@@ -91,7 +91,7 @@ class DatabaseBackend extends Backend
 		$access = Session::Get()->getAccess();
 
 		if (count($settings->getQuarantineFilter()) > 0)
-			die('you cannot combine filter-pattern and local history');
+			die('you cannot combine quarantine-filter and local history');
 		$filter = array();
 		$params = array();
 		$i = 0;
