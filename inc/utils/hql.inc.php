@@ -52,7 +52,11 @@ function hql_to_sql($str, $driver, $prefix = 'hql')
 	$fields['sasl'] = 'msgsasl';
 	$fields['rpdscore'] = 'score_rpd';
 	$fields['sascore'] = 'score_sa';
-	$fields['time'] = 'UNIX_TIMESTAMP(msgts0)'; // XXX MySQL only
+	if ($driver == 'pgsql') {
+		$fields['time'] = 'extract(epoch from msgts0)';
+	} else {
+		$fields['time'] = 'UNIX_TIMESTAMP(msgts0)';
+	}
 
 	preg_match_all('/\s*([a-z]+([=~><])("(\"|[^"])*?"|[^\s]*)|and|or|not|&&)\s*/', $str, $parts);
 	$parts = $parts[1]; // because of the regex above, index 1 contains what we want
