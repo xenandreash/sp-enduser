@@ -62,7 +62,7 @@ if ($_GET['type'] == 'log') {
 		$statement = $dbh->prepare('INSERT INTO '.$settings->getMessagelogTable($_POST['userid']).' (owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, msgsize, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :msgsize, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
 	}
 	$statement->bindValue(':owner', $_POST['owner']);
-	$statement->bindValue(':ownerdomain', array_pop(explode('@', $_POST['owner'])));
+	$statement->bindValue(':ownerdomain', substr($_POST['owner'], strrpos($_POST['owner'], '@')+1));
 	$statement->bindValue(':msgts', round($_POST['msgts']));
 	$statement->bindValue(':msgid', $_POST['msgid']);
 	$statement->bindValue(':msgactionid', $_POST['msgactionid']);
@@ -72,9 +72,9 @@ if ($_GET['type'] == 'log') {
 	$statement->bindValue(':msgsasl', $_POST['msgsasl']);
 	$statement->bindValue(':msgfromserver', $_POST['msgfromserver']);
 	$statement->bindValue(':msgfrom', $_POST['msgfrom']);
-	$statement->bindValue(':msgfromdomain', array_pop(explode('@', $_POST['msgfrom'])));
+	$statement->bindValue(':msgfromdomain', substr($_POST['msgfrom'], strrpos($_POST['msgfrom'], '@')+1));
 	$statement->bindValue(':msgto', $_POST['msgto']);
-	$statement->bindValue(':msgtodomain', array_pop(explode('@', $_POST['msgto'])));
+	$statement->bindValue(':msgtodomain', substr($_POST['msgto'], strrpos($_POST['msgto'], '@')+1));
 	$statement->bindValue(':msgsubject', $_POST['msgsubject']);
 	$statement->bindValue(':msgsize', $_POST['msgsize']);
 	$statement->bindValue(':msgdescription', $_POST['msgdescription']);
@@ -113,10 +113,10 @@ if ($_GET['type'] == 'log') {
 			$statement->bindValue(':userid', $_POST['userid']);
 			if ($listeners[$_POST['msglistener']] == 'Outbound' || $transports[$_POST['msgtransport']] == 'Internet') {
 				$statement->bindValue(':direction', 'outbound');
-				$statement->bindValue(':domain', array_pop(explode('@', $_POST['msgfrom'])));
+				$statement->bindValue(':domain', substr($_POST['msgfrom'], strrpos($_POST['msgfrom'], '@')+1));
 			} else {
 				$statement->bindValue(':direction', 'inbound');
-				$statement->bindValue(':domain', array_pop(explode('@', $_POST['msgto'])));
+				$statement->bindValue(':domain', substr($_POST['msgto'], strrpos($_POST['msgto'], '@')+1));
 			}
 			$statement->bindValue(':reject', $reject);
 			$statement->bindValue(':deliver', $deliver);
