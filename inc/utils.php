@@ -202,3 +202,8 @@ function emptyspace($str)
 		return '<br>'; // XXX: empty table-cell hack
 	return $str;
 }
+
+function extract_domain($address)
+{
+	return strpos($address, '@') !== false ? substr($address, strrpos($address, '@') + 1) : $address;
+}

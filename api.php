@@ -62,7 +62,7 @@ if ($_GET['type'] == 'log') {
 		$statement = $dbh->prepare('INSERT INTO '.$settings->getMessagelogTable($_POST['userid']).' (owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, msgsize, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :msgsize, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
 	}
 	$statement->bindValue(':owner', $_POST['owner']);
-	$statement->bindValue(':ownerdomain', strpos($_POST['owner'], '@') !== false ? substr($_POST['owner'], strrpos($_POST['owner'], '@')+1) : $_POST['owner']);
+	$statement->bindValue(':ownerdomain', extract_domain($_POST['owner']));
 	$statement->bindValue(':msgts', round($_POST['msgts']));
 	$statement->bindValue(':msgid', $_POST['msgid']);
 	$statement->bindValue(':msgactionid', $_POST['msgactionid']);
@@ -72,9 +72,9 @@ if ($_GET['type'] == 'log') {
 	$statement->bindValue(':msgsasl', $_POST['msgsasl']);
 	$statement->bindValue(':msgfromserver', $_POST['msgfromserver']);
 	$statement->bindValue(':msgfrom', $_POST['msgfrom']);
-	$statement->bindValue(':msgfromdomain', strpos($_POST['msgfrom'], '@') !== false ? substr($_POST['msgfrom'], strrpos($_POST['msgfrom'], '@')+1) : $_POST['msgfrom']);
+	$statement->bindValue(':msgfromdomain', extract_domain($_POST['msgfrom']));
 	$statement->bindValue(':msgto', $_POST['msgto']);
-	$statement->bindValue(':msgtodomain', strpos($_POST['msgto'], '@') !== false ? substr($_POST['msgto'], strrpos($_POST['msgto'], '@')+1) : $_POST['msgto']);
+	$statement->bindValue(':msgtodomain', extract_domain($_POST['msgto']));
 	$statement->bindValue(':msgsubject', $_POST['msgsubject']);
 	$statement->bindValue(':msgsize', $_POST['msgsize']);
 	$statement->bindValue(':msgdescription', $_POST['msgdescription']);
@@ -113,10 +113,10 @@ if ($_GET['type'] == 'log') {
 			$statement->bindValue(':userid', $_POST['userid']);
 			if ($listeners[$_POST['msglistener']] == 'Outbound' || $transports[$_POST['msgtransport']] == 'Internet') {
 				$statement->bindValue(':direction', 'outbound');
-				$statement->bindValue(':domain', strpos($_POST['msgfrom'], '@') !== false ? substr($_POST['msgfrom'], strrpos($_POST['msgfrom'], '@')+1) : $_POST['msgfrom']);
+				$statement->bindValue(':domain', extract_domain($_POST['msgfrom']));
 			} else {
 				$statement->bindValue(':direction', 'inbound');
-				$statement->bindValue(':domain', strpos($_POST['msgto'], '@') !== false ? substr($_POST['msgto'], strrpos($_POST['msgto'], '@')+1) : $_POST['msgto']);
+				$statement->bindValue(':domain', extract_domain($_POST['msgto']));
 			}
 			$statement->bindValue(':reject', $reject);
 			$statement->bindValue(':deliver', $deliver);
