@@ -20,14 +20,14 @@ $sorted_domains = array('inbound' => array(), 'outbound' => array());
 if ($settings->getUseDatabaseStats()) {
 	$dbh = $settings->getDatabase();
 	if (isset($access['userid'])) {
-		$q = $dbh->prepare('SELECT direction, domain FROM stat WHERE userid = :userid GROUP BY direction, domain;');
+		$q = $dbh->prepare('SELECT DISTINCT direction, domain FROM stat WHERE userid = :userid GROUP BY direction, domain;');
 		$q->execute(array(':userid' => $access['userid']));
 		while ($d = $q->fetch(PDO::FETCH_ASSOC)) {
 			$sorted_domains[($d['direction'] == 'outbound') ? 'outbound' : 'inbound'][] = $d['domain'];
 		}
 	} else {
 		foreach ($domains as $domain) {
-			$q = $dbh->prepare('SELECT direction, domain FROM stat WHERE domain = :domain;');
+			$q = $dbh->prepare('SELECT DISTINCT direction, domain FROM stat WHERE domain = :domain;');
 			$q->execute(array(':domain' => $domain));
 			while ($d = $q->fetch(PDO::FETCH_ASSOC)) {
 				$sorted_domains[($d['direction'] == 'outbound') ? 'outbound' : 'inbound'][] = $d['domain'];
