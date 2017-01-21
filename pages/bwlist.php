@@ -104,7 +104,7 @@ $javascript[] = 'static/js/bwlist.js';
 
 require_once BASE.'/inc/smarty.php';
 
-$smarty->assign('pagename', $_GET['page']);
+$smarty->assign('pageactive', $_GET['page']);
 if ($search) $smarty->assign('search', $search);
 $access = array();
 foreach (Session::Get()->getAccess() as $a)

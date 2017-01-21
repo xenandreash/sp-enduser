@@ -1,4 +1,4 @@
-{include file='header.tpl' title='Spam settings' page_active='spam'}
+{include file='header.tpl' title='Spam settings' page_active=$pageactive}
 
 {$levels = array()}
 {capture assign="level"}{t}Disabled{/t}{/capture}
@@ -27,7 +27,7 @@
 			<div id="search" class="{if $search}collapse in{else}collapse{/if}" aria-expanded="{if $search}true{else}false{/if}">
 				<div class="panel-body">
 					<form class="form-horizontal" method="get">
-						<input type="hidden" name="page" value="{$pagename}">
+						<input type="hidden" name="page" value="{$pageactive}">
 						<input type="hidden" name="limit" value="{$limit}">
 						<div class="input-group">
 							<input type="text" class="form-control" placeholder="{t}Search for...{/t}" name="search" value="{$search|escape}">
@@ -81,21 +81,21 @@
 					{elseif $p === $currpage}
 					<li class="active"><a href="#">{$p+1}</a></li>
 					{else}
-					<li><a href="?page={$pagename}&offset={$limit*$p}&limit={$limit}{if $search}&search={$search|urlencode}{/if}">{$p+1}</a></li>
+					<li><a href="?page={$pageactive}&offset={$limit*$p}&limit={$limit}{if $search}&search={$search|urlencode}{/if}">{$p+1}</a></li>
 					{/if}
 				{/foreach}
 			</ul>
 			{elseif !$total && count($items)}
 			<ul class="pager">
 				<li class="previous{if $offset == 0} disabled{/if}"><a href="javascript:history.go(-1);"><span aria-hidden="true">&larr;</span> {t}Previous{/t}</a></li>
-				<li class="next{if !$pagemore} disabled{/if}"><a href="?page={$pagename}&offset={$offset+$limit}&limit={$limit}{if $search}&search={$search|urlencode}{/if}">{t}Next{/t} <span aria-hidden="true">&rarr;</span></a></li>
+				<li class="next{if !$pagemore} disabled{/if}"><a href="?page={$pageactive}&offset={$offset+$limit}&limit={$limit}{if $search}&search={$search|urlencode}{/if}">{t}Next{/t} <span aria-hidden="true">&rarr;</span></a></li>
 			</ul>
 			{/if}
 		</nav>
 		<p class="text-muted small">{t}Results per page:{/t}</p>
 		<div class="btn-group" role="group" aria-label="Results per page" style="margin-bottom: 40px;">
 			{foreach $pagesizes as $pagesize}
-				<a class="btn btn-sm btn-default{if $limit==$pagesize} active{/if}" href="?page={$pagename}&limit={$pagesize}{if $search}&search={$search|escape}{/if}">{$pagesize}</a>
+				<a class="btn btn-sm btn-default{if $limit==$pagesize} active{/if}" href="?page={$pageactive}&limit={$pagesize}{if $search}&search={$search|escape}{/if}">{$pagesize}</a>
 			{/foreach}
 		</div>
 	</div>
