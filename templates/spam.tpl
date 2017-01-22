@@ -55,8 +55,8 @@
 						<td class="item-level hidden-xs">{$levels[$item.settings->level]}</td>
 						<td class="visible-xs">
 							<dl class="dl-horizontal">
-								<dt>For recipient</dt><dd>{if $item.access}{$item.access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</dd>
-								<dt>Level</dt><dd style="margin-bottom: 0px;">{$levels[$item.settings->level]}</dd>
+								<dt>{t}For recipient{/t}</dt><dd>{if $item.access}{$item.access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</dd>
+								<dt>{t}Level{/t}</dt><dd style="margin-bottom: 0px;">{$levels[$item.settings->level]}</dd>
 							</dl>
 						</td>
 						<td style="width: 30px; vertical-align: middle">

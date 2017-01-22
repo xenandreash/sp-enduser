@@ -48,9 +48,9 @@
 								<td class="hidden-xs"><span class="badge">{count($accesses)}</span></td>
 								<td class="visible-xs">
 									<dl class="dl-horizontal">
-										<dt>Action</dt><dd><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></dd>
-										<dt>Sender</dt><dd>{$value|escape}</dd>
-										<dt>For recipient</dt><dd style="margin-bottom: 0px;"><span class="badge">{count($accesses)}</span></dd>
+										<dt>{t}Action{/t}</dt><dd><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></dd>
+										<dt>{t}Sender{/t}</dt><dd>{$value|escape}</dd>
+										<dt>{t}For recipient{/t}</dt><dd style="margin-bottom: 0px;"><span class="badge">{count($accesses)}</span></dd>
 									</dl>
 								</td>
 								<td style="width: 30px; vertical-align: middle"><span class="expand-icon fa fa-expand"></span></td>
@@ -83,9 +83,9 @@
 								<td class="item-access hidden-xs">{if $accesses.0}{$accesses.0|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</td>
 								<td class="visible-xs">
 									<dl class="dl-horizontal">
-										<dt>Action</dt><dd><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></dd>
-										<dt>Sender</dt><dd>{$value|escape}</dd>
-										<dt>For recipient</dt><dd style="margin-bottom: 0px;">{if $accesses.0}{$accesses.0|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</dd>
+										<dt>{t}Action{/t}</dt><dd><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></dd>
+										<dt>{t}Sender{/t}</dt><dd>{$value|escape}</dd>
+										<dt>{t}For recipient{/t}</dt><dd style="margin-bottom: 0px;">{if $accesses.0}{$accesses.0|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</dd>
 									</dl>
 								</td>
 								<td style="width: 30px; vertical-align: middle">
