@@ -103,32 +103,7 @@
 				</tbody>
 			</table>
 		</div>
-		<nav>
-			{if $total && count($pages)}
-			<ul class="pagination">
-				{foreach $pages as $p}
-					{if $p === '...'}
-					<li class="disabled"><a href="#">...</a></li>
-					{elseif $p === $currpage}
-					<li class="active"><a href="#">{$p+1}</a></li>
-					{else}
-					<li><a href="?page={$page_active}&offset={$limit*$p}&limit={$limit}{if $search}&search={$search|urlencode}{/if}">{$p+1}</a></li>
-					{/if}
-				{/foreach}
-			</ul>
-			{elseif !$total && count($items)}
-			<ul class="pager">
-				<li class="previous{if $offset == 0} disabled{/if}"><a href="javascript:history.go(-1);"><span aria-hidden="true">&larr;</span> {t}Previous{/t}</a></li>
-				<li class="next{if !$pagemore} disabled{/if}"><a href="?page={$page_active}&offset={$offset+$limit}&limit={$limit}{if $search}&search={$search|urlencode}{/if}">{t}Next{/t} <span aria-hidden="true">&rarr;</span></a></li>
-			</ul>
-			{/if}
-		</nav>
-		<p class="text-muted small">{t}Results per page:{/t}</p>
-		<div class="btn-group" role="group" aria-label="Results per page" style="margin-bottom: 40px;">
-			{foreach $pagesizes as $pagesize}
-				<a class="btn btn-sm btn-default{if $limit==$pagesize} active{/if}" href="?page={$page_active}&limit={$pagesize}{if $search}&search={$search|escape}{/if}">{$pagesize}</a>
-			{/foreach}
-		</div>
+		{include file='pager.tpl'}
 	</div>
 	<div class="col-md-5 col-lg-4">
 		<div id="side-panel" class="panel panel-default">
