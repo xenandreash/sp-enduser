@@ -193,6 +193,39 @@ if ($_GET['type'] == 'spamsettings') {
 	success_json($result);
 }
 
+if ($_GET['type'] == 'datastore') {
+	$dbh = $settings->getDatabase();
+	$where = '';
+	$wheres = array();
+	if (isset($_GET['ns']))
+		$wheres[] = 'namespace = :namespace';
+	if (isset($_GET['key']))
+		$wheres[] = 'keyname = :key';
+	if (isset($_GET['value']))
+		$wheres[] = 'value = :value';
+	if (count($wheres))
+		$where = 'WHERE '.implode(' AND ', $wheres);
+	$sql = 'SELECT * FROM datastore';
+	if ($where) $sql .= " $where";
+	$statement = $dbh->prepare($sql);
+	if (isset($_GET['ns']))
+		$statement->bindValue(':namespace', $_GET['ns']);
+	if (isset($_GET['key']))
+		$statement->bindValue(':key', $_GET['key']);
+	if (isset($_GET['value']))
+		$statement->bindValue(':value', $_GET['value']);
+	$statement->execute();
+	$result = array();
+	$i = 0;
+	while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+		$result[$i]['namespace'] = $row['namespace'];
+		$result[$i]['key'] = $row['keyname'];
+		$result[$i]['value'] = $row['value'];
+		$i += 1;
+	}
+	success_json($result);
+}
+
 panic('Unsupported API call');
 
 function panic($message)

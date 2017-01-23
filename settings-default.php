@@ -57,6 +57,7 @@
 //$settings['display-bwlist'] = true;
 //$settings['display-spamsettings'] = false;
 //$settings['display-ratelimits'] = false;
+//$settings['display-datastore'] = false;
 //$settings['display-listener']['mailserver:1'] = 'Inbound';
 //$settings['display-transport']['mailtransport:2'] = 'Internet';
 

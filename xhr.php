@@ -142,6 +142,57 @@ if ($_POST['page'] == 'spam')
 	}
 }
 
+if ($_POST['page'] == 'datastore')
+{
+	if (!$settings->getDisplayDatastore())
+		die(json_encode(array('error' => "The setting display-datastore isn't enabled")));
+	if (!Session::Get()->checkAccessAll()) die(json_encode(array('error' => 'Insufficient permissions')));
+
+	$dbh = $settings->getDatabase();
+
+	if ($_POST['list'] == 'add')
+	{
+		if (empty($_POST['namespace']) || empty($_POST['key']) || empty($_POST['value']))
+			die(json_encode(array('error' => 'Missing values')));
+
+		try {
+			$statement = $dbh->prepare('INSERT INTO datastore (namespace, keyname, value) VALUES(:namespace, :key, :value);');
+			$statement->execute(array(':namespace' => $_POST['namespace'], ':key' => $_POST['key'], ':value' => $_POST['value']));
+		} catch (PDOException $e) {
+			die(json_encode(array('error' => 'Database error')));
+		}
+		die(json_encode(array('status' => 'ok')));
+	}
+
+	if ($_POST['list'] == 'edit')
+	{
+		if (empty($_POST['namespace']) || empty($_POST['key']) || empty($_POST['value']))
+			die(json_encode(array('error' => 'Missing values')));
+
+		try {
+			$statement = $dbh->prepare('UPDATE datastore SET value = :value WHERE namespace = :namespace AND keyname = :key;');
+			$statement->execute(array(':namespace' => $_POST['namespace'], ':key' => $_POST['key'], ':value' => $_POST['value']));
+		} catch (PDOException $e) {
+			die(json_encode(array('error' => 'Database error')));
+		}
+		die(json_encode(array('status' => 'ok')));
+	}
+
+	if ($_POST['list'] == 'delete')
+	{
+		if (empty($_POST['namespace']) || empty($_POST['key']))
+			die(json_encode(array('error' => 'Missing values')));
+
+		try {
+			$statement = $dbh->prepare('DELETE FROM datastore WHERE namespace = :namespace AND keyname = :key;');
+			$statement->execute(array(':namespace' => $_POST['namespace'], ':key' => $_POST['key']));
+		} catch (PDOException $e) {
+			die(json_encode(array('error' => 'Database error')));
+		}
+		die(json_encode(array('status' => 'ok')));
+	}
+}
+
 if ($_POST['page'] == 'rates')
 {
 	if (!$settings->getDisplayRateLimits())

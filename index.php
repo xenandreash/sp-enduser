@@ -39,6 +39,9 @@ switch (@$_GET['page'])
 	case 'spam':
 		require_once BASE.'/pages/spam.php';
 	break;
+	case 'datastore':
+		require_once BASE.'/pages/datastore.php';
+	break;
 	case 'download':
 		require_once BASE.'/pages/download.php';
 	break;

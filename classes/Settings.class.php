@@ -35,6 +35,7 @@ class Settings
 	private $displaySpamSettings = false;
 	private $displayStats = false;
 	private $displayRateLimits = false;
+	private $displayDataStore = false;
 	private $displayListener = array('mailserver:1' => "Inbound");
 	private $displayTransport = array('mailtransport:2' => "Internet");
 	private $useDatabaseLog = false;
@@ -89,6 +90,7 @@ class Settings
 		$this->extract($this->displaySpamSettings, 'display-spamsettings');
 		$this->extract($this->displayStats, 'display-stats');
 		$this->extract($this->displayRateLimits, 'display-ratelimits');
+		$this->extract($this->displayDataStore, 'display-datastore');
 		$this->extract($this->displayListener, 'display-listener');
 		$this->extract($this->displayTransport, 'display-transport');
 		$this->extract($this->useDatabaseLog, 'database-log');
@@ -390,7 +392,15 @@ class Settings
 	{
 		return $this->displayRateLimits;
 	}
-	
+
+	/**
+	 * Returns whether the data store tab should be displayed.
+	 */
+	public function getDisplayDataStore()
+	{
+		return $this->displayDataStore;
+	}
+
 	/**
 	 * ???
 	 */

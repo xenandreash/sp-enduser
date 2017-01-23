@@ -45,6 +45,9 @@
 						{if $feature_stats}
 							{if $page_active=="stats"}<li class="active">{else}<li>{/if}<a href="?page=stats"><i class="fa fa-pie-chart"></i>&nbsp;{t}Statistics{/t}</a></li>
 						{/if}
+						{if $feature_datastore}
+							{if $page_active=="datastore"}<li class="active">{else}<li>{/if}<a href="?page=datastore"><i class="fa fa-database"></i>&nbsp;{t}Data store{/t}</a></li>
+						{/if}
 						{if $feature_rates}
 							{if $page_active=="rates"}<li class="active">{else}<li>{/if}<a href="?page=rates"><i class="fa fa-tachometer"></i>&nbsp;{t}Rate limit{/t}</a></li>
 						{/if}

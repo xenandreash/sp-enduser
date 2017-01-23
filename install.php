@@ -15,7 +15,7 @@ require_once BASE.'/inc/core.php';
 <?php
 $ok = true;
 ?>
-	<div style="padding: 10px;"> 
+	<div style="padding: 10px;">
 <?php
 if (count($settings->getNodes()) == 0) {
 	$ok = false;
@@ -157,6 +157,13 @@ if (isset($dbCredentials['dsn'])) {
 			$notes[] = 'Adding table spamsettings';
 			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$dbh->exec('CREATE TABLE spamsettings (access VARCHAR(128), settings TEXT, PRIMARY KEY(access));');
+		}
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+		$statement = $dbh->prepare('SELECT * FROM datastore LIMIT 1;');
+		if (!$statement || $statement->execute() === false) {
+			$notes[] = 'Adding table datastore';
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$dbh->exec('CREATE TABLE datastore (namespace VARCHAR(128), keyname VARCHAR(128), value TEXT, PRIMARY KEY(namespace, keyname));');
 		}
 		$messagelogs = $settings->getMessagelogTables();
 		if (count($messagelogs)) {
