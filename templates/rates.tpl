@@ -16,7 +16,7 @@
 		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 			<div class="panel panel-default">
 				<div class="panel-heading"><h3 class="panel-title">{$ns.name}</h3></div>
-				<table class="table table-hover" id="rate_{$ns.id}">
+				<table class="table table-hover table-fixed" id="rate_{$ns.id}">
 					<thead><tr>
 						<th style="width: 36px"></th>
 						<th colspan="3">{t}Entry{/t}</th>
@@ -47,14 +47,6 @@
 	var source = {$source|json_encode};
 </script>
 <style>
-	table {
-		table-layout: fixed;
-	}
-	td {
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-	}
 	.nopad {
 		padding: 6px 0px 0px 6px !important;
 	}

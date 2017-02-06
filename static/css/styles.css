@@ -134,3 +134,13 @@ pre.panel-body {
 	margin-right: 10px;
 	font-family: monospace;
 }
+
+.table-fixed {
+	table-layout: fixed;
+}
+
+.table-fixed td {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}

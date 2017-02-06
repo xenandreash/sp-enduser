@@ -40,7 +40,7 @@
 					</form>
 				</div>
 			</div>
-			<table class="table table-hover">
+			<table class="table table-hover table-fixed">
 				<thead class="hidden-xs">
 					<tr>
 						<th>{t}Namespace{/t}</th>
@@ -114,14 +114,6 @@
 	</div>
 </div>
 <style>
-	table {
-		table-layout: fixed;
-	}
-	td {
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-	}
 	.item, #link-add {
 		cursor: pointer;
 	}
