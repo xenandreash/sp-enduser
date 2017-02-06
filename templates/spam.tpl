@@ -54,9 +54,9 @@
 						<td class="item-access hidden-xs">{if $item.access}{$item.access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</td>
 						<td class="item-level hidden-xs">{$levels[$item.settings->level]}</td>
 						<td class="visible-xs">
-							<dl class="dl-horizontal">
+							<dl class="dl-horizontal dl-horizontal-xs">
 								<dt>{t}For recipient{/t}</dt><dd>{if $item.access}{$item.access|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</dd>
-								<dt>{t}Level{/t}</dt><dd style="margin-bottom: 0px;">{$levels[$item.settings->level]}</dd>
+								<dt>{t}Level{/t}</dt><dd>{$levels[$item.settings->level]}</dd>
 							</dl>
 						</td>
 						<td style="width: 30px; vertical-align: middle">
@@ -130,16 +130,4 @@
 		</div>
 	</div>
 </div>
-<style>
-	.item, #link-add {
-		cursor: pointer;
-	}
-	.dl-horizontal > dt {
-		float: left;
-		width: 80px;
-	}
-	.dl-horizontal > dd {
-		margin-left: 100px;
-	}
-</style>
 {include file='footer.tpl'}

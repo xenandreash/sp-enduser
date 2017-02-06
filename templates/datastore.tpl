@@ -58,10 +58,10 @@
 					<td class="item-key hidden-xs">{$item.key|escape}</td>
 					<td class="item-value hidden-xs">{$item.value|escape}</td>
 						<td class="visible-xs">
-							<dl class="dl-horizontal">
+							<dl class="dl-horizontal dl-horizontal-xs">
 								<dt>{t}Namespace{/t}</dt><dd>{$item.namespace|escape}</dd>
 								<dt>{t}Key{/t}</dt><dd>{$item.key|escape}</dd>
-								<dt>{t}Value{/t}</dt><dd style="margin-bottom: 0px;">{$item.value|escape}</dd>
+								<dt>{t}Value{/t}</dt><dd>{$item.value|escape}</dd>
 							</dl>
 						</td>
 						<td style="width: 30px; vertical-align: middle">
@@ -113,16 +113,4 @@
 		</div>
 	</div>
 </div>
-<style>
-	.item, #link-add {
-		cursor: pointer;
-	}
-	.dl-horizontal > dt {
-		float: left;
-		width: 80px;
-	}
-	.dl-horizontal > dd {
-		margin-left: 100px;
-	}
-</style>
 {include file='footer.tpl'}

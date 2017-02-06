@@ -47,10 +47,10 @@
 								<td class="hidden-xs">{$value|escape}</td>
 								<td class="hidden-xs"><span class="badge">{count($accesses)}</span></td>
 								<td class="visible-xs">
-									<dl class="dl-horizontal">
+									<dl class="dl-horizontal dl-horizontal-xs">
 										<dt>{t}Action{/t}</dt><dd><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></dd>
 										<dt>{t}Sender{/t}</dt><dd>{$value|escape}</dd>
-										<dt>{t}For recipient{/t}</dt><dd style="margin-bottom: 0px;"><span class="badge">{count($accesses)}</span></dd>
+										<dt>{t}For recipient{/t}</dt><dd><span class="badge">{count($accesses)}</span></dd>
 									</dl>
 								</td>
 								<td style="width: 30px; vertical-align: middle"><span class="expand-icon fa fa-expand"></span></td>
@@ -82,10 +82,10 @@
 								<td class="item-value hidden-xs">{$value|escape}</td>
 								<td class="item-access hidden-xs">{if $accesses.0}{$accesses.0|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</td>
 								<td class="visible-xs">
-									<dl class="dl-horizontal">
+									<dl class="dl-horizontal dl-horizontal-xs">
 										<dt>{t}Action{/t}</dt><dd><span class="label label-{if $type=='whitelist'}success{elseif $type=='blacklist'}danger{else}info{/if}">{if $type=='whitelist'}{t}Whitelist{/t}{else}{t}Blacklist{/t}{/if}</span></dd>
 										<dt>{t}Sender{/t}</dt><dd>{$value|escape}</dd>
-										<dt>{t}For recipient{/t}</dt><dd style="margin-bottom: 0px;">{if $accesses.0}{$accesses.0|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</dd>
+										<dt>{t}For recipient{/t}</dt><dd>{if $accesses.0}{$accesses.0|escape}{else}<span class="text-muted">{t}everyone{/t}</span>{/if}</dd>
 									</dl>
 								</td>
 								<td style="width: 30px; vertical-align: middle">
@@ -170,16 +170,4 @@
 		</div>
 	</div>
 </div>
-<style>
-	.item, #link-add, .toggle {
-		cursor: pointer;
-	}
-	.dl-horizontal > dt {
-		float: left;
-		width: 80px;
-	}
-	.dl-horizontal > dd {
-		margin-left: 100px;
-	}
-</style>
 {include file='footer.tpl'}

@@ -83,6 +83,18 @@ dl:last-child {
 	}
 }
 
+.dl-horizontal-xs dt {
+	float: left;
+	width: 80px;
+}
+.dl-horizontal-xs dd {
+	margin-left: 100px;
+}
+
+.dl-horizontal-xs dd:last-child {
+	margin-bottom: 0;
+}
+
 pre.panel-body {
 	border: none;
 	margin: 0;
@@ -143,4 +155,8 @@ pre.panel-body {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+}
+
+tr.item, tr.toggle, #link-add {
+	cursor: pointer;
 }
