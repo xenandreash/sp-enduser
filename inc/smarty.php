@@ -24,7 +24,7 @@ if ($dbCredentials['dsn'] && $settings->getDisplayBWList()) $smarty->assign('fea
 if ($dbCredentials['dsn'] && $settings->getDisplaySpamSettings()) $smarty->assign('feature_spam', true);
 $access = Session::Get()->getAccess();
 if ((count($access['domain']) > 0 || isset($access['userid'])) && $settings->getDisplayStats()) $smarty->assign('feature_stats', true);
-if (count($access) == 0 && $settings->getDisplayRateLimits()) $smarty->assign('feature_rates', true);
-if (count($access) == 0 && $dbCredentials['dsn'] && $settings->getDisplayDataStore()) $smarty->assign('feature_datastore', true);
+if (Session::Get()->checkAccessAll() && $settings->getDisplayRateLimits()) $smarty->assign('feature_rates', true);
+if (Session::Get()->checkAccessAll() && $dbCredentials['dsn'] && $settings->getDisplayDataStore()) $smarty->assign('feature_datastore', true);
 
 if (isset($body_class)) $smarty->assign('body_class', $body_class);

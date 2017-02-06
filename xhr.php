@@ -5,9 +5,9 @@ header('Content-Type: application/json; charset=UTF-8');
 
 function checkAccess($perm)
 {
-	$access = Session::Get()->getAccess();
-	if (count($access) == 0)
+	if (Session::Get()->checkAccessAll())
 		return true;
+	$access = Session::Get()->getAccess();
 	foreach ($access as $type)
 		foreach ($type as $item)
 			if ($item == $perm)
