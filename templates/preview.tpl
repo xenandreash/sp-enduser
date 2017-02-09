@@ -7,7 +7,7 @@
 					<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
 				{/if}
 				{if $type == 'queue'}
-					<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>
+					{if ! in_array('preview_mail_body', $disabled_features)}<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>{/if}
 					<li class="divider"></li>
 					<li><a data-action="delete"><i class="fa fa-trash-o"></i>&nbsp;{t}Delete{/t}</a></li>
 					<li><a data-action="bounce"><i class="fa fa-mail-reply"></i>&nbsp;{t}Bounce{/t}</a></li>
@@ -123,7 +123,9 @@
 				<div class="panel-heading">
 					<h3 class="panel-title" style="white-space: nowrap;">{if $mail->msgsubject}{$mail->msgsubject|escape}{else}<span class="text-muted">{t}No Subject{/t}</span>{/if}</h3>
 				</div>
-				{if ! isset($body)}
+				{if in_array('preview_mail_body', $disabled_features)}
+					<div class="panel-body msg-body"><p class="text-muted text-center">{t}Content hidden{/t}<br><small>{t}You don't have permission to preview content{/t}</small></p></div>
+				{elseif ! isset($body)}
 					<div class="panel-body msg-body"><p class="text-muted text-center">{t}Content unavailable{/t}<br><small>{t}Message is not in queue or quarantine{/t}</small></p></div>
 				{elseif $encode == 'TEXT'}
 					<pre class="panel-body msg-body">{$body}</pre>

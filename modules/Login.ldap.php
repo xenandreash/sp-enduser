@@ -7,5 +7,7 @@
 function halon_login_ldap($username, $password, $method, $settings)
 {
 	$method = new LDAPDatabase($method['uri'], $method['base_dn'], $method['schema'], $method['options'], $method['query'], $method['access']);
-	return $method->check($username, $password);
+	$result = $method->check($username, $password);
+	if (is_array($result)) $result['disabled_features'] = $method['disabled_features'];
+	return $result;
 }

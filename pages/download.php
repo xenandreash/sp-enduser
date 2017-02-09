@@ -3,6 +3,9 @@ if (!defined('SP_ENDUSER')) die('File not included');
 
 header('Content-type: text/plain');
 
+if (Session::Get()->checkDisabledFeature('preview_mail_body'))
+	die('Permission denied');
+
 $id = preg_replace('/[^0-9]/', '', $_GET['id']);
 
 $nodeBackend = new NodeBackend($settings->getNode($_GET['node']));

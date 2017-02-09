@@ -401,6 +401,14 @@ msgstr "Inga poäng"
 msgid "No Subject"
 msgstr "Ingen ämnesrad"
 
+#: templates/preview.tpl:127
+msgid "Content hidden"
+msgstr ""
+
+#: templates/preview.tpl:127
+msgid "You don't have permission to preview content"
+msgstr "Du har inte rättigheter att förhandsgranska innehållet"
+
 #: templates/preview.tpl:113
 msgid "Content unavailable"
 msgstr "Innehållet ej tillgängligt"

@@ -12,6 +12,7 @@ function halon_login_account($username, $password, $method, $settings)
 		$result['username'] = $method['username'];
 		$result['source'] = 'local';
 		$result['access'] = $method['access'];
+		$result['disabled_features'] = $method['disabled_features'];
 		return $result;
 	}
 	return false;

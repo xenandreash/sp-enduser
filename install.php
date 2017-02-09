@@ -145,6 +145,13 @@ if (isset($dbCredentials['dsn'])) {
 			$dbh->exec('CREATE TABLE users_relations (username VARCHAR(128) REFERENCES users(username) ON DELETE CASCADE, type VARCHAR(32), access VARCHAR(128), PRIMARY KEY(username, type, access));');
 		}
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+		$statement = $dbh->prepare('SELECT * FROM users_disabled_features LIMIT 1;');
+		if (!$statement || $statement->execute() === false) {
+			$notes[] = 'Adding table users_disabled_features';
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$dbh->exec('CREATE TABLE users_disabled_features (username VARCHAR(128) REFERENCES users(username) ON DELETE CASCADE, feature VARCHAR(32), PRIMARY KEY(username, feature));');
+		}
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 		$statement = $dbh->prepare('SELECT * FROM bwlist LIMIT 1;');
 		if (!$statement || $statement->execute() === false) {
 			$notes[] = 'Adding table bwlist';

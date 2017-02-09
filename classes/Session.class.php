@@ -10,6 +10,7 @@ class Session
 	private $access = null;
 	private $soap_username = null;
 	private $soap_password = null;
+	private $disabled_features = null;
 	
 	/**
 	 * Returns a shared Session instance.
@@ -41,6 +42,8 @@ class Session
 			$this->soap_username = $_SESSION['soap_username'];
 		if(isset($_SESSION['soap_password']))
 			$this->soap_password = $_SESSION['soap_password'];
+		if(isset($_SESSION['disabled_features']))
+			$this->disabled_features = $_SESSION['disabled_features'];
 	}
 	
 	/**
@@ -127,7 +130,25 @@ class Session
 			return true;
 		return false;
 	}
-	
+
+	/**
+	 * Returns the features that are disabled for the user.
+	 */
+	public function getDisabledFeatures()
+	{
+		return (is_array($this->disabled_features) ? $this->disabled_features : array());
+	}
+
+	/**
+	 * Check if a specific feature is disabled for the user.
+	 */
+	public function checkDisabledFeature($feature)
+	{
+		if (is_array($this->disabled_features) and in_array($feature, $this->disabled_features))
+			return true;
+		return false;
+	}
+
 	/**
 	 * Returns the user's own SOAP username, if there is one.
 	 * 

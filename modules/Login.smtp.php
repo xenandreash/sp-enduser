@@ -63,6 +63,7 @@ smtp_ehlo:
 	$result['username'] = $username;
 	$result['source'] = 'smtp';
 	$result['access'] = array('mail' => array(strtolower($username)));
+	$result['disabled_features'] = $method['disabled_features'];
 	return $result;
 
 smtp_fail:
