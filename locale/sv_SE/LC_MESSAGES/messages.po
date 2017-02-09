@@ -403,7 +403,7 @@ msgstr "Ingen ämnesrad"
 
 #: templates/preview.tpl:127
 msgid "Content hidden"
-msgstr ""
+msgstr "Innehåll dolt"
 
 #: templates/preview.tpl:127
 msgid "You don't have permission to preview content"
