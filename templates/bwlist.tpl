@@ -108,7 +108,7 @@
 	<div class="col-md-5 col-lg-4">
 		<div id="side-panel" class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title hidden-edit">{t}Add...{/t}</h3>
+				<h3 class="panel-title hidden-edit">{t}Add{/t}</h3>
 				<h3 class="panel-title visible-edit hidden">{t}Edit{/t}</h3>
 			</div>
 			<div class="panel-body">

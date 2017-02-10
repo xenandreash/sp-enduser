@@ -46,9 +46,9 @@ msgstr "Ändra"
 msgid "No black/whitelist"
 msgstr "Ingen svart- eller vitlista"
 
-#: templates/bwlist.tpl:138
-msgid "Add..."
-msgstr "Lägg till..."
+#: templates/bwlist.tpl:185
+msgid "Add"
+msgstr "Lägg till"
 
 #: templates/bwlist.tpl:180
 msgid ""
@@ -65,10 +65,6 @@ msgstr "Markera alla"
 #: templates/bwlist.tpl:165
 msgid "Add custom"
 msgstr "Lägg till egen"
-
-#: templates/bwlist.tpl:185
-msgid "Add"
-msgstr "Lägg till"
 
 #: templates/spam.tpl:143
 msgid "Save"
@@ -536,6 +532,10 @@ msgstr "Ändra"
 msgid ""
 "You are authenticated externally, so password changes are not done here."
 msgstr "Du är autentiserad externt, så lösenordet kan inte ändras här."
+
+#: templates/bwlist.tpl:138
+msgid "Add..."
+msgstr "Lägg till..."
 
 #: templates/header.tpl:30
 msgid "Back"

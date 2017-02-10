@@ -3,7 +3,7 @@
 <div class="container" id="panel-container">
 	<div class="btn-group">
 		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-			{t}Add...{/t} <span class="caret"></span>
+			{t}Add{/t} <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
 			<li><a href="#" class="add-all">{t}All{/t}</a></li>
