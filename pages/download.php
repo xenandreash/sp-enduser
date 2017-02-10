@@ -3,7 +3,7 @@ if (!defined('SP_ENDUSER')) die('File not included');
 
 header('Content-type: text/plain');
 
-if (Session::Get()->checkDisabledFeature('preview_mail_body'))
+if (Session::Get()->checkDisabledFeature('preview-mail-body'))
 	die('Permission denied');
 
 $id = preg_replace('/[^0-9]/', '', $_GET['id']);
