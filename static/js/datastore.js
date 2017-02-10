@@ -84,7 +84,7 @@ $(document).ready(function() {
 			"key": key
 		}, function(data) {
 			if (data.error) {
-				alert('Error:' + data.error);
+				alert('Error: ' + data.error);
 				return;
 			}
 			window.location.reload();

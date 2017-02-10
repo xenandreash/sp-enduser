@@ -146,12 +146,14 @@ if ($_POST['page'] == 'datastore')
 {
 	if (!$settings->getDisplayDatastore())
 		die(json_encode(array('error' => "The setting display-datastore isn't enabled")));
-	if (!Session::Get()->checkAccessAll()) die(json_encode(array('error' => 'Insufficient permissions')));
 
 	$dbh = $settings->getDatabase();
 
 	if ($_POST['list'] == 'add')
 	{
+		if (!Session::Get()->checkAccessAll())
+			die(json_encode(array('error' => 'Insufficient permissions')));
+
 		if (empty($_POST['namespace']) || empty($_POST['key']) || empty($_POST['value']))
 			die(json_encode(array('error' => 'Missing values')));
 
@@ -166,8 +168,15 @@ if ($_POST['page'] == 'datastore')
 
 	if ($_POST['list'] == 'edit')
 	{
+		$access = Session::Get()->getAccess();
+		if (!Session::Get()->checkAccessAll() && count($access['domain']) == 0)
+			die(json_encode(array('error' => 'Insufficient permissions')));
+
 		if (empty($_POST['namespace']) || empty($_POST['key']) || empty($_POST['value']))
 			die(json_encode(array('error' => 'Missing values')));
+
+		if (!checkAccess($_POST['key']))
+			die(json_encode(array('error' => 'No permission for '.$_POST['key'])));
 
 		try {
 			$statement = $dbh->prepare('UPDATE datastore SET value = :value WHERE namespace = :namespace AND keyname = :key;');
@@ -180,6 +189,9 @@ if ($_POST['page'] == 'datastore')
 
 	if ($_POST['list'] == 'delete')
 	{
+		if (!Session::Get()->checkAccessAll())
+			die(json_encode(array('error' => 'Insufficient permissions')));
+
 		if (empty($_POST['namespace']) || empty($_POST['key']))
 			die(json_encode(array('error' => 'Missing values')));
 

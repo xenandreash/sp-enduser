@@ -1,7 +1,10 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
-if (!$settings->getDisplayDataStore()) die("The setting display-datastore isn't enabled");
-if (!Session::Get()->checkAccessAll()) die('Insufficient permissions');
+if (!$settings->getDisplayDataStore() || Session::Get()->checkDisabledFeature('display-datastore'))
+	die("The setting display-datastore isn't enabled");
+$access = Session::Get()->getAccess();
+if (!Session::Get()->checkAccessAll() && count($access['domain']) == 0)
+	die('Insufficient permissions');
 
 $dbh = $settings->getDatabase();
 
@@ -14,6 +17,8 @@ $search = array();
 if (isset($_GET['ns'])) $search['ns'] = $_GET['ns'];
 if (isset($_GET['key'])) $search['key'] = $_GET['key'];
 if (isset($_GET['value'])) $search['value'] = $_GET['value'];
+foreach ($access['domain'] as $k => $v)
+	$in_access[':key'.$k] = $v;
 $foundrows = $where = '';
 $wheres = array();
 if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
@@ -24,6 +29,10 @@ if (isset($search['key']))
 	$wheres[] = 'keyname LIKE :key';
 if (isset($search['value']))
 	$wheres[] = 'value LIKE :value';
+if (!Session::Get()->checkAccessAll()) {
+	$restrict = 'keyname IN ('.implode(',', array_keys($in_access)).')';
+	$wheres[] = $restrict;
+}
 
 if (count($wheres))
 	$where = 'WHERE '.implode(' AND ', $wheres);
@@ -37,6 +46,8 @@ if (isset($search['key']))
 	$statement->bindValue(':key', '%'.$search['key'].'%');
 if (isset($search['value']))
 	$statement->bindValue(':value', '%'.$search['value'].'%');
+foreach ($in_access as $k => $v)
+	$statement->bindValue($k, $v);
 $statement->execute();
 $result = array();
 while ($row = $statement->fetch(PDO::FETCH_ASSOC))
@@ -108,5 +119,6 @@ $smarty->assign('limit', $limit);
 $smarty->assign('offset', $offset);
 $smarty->assign('pagesizes', $pagesize);
 if ($pagemore) $smarty->assign('pagemore', true);
+if (Session::Get()->checkAccessAll()) $smarty->assign('full_access', true);
 
 $smarty->display('datastore.tpl');

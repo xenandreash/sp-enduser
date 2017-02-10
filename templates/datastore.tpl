@@ -8,9 +8,11 @@
 					<a class="pull-right" data-toggle="collapse" href="#search">
 						<span class="fa fa-search"></span>
 					</a>
-					<a id="link-add" class="pull-right visible-sm visible-xs" style="margin-right: 15px;">
-						<span class="fa fa-plus"></span>
-					</a>
+					{if $full_access}
+						<a id="link-add" class="pull-right visible-sm visible-xs" style="margin-right: 15px;">
+							<span class="fa fa-plus"></span>
+						</a>
+					{/if}
 				</h3>
 			</div>
 			<div id="search" class="{if $search}collapse in{else}collapse{/if}" aria-expanded="{if $search}true{else}false{/if}">
@@ -47,7 +49,7 @@
 						<th>{t}Key{/t}</th>
 						<th>{t}Value{/t}</th>
 						<th style="width: 30px"></th>
-						<th style="width: 30px"></th>
+						{if $full_access}<th style="width: 30px"></th>{/if}
 					</tr>
 				</thead>
 				<tbody>
@@ -67,9 +69,11 @@
 						<td style="width: 30px; vertical-align: middle">
 							<a title="{t}Edit{/t}"><i class="fa fa-pencil-square-o"></i></a>
 						</td>
-						<td style="width: 30px; vertical-align: middle">
-							<a class="item-delete" title="{t}Remove{/t}"><i class="fa fa-remove"></i></a>
-						</td>
+						{if $full_access}
+							<td style="width: 30px; vertical-align: middle">
+								<a class="item-delete" title="{t}Remove{/t}"><i class="fa fa-remove"></i></a>
+							</td>
+						{/if}
 					</tr>
 				{foreachelse}
 					<tr><td colspan="6" class="text-muted">{t}No items{/t}</td></tr>
@@ -80,7 +84,7 @@
 		{include file='pager.tpl'}
 	</div>
 	<div class="col-md-5 col-lg-4">
-		<div id="side-panel" class="panel panel-default">
+		<div id="side-panel" class="panel panel-default {if !$full_access}hidden visible-edit{/if}">
 			<div class="panel-heading">
 				<h3 class="panel-title hidden-edit">{t}Add...{/t}</h3>
 				<h3 class="panel-title visible-edit hidden">{t}Edit{/t}</h3>
