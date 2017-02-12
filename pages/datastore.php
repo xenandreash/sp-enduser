@@ -78,6 +78,8 @@ if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite' || $dbh->getAttribute(
 			$total->bindValue(':key', '%'.$search['key'].'%');
 		if (isset($search['value']))
 			$total->bindValue(':value', '%'.$search['value'].'%');
+		foreach ($in_access as $k => $v)
+			$total->bindValue($k, $v);
 		$total->execute();
 		$total = (int)$total->fetchColumn();
 	}
