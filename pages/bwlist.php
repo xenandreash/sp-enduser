@@ -23,7 +23,7 @@ if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
 	$foundrows = 'SQL_CALC_FOUND_ROWS';
 if ($search != '')
 	$wheres[] = 'value LIKE :search';
-if (count($access) != 0) {
+if (!Session::Get()->checkAccessAll()) {
 	$restrict = '(access IN ('.implode(',', array_keys($in_access)).')';
 	foreach (array_keys($domain_access) as $v)
 		$restrict .= ' OR access LIKE '.$v;
