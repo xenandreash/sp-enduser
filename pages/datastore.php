@@ -14,6 +14,7 @@ $pagesize = array(25, 50, 100, 500, 1000);
 
 $total = null;
 $search = array();
+$in_access = array();
 if (isset($_GET['ns'])) $search['ns'] = $_GET['ns'];
 if (isset($_GET['key'])) $search['key'] = $_GET['key'];
 if (isset($_GET['value'])) $search['value'] = $_GET['value'];
@@ -46,7 +47,7 @@ if (isset($search['key']))
 	$statement->bindValue(':key', '%'.$search['key'].'%');
 if (isset($search['value']))
 	$statement->bindValue(':value', '%'.$search['value'].'%');
-foreach ((array)$in_access as $k => $v)
+foreach ($in_access as $k => $v)
 	$statement->bindValue($k, $v);
 $statement->execute();
 $result = array();
