@@ -17,7 +17,7 @@ $search = array();
 if (isset($_GET['ns'])) $search['ns'] = $_GET['ns'];
 if (isset($_GET['key'])) $search['key'] = $_GET['key'];
 if (isset($_GET['value'])) $search['value'] = $_GET['value'];
-foreach ($access['domain'] as $k => $v)
+foreach ((array)$access['domain'] as $k => $v)
 	$in_access[':key'.$k] = $v;
 $foundrows = $where = '';
 $wheres = array();
@@ -46,7 +46,7 @@ if (isset($search['key']))
 	$statement->bindValue(':key', '%'.$search['key'].'%');
 if (isset($search['value']))
 	$statement->bindValue(':value', '%'.$search['value'].'%');
-foreach ($in_access as $k => $v)
+foreach ((array)$in_access as $k => $v)
 	$statement->bindValue($k, $v);
 $statement->execute();
 $result = array();
