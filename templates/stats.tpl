@@ -2,7 +2,7 @@
 {include file='header.tpl' title=$title page_active='stats'}
 <div class="container" id="panel-container">
 	<div class="btn-group">
-		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+		<button type="button" class="btn btn-primary dropdown-toggle {if !count($domains.inbound) and !count($domains.outbound)}disabled{/if}" data-toggle="dropdown" aria-expanded="false">
 			{t}Add{/t} <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
