@@ -55,7 +55,7 @@
 								</td>
 								<td style="width: 30px; vertical-align: middle"><span class="expand-icon fa fa-expand"></span></td>
 								<td style="width: 30px; vertical-align: middle">
-									<a class="bwlist_delete" title="{t}Remove{/t}" href="#"><i class="fa fa-remove"></i></a>
+									<a class="bwlist_delete" title="{t}Remove{/t}"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 							{foreach $accesses as $access}
@@ -71,7 +71,7 @@
 									<a title="{t}Edit{/t}"><i class="fa fa-pencil-square-o"></i></a>
 								</td>
 								<td style="width: 30px; vertical-align: middle">
-									<a class="bwlist_delete" title="{t}Remove{/t}" href="#"><i class="fa fa-remove"></i></a>
+									<a class="bwlist_delete" title="{t}Remove{/t}"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 							{/foreach}
@@ -92,7 +92,7 @@
 									<a title="{t}Edit{/t}"><i class="fa fa-pencil-square-o"></i></a>
 								</td>
 								<td style="width: 30px; vertical-align: middle">
-									<a class="bwlist_delete" title="{t}Remove{/t}" href="#"><i class="fa fa-remove"></i></a>
+									<a class="bwlist_delete" title="{t}Remove{/t}"><i class="fa fa-remove"></i></a>
 								</td>
 							</tr>
 						{/if}
