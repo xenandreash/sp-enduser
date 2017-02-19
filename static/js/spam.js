@@ -20,6 +20,7 @@ $(document).ready(function() {
 		$('#edit-id').val($(this).attr('id'));
 		$('#edit-recipient').text($(this).closest('tr').children('.item-access').text());
 		$('#level>option:eq(' + levels[level] +')').prop('selected', true);
+		$('#level').focus();
 
 		$('.hidden-edit').addClass('hidden');
 		$('.visible-edit').removeClass('hidden');

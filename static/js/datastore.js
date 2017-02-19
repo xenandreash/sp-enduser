@@ -14,7 +14,7 @@ $(document).ready(function() {
 		$('#side-panel').addClass('panel-primary');
 
 		$('#action').val('edit');
-		$('#value').val($(this).data('value'));
+		$('#value').val($(this).data('value')).focus();
 		$('#edit-id').val($(this).attr('id'));
 		$('#edit-namespace').text($(this).closest('tr').children('.item-namespace').text());
 		$('#edit-key').text($(this).closest('tr').children('.item-key').text());

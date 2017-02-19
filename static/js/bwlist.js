@@ -19,7 +19,7 @@ $(document).ready(function() {
 		$('#side-panel').addClass('panel-primary');
 
 		$('#action').val('edit');
-		$('#value').val($(this).data('value'));
+		$('#value').val($(this).data('value')).focus();
 		$('#edit-id').val($(this).attr('id'));
 		$('#edit-recipient').text($(this).closest('tr').children('.item-access').text());
 		$('#type>option:eq(' + types[type] +')').prop('selected', true);
