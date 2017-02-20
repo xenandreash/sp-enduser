@@ -11,6 +11,7 @@ function datetime_to_obj(d) {
 }
 
 $(document).ready(function() {
+	$('#search').focus();
 	$('[data-bulk-action]').click(function(e) {
 		var action = $(this).data('bulk-action');
 		var count = $('[name^=multiselect-]:checked').length;

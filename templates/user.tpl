@@ -53,7 +53,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="old_password">{t}Old Password{/t}</label>
 							<div class="col-sm-9">
-								<input type="password" class="form-control" name="old_password" id="old_password" placeholder="Old password">
+								<input type="password" class="form-control" name="old_password" id="old_password" placeholder="Old password" autofocus>
 							</div>
 						</div>
 						<div class="form-group">

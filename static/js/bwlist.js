@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	$('#type').focus();
+
 	$('#link-add').click(function() {
 		$('#btn-cancel').click();
 		$('html, body').animate({
@@ -47,6 +49,8 @@ $(document).ready(function() {
 
 		$('.visible-edit').addClass('hidden');
 		$('.hidden-edit').removeClass('hidden');
+
+		$('#type').focus();
 	});
 
 	$('#check-all').click(function() {

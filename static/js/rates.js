@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	$('#search').focus();
 	$("#search_form").submit(function() {
 		search = $("#search").val();
 		$.each(views, function (index, view) {
