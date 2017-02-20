@@ -142,14 +142,14 @@ if (isset($dbCredentials['dsn'])) {
 		if (!$statement || $statement->execute() === false) {
 			$notes[] = 'Adding table users_relations';
 			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$dbh->exec('CREATE TABLE users_relations (username VARCHAR(128) REFERENCES users(username) ON DELETE CASCADE, type VARCHAR(32), access VARCHAR(128), PRIMARY KEY(username, type, access));');
+			$dbh->exec('CREATE TABLE users_relations (username VARCHAR(128), type VARCHAR(32), access VARCHAR(128), PRIMARY KEY(username, type, access), FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE);');
 		}
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 		$statement = $dbh->prepare('SELECT * FROM users_disabled_features LIMIT 1;');
 		if (!$statement || $statement->execute() === false) {
 			$notes[] = 'Adding table users_disabled_features';
 			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$dbh->exec('CREATE TABLE users_disabled_features (username VARCHAR(128) REFERENCES users(username) ON DELETE CASCADE, feature VARCHAR(32), PRIMARY KEY(username, feature));');
+			$dbh->exec('CREATE TABLE users_disabled_features (username VARCHAR(128), feature VARCHAR(32), PRIMARY KEY(username, feature), FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE);');
 		}
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 		$statement = $dbh->prepare('SELECT * FROM bwlist LIMIT 1;');
