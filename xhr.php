@@ -144,7 +144,7 @@ if ($_POST['page'] == 'spam')
 
 if ($_POST['page'] == 'datastore')
 {
-	if (!$settings->getDisplayDatastore())
+	if (!$settings->getDisplayDataStore() || Session::Get()->checkDisabledFeature('display-datastore'))
 		die(json_encode(array('error' => "The setting display-datastore isn't enabled")));
 
 	$dbh = $settings->getDatabase();
