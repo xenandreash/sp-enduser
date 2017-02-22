@@ -157,6 +157,6 @@ pre.panel-body {
 	overflow: hidden;
 }
 
-tr.item, tr.toggle, #link-add {
+tr.item, td.item, tr.toggle, td.toggle, #link-add {
 	cursor: pointer;
 }

@@ -423,4 +423,135 @@ if ($_POST['page'] == 'stats')
 	}
 }
 
+if ($_POST['page'] == 'users')
+{
+	if (!$settings->getDisplayUsers() || Session::Get()->checkDisabledFeature('display-users'))
+		die(json_encode(array('error' => "The setting display-users isn't enabled")));
+	if (!Session::Get()->checkAccessAll())
+		die(json_encode(array('error' => 'Insufficient permissions')));
+
+	$dbh = $settings->getDatabase();
+
+	if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite') {
+		try {
+			$dbh->query('PRAGMA foreign_keys = ON;');
+		} catch (PDOException $e) {
+			die(json_encode(array('error' => 'Database error')));
+		}
+	}
+
+	if ($_POST['list'] == 'add-user')
+	{
+		if (empty($_POST['username']) || empty($_POST['password_1']) || empty($_POST['password_2']))
+			die(json_encode(array('error' => 'Missing values')));
+
+		if ($_POST['password_1']  != $_POST['password_2'])
+			die(json_encode(array('error' => "The passwords doesn't match")));
+
+		if (is_array($_POST['access']))
+			foreach ($_POST['access'] as $access)
+				if ($access == '')
+					die(json_encode(array('error' => 'One or more of the permissions are empty')));
+
+		$password = password_hash($_POST['password_1'], PASSWORD_DEFAULT);
+
+		try {
+			$statement = $dbh->prepare('INSERT INTO users (username, password) VALUES (:username, :password);');
+			$statement->execute(array(':username' => $_POST['username'], ':password' => $password));
+			if (is_array($_POST['access'])) {
+				foreach ($_POST['access'] as $access) {
+					$type = (strpos($access, '@')) ? 'mail' : 'domain';
+					$statement = $dbh->prepare('INSERT INTO users_relations (username, type, access) VALUES (:username, :type, :access)');
+					$statement->execute(array(':username' => $_POST['username'], ':type' => $type, ':access' => $access));
+				}
+			}
+		} catch (PDOException $e) {
+			die(json_encode(array('error' => 'Database error')));
+		}
+
+		die(json_encode(array('status' => 'ok')));
+	}
+
+	if ($_POST['list'] == 'edit-user')
+	{
+		if (empty($_POST['username']) || empty($_POST['old_username']))
+			die(json_encode(array('error' => 'Missing values')));
+
+		if (is_array($_POST['access']))
+			foreach ($_POST['access'] as $access)
+				if ($access == '') die(json_encode(array('error' => 'One or more of the permissions are empty')));
+
+		if (!empty($_POST['password_1']) and !empty($_POST['password_2'])) {
+			if ($_POST['password_1']  != $_POST['password_2'])
+				die(json_encode(array('error' => "The passwords doesn't match")));
+			$password = password_hash($_POST['password_1'], PASSWORD_DEFAULT);
+		}
+
+		try {
+			if ($_POST['username'] != $_POST['old_username']) {
+				$statement = $dbh->prepare('UPDATE users SET username = :username WHERE username = :old_username;');
+				$statement->execute(array(':username' => $_POST['username'], ':old_username' => $_POST['old_username']));
+			}
+			if (!empty($password)) {
+				$statement = $dbh->prepare('UPDATE users SET password = :password WHERE username = :username;');
+				$statement->execute(array(':username' => $_POST['username'], ':password' => $password));
+			}
+			if (is_array($_POST['access'])) {
+				foreach ($_POST['access'] as $access) {
+					$type = (strpos($access, '@')) ? 'mail' : 'domain';
+					$statement = $dbh->prepare('INSERT INTO users_relations (username,type,access) VALUES (:username, :type, :access);');
+					$statement->execute(array(':username' => $_POST['username'], ':type' => $type, ':access' => $access));
+				}
+			}
+		} catch (PDOException $e) {
+			die(json_encode(array('error' => 'Database error')));
+		}
+
+		die(json_encode(array('status' => 'ok')));
+	}
+
+	if ($_POST['list'] == 'edit-access')
+	{
+		if (empty($_POST['username']) || empty($_POST['access']) || empty($_POST['old_access']))
+			die(json_encode(array('error' => 'Missing values')));
+
+		try {
+			$statement = $dbh->prepare('UPDATE users_relations SET access = :access WHERE username = :username AND access = :old_access;');
+			$statement->execute(array(':username' => $_POST['username'], ':access' => $_POST['access'], ':old_access' => $_POST['old_access']));
+		} catch (PDOException $e) {
+			die(json_encode(array('error' => 'Database error')));
+		}
+
+		die(json_encode(array('status' => 'ok')));
+	}
+
+	if ($_POST['list'] == 'delete')
+	{
+		if ((empty($_POST['username']) || empty($_POST['type'])) || ($_POST['type'] == 'access' and empty($_POST['access'])))
+			die(json_encode(array('error' => 'Missing values')));
+
+		if ($_POST['type'] == 'user') {
+			try {
+				$statement = $dbh->prepare('DELETE FROM users WHERE username = :username;');
+				$statement->execute(array(':username' => $_POST['username']));
+			} catch (PDOException $e) {
+				die(json_encode(array('error' => 'Database error')));
+			}
+
+			die(json_encode(array('status' => 'ok')));
+		}
+
+		if ($_POST['type'] == 'access') {
+			try {
+				$statement = $dbh->prepare('DELETE FROM users_relations WHERE username = :username AND access = :access;');
+				$statement->execute(array(':username' => $_POST['username'], ':access' => $_POST['access']));
+			} catch (PDOException $e) {
+				die(json_encode(array('error' => 'Database error')));
+			}
+
+			die(json_encode(array('status' => 'ok')));
+		}
+	}
+}
+
 die(json_encode(array('error' => 'unsupported request')));

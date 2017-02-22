@@ -36,6 +36,7 @@ class Settings
 	private $displayStats = false;
 	private $displayRateLimits = false;
 	private $displayDataStore = false;
+	private $displayUsers = false;
 	private $displayListener = array('mailserver:1' => "Inbound");
 	private $displayTransport = array('mailtransport:2' => "Internet");
 	private $useDatabaseLog = false;
@@ -91,6 +92,7 @@ class Settings
 		$this->extract($this->displayStats, 'display-stats');
 		$this->extract($this->displayRateLimits, 'display-ratelimits');
 		$this->extract($this->displayDataStore, 'display-datastore');
+		$this->extract($this->displayUsers, 'display-users');
 		$this->extract($this->displayListener, 'display-listener');
 		$this->extract($this->displayTransport, 'display-transport');
 		$this->extract($this->useDatabaseLog, 'database-log');
@@ -405,6 +407,16 @@ class Settings
 		if (!isset($this->dbCredentials['dsn']))
 			return false;
 		return $this->displayDataStore;
+	}
+
+	/**
+	 * Returns whether the database users tab should be displayed.
+	 */
+	public function getDisplayUsers()
+	{
+		if (!isset($this->dbCredentials['dsn']))
+			return false;
+		return $this->displayUsers;
 	}
 
 	/**

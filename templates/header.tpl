@@ -51,6 +51,9 @@
 						{if $feature_rates}
 							{if $page_active=="rates"}<li class="active">{else}<li>{/if}<a href="?page=rates"><i class="fa fa-tachometer"></i>&nbsp;{t}Rate limit{/t}</a></li>
 						{/if}
+						{if $feature_users}
+							{if $page_active=="users"}<li class="active">{else}<li>{/if}<a href="?page=users"><i class="fa fa-users"></i>&nbsp;{t}Users{/t}</a></li>
+						{/if}
 					</ul>
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">
 						{if $page_active=="user"}<li class="active">{else}<li>{/if}<a href="?page=user"><i class="fa fa-user"></i>&nbsp;{$username|escape}</a></li>

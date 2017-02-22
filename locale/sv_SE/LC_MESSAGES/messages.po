@@ -175,6 +175,10 @@ msgstr "Statistik"
 msgid "Rate limit"
 msgstr "Hastighetsbegränsningar"
 
+#: templates/header.tpl:55
+msgid "Users"
+msgstr "Användare"
+
 #: templates/header.tpl:45
 msgid "Sign out"
 msgstr "Logga ut"
@@ -533,9 +537,58 @@ msgid ""
 "You are authenticated externally, so password changes are not done here."
 msgstr "Du är autentiserad externt, så lösenordet kan inte ändras här."
 
-#: templates/bwlist.tpl:138
-msgid "Add..."
-msgstr "Lägg till..."
+#: templates/users.tpl:7
+msgid "Database users"
+msgstr "Användare (Databas)"
+
+#: templates/users.tpl:68 templates/users.tpl:87 templates/users.tpl:91
+#: templates/users.tpl:146 templates/users.tpl:173
+msgid "No restrictions"
+msgstr "Inga begränsningar"
+
+#: templates/users.tpl:104
+msgid "No users"
+msgstr "Inga användare"
+
+#: templates/users.tpl:114 templates/users.tpl:167
+msgid "Add user"
+msgstr "Lägg till användare"
+
+#: templates/users.tpl:123
+msgid "E.g. email address"
+msgstr "T.ex. e-mailadress"
+
+#: templates/users.tpl:131
+msgid "New password"
+msgstr "Nytt lösenord"
+
+#: templates/users.tpl:136
+msgid "Repeat new password"
+msgstr "Återupprepa lösenordet"
+
+#: templates/users.tpl:141
+msgid "Permission"
+msgstr "Rättighet"
+
+#: templates/users.tpl:143 templates/users.tpl:170
+msgid "Email or domain"
+msgstr "E-mail eller domän"
+
+#: templates/users.tpl:150
+msgid "Add permissions"
+msgstr "Lägg till rättigheter"
+
+#: templates/users.tpl:168
+msgid "Edit user"
+msgstr "Redigera användare"
+
+#: templates/users.tpl:169
+msgid "Edit permission"
+msgstr "Redigera rättighet"
+
+#: templates/users.tpl:174
+msgid "existing permission(s)"
+msgstr "befintliga rättighet(er)"
 
 #: templates/header.tpl:30
 msgid "Back"
