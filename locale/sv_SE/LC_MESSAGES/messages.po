@@ -524,9 +524,21 @@ msgstr "Lösenordet är ändrat"
 msgid "Old Password"
 msgstr "Nuvarande lösenord"
 
+#: templates/user.tpl:56
+msgid "Old password"
+msgstr "Nuvarande lösenord"
+
 #: templates/user.tpl:59
 msgid "New Password"
 msgstr "Nya lösenordet"
+
+#: templates/users.tpl:131
+msgid "New password"
+msgstr "Nytt lösenord"
+
+#: templates/users.tpl:136
+msgid "Repeat new password"
+msgstr "Återupprepa lösenordet"
 
 #: templates/user.tpl:67
 msgid "Change"
@@ -557,14 +569,6 @@ msgstr "Lägg till användare"
 #: templates/users.tpl:123
 msgid "E.g. email address"
 msgstr "T.ex. e-mailadress"
-
-#: templates/users.tpl:131
-msgid "New password"
-msgstr "Nytt lösenord"
-
-#: templates/users.tpl:136
-msgid "Repeat new password"
-msgstr "Återupprepa lösenordet"
 
 #: templates/users.tpl:141
 msgid "Permission"
