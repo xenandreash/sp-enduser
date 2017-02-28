@@ -124,7 +124,7 @@ if($settings->getDisplayBWlist() && !empty($mail->msgfrom) && $mail->msgto != $m
 
 	$bwlist_settings = Array('whitelist' => Array('show' => false, 'enabled' => true), 'blacklist' => Array('show' => false, 'enabled' => true));
 
-	if($settings->getDisplayListener()[$mail->msglistener] == 'Inbound') {
+	if($settings->getDisplayListener()[$mail->msglistener] != 'Outbound' && $settings->getDisplayTransport()[$mail->msgtransport] != 'Internet') {
 		if(in_array($mail->msgaction, Array('QUARANTINE', 'REJECT')))
 			$bwlist_settings['whitelist']['show'] = true;
 		if(in_array($mail->msgaction, Array('DELIVER')))
