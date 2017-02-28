@@ -119,6 +119,7 @@
 						<label for="type" class="control-label col-md-3">{t}Action{/t}</label>
 						<div class="col-md-9">
 							<select id="type" class="form-control">
+								<option value="0">{t}Select action{/t}</option>
 								<option value="blacklist">{t}Blacklist{/t}</option>
 								<option value="whitelist">{t}Whitelist{/t}</option>
 							</select>

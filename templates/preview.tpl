@@ -1,6 +1,26 @@
 {include file='header.tpl' title='Message' body_class='has-bottom-bar'}
 <nav class="navbar navbar-default navbar-toolbar navbar-static-top hidden-xs">
 	<div class="container-fluid">
+		<ul class="nav navbar-nav">
+			{if $bwlist_settings.whitelist.show}
+			<li>
+				{if $bwlist_settings.whitelist.enabled}
+					<a data-action="whitelist"><i class="fa fa-check" style="color:green"></i>&nbsp;{t}Whitelist{/t}</a>
+				{else}
+					<a href="#"><i class="fa fa-check" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Whitelisted{/t}</span></a>
+				{/if}
+			</li>
+			{/if}
+			{if $bwlist_settings.blacklist.show}
+			<li>
+				{if $bwlist_settings.blacklist.enabled}
+					<a data-action="blacklist"><i class="fa fa-ban" style="color:red"></i>&nbsp;{t}Blacklist{/t}</a>
+				{else}
+					<a href="#"><i class="fa fa-ban" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Blacklisted{/t}</span></a>
+				{/if}
+			</li>
+			{/if}
+		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			{if isset($node)}
 				{if $support_log}
@@ -17,7 +37,7 @@
 		</ul>
 	</div>
 </nav>
-{if isset($node) and ($support_log or $type == 'queue')}
+{if isset($node) and ($support_log or $type == 'queue' or $bwlist_settings.whitelist.show or $bwlist_settings.blacklist.show)}
 <nav class="navbar navbar-default navbar-fixed-bottom visible-xs" id="bottom-bar">
 	<div class="container-fluid">
 		<ul class="nav navbar-nav">
@@ -27,7 +47,26 @@
 					{if $support_log}
 						<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
 					{/if}
+					{if $bwlist_settings.whitelist.show}
+					<li>
+						{if $bwlist_settings.whitelist.enabled}
+							<a data-action="whitelist"><i class="fa fa-check" style="color:green"></i>&nbsp;{t}Whitelist{/t}</a>
+						{else}
+							<a href="#"><i class="fa fa-check" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Whitelisted{/t}</span></a>
+						{/if}
+					</li>
+					{/if}
+					{if $bwlist_settings.blacklist.show}
+					<li>
+						{if $bwlist_settings.blacklist.enabled}
+							<a data-action="blacklist"><i class="fa fa-ban" style="color:red"></i>&nbsp;{t}Blacklist{/t}</a>
+						{else}
+							<a href="#"><i class="fa fa-ban" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Blacklisted{/t}</span></a>
+						{/if}
+					</li>
+					{/if}
 					{if $type == 'queue'}
+						<li class="divider"></li>
 						<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>
 						<li class="divider"></li>
 						<li><a data-action="delete"><i class="fa fa-trash-o"></i>&nbsp;{t}Delete{/t}</a></li>
@@ -186,6 +225,10 @@
 		<input type="hidden" name="action" id="action" value="">
 		<input type="hidden" name="referer" id="referer" value="{$referer|escape}">
 	</form>
+	{if $bwlist_settings.whitelist.show || $bwlist_settings.blacklist.show}
+	<input type="hidden" name="bwlist-from" id="bwlist-from" value="{$mail->msgfrom|escape}">
+	<input type="hidden" name="bwlist-to" id="bwlist-to" value="{$mail->msgto|escape}">
+	{/if}
 	{/if}
 </div>
 {include file='footer.tpl'}

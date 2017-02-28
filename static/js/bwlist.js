@@ -24,7 +24,7 @@ $(document).ready(function() {
 		$('#value').val($(this).data('value')).focus();
 		$('#edit-id').val($(this).attr('id'));
 		$('#edit-recipient').text($(this).closest('tr').children('.item-access').text());
-		$('#type>option:eq(' + types[type] +')').prop('selected', true);
+		$('#type>option:eq(' + (types[type] + 1) +')').prop('selected', true);
 
 		$('.hidden-edit').addClass('hidden');
 		$('.visible-edit').removeClass('hidden');

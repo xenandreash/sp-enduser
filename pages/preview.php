@@ -119,12 +119,38 @@ if ($type == 'queue') {
 	}
 }
 
+// prepare black and whitelist
+if($settings->getDisplayBWlist() && !empty($mail->msgfrom) && $mail->msgto != $mail->msgfrom) {
+
+	$bwlist_settings = Array('whitelist' => Array('show' => false, 'enabled' => true), 'blacklist' => Array('show' => false, 'enabled' => true));
+
+	if($settings->getDisplayListener()[$mail->msglistener] == 'Inbound') {
+		if(in_array($mail->msgaction, Array('QUARANTINE', 'REJECT')))
+			$bwlist_settings['whitelist']['show'] = true;
+		if(in_array($mail->msgaction, Array('DELIVER')))
+			$bwlist_settings['blacklist']['show'] = true;
+	}
+
+	if($bwlist_settings['whitelist']['show'] == true || $bwlist_settings['blacklist']['show'] == true) {
+		$dbh = $settings->getDatabase();
+		$statement = $dbh->prepare('SELECT * FROM bwlist WHERE access = :recipient AND value = :sender;');
+		$statement->execute(array(':recipient' => $mail->msgto, ':sender' => $mail->msgfrom));
+		while($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+			if($row['type'] == 'whitelist')
+				$bwlist_settings['whitelist']['enabled'] = false;
+			if($row['type'] == 'blacklist')
+				$bwlist_settings['blacklist']['enabled'] = false;
+		}
+	}
+}
+
 $javascript[] = 'static/js/preview.js';
 $javascript[] = 'static/js/diff_match_patch.js';
 $javascript[] = 'static/js/diff.js';
 
 require_once BASE.'/inc/smarty.php';
 
+if ($settings->getDisplayBWlist()) $smarty->assign('bwlist_settings', $bwlist_settings);
 if ($settings->getDisplayTextlog() && $node && $mail->msgid) $smarty->assign('support_log', true);
 if ($settings->getDisplayScores()) $smarty->assign('scores', history_parse_scores($mail));
 if ($node) $smarty->assign('node', $node->getId());

@@ -50,6 +50,10 @@ msgstr "Ingen svart- eller vitlista"
 msgid "Add"
 msgstr "Lägg till"
 
+#: templates/bwlist.tpl:122
+msgid "Select action"
+msgstr "Välj åtgärd"
+
 #: templates/bwlist.tpl:180
 msgid ""
 "Sender may be an IP address, an e-mail address, a domain name or a wildcard "
@@ -332,6 +336,14 @@ msgstr "Föregående"
 #: templates/bwlist.tpl:130
 msgid "Next"
 msgstr "Nästa"
+
+#: templates/preview.tpl:10 templates/preview.tpl:57
+msgid "Whitelisted"
+msgstr "Vitlistad"
+
+#: templates/preview.tpl:19 templates/preview.tpl:66
+msgid "Blacklisted"
+msgstr "Svartlistad"
 
 #: templates/preview.tpl:10 templates/preview.tpl:31
 msgid "Text log"
