@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('[data-action]').click(function(e) {
 		var action = $(this).data('action');
-		if(action == "whitelist" || action == "blacklist") {
+		if (action == "whitelist" || action == "blacklist") {
 			if (confirm("Are you sure you want to " + action + " this sender?")) {
 				if ($('#bwlist-from').val() != "") {
 					var post = {

@@ -120,25 +120,25 @@ if ($type == 'queue') {
 }
 
 // prepare black and whitelist
-if($settings->getDisplayBWlist() && !empty($mail->msgfrom) && $mail->msgto != $mail->msgfrom) {
+if ($settings->getDisplayBWlist() && !empty($mail->msgfrom) && $mail->msgto != $mail->msgfrom) {
 
 	$bwlist_settings = Array('whitelist' => Array('show' => false, 'enabled' => true), 'blacklist' => Array('show' => false, 'enabled' => true));
 
-	if($settings->getDisplayListener()[$mail->msglistener] != 'Outbound' && $settings->getDisplayTransport()[$mail->msgtransport] != 'Internet') {
-		if(in_array($mail->msgaction, Array('QUARANTINE', 'REJECT')))
+	if ($settings->getDisplayListener()[$mail->msglistener] != 'Outbound' && $settings->getDisplayTransport()[$mail->msgtransport] != 'Internet') {
+		if (in_array($mail->msgaction, Array('QUARANTINE', 'REJECT')))
 			$bwlist_settings['whitelist']['show'] = true;
-		if(in_array($mail->msgaction, Array('DELIVER')))
+		if (in_array($mail->msgaction, Array('DELIVER')))
 			$bwlist_settings['blacklist']['show'] = true;
 	}
 
-	if($bwlist_settings['whitelist']['show'] == true || $bwlist_settings['blacklist']['show'] == true) {
+	if ($bwlist_settings['whitelist']['show'] == true || $bwlist_settings['blacklist']['show'] == true) {
 		$dbh = $settings->getDatabase();
 		$statement = $dbh->prepare('SELECT * FROM bwlist WHERE access = :recipient AND value = :sender;');
 		$statement->execute(array(':recipient' => $mail->msgto, ':sender' => $mail->msgfrom));
-		while($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-			if($row['type'] == 'whitelist')
+		while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+			if ($row['type'] == 'whitelist')
 				$bwlist_settings['whitelist']['enabled'] = false;
-			if($row['type'] == 'blacklist')
+			if ($row['type'] == 'blacklist')
 				$bwlist_settings['blacklist']['enabled'] = false;
 		}
 	}
