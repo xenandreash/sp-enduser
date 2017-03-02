@@ -7,14 +7,16 @@ class Node
 	private $username;
 	private $password;
 	private $serial;
+	private $tls;
 	
-	public function __construct($id, $address, $username = null, $password = null, $serial = null)
+	public function __construct($id, $address, $username = null, $password = null, $serial = null, $tls = array())
 	{
 		$this->id = $id;
 		$this->address = $address;
 		$this->username = $username;
 		$this->password = $password;
 		$this->serial = $serial;
+		$this->tls = $tls;
 	}
 	
 	public function soap($async = false, $username = null, $password = null, $serial = null)
@@ -23,8 +25,11 @@ class Node
 		
 		if($username === null) $username = $session->getSOAPUsername() ?: $this->getUsername();
 		if($password === null) $password = $session->getSOAPPassword() ?: $this->getPassword();
-		
+
+		$context = stream_context_create(array('ssl' => $this->tls));
+
 		$options = array(
+			'stream_context' => $context,
 			'location' => $this->getAddress().'/remote/',
 			'uri' => 'urn:halon',
 			'login' => $username,

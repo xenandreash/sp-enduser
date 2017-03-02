@@ -7,8 +7,8 @@
 
 function halon_login_smtp($username, $password, $method, $settings)
 {
-	$opts = $method['options'] ?: array();
-	$context = stream_context_create($opts);
+	$tls = $method['tls'] ?: array();
+	$context = stream_context_create(array('ssl' => $tls));
 
 	$fp = stream_socket_client($method['host'].':'.$method['port'] ?: 25, $errno, $errstr, 30, STREAM_CLIENT_CONNECT, $context);
 	while ($line = fgets($fp)) {

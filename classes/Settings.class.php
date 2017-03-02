@@ -109,7 +109,8 @@ class Settings
 			$username = isset($cred['username']) ? $cred['username'] : null;
 			$password = isset($cred['password']) ? $cred['password'] : null;
 			$serial = isset($cred['serialno']) ? $cred['serialno'] : null;
-			$this->nodes[] = new Node($id, $cred['address'], $username, $password, $serial);
+			$tls = isset($cred['tls']) ? $cred['tls'] : array();
+			$this->nodes[] = new Node($id, $cred['address'], $username, $password, $serial, $tls);
 		}
 		
 		if(!$this->publicURL)

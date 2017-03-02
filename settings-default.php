@@ -22,11 +22,13 @@
 
 //$settings['node'][] = array(
 //		'address' => 'https://10.2.0.30/',
+//		'tls' => array('verify_peer' => true, 'verify_peer_name' => true, 'allow_self_signed' => false),
 //		);
 //$settings['node'][] = array(
 //		'address' => 'https://10.2.0.31/',
 //		'username' => 'admin',
 //		'password' => 'admin',
+//		'tls' => array('verify_peer' => true, 'verify_peer_name' => true, 'allow_self_signed' => false),
 //		);
 
 /*
@@ -134,7 +136,7 @@
 //		'type' => 'smtp',
 //		'host' => '10.2.0.30',
 //		'port' => 25,
-//		'options' => array('ssl' => array('verify_peer' => true, 'verify_peer_name' => true, 'allow_self_signed' => false)),
+//		'tls' => array('verify_peer' => true, 'verify_peer_name' => true, 'allow_self_signed' => false),
 //		);
 //$settings['authentication'][] = array(
 //		'type' => 'server',
