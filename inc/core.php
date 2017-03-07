@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
 ini_set('display_errors', 'Off');
+ini_set('session.cookie_httponly', 1);
 
 require_once BASE.'/inc/utils.php';
 require_once BASE.'/inc/compat.php';
