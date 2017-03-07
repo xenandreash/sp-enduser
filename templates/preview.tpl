@@ -172,7 +172,7 @@
 					{if $use_iframe == true}
 					<iframe id="preview-html" sandbox srcdoc="{$body|escape:'htmlall'}" class="panel-body msg-body-iframe"></iframe>
 					<script>
-						function updateSize() {
+						var updateSize = function() {
 							$("#preview-html").css("height", $(window).height() * 0.5);
 						}
 						$(updateSize);
