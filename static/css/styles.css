@@ -54,6 +54,12 @@ td[data-href], tr[data-href] td {
 	background-color: #fff;
 }
 
+.msg-body-iframe {
+	width: 100%;
+	background-color: #fff;
+	border-width: 0;
+}
+
 .nowrap {
 	white-space: nowrap;
 	text-overflow: ellipsis;

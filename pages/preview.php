@@ -159,6 +159,8 @@ if (isset($body)) $smarty->assign('body', $body);
 if ($encode) $smarty->assign('encode', $encode);
 if ($_GET['preview'] == 'text') $smarty->assign('show_text', true);
 
+$smarty->assign('use_iframe', $_SESSION['useiframe']);
+
 $f = $_GET;
 $f['preview'] = 'text';
 $smarty->assign('show_text_link', '?'.http_build_query($f));

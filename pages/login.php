@@ -9,6 +9,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 	session_regenerate_id(true);
 
 	$_SESSION['timezone'] = $_POST['timezone'];
+	$_SESSION['useiframe'] = ($_POST['useiframe'] == true) ? true : false;
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	foreach ($settings->getAuthSources() as $method)

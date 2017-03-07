@@ -14,6 +14,7 @@
 				{/if}
 				<form class="form-horizontal" method="post" action="?page=login">
 					<input type="hidden" name="timezone" id="timezone">
+					<input type="hidden" name="useiframe" id="useiframe">
 					<input type="hidden" name="query" id="query" value="{$query|escape}">
 					<div class="form-group">
 						<label for="username" class="control-label col-sm-3">{t}Username{/t}</label>
@@ -42,5 +43,9 @@
 </div>
 <script>
 	$("#timezone").val(new Date().getTimezoneOffset());
+	
+	if ($("<iframe>").prop("sandbox") !== undefined && $("<iframe>").prop("srcdoc") !== undefined) {
+		$("#useiframe").val(true);
+	}
 </script>
 {include file='footer.tpl'}

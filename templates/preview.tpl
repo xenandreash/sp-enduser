@@ -169,7 +169,18 @@
 				{elseif $encode == 'TEXT'}
 					<pre class="panel-body msg-body">{$body}</pre>
 				{elseif $encode == 'HTML' or $encode == 'ERROR'}
+					{if $use_iframe == true}
+					<iframe id="preview-html" sandbox srcdoc="{$body|escape:'htmlall'}" class="panel-body msg-body-iframe"></iframe>
+					<script>
+						function updateSize() {
+							$("#preview-html").css("height", $(window).height() * 0.5);
+						}
+						$(updateSize);
+						$(window).resize(updateSize);
+					</script>
+					{else}
 					<div class="panel-body msg-body">{$body}</div>
+					{/if}
 				{/if}
 				{if $attachments}
 				<div class="panel-footer">
