@@ -21,6 +21,7 @@
 							{if $name == 'history'}{t}History{/t}
 							{elseif $name == 'queue'}{t}Queue{/t}
 							{elseif $name == 'quarantine'}{t}Quarantine{/t}
+							{elseif $name == 'archive'}{t}Archive{/t}
 							{elseif $name == 'all'}{t}All{/t}
 							{else}{$name}{/if}
 						</a>
@@ -61,6 +62,7 @@
 						<li><a data-bulk-action="delete"><i class="fa fa-trash-o"></i>&nbsp;{t}Delete selected{/t}</a></li>
 						<li><a data-bulk-action="bounce"><i class="fa fa-mail-reply"></i>&nbsp;{t}Bounce selected{/t}</a></li>
 						<li><a data-bulk-action="retry"><i class="fa fa-mail-forward"></i>&nbsp;{t}Release/retry selected{/t}</a></li>
+						{if $source == 'archive'}<li><a data-bulk-action="duplicate"><i class="fa fa-mail-forward"></i>&nbsp;{t}Release duplicate{/t}</a></li>{/if}
 					</ul>
 				</li>
 			</ul>
@@ -112,7 +114,7 @@
 				{foreach $mails as $mail}
 				<tr {$mail.tr}>
 					<td>
-						{if $mail.type == 'queue'}
+						{if $mail.type == 'queue' || $mail.type == 'archive'}
 							<input class="hidden-sm" type="checkbox" name="multiselect-{$mail.mail->id}" value="{$mail.node}">
 						{/if}
 					</td>
@@ -128,6 +130,8 @@
 					<td class="hidden-sm" {$mail.td}><span title="{$mail.description|escape}">
 						{if $mail.mail->msgaction == 'QUARANTINE'}
 							{t}Quarantine{/t}
+						{elseif $mail.mail->msgaction == 'ARCHIVE'}
+							{t}Archive{/t}
 						{elseif $mail.mail->msgaction == 'QUEUE'}
 							{t retry=$mail.mail->msgretries}In queue (retry %1){/t} <span class="text-muted">{$mail.description|escape}</span>
 						{else}
@@ -142,7 +146,7 @@
 						{$mail.time|strftime2:'%b %e %Y<span class="hidden-sm">, %H:%M:%S</span>'}
 					{/if}
 					</td>
-					<td class="hidden-sm">{if $mail.type == 'queue'}<a title="{t}Release/retry{/t}" data-action="retry"><i class="fa fa-mail-forward"></i></a>{/if}</td>
+					<td class="hidden-sm">{if $mail.type == 'queue' || $mail.type == 'archive'}<a title="{t}Release/retry{/t}" data-action="retry"><i class="fa fa-mail-forward"></i></a>{/if}</td>
 					<td><br></td>
 				</tr>
 				{foreachelse}

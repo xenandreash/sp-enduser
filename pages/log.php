@@ -45,6 +45,8 @@ if ($_GET['type'] == 'log')
 	$nodeBackend = new NodeBackend($node);
 	if ($_GET['type'] == 'history')
 		$mail = $nodeBackend->getMailInHistory('historyid='.$id, $errors);
+	else if ($_GET['type'] == 'archive')
+		$mail = $nodeBackend->getMailInArchive('queueid='.$id, $errors);
 	else
 		$mail = $nodeBackend->getMailInQueue('queueid='.$id, $errors);
 	if (!$mail || $errors) die('Invalid mail');

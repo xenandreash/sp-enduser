@@ -134,9 +134,43 @@ class NodeBackend extends Backend
 		return $timesort;
 	}
 
+	public function loadMailArchive($search, $size, $param, &$errors = array())
+	{
+		$queries = array();
+		$restrict = $this->restrict_query('archive');
+		if ($restrict != '')
+			$queries[] = $restrict;
+		if ($search != '')
+			$queries[] = $search;
+		$restricted_search = implode(' && ', $queries);
+
+		$params = array();
+		foreach ($this->nodes as $n => &$node) {
+			$params[] = array(
+				'limit' => $size + 1,
+				'filter' => $restricted_search,
+				'offset' => $param[$n]['offset']
+			);
+		}
+		$results = $this->soapCall('mailQueue', $params, $errors);
+
+		$timesort = array();
+		foreach ($results as $n => $data)
+			if (is_array($data->result->item))
+				foreach ($data->result->item as $item)
+					$timesort[$item->msgts0][] = array('id' => $n, 'type' => 'archive', 'data' => $item);
+
+		return $timesort;
+	}
+
 	public function getMailInQueue($search, &$errors = array())
 	{
 		return $this->getMailIn_('mailQueue', $search, $errors);
+	}
+
+	public function getMailInArchive($search, &$errors = array())
+	{
+		return $this->getMailIn_('mailArchive', $search, $errors);
 	}
 
 	public function getMailInHistory($search, &$errors = array())
@@ -161,7 +195,14 @@ class NodeBackend extends Backend
 			return NULL;
 
 		$queries = array();
-		$restrict = $this->restrict_query($source == 'mailHistory' ? 'history' : 'queue');
+		if ($source == 'mailHistory') {
+			$restrict = $this->restrict_query('history');
+		} else if ($source == 'mailArchive') {
+			$restrict = $this->restrict_query('archive');
+			$source = 'mailQueue';
+		} else {
+			$restrict = $this->restrict_query('queue');
+		}
 		if ($restrict != '')
 			$queries[] = $restrict;
 		if ($search != '')
@@ -192,7 +233,7 @@ class NodeBackend extends Backend
 		$access = Session::Get()->getAccess();
 
 		$globalfilter = "";
-		if (count($settings->getQuarantineFilter()) > 0 && $type != 'history')
+		if (count($settings->getQuarantineFilter()) > 0 && $type == 'queue')
 		{
 			foreach ($settings->getQuarantineFilter() as $q)
 			{
@@ -201,6 +242,15 @@ class NodeBackend extends Backend
 				$globalfilter .= "quarantine=$q";
 			}
 			$globalfilter .= ' or not action=QUARANTINE ';
+		}
+		if (count($settings->getArchiveFilter()) > 0 && $type == 'archive')
+		{
+			foreach ($settings->getArchiveFilter() as $q)
+			{
+				if ($globalfilter != "")
+					$globalfilter .= " or ";
+				$globalfilter .= "quarantine=$q";
+			}
 		}
 
 		$pattern = $settings->getFilterPattern();

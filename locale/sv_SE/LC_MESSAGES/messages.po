@@ -199,6 +199,10 @@ msgstr "Kö"
 msgid "Quarantine"
 msgstr "Karantän"
 
+#: templates/index.tpl:24 templates/index.tpl:134
+msgid "Archive"
+msgstr "Arkiv"
+
 #: templates/index.tpl:22 templates/index.tpl:46
 msgid "All"
 msgstr "Alla"
@@ -222,6 +226,10 @@ msgstr "Studsa markerade"
 #: templates/index.tpl:83
 msgid "Release/retry selected"
 msgstr "Släpp/återförsök markerade"
+
+#: templates/index.tpl:65 templates/preview.tpl:35 templates/preview.tpl:76
+msgid "Release duplicate"
+msgstr "Släpp kopia"
 
 #: templates/index.tpl:96
 msgid "Some messages might not be available at the moment due to maintenance."

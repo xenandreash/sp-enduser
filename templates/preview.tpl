@@ -26,12 +26,13 @@
 				{if $support_log}
 					<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
 				{/if}
-				{if $type == 'queue'}
-					{if ! in_array('preview-mail-body', $disabled_features)}<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>{/if}
+				{if $type == 'queue' || $type == 'archive'}
+					{if ! in_array('preview-mail-body', $disabled_features)}<li><a href="?page=download&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>{/if}
 					<li class="divider"></li>
 					<li><a data-action="delete"><i class="fa fa-trash-o"></i>&nbsp;{t}Delete{/t}</a></li>
 					<li><a data-action="bounce"><i class="fa fa-mail-reply"></i>&nbsp;{t}Bounce{/t}</a></li>
-					<li><a data-action="retry"><i class="fa fa-mail-forward"></i>&nbsp;{if $mail->msgaction=='QUARANTINE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
+					<li><a data-action="retry"><i class="fa fa-mail-forward"></i>&nbsp;{if $mail->msgaction=='QUARANTINE' || $mail->msgaction=='ARCHIVE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
+					{if $mail->msgaction=='ARCHIVE'}<li><a data-action="duplicate"><i class="fa fa-mail-forward"></i>&nbsp;{t}Release duplicate{/t}</a></li>{/if}
 				{/if}
 			{/if}
 		</ul>
@@ -65,13 +66,14 @@
 						{/if}
 					</li>
 					{/if}
-					{if $type == 'queue'}
+					{if $type == 'queue' || $type == 'archive'}
 						<li class="divider"></li>
 						<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>
 						<li class="divider"></li>
 						<li><a data-action="delete"><i class="fa fa-trash-o"></i>&nbsp;{t}Delete{/t}</a></li>
 						<li><a data-action="bounce"><i class="fa fa-mail-reply"></i>&nbsp;{t}Bounce{/t}</a></li>
-						<li><a data-action="retry"><i class="fa fa-mail-forward"></i>&nbsp;{if $mail->msgaction=='QUARANTINE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
+						<li><a data-action="retry"><i class="fa fa-mail-forward"></i>&nbsp;{if $mail->msgaction=='QUARANTINE' || $mail->msgaction=='ARCHIVE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
+						{if $mail->msgaction=='ARCHIVE'}<li><a data-action="duplicate"><i class="fa fa-mail-forward"></i>&nbsp;{t}Release duplicate{/t}</a></li>{/if}
 					{/if}
 				</ul>
 			</li>
@@ -232,7 +234,7 @@
 		{/if}
 	</div>
 	{if isset($node)}
-	<form id="actionform" method="post" action="?page=preview&node={$node}&id={$mail->id}">
+	<form id="actionform" method="post" action="?page=preview&node={$node}&id={$mail->id}&type={$type}">
 		<input type="hidden" name="action" id="action" value="">
 		<input type="hidden" name="referer" id="referer" value="{$referer|escape}">
 	</form>

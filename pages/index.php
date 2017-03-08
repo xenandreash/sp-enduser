@@ -1,7 +1,7 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])) {
+if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry']) || isset($_POST['duplicate'])) {
 	$actions = array();
 	foreach ($_POST as $k => $v)
 	{
@@ -14,6 +14,10 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 		$nodeBackend = new NodeBackend($node);
 		$errors = array();
 		$mail = $nodeBackend->getMailInQueue('queueid='.$m[1], $errors);
+		if ($errors)
+			continue;
+		if (!$mail)
+			$mail = $nodeBackend->getMailInArchive('queueid='.$m[1], $errors);
 		if (!$mail || $errors)
 			continue;
 
@@ -31,6 +35,8 @@ if (isset($_POST['delete']) || isset($_POST['bounce']) || isset($_POST['retry'])
 				$settings->getNode($soapid)->soap()->mailQueueDelete(array('id' => $id));
 			if (isset($_POST['retry']))
 				$settings->getNode($soapid)->soap()->mailQueueRetry(array('id' => $id));
+			if (isset($_POST['duplicate']))
+				$settings->getNode($soapid)->soap()->mailQueueRetry(array('id' => $id, 'duplicate' => true));
 		} catch (SoapFault $f) {
 			die($f->getMessage());
 		}
@@ -43,6 +49,7 @@ $action_colors = array(
 	'DELIVER' => '#8c1',
 	'QUEUE' => '#1ad',
 	'QUARANTINE' => '#f70',
+	'ARCHIVE' => '#b8b8b8',
 	'REJECT' => '#ba0f4b',
 	'DELETE' => '#333',
 	'BOUNCE' => '#333',
@@ -54,6 +61,7 @@ $action_icons = array(
 	'DELIVER' => 'check',
 	'QUEUE' => 'exchange',
 	'QUARANTINE' => 'inbox',
+	'ARCHIVE' => 'inbox',
 	'REJECT' => 'ban',
 	'DELETE' => 'trash-o',
 	'BOUNCE' => 'mail-reply',
@@ -94,6 +102,8 @@ if ($nodeBackend->isValid() && $settings->getDisplayQueue())
 	$sources += array('queue' => 'Queue');
 if ($nodeBackend->isValid() && $settings->getDisplayQuarantine())
 	$sources += array('quarantine' => 'Quarantine');
+if ($nodeBackend->isValid() && $settings->getDisplayArchive())
+	$sources += array('archive' => 'Archive');
 if ($nodeBackend->isValid() && $settings->getDisplayAll())
 	$sources += array('all' => 'All');
 
@@ -104,7 +114,7 @@ if (!array_key_exists($source, $sources))
 $queries = array();
 if ($source == 'queue')
 	$queries[] = 'action=DELIVER';
-if ($source == 'quarantine')
+if ($source == 'quarantine' || $source == 'archive')
 	$queries[] = 'action=QUARANTINE';
 if ($search != '')
 	$queries[] = $search;
@@ -141,8 +151,23 @@ if (($source == 'history' || $source == 'all') && $settings->getDisplayHistory()
 }
 
 $hasMailWithActions = false;
-if ($source == 'queue' || $source == 'quarantine' || $source == 'all') {
+if ($source == 'all') {
 	$results = $nodeBackend->loadMailQueue($real_search, $size, $param['queue'], $errors);
+	$hasMailWithActions = !empty($results);
+	$timesort = merge_2d($timesort, $results);
+	$results = $nodeBackend->loadMailArchive($real_search, $size, $param['queue'], $errors);
+	if (!$hasMailWithActions) $hasMailWithActions = !empty($results);
+	$timesort = merge_2d($timesort, $results);
+}
+
+if ($source == 'queue' || $source == 'quarantine') {
+	$results = $nodeBackend->loadMailQueue($real_search, $size, $param['queue'], $errors);
+	$hasMailWithActions = !empty($results);
+	$timesort = merge_2d($timesort, $results);
+}
+
+if ($source == 'archive') {
+	$results = $nodeBackend->loadMailArchive($real_search, $size, $param['queue'], $errors);
 	$hasMailWithActions = !empty($results);
 	$timesort = merge_2d($timesort, $results);
 }
@@ -178,10 +203,13 @@ foreach ($timesort as $t) {
 	foreach ($t as $m) {
 		if ($i > $size) { break; }
 		$i++;
+		if ($m['type'] == 'archive') {
+			$m['data']->msgaction = 'ARCHIVE';
+		}
 		$param[$m['type']][$m['id']]['offset']++;
 		$preview = get_preview_link($m);
 		$td = $tr = '';
-		if ($m['type'] == 'queue')
+		if ($m['type'] == 'queue' || $m['type'] == 'archive')
 			$td = 'data-href="'.htmlspecialchars($preview).'"';
 		else
 			$tr = 'data-href="'.htmlspecialchars($preview).'"';

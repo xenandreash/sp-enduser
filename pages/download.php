@@ -9,7 +9,10 @@ if (Session::Get()->checkDisabledFeature('preview-mail-body'))
 $id = preg_replace('/[^0-9]/', '', $_GET['id']);
 
 $nodeBackend = new NodeBackend($settings->getNode($_GET['node']));
-$mail = $nodeBackend->getMailInQueue("queueid=".$id, $errors);
+if ($_GET['type'] == 'archive')
+	$mail = $nodeBackend->getMailInArchive("queueid=".$id, $errors);
+else
+	$mail = $nodeBackend->getMailInQueue("queueid=".$id, $errors);
 if (!$mail)
 	die('No mail found');
 $client = $nodeBackend->soap();

@@ -30,6 +30,7 @@ class Settings
 	private $displayHistory = true;
 	private $displayQueue = true;
 	private $displayQuarantine = true;
+	private $displayArchive = true;
 	private $displayAll = true;
 	private $displayBWList = true;
 	private $displaySpamSettings = false;
@@ -42,6 +43,7 @@ class Settings
 	private $useDatabaseLog = false;
 	private $useDatabaseStats = false;
 	private $quarantineFilter = array();
+	private $archiveFilter = array();
 	private $filterPattern = "{from} or {to}";
 	
 	private $digestToAll = false;
@@ -86,6 +88,7 @@ class Settings
 		$this->extract($this->displayHistory, 'display-history');
 		$this->extract($this->displayQueue, 'display-queue');
 		$this->extract($this->displayQuarantine, 'display-quarantine');
+		$this->extract($this->displayArchive, 'display-archive');
 		$this->extract($this->displayAll, 'display-all');
 		$this->extract($this->displayBWList, 'display-bwlist');
 		$this->extract($this->displaySpamSettings, 'display-spamsettings');
@@ -100,6 +103,7 @@ class Settings
 		$this->extract($this->dbCredentials, 'database');
 		$this->extract($this->authSources, 'authentication');
 		$this->extract($this->quarantineFilter, 'quarantine-filter');
+		$this->extract($this->archiveFilter, 'archive-filter');
 		$this->extract($this->filterPattern, 'filter-pattern');
 		$this->extract($this->digestToAll, 'digest.to-all');
 		$this->extract($this->digestSecret, 'digest.secret');
@@ -353,7 +357,17 @@ class Settings
 			return false;
 		return $this->displayQuarantine;
 	}
-	
+
+	/**
+	 * Returns whether the Archive source should be displayed.
+	 */
+	public function getDisplayArchive()
+	{
+		if ($this->getUseDatabaseLog())
+			return false;
+		return $this->displayArchive;
+	}
+
 	/**
 	 * Returns whether the "All" (SOAP) source should be displayed.
 	 */
@@ -460,7 +474,16 @@ class Settings
 	{
 		return $this->quarantineFilter;
 	}
-	
+
+	/**
+	 * Returns a list of which archives should be visible, or an empty array
+	 * if they should all be visible.
+	 */
+	public function getArchiveFilter()
+	{
+		return $this->archiveFilter;
+	}
+
 	/**
 	 * Returns the pattern for creating additional inbound/outbound
 	 * restrictions.

@@ -55,6 +55,7 @@
 //$settings['display-history'] = true;
 //$settings['display-queue'] = true;
 //$settings['display-quarantine'] = true;
+//$settings['display-archive'] = false;
 //$settings['display-all'] = true;
 //$settings['display-bwlist'] = true;
 //$settings['display-spamsettings'] = false;
@@ -150,6 +151,15 @@
 
 //$settings['quarantine-filter'][] = 'mailquarantine:1';
 //$settings['quarantine-filter'][] = 'mailquarantine:2';
+
+/*
+ * The archive filter is used to restrict the end-user access to
+ * only certain archives (quarantines), in case you have multiple quarantines with
+ * different purposes.
+ */
+
+//$settings['archive-filter'][] = 'mailquarantine:3';
+//$settings['archive-filter'][] = 'mailquarantine:4';
 
 /*
  * The default filter-pattern to use when creating additional

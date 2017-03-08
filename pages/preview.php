@@ -32,13 +32,15 @@ if ($type == 'log') {
 	$nodeBackend = new NodeBackend($node);
 	if ($_GET['type'] == 'history')
 		$mail = $nodeBackend->getMailInHistory('historyid='.$id, $errors);
+	else if ($_GET['type'] == 'archive')
+		$mail = $nodeBackend->getMailInArchive('queueid='.$id, $errors);
 	else
 		$mail = $nodeBackend->getMailInQueueOrHistory('queueid='.$id, $errors, $type);
 	if (!$mail || $errors)
 		die('Invalid mail');
 
-	// Action are only available for mail in queue
-	if (isset($_POST['action']) && $type == 'queue') {
+	// Action are only available for mail in queue and archive
+	if (isset($_POST['action']) && ($type == 'queue' || $type == 'archive')) {
 		try {
 			if ($_POST['action'] == 'bounce')
 				$client->mailQueueBounce(array('id' => $mail->id));
@@ -46,10 +48,15 @@ if ($type == 'log') {
 				$client->mailQueueDelete(array('id' => $mail->id));
 			else if ($_POST['action'] == 'retry')
 				$client->mailQueueRetry(array('id' => $mail->id));
+			else if ($_POST['action'] == 'duplicate')
+				$client->mailQueueRetry(array('id' => $mail->id, 'duplicate' => true));
 		} catch (SoapFault $f) {
 			die($f->getMessage());
 		}
-		header('Location: ?page=preview&type=queue&id='.$mail->id.'&node='.$node->getId());
+		if ($_POST['action'] == 'duplicate')
+			header('Location: ?page=index');
+		else
+			header('Location: ?page=preview&type=queue&id='.$mail->id.'&node='.$node->getId());
 		die();
 	}
 }
@@ -58,6 +65,7 @@ $action_colors = array(
 	'DELIVER' => '#8c1',
 	'QUEUE' => '#1ad',
 	'QUARANTINE' => '#f70',
+	'ARCHIVE' => '#b8b8b8',
 	'REJECT' => '#ba0f4b',
 	'DELETE' => '#333',
 	'BOUNCE' => '#333',
@@ -69,6 +77,7 @@ $action_icons = array(
 	'DELIVER' => 'check',
 	'QUEUE' => 'exchange',
 	'QUARANTINE' => 'inbox',
+	'ARCHIVE' => 'inbox',
 	'REJECT' => 'ban',
 	'DELETE' => 'trash-o',
 	'BOUNCE' => 'mail-reply',
@@ -77,9 +86,9 @@ $action_icons = array(
 );
 
 if ($type == 'queue' && $mail->msgaction == 'DELIVER') $mail->msgaction = 'QUEUE';
-
+if ($type == 'archive') $mail->msgaction = 'ARCHIVE';
 // Prepare data
-if ($type == 'queue') {
+if ($type == 'queue' || $type == 'archive') {
 	$uniq = uniqid();
 	$command = array('previewmessage');
 	if ($_GET['preview'] == 'text')
