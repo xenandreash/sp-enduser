@@ -30,7 +30,7 @@ class Settings
 	private $displayHistory = true;
 	private $displayQueue = true;
 	private $displayQuarantine = true;
-	private $displayArchive = true;
+	private $displayArchive = false;
 	private $displayAll = true;
 	private $displayBWList = true;
 	private $displaySpamSettings = false;

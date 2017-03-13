@@ -155,9 +155,11 @@ if ($source == 'all') {
 	$results = $nodeBackend->loadMailQueue($real_search, $size, $param['queue'], $errors);
 	$hasMailWithActions = !empty($results);
 	$timesort = merge_2d($timesort, $results);
-	$results = $nodeBackend->loadMailArchive($real_search, $size, $param['queue'], $errors);
-	if (!$hasMailWithActions) $hasMailWithActions = !empty($results);
-	$timesort = merge_2d($timesort, $results);
+	if ($settings->getDisplayArchive()) {
+		$results = $nodeBackend->loadMailArchive($real_search, $size, $param['queue'], $errors);
+		if (!$hasMailWithActions) $hasMailWithActions = !empty($results);
+		$timesort = merge_2d($timesort, $results);
+	}
 }
 
 if ($source == 'queue' || $source == 'quarantine') {
