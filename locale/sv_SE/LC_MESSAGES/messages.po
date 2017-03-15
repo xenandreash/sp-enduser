@@ -211,6 +211,10 @@ msgstr "Alla"
 msgid "Search filter"
 msgstr "Sökfilter"
 
+#: templates/index.tpl:57 templates/index.tpl:301
+msgid "Export CSV"
+msgstr "Exportera CSV"
+
 #: templates/preview.tpl:28
 msgid "Actions"
 msgstr "Åtgärder"
@@ -332,6 +336,26 @@ msgstr "Stäng"
 #: templates/bwlist.tpl:27
 msgid "Search"
 msgstr "Sök"
+
+#: templates/index.tpl:309
+msgid "Choose one or more fields to include in the CSV-file."
+msgstr "Välj en eller flera fält att inkludera i CSV-filen."
+
+#: templates/index.tpl:311
+msgid "Fields"
+msgstr "Fält"
+
+#: templates/index.tpl:351
+msgid "Items to export"
+msgstr "Antal rader"
+
+#: templates/index.tpl:361
+msgid "Include column headers"
+msgstr "Inkludera rubriker"
+
+#: templates/index.tpl:362
+msgid "Export"
+msgstr "Exportera"
 
 #: templates/login.tpl:33
 msgid "Forgot password"

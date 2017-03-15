@@ -67,6 +67,9 @@
 				</li>
 			</ul>
 			{/if}
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#" data-toggle="modal" data-target="#exportbuilder"><i class="fa fa-download"></i>&nbsp;{t}Export CSV{/t}</a></li>
+			</ul>
 		</div>
 	</div>
 </nav>
@@ -293,5 +296,80 @@
 		<button type="button" class="btn btn-default" data-dismiss="modal">{t}Close{/t}</button>
 		<button type="button" class="btn btn-primary" onclick="$('#dosearch').click()">{t}Search{/t}</button>
 	</div>
+	</div></div></div>
+
+	<div class="modal fade" id="exportbuilder"><div class="modal-dialog"><div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title">{t}Export CSV{/t}</h4>
+	</div>
+	<form class="form-horizontal" target="_blank">
+	<input type="hidden" name="page" value="index">
+	<input type="hidden" name="source" value="{$source}">
+	<input type="hidden" name="search" value="{$search|escape}">
+	<input type="hidden" name="exportcsv" value="true">
+	<div class="modal-body" id="export">
+		<p>{t}Choose one or more fields to include in the CSV-file.{/t}</p>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{t}Fields{/t}</label>
+			<div class="col-sm-8">
+				<label class="checkbox-inline">
+					<input name="export[action]" value="true" type="checkbox" checked>
+					{t}Action{/t}
+				</label>
+				<label class="checkbox-inline">
+					<input name="export[from]" value="true" type="checkbox" checked>
+					{t}From{/t}
+				</label>
+				<label class="checkbox-inline">
+					<input name="export[to]" value="true" type="checkbox" checked>
+					{t}To{/t}
+				</label>
+				<label class="checkbox-inline">
+					<input name="export[subject]" value="true" type="checkbox" checked>
+					{t}Subject{/t}
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3"></label>
+			<div class="col-sm-8">
+				<label class="checkbox-inline">
+					<input name="export[status]" value="true" type="checkbox" checked>
+					{t}Status{/t}
+				</label>
+				<label class="checkbox-inline">
+					<input name="export[date]" value="true" type="checkbox" checked>
+					{t}Date{/t}
+				</label>
+				{if $feature_scores}
+				<label class="checkbox-inline">
+					<input name="export[scores]" value="true" type="checkbox" checked>
+					{t}Scores{/t}
+				</label>
+				{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{t}Items to export{/t}</label>
+			<div class="col-sm-2">
+				<input type="text" class="form-control" name="size" value="{$size}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3"></label>
+			<div class="col-sm-5">
+				<label class="checkbox-inline">
+				<input name="export[headers]" value="true" type="checkbox" checked>
+					{t}Include column headers{/t}
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">{t}Close{/t}</button>
+		<input type="submit" class="btn btn-primary" value="{t}Export{/t}">
+	</div>
+	</form>
 	</div></div></div>
 {include file='footer.tpl'}

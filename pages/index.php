@@ -254,6 +254,66 @@ foreach ($timesort as $t) {
 	}
 }
 
+// csv export
+if (isset($_GET['exportcsv'])) {
+	header('Content-Type: text/csv');
+	header('Content-Disposition: attachment; filename=exportcsv.csv');
+
+	$fp = fopen('php://output', 'w');
+
+	$csv_export = $_GET['export'];
+
+	if ($csv_export['headers'] == true) {
+		$csv_headers = [];
+		if ($csv_export['action'])
+			$csv_headers[] = gettext('Action');
+		if ($csv_export['from'])
+			$csv_headers[] = gettext('From');
+		if ($csv_export['to'])
+			$csv_headers[] = gettext('To');
+		if ($csv_export['subject'])
+			$csv_headers[] = gettext('Subject');
+		if ($csv_export['status'])
+			$csv_headers[] = gettext('Status');
+		if ($csv_export['date'])
+			$csv_headers[] = gettext('Date');
+		if ($settings->getDisplayScores() && $csv_export['scores'])
+			$csv_headers[] = gettext('Scores');
+
+		fputcsv($fp, $csv_headers);
+	}
+
+	foreach ($mails as $mail) {
+		$csv_mail = [];
+		if ($csv_export['action'])
+			$csv_mail[] = $mail['mail']->msgaction;
+		if ($csv_export['from'])
+			$csv_mail[] = $mail['mail']->msgfrom;
+		if ($csv_export['to'])
+			$csv_mail[] = $mail['mail']->msgto;
+		if ($csv_export['subject'])
+			$csv_mail[] = $mail['mail']->msgsubject;
+		if ($csv_export['status']) {
+			if ($mail['mail']->msgaction == 'QUARANTINE')
+				$csv_mail[] = gettext('Quarantine');
+			elseif ($mail['mail']->msgaction == 'ARCHIVE')
+				$csv_mail[] = gettext('Archive');
+			elseif ($mail['mail']->msgaction == 'QUEUE')
+				$csv_mail[] = str_replace('%1', $mail['mail']->msgretries, gettext('In queue (retry %1)')).' '.$mail['description'];
+			else 
+				$csv_mail[] = $mail['description'];
+		}
+		if ($csv_export['date'])
+			$csv_mail[] = date('Y-m-d H:i:s', $mail['time']);
+		if ($settings->getDisplayScores() && $csv_export['scores'])
+				$csv_mail[] = $mail['scores'];
+
+		fputcsv($fp, $csv_mail);
+	}
+
+	die();
+}
+
 $paging = array(); 
 foreach ($param as $type => $nodes) {
 	foreach ($nodes as $node => $args) {
