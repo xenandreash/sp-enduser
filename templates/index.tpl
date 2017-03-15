@@ -146,7 +146,10 @@
 						{$mail.time|strftime2:'%b %e %Y<span class="hidden-sm">, %H:%M:%S</span>'}
 					{/if}
 					</td>
-					<td class="hidden-sm">{if $mail.type == 'queue' || $mail.type == 'archive'}<a title="{t}Release/retry{/t}" data-action="retry"><i class="fa fa-mail-forward"></i></a>{/if}</td>
+					<td class="hidden-sm">
+						{if $mail.type == 'queue'}<a title="{t}Release/retry{/t}" data-action="retry"><i class="fa fa-mail-forward"></i></a>{/if}
+						{if $mail.type == 'archive'}<a title="{t}Release duplicate{/t}" data-action="duplicate"><i class="fa fa-mail-forward"></i></a>{/if}
+					</td>
 					<td><br></td>
 				</tr>
 				{foreachelse}
