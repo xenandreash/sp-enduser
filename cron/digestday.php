@@ -190,6 +190,7 @@ foreach ($users as $email => $access) {
 				$hash = hash_hmac('sha256', $message, $settings->getDigestSecret());
 				$mail['release_url'] = $settings->getPublicURL().'/?page=digest&amp;queueid='.$m['data']->id.'&amp;node='.$m['id'].'&amp;time='.$time.'&amp;sign='.$hash;
 				$mail['release_url_whitelist'] = $settings->getPublicURL().'/?page=digest&amp;queueid='.$m['data']->id.'&amp;node='.$m['id'].'&amp;time='.$time.'&amp;whitelist=true&amp;sign='.$hash;
+				$mail['preview_url'] = $settings->getPublicURL().'/?page=digest&amp;queueid='.$m['data']->id.'&amp;node='.$m['id'].'&amp;time='.$time.'&amp;preview=true&amp;sign='.$hash;
 			}
 			$mail['time'] = $m['data']->msgts;
 			$mail['from'] = $m['data']->msgfrom;

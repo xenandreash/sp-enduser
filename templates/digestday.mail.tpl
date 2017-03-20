@@ -8,6 +8,7 @@
 		<th>Subject</th>
 		{if $mails.0.release_url}<th>&nbsp;</th>{/if}
 		{if $mails.0.release_url_whitelist}<th>&nbsp;</th>{/if}
+		{if $mail.preview_url}<th>&nbsp;</th>{/if}
 	</tr>
 	{foreach $mails as $mail}
 	<tr style="background-color: {cycle values="#eee,#fff"};">
@@ -17,6 +18,7 @@
 		<td>{$mail.subject|substrdots:30|escape}</td>
 		{if $mail.release_url}<td><a href="{$mail.release_url}">Release</a></td>{/if}
 		{if $mail.release_url_whitelist}<td><a href="{$mail.release_url_whitelist}">Release and whitelist</a></td>{/if}
+		{if $mail.preview_url}<td><a href="{$mail.preview_url}">Preview</a></td>{/if}
 	</tr>
 	{/foreach}
 </table>

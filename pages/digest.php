@@ -28,6 +28,26 @@ $message = $node.$queueid.$time.$msgid;
 $hash = hash_hmac('sha256', $message, $settings->getDigestSecret());
 if ($hash !== $sign) die('Failed to release message');
 
+// preview email
+if ($_GET['preview'] == 'true') {
+	if (Session::Get()->getUsername() === null) {
+		session_destroy();
+		header('Location: ?page=login&query='.urlencode($_SERVER['QUERY_STRING']));
+	} else {
+		$url = '?'.http_build_query([
+			'page' => 'preview',
+			'node' => $node,
+			'id' => $queue->result->item[0]->id,
+			'msgid' => $queue->result->item[0]->msgid,
+			'msgactionid' => $queue->result->item[0]->msgactionid,
+			'type' => 'queue'
+		]);
+
+		header('Location: '.$url);
+	}
+	die();
+}
+
 // Perform action and close window
 if ($_GET['whitelist'] == 'true') {
 	$dbh = $settings->getDatabase();
