@@ -8,7 +8,7 @@
 		<th>Subject</th>
 		{if $mails.0.release_url}<th>&nbsp;</th>{/if}
 		{if $mails.0.release_url_whitelist}<th>&nbsp;</th>{/if}
-		{if $mail.preview_url}<th>&nbsp;</th>{/if}
+		{if $mails.0.preview_url}<th>&nbsp;</th>{/if}
 	</tr>
 	{foreach $mails as $mail}
 	<tr style="background-color: {cycle values="#eee,#fff"};">
