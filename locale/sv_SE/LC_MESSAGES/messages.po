@@ -650,10 +650,6 @@ msgstr "Redigera rättighet"
 msgid "existing permission(s)"
 msgstr "befintliga rättighet(er)"
 
-#: templates/maintenance.tpl:12
-msgid "Reload"
-msgstr ""
-
 #: templates/header.tpl:30
 msgid "Back"
 msgstr "Tillbaka"
