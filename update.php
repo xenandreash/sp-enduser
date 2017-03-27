@@ -12,7 +12,7 @@ require_once BASE.'/inc/utils.php';
 if ($version['update_required']) {
     $a = getAvailableVersion();
     for ($v = getCurrentVersion()+1; $v <= $a; $v++) {
-        require_once('/updates/'.$v.'.php');
+        require_once(BASE.'/updates/'.$v.'.php');
         if ($v != getCurrentVersion())
             die("Error - Unable to update database to version ".$v."\n");
     }
