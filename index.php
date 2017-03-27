@@ -22,6 +22,18 @@ if (Session::Get()->getUsername() === null && (!isset($_GET['page']) || ($_GET['
 	die();
 }
 
+if ($version['update_required']) {
+	if (Session::Get()->getUsername() !== null) {
+		session_destroy();
+		header('Location: ?page=login');
+		die();
+	}
+
+	require_once BASE.'/inc/smarty.php';
+	$smarty->display('maintenance.tpl');
+	die();
+}
+
 switch (@$_GET['page'])
 {
 	case 'forgot':

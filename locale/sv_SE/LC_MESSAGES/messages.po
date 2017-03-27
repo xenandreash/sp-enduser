@@ -211,10 +211,6 @@ msgstr "Alla"
 msgid "Search filter"
 msgstr "Sökfilter"
 
-#: templates/index.tpl:57 templates/index.tpl:301
-msgid "Export CSV"
-msgstr "Exportera CSV"
-
 #: templates/preview.tpl:28
 msgid "Actions"
 msgstr "Åtgärder"
@@ -234,6 +230,10 @@ msgstr "Släpp/återförsök markerade"
 #: templates/index.tpl:65 templates/preview.tpl:35 templates/preview.tpl:76
 msgid "Release duplicate"
 msgstr "Släpp kopia"
+
+#: templates/index.tpl:57 templates/index.tpl:301
+msgid "Export CSV"
+msgstr "Exportera CSV"
 
 #: templates/index.tpl:96
 msgid "Some messages might not be available at the moment due to maintenance."
@@ -360,6 +360,18 @@ msgstr "Exportera"
 #: templates/login.tpl:33
 msgid "Forgot password"
 msgstr "Glömt lösenordet"
+
+#: templates/maintenance.tpl:6
+msgid "Maintenance"
+msgstr "Underhåll av sidan"
+
+#: templates/maintenance.tpl:9
+msgid "Update required. Please run this command on your server."
+msgstr "Uppdatering krävs, var vänlig och kör följande kommando på servern."
+
+#: templates/maintenance.tpl:12
+msgid "Refresh"
+msgstr "Uppdatera"
 
 #: templates/bwlist.tpl:129
 msgid "Previous"
@@ -637,6 +649,10 @@ msgstr "Redigera rättighet"
 #: templates/users.tpl:174
 msgid "existing permission(s)"
 msgstr "befintliga rättighet(er)"
+
+#: templates/maintenance.tpl:12
+msgid "Reload"
+msgstr ""
 
 #: templates/header.tpl:30
 msgid "Back"

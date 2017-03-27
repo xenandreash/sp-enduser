@@ -194,6 +194,19 @@ if (isset($dbCredentials['dsn'])) {
 				$dbh->exec('CREATE INDEX stat_ind_userid ON stat(userid);');
 			}
 		}
+		/*
+			Version 1.php
+		*/
+		/* Disabled until release of version 1
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+		$statement = $dbh->prepare('SELECT * FROM dbversion LIMIT 1;');
+		if (!$statement || $statement->execute() === false) {
+			$notes[] = 'Adding table dbversion';
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$dbh->exec('CREATE TABLE dbversion (current INTEGER);');
+			$dbh->exec("INSERT INTO dbversion (current) VALUES (1);");
+		}*/
+
 		if (!empty($notes))
 			echo 'Database<ul><li>'.implode('<li>', $notes).'</ul>';
 	} catch (PDOException $e) {

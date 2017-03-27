@@ -21,3 +21,6 @@ require_once BASE.'/vendor/autoload.php';
 
 // Conveniently access the Settings instance as $settings
 $settings = Settings::Get();
+
+// database version control
+require_once BASE.'/inc/version.php';

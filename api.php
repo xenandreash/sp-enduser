@@ -5,6 +5,9 @@ define('BASE', dirname(__FILE__));
 require_once BASE.'/inc/core.php';
 require_once BASE.'/inc/utils.php';
 
+if ($version['update_required'])
+	panic('Site in maintenance mode.');
+
 // verify API key
 if (!isset($_GET['api-key']) || $settings->getAPIKey() !== $_GET['api-key'])
 	panic('Invalid API-key');
