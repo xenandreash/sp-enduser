@@ -221,9 +221,9 @@ if ($_GET['type'] == 'datastore') {
 	$result = array();
 	$i = 0;
 	while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-		$result[$i]['namespace'] = is_numeric($row['namespace']) ? intval($row['namespace']) : $row['namespace'];
-		$result[$i]['key'] = is_numeric($row['keyname']) ? intval($row['keyname']) : $row['keyname'];
-		$result[$i]['value'] = is_numeric($row['value']) ? intval($row['value']) : $row['value'];
+		$result[$i]['namespace'] = is_numeric($row['namespace']) ? floatval($row['namespace']) : $row['namespace'];
+		$result[$i]['key'] = is_numeric($row['keyname']) ? floatval($row['keyname']) : $row['keyname'];
+		$result[$i]['value'] = is_numeric($row['value']) ? floatval($row['value']) : $row['value'];
 		$i += 1;
 	}
 	success_json($result);
