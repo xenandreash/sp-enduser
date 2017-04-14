@@ -198,7 +198,7 @@
 			</ul>
 		</nav>
 		<input type="hidden" name="size" value="{$size}">
-		<input type="hidden" name="search" value="{$search}">
+		<input type="hidden" name="search" value="{$search|escape}">
 		<input type="hidden" name="source" value="{$source}">
 		{foreach from=$paging key=name item=value}
 			<input type="hidden" name="{$name|escape}" value="{$value|escape}">
