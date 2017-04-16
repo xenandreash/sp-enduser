@@ -3,6 +3,7 @@
 ._*
 
 .vagrant
+.vscode
 
 /enduser.db
 /settings.php
