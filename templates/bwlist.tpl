@@ -18,12 +18,29 @@
 					<form class="form-horizontal" method="get">
 						<input type="hidden" name="page" value="{$page_active}">
 						<input type="hidden" name="limit" value="{$limit}">
-						<div class="input-group">
-							<input type="text" class="form-control" placeholder="{t}Search for...{/t}" name="search" value="{$search|escape}">
-							<span class="input-group-btn">
-								<button class="btn btn-primary" type="search"><span class="fa fa-search"></span></button>
-							</span>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{t}Action{/t}</label>
+							<div class="col-sm-10">
+								<select name="action" class="form-control">
+									<option value="">{t}Select action{/t}</option>
+									<option value="blacklist" {if $search.action == 'blacklist'}selected="selected"{/if}>{t}Blacklist{/t}</option>
+									<option value="whitelist" {if $search.action == 'whitelist'}selected="selected"{/if}>{t}Whitelist{/t}</option>
+								</select>
+							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{t}Sender{/t}</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" placeholder="{t}Search for...{/t}" name="sender" value="{$search.sender|escape}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{t}For recipient{/t}</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" placeholder="{t}Search for...{/t}" name="recipient" value="{$search.recipient|escape}">
+							</div>
+						</div>
+						<button class="btn btn-primary pull-right" type="search"><span class="fa fa-search"></span></button>
 					</form>
 				</div>
 			</div>

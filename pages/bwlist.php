@@ -11,7 +11,10 @@ $pagesize = array(25, 50, 100, 500, 1000);
 
 $total = null;
 $access = Session::Get()->getAccess();
-$search = $_GET['search'];
+$search = array();
+if (!empty($_GET['action'])) $search['action'] = $_GET['action'];
+if (!empty($_GET['sender'])) $search['sender'] = $_GET['sender'];
+if (!empty($_GET['recipient'])) $search['recipient'] = $_GET['recipient'];
 $in_access = $domain_access = array();
 foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => $v)
 	$in_access[':access'.$k] = $v;
@@ -21,8 +24,12 @@ $foundrows = $where = '';
 $wheres = array();
 if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
 	$foundrows = 'SQL_CALC_FOUND_ROWS';
-if ($search != '')
-	$wheres[] = 'value LIKE :search';
+if (isset($search['action']))
+	$wheres[] = 'type = :action';
+if (isset($search['sender']))
+	$wheres[] = 'value LIKE :sender';
+if (isset($search['recipient']))
+	$wheres[] = 'access LIKE :recipient';
 if (!Session::Get()->checkAccessAll()) {
 	$restrict = '(access IN ('.implode(',', array_keys($in_access)).')';
 	foreach (array_keys($domain_access) as $v)
@@ -37,8 +44,12 @@ $sql = "SELECT $foundrows * FROM bwlist $where ORDER BY type DESC, value ASC LIM
 $statement = $dbh->prepare($sql);
 $statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-if ($search != '')
-	$statement->bindValue(':search', '%'.$search.'%');
+if (isset($search['action']))
+	$statement->bindValue(':action', $search['action']);
+if (isset($search['sender']))
+	$statement->bindValue(':sender', '%'.$search['sender'].'%');
+if (isset($search['recipient']))
+	$statement->bindValue(':recipient', '%'.$search['recipient'].'%');
 foreach ($in_access as $k => $v)
 	$statement->bindValue($k, $v);
 foreach ($domain_access as $k => $v)
@@ -50,7 +61,9 @@ while ($row = $statement->fetch(PDO::FETCH_ASSOC))
 if ($offset > 0 and !count($result)) {
 	$redirect = $_SERVER['PHP_SELF'].'?page='.$_GET['page'];
 	if (isset($_GET['limit'])) $redirect .= "&limit=$limit";
-	if ($search) $redirect .= "&search=$search";
+	if (isset($search['action'])) $redirect .= '&action='.$search['action'];
+	if (isset($search['sender'])) $redirect .= '&sender='.$search['sender'];
+	if (isset($search['recipient'])) $redirect .= '&recipient='.$search['recipient'];
 	header("Location: $redirect");
 	die();
 }
@@ -64,8 +77,12 @@ if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite' || $dbh->getAttribute(
 		$total = count($result);
 	} else {
 		$total = $dbh->prepare("SELECT COUNT(*) FROM bwlist $where;");
-		if ($search != '')
-			$total->bindValue(':search', '%'.$search.'%');
+		if (isset($search['action']))
+			$total->bindValue(':action', $search['action']);
+		if (isset($search['sender']))
+			$total->bindValue(':sender', '%'.$search['sender'].'%');
+		if (isset($search['recipient']))
+			$total->bindValue(':recipient', '%'.$search['recipient'].'%');
 		foreach ($in_access as $k => $v)
 			$total->bindValue($k, $v);
 		foreach ($domain_access as $k => $v)
