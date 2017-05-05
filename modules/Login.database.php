@@ -25,8 +25,13 @@ function halon_login_database($username, $password, $method, $settings)
 	$result['access'] = array();
 	$result['disabled_features'] = array();
 
-	while ($row = $statement->fetch(PDO::FETCH_ASSOC))
-		$result['access'][$row['type']][] = $row['access'];
+	while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+		if ( $row['type'] === 'userid' ) {
+			$result['access'][$row['type']] = $row['access'];
+		} else {
+			$result['access'][$row['type']][] = $row['access'];
+		}
+	}
 
 	$statement = $dbh->prepare("SELECT * FROM users_disabled_features WHERE username = :username;");
 	$statement->execute(array(':username' => $username));
