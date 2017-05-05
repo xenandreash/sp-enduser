@@ -26,7 +26,7 @@ function halon_login_database($username, $password, $method, $settings)
 	$result['disabled_features'] = array();
 
 	while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-		if ( $row['type'] === 'userid' ) {
+		if ($row['type'] === 'userid') {
 			$result['access'][$row['type']] = $row['access'];
 		} else {
 			$result['access'][$row['type']][] = $row['access'];
