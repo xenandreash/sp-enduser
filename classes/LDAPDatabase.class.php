@@ -8,12 +8,18 @@ class LDAPDatabase
 	private $options = array();
 	private $query = '';
 	private $access_override = array();
+	private $bind_dn = null;
+	private $bind_password = null;
+	private $memberof = null;
 
-	public function __construct($uri, $basedn, $schema, $options, $query, $access_override)
+	public function __construct($uri, $basedn, $schema, $options, $query, $access_override, $bind_dn = null, $bind_password = null, $memberof = null)
 	{
 		$this->uri = $uri;
 		$this->basedn = $basedn;
 		$this->schema = $schema;
+		if (!empty($bind_dn)) $this->bind_dn = $bind_dn;
+		if (!empty($bind_password)) $this->bind_password = $bind_password;
+		if (!empty($memberof)) $this->memberof = $memberof;
 		if (is_array($options)) $this->options = $options;
 		$this->query = $query;
 		if (is_array($access_override)) $this->access_override = $access_override;
@@ -40,15 +46,30 @@ class LDAPDatabase
 		if (!$bind)
 			return false;
 
+		// rebind ldap connection if bind_dn and bind_password is set, usually for a higher privileged account
+		if (!empty($this->bind_dn) && !empty($this->bind_password)) {
+			$bind = @ldap_bind($ds, $this->bind_dn, $this->bind_password);
+
+			if (!$bind)
+				return false;
+		}
+
 		$access = array('mail' => array());
 		$authed = false;
 
 		$ldapuser = ldap_escape($username);
 		switch ($this->schema) {
 			case 'msexchange':
-				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(proxyAddresses=smtp:*))", array('proxyAddresses'));
+				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(proxyAddresses=smtp:*))", array('proxyAddresses', 'memberOf'));
 				$entry = ldap_first_entry($ds, $rs);
 				if ($entry) {
+					if (!empty($this->memberof)) {
+						$memberof = ldap_get_values($ds, $entry, 'memberOf');
+
+						if (!in_array($this->memberof, $memberof))
+							return false;
+					}
+
 					foreach (ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
 						if (!is_string($mail) || strcasecmp(substr($mail, 0, 5), 'smtp:') !== 0)
 							continue;
