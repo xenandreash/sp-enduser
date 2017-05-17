@@ -17,7 +17,7 @@ function halon_login_smtp($username, $password, $method, $settings)
 		if (substr($line, 3, 1) == ' ')
 			break;
 	}
-	$method = 'plain';
+	$methods = [];
 	$starttls = false;
 smtp_ehlo:
 	fwrite($fp, "EHLO ".gethostname()."\r\n");
@@ -26,7 +26,11 @@ smtp_ehlo:
 		if (substr($line, 0, 1) != '2')
 			goto smtp_fail;
 		if (substr($line, 4, 5) == 'AUTH ' && strpos($line, 'CRAM-MD5') !== false)
-			$method = 'md5';
+			$methods[] = 'CRAM-MD5';
+		if (substr($line, 4, 5) == 'AUTH ' && strpos($line, 'LOGIN') !== false)
+			$methods[] = 'LOGIN';
+		if (substr($line, 4, 5) == 'AUTH ' && strpos($line, 'PLAIN') !== false)
+			$methods[] = 'PLAIN';
 		if (substr($line, 4, 8) == 'STARTTLS')
 			$found_starttls = true;
 		if (substr($line, 3, 1) == ' ')
@@ -41,16 +45,28 @@ smtp_ehlo:
 		$starttls = true;
 		goto smtp_ehlo;
 	}
-	if ($method == 'md5') {
+	if (in_array('CRAM-MD5', $methods)) {
 		fwrite($fp, "AUTH CRAM-MD5\r\n");
 		$line = fgets($fp);
 		$chall = substr($line, 4);
 		$data = $username.' '.hash_hmac('md5', base64_decode($chall), $password);
 		$data = base64_encode($data);
 		fwrite($fp, "$data\r\n");
-	} else {
+	} else if (in_array('PLAIN', $methods)) {
 		$plain = base64_encode($username . "\0" . $username . "\0" . $password);
 		fwrite($fp, "AUTH PLAIN $plain\r\n");
+	} else if (in_array('LOGIN', $methods)) {
+		fwrite($fp, "AUTH LOGIN\r\n");
+		$line = fgets($fp);
+		if (substr($line, 0, 3) != '334')
+			goto smtp_fail;
+		fwrite($fp, base64_encode($username)."\r\n");
+		$line = fgets($fp);
+		if (substr($line, 0, 3) != '334')
+			goto smtp_fail;
+		fwrite($fp, base64_encode($password)."\r\n");
+	} else {
+		goto smtp_fail;
 	}
 	while ($line = fgets($fp))
 		if (substr($line, 3, 1) != '-')
