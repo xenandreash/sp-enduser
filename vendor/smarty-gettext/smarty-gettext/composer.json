@@ -22,15 +22,17 @@
 			"function.locale.php"
 		]
 	},
-	"autoload-dev": {
-		"files": [
-			"tests/TestCase.php"
-		]
-	},
 	"bin": ["tsmarty2c.php"],
 	"require": {
 		"ext-gettext": "*",
 		"ext-pcre": "*",
-		"php": ">=5.2.1"
+		"php": "~5.3|~7.0"
+	},
+	"require-dev": {
+		"azatoth/php-pgettext": "~1.0",
+		"smarty/smarty": "3.1.*"
+	},
+	"suggest": {
+		"azatoth/php-pgettext": "Support msgctxt for {t} via context parameter"
 	}
 }
