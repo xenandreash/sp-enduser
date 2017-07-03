@@ -12,14 +12,25 @@ function datetime_to_obj(d) {
 
 $(document).ready(function() {
 	$('#search').focus();
+	$('[data-bulk-action]').parent('li').addClass('disabled');
 	$('[data-bulk-action]').click(function(e) {
 		var action = $(this).data('bulk-action');
 		var count = $('[name^=multiselect-]:checked').length;
+
+		if (count == 0) return;
+
 		if(confirm("Are you sure you want to " + action + " these " + count + " messages?")) {
 			$('#multiform').append('<input type="hidden" name="' + action + '" value="yes">');
 			$('#multiform').submit();
 		}
 		e.preventDefault();
+	});
+
+	$('[name^=multiselect-]').click(function() {
+		if ($('[name^=multiselect-]:checked').length > 0)
+			$('[data-bulk-action]').parent('li').removeClass('disabled');
+		else
+			$('[data-bulk-action]').parent('li').addClass('disabled');
 	});
 	
 	$('td [data-action]').click(function(e) {
