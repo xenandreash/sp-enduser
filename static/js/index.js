@@ -49,6 +49,11 @@ $(document).ready(function() {
 
 	// Add a select all checkbox on mail listing...
 	$('#select-all').change(function() {
+		if ($(this).prop('checked'))
+			$('[data-bulk-action]').parent('li').removeClass('disabled');
+		else
+			$('[data-bulk-action]').parent('li').addClass('disabled');
+
 		$(this).closest('table').find('tbody').find('input[type=checkbox]').prop('checked', $(this).prop('checked'));
 	});
 	if ($('#select-all').closest('table').find('tbody').find('input[type=checkbox]').length == 0)
