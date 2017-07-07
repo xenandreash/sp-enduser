@@ -207,6 +207,13 @@
 //$settings['session-name'] = 'spenduser';
 
 /*
+ * Enables two-factor authentication with Google Authenticator.
+ * This option requires that you use a database but works for all types of auth methods
+ */
+
+//$settings['twofactorauth'] = false;
+
+/*
  * Customizable text in the interface.
  */
 
