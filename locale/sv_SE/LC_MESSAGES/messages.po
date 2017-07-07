@@ -581,6 +581,10 @@ msgstr ""
 "Skriv in en sexsiffrig kod för att verifiera och aktivera "
 "tvåfaktorsautentisering."
 
+#: templates/user.tpl:112
+msgid "Enable"
+msgstr "Aktivera"
+
 #: templates/user.tpl:44
 msgid "Disable two-factor authentication"
 msgstr "Inaktivera tvåfaktorsautentisering"
@@ -589,6 +593,10 @@ msgstr "Inaktivera tvåfaktorsautentisering"
 msgid "To disable two-factor authentication please enter a key 6-digit token."
 msgstr ""
 "Inaktivera tvåfaktorsautentisering genom att skriva in en sexsiffrig kod."
+
+#: templates/user.tpl:110
+msgid "Disable"
+msgstr "Inaktivera"
 
 #: templates/user.tpl:6
 msgid "Permissions"
@@ -633,14 +641,6 @@ msgid ""
 msgstr ""
 "Hjälper dig att skydda ditt konto med en engångskod som genereras av din "
 "mobiltelefon som sedan används vid inloggning."
-
-#: templates/user.tpl:110
-msgid "Disable"
-msgstr "Inaktivera"
-
-#: templates/user.tpl:112
-msgid "Enable"
-msgstr "Aktivera"
 
 #: templates/user.tpl:45
 msgid "Password changed"

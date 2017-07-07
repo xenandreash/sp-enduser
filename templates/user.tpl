@@ -21,7 +21,7 @@
 					<span class="input-group-addon"><i class="fa fa-mobile" aria-hidden="true"></i></span>
 					<input type="text" class="form-control" name="totp_verify_key" id="totp_verify_key" placeholder="{t}Two-factor token{/t}" pattern="[0-9]{literal}{6}{/literal}" autocomplete="off">
 					<div class="input-group-btn">
-						<button type="submit" class="btn btn-success"><i class="fa fa-check-circle" aria-hidden="true"></i> {t}Enable two-factor authentication{/t}</button>
+						<button type="submit" class="btn btn-success"><i class="fa fa-check-circle" aria-hidden="true"></i> {t}Enable{/t}</button>
 					</div>
 				</div>
 				<input type="hidden" name="totp_secret" id="totp_secret" value="{$totp_secret}">
@@ -54,7 +54,7 @@
 					<span class="input-group-addon"><i class="fa fa-mobile" aria-hidden="true"></i></span>
 					<input type="text" class="form-control" name="totp_verify_key" id="totp_verify_key" placeholder="{t}Two-factor token{/t}" pattern="[0-9]{literal}{6}{/literal}" autocomplete="off">
 					<div class="input-group-btn">
-						<button type="submit" class="btn btn-primary"><i class="fa fa-chain-broken" aria-hidden="true"></i> {t}Disable two-factor authentication{/t}</button>
+						<button type="submit" class="btn btn-danger"><i class="fa fa-chain-broken" aria-hidden="true"></i> {t}Disable{/t}</button>
 					</div>
 				</div>
 				</form>
