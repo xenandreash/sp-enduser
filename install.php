@@ -197,7 +197,6 @@ if (isset($dbCredentials['dsn'])) {
 		/*
 			Version 1.php
 		*/
-		/* Disabled until release of version 1
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 		$statement = $dbh->prepare('SELECT * FROM dbversion LIMIT 1;');
 		if (!$statement || $statement->execute() === false) {
@@ -205,7 +204,19 @@ if (isset($dbCredentials['dsn'])) {
 			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$dbh->exec('CREATE TABLE dbversion (current INTEGER);');
 			$dbh->exec("INSERT INTO dbversion (current) VALUES (1);");
-		}*/
+		}
+
+		/*
+			Version 2.php
+		*/
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+		$statement = $dbh->prepare('SELECT * FROM users_totp LIMIT 1;');
+		if (!$statement || $statement->execute() === false) {
+			$notes[] = 'Adding table users_totp... ';
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$dbh->exec('CREATE TABLE users_totp (username VARCHAR(128), secret TEXT, PRIMARY KEY(username));');
+			$dbh->exec('UPDATE dbversion SET current = 2;');
+		}
 
 		if (!empty($notes))
 			echo 'Database<ul><li>'.implode('<li>', $notes).'</ul>';

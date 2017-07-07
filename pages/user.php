@@ -30,12 +30,76 @@ function do_change_password()
 	$changedPassword = true;
 }
 
+function generateQRSvg($google2fa, $issuer, $user, $secret)
+{
+	$url = $google2fa->getQRCodeUrl($issuer, $user, $secret);
+
+	$renderer = new BaconQrCode\Renderer\Image\Svg();
+	$renderer->setWidth(256);
+	$renderer->setHeight(256);
+
+	$writer = new BaconQrCode\Writer($renderer);
+
+	return $writer->writeString($url, "utf-8");
+}
+
 $changedPassword = false;
 $error = NULL;
 if (Session::Get()->getSource() == 'database' && isset($_POST['password']))
 	do_change_password();
 
 require_once BASE.'/inc/smarty.php';
+
+if ($settings->getTwoFactorAuth())
+{
+	if (Session::Get()->getSecretKey(Session::Get()->getUsername()))
+		$totp_enabled = true;
+	else
+		$totp_enabled = false;
+
+	$google2fa = new PragmaRX\Google2FA\Google2FA();
+	$smarty->assign('totp_enabled', $totp_enabled);
+
+	if (!$totp_enabled && isset($_GET['totp_enable'])) {
+		if (isset($_POST['totp_secret']) && isset($_POST['totp_verify_key'])) {
+			if ($google2fa->verifyKey($_POST['totp_secret'], $_POST['totp_verify_key'])) {
+				$dbh = $settings->getDatabase();
+				$statement = $dbh->prepare("INSERT INTO users_totp (username, secret) VALUES (:username, :secret);");
+				if ($statement->execute([':username' => Session::Get()->getUsername(), ':secret' => $_POST['totp_secret']])) {
+					$smarty->assign('totp_success', true);
+					$smarty->assign('totp_enabled', true);
+				} else {
+					$smarty->assign('totp_error', true);
+				}
+			} else {
+				$smarty->assign('totp_error', true);
+				$smarty->assign('totp_secret', $_POST['totp_secret']);
+				$smarty->assign('totp_qr_svg', generateQRSvg($google2fa, $settings->getPageName(), Session::Get()->getUsername(), $_POST['totp_secret']));
+			}
+		} else {
+			$secret = $google2fa->generateSecretKey();
+
+			$smarty->assign('totp_secret', $secret);
+			$smarty->assign('totp_qr_svg', generateQRSvg($google2fa, $settings->getPageName(), Session::Get()->getUsername(), $secret));
+		}
+		$smarty->assign('totp_enable', true);
+	} else if ($totp_enabled && isset($_GET['totp_disable'])) {
+		if (isset($_POST['totp_verify_key'])) {
+			if ($google2fa->verifyKey(Session::Get()->getSecretKey(Session::Get()->getUsername()), $_POST['totp_verify_key'])) {
+				$dbh = $settings->getDatabase();
+				$statement = $dbh->prepare("DELETE FROM users_totp WHERE username = :username;");
+				$statement->execute([':username' => Session::Get()->getUsername()]);
+				$smarty->assign('totp_disable_success', true);
+				$smarty->assign('totp_enabled', false);
+			} else {
+				$smarty->assign('totp_error', true);
+			}
+		}
+		$smarty->assign('totp_disable', true);
+	}
+}
+
+$smarty->assign('settings_totp_enabled', $settings->getTwoFactorAuth());
 
 if (is_array($access['mail'])) $smarty->assign('access_mail', $access['mail']);
 if (is_array($access['domain'])) $smarty->assign('access_domain', $access['domain']);

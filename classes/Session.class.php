@@ -176,4 +176,25 @@ class Session
 	{
 		return Settings::Get()->getMessagelogTable($this->access['userid']);
 	}
+
+	/**
+	 * Two-factor authentication - Returns a users secret key if there is one 
+	 */
+	public function getSecretKey($username) 
+	{
+		global $settings;
+
+		if (!isset($username) || empty($username))
+			return false;
+
+		$dbh = $settings->getDatabase();
+		$statement = $dbh->prepare("SELECT * FROM users_totp WHERE username = :username;");
+		$statement->execute([':username' => $username]);
+		$row = $statement->fetch(PDO::FETCH_ASSOC);
+
+		if (!$row)
+			return false;
+		else
+			return $row['secret'];
+	}
 }

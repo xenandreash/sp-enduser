@@ -19,15 +19,25 @@
 					<div class="form-group">
 						<label for="username" class="control-label col-sm-3">{t}Username{/t}</label>
 						<div class="col-sm-9">
-							<input type="text" class="form-control" name="username" id="username" autofocus="autofocus">
+							<input type="text" class="form-control" name="username" id="username" required autofocus="autofocus">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="username" class="control-label col-sm-3">{t}Password{/t}</label>
 						<div class="col-sm-9">
-							<input type="password" class="form-control" name="password" id="password">
+							<input type="password" class="form-control" name="password" required id="password">
 						</div>
 					</div>
+					{if $settings_totp_enabled}
+					<div class="form-group has-warning">
+						<div class="col-sm-offset-3 col-sm-9">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-mobile" aria-hidden="true"></i></span>
+								<input type="text" class="totp-transition form-control" name="totp_verify_key" id="totp_verify_key" placeholder="{t}Two-factor token{/t}" pattern="[0-9]{literal}{6}{/literal}" autocomplete="off">
+							</div>
+						</div>
+					</div>
+					{/if}
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-9">
 							<button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i>&nbsp;{t}Sign in{/t}</button>

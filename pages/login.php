@@ -1,6 +1,19 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
+/*function getSecretKey($username) {
+	global $settings;
+	$dbh = $settings->getDatabase();
+	$statement = $dbh->prepare("SELECT * FROM users_totp WHERE username = :username;");
+	$statement->execute([':username' => $username]);
+	$row = $statement->fetch(PDO::FETCH_ASSOC);
+
+	if (!$row)
+		return;
+	else
+		return $row['secret'];
+}*/
+
 if (isset($_POST['username']) && isset($_POST['password'])) {
 	$session_name = $settings->getSessionName();
 	if ($session_name)
@@ -12,30 +25,52 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 	$_SESSION['useiframe'] = $_POST['useiframe'];
 	$username = $_POST['username'];
 	$password = $_POST['password'];
-	foreach ($settings->getAuthSources() as $method)
+
+	if ($settings->getTwoFactorAuth()) 
 	{
-		$authmethod = 'halon_login_' . $method['type'];
-		if (!function_exists($authmethod))
-			require_once 'modules/Login.'.$method['type'].'.php';
-		$result = $authmethod($username, $password, $method, $settings);
-		if ($result && is_array($result))
+		$totp_authed = false;
+		$totp_enabled = false;
+		
+		$google2fa = new PragmaRX\Google2FA\Google2FA();
+		$secret = Session::Get()->getSecretKey($username);
+
+		if ($secret)
+			$totp_enabled = true;
+
+		if (isset($_POST['totp_verify_key']) && $totp_enabled && $google2fa->verifyKey($secret, $_POST['totp_verify_key']))
+			$totp_authed = true;
+	}
+
+	if (!$settings->getTwoFactorAuth() || !$totp_enabled || $totp_authed)
+	{
+		foreach ($settings->getAuthSources() as $method)
 		{
-			$_SESSION = array_merge($_SESSION, $result);
-			break;
+			$authmethod = 'halon_login_' . $method['type'];
+			if (!function_exists($authmethod))
+				require_once 'modules/Login.'.$method['type'].'.php';
+			$result = $authmethod($username, $password, $method, $settings);
+			if ($result && is_array($result))
+			{
+				$_SESSION = array_merge($_SESSION, $result);
+				break;
+			}
+		}
+		if (isset($_SESSION['username'])) {
+			if ($_POST['query'])
+				header("Location: ?".$_POST['query']);
+			else
+				header("Location: .");
+			die();
 		}
 	}
-	if (isset($_SESSION['username'])) {
-		if ($_POST['query'])
-			header("Location: ?".$_POST['query']);
-		else
-			header("Location: .");
-		die();
-	}
+
 	$error = 'Login failed';
 	session_destroy();
 }
 
 require_once BASE.'/inc/smarty.php';
+
+$smarty->assign('settings_totp_enabled', $settings->getTwoFactorAuth());
 
 if ($settings->getLoginText() !== null) $smarty->assign('login_text', $settings->getLoginText());
 if ($error) $smarty->assign('error', $error);

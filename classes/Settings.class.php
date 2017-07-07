@@ -45,6 +45,7 @@ class Settings
 	private $quarantineFilter = array();
 	private $archiveFilter = array();
 	private $filterPattern = "{from} or {to}";
+	private $twoFactorAuth = false;
 	
 	private $digestToAll = false;
 	private $digestSecret = null;
@@ -108,6 +109,7 @@ class Settings
 		$this->extract($this->digestToAll, 'digest.to-all');
 		$this->extract($this->digestSecret, 'digest.secret');
 		$this->extract($this->sessionName, 'session-name');
+		$this->extract($this->twoFactorAuth, 'twofactorauth');
 		
 		foreach ($this->nodeCredentials as $id => $cred) {
 			$username = isset($cred['username']) ? $cred['username'] : null;
@@ -524,6 +526,16 @@ class Settings
 	public function getGraphPath()
 	{
 		return BASE . '/../rrd';
+	}
+
+	/**
+	 * Returns whether or not two-factor authentication is enabled
+	 */
+	public function getTwoFactorAuth()
+	{
+		if (!isset($this->dbCredentials['dsn']))
+			return false;
+		return $this->twoFactorAuth;
 	}
 
 	/**
