@@ -2,6 +2,7 @@
 
 if (!defined('UPDATE_IGUARD')) die('File not included');
 
+$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 $statement = $dbh->prepare('SELECT * FROM dbversion LIMIT 1;');
 if (!$statement || $statement->execute() === false) {
 	echo "Adding table dbversion... ";
