@@ -59,9 +59,9 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{t}Actions{/t} <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a data-bulk-action="delete"><i class="fa fa-trash-o"></i>&nbsp;{t}Delete selected{/t}</a></li>
-						<li><a data-bulk-action="bounce"><i class="fa fa-mail-reply"></i>&nbsp;{t}Bounce selected{/t}</a></li>
-						<li><a data-bulk-action="retry"><i class="fa fa-mail-forward"></i>&nbsp;{t}Release/retry selected{/t}</a></li>
+						<li><a data-bulk-action="delete"><i class="fa fa-fw fa-trash-o"></i>&nbsp;{t}Delete selected{/t}</a></li>
+						<li><a data-bulk-action="bounce"><i class="fa fa-fw fa-mail-reply"></i>&nbsp;{t}Bounce selected{/t}</a></li>
+						<li><a data-bulk-action="retry"><i class="fa fa-fw fa-mail-forward"></i>&nbsp;{t}Release/retry selected{/t}</a></li>
 						{if $source == 'archive'}<li><a data-bulk-action="duplicate"><i class="fa fa-mail-forward"></i>&nbsp;{t}Release duplicate{/t}</a></li>{/if}
 					</ul>
 				</li>

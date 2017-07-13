@@ -46,34 +46,34 @@
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{t}Actions{/t} <span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					{if $support_log}
-						<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
+						<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-fw fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
 					{/if}
 					{if $bwlist_settings.whitelist.show}
 					<li>
 						{if $bwlist_settings.whitelist.enabled}
-							<a data-action="whitelist"><i class="fa fa-check" style="color:green"></i>&nbsp;{t}Whitelist{/t}</a>
+							<a data-action="whitelist"><i class="fa fa-fw fa-check" style="color:green"></i>&nbsp;{t}Whitelist{/t}</a>
 						{else}
-							<a href="#"><i class="fa fa-check" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Whitelisted{/t}</span></a>
+							<a href="#"><i class="fa fa-fw fa-check" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Whitelisted{/t}</span></a>
 						{/if}
 					</li>
 					{/if}
 					{if $bwlist_settings.blacklist.show}
 					<li>
 						{if $bwlist_settings.blacklist.enabled}
-							<a data-action="blacklist"><i class="fa fa-ban" style="color:red"></i>&nbsp;{t}Blacklist{/t}</a>
+							<a data-action="blacklist"><i class="fa fa-fw fa-ban" style="color:red"></i>&nbsp;{t}Blacklist{/t}</a>
 						{else}
-							<a href="#"><i class="fa fa-ban" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Blacklisted{/t}</span></a>
+							<a href="#"><i class="fa fa-fw fa-ban" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Blacklisted{/t}</span></a>
 						{/if}
 					</li>
 					{/if}
 					{if $type == 'queue' || $type == 'archive'}
 						<li class="divider"></li>
-						<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>
+						<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-fw fa-download"></i>&nbsp;{t}Download{/t}</a></li>
 						<li class="divider"></li>
-						<li><a data-action="delete"><i class="fa fa-trash-o"></i>&nbsp;{t}Delete{/t}</a></li>
-						<li><a data-action="bounce"><i class="fa fa-mail-reply"></i>&nbsp;{t}Bounce{/t}</a></li>
-						<li><a data-action="retry"><i class="fa fa-mail-forward"></i>&nbsp;{if $mail->msgaction=='QUARANTINE' || $mail->msgaction=='ARCHIVE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
-						{if $mail->msgaction=='ARCHIVE'}<li><a data-action="duplicate"><i class="fa fa-mail-forward"></i>&nbsp;{t}Release duplicate{/t}</a></li>{/if}
+						<li><a data-action="delete"><i class="fa fa-fw fa-trash-o"></i>&nbsp;{t}Delete{/t}</a></li>
+						<li><a data-action="bounce"><i class="fa fa-fw fa-mail-reply"></i>&nbsp;{t}Bounce{/t}</a></li>
+						<li><a data-action="retry"><i class="fa fa-fw fa-mail-forward"></i>&nbsp;{if $mail->msgaction=='QUARANTINE' || $mail->msgaction=='ARCHIVE'}{t}Release{/t}{else}{t}Retry{/t}{/if}</a></li>
+						{if $mail->msgaction=='ARCHIVE'}<li><a data-action="duplicate"><i class="fa fa-fw fa-mail-forward"></i>&nbsp;{t}Release duplicate{/t}</a></li>{/if}
 					{/if}
 				</ul>
 			</li>
