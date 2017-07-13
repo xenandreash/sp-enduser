@@ -30,7 +30,7 @@ if ($hash !== $sign) die('Failed to release message');
 
 // preview email
 if ($_GET['preview'] == 'true') {
-	if (Session::Get()->getUsername() === null) {
+	if (!Session::Get()->isAuthenticated()) {
 		session_destroy();
 		header('Location: ?page=login&query='.urlencode($_SERVER['QUERY_STRING']));
 	} else {

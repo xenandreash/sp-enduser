@@ -5,6 +5,7 @@
  */
 class Session
 {
+	private $authenticated = null;
 	private $username = null;
 	private $source = null;
 	private $access = null;
@@ -34,6 +35,7 @@ class Session
 		
 		session_start();
 		
+		$this->authenticated = $_SESSION['authenticated'];
 		$this->username = $_SESSION['username'];
 		$this->source = $_SESSION['source'];
 		$this->access = $_SESSION['access'];
@@ -44,6 +46,14 @@ class Session
 			$this->soap_password = $_SESSION['soap_password'];
 		if(isset($_SESSION['disabled_features']))
 			$this->disabled_features = $_SESSION['disabled_features'];
+	}
+
+	/**
+	 * Returns true if the user is authenticated.
+	 */
+	public function isAuthenticated()
+	{
+		return $this->authenticated;
 	}
 	
 	/**

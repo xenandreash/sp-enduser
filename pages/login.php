@@ -52,6 +52,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 			if ($result && is_array($result))
 			{
 				$_SESSION = array_merge($_SESSION, $result);
+				$_SESSION['authenticated'] = true;
 				break;
 			}
 		}
