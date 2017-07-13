@@ -1,19 +1,6 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-/*function getSecretKey($username) {
-	global $settings;
-	$dbh = $settings->getDatabase();
-	$statement = $dbh->prepare("SELECT * FROM users_totp WHERE username = :username;");
-	$statement->execute([':username' => $username]);
-	$row = $statement->fetch(PDO::FETCH_ASSOC);
-
-	if (!$row)
-		return;
-	else
-		return $row['secret'];
-}*/
-
 if (isset($_POST['username']) && isset($_POST['password'])) {
 	$session_name = $settings->getSessionName();
 	if ($session_name)
