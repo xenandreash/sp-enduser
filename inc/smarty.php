@@ -15,6 +15,7 @@ $smarty->assign('theme', $settings->getTheme());
 $smarty->assign('brand_logo', $settings->getBrandLogo());
 $smarty->assign('brand_logo_height', $settings->getBrandLogoHeight());
 $smarty->assign('pagename', $settings->getPageName());
+if (Session::Get()->isAuthenticated()) $smarty->assign('authenticated', true);
 if (Session::Get()->getUsername()) $smarty->assign('username', Session::Get()->getUsername());
 
 if (isset($javascript)) $smarty->assign('javascript', $javascript);

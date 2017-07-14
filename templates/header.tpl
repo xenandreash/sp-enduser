@@ -15,7 +15,7 @@
 		<script src="vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
 	</head>
 	<body class="{$body_class}">
-	{if $username}
+	{if $authenticated}
 		<nav class="navbar navbar-inverse navbar-static-top">
 			<div class="container-fluid">
 				<div class="navbar-header">
