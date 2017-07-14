@@ -53,7 +53,7 @@ class Session
 	 */
 	public function isAuthenticated()
 	{
-		return $this->authenticated;
+		return $this->authenticated === true;
 	}
 	
 	/**
