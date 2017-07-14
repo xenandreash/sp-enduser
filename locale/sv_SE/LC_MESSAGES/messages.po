@@ -357,9 +357,21 @@ msgstr "Inkludera rubriker"
 msgid "Export"
 msgstr "Exportera"
 
+#: templates/user.tpl:102
+msgid "Two-factor authentication"
+msgstr "Tvåfaktorsautentisering"
+
+#: templates/login.tpl:19
+msgid "Authentication"
+msgstr "Autentisering"
+
 #: templates/user.tpl:21 templates/user.tpl:53
 msgid "Two-factor token"
 msgstr "Tvåfaktorskod"
+
+#: templates/login.tpl:46
+msgid "Verify"
+msgstr "Verifiera"
 
 #: templates/login.tpl:33
 msgid "Forgot password"
@@ -623,10 +635,6 @@ msgstr "Och följade användare:"
 #: templates/user.tpl:27
 msgid "users:"
 msgstr "användare:"
-
-#: templates/user.tpl:102
-msgid "Two-factor authentication"
-msgstr "Tvåfaktorsautentisering"
 
 #: templates/user.tpl:106
 msgid ""
