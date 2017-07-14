@@ -43,7 +43,7 @@
 						<div class="col-sm-offset-3 col-sm-9">
 							<button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i>&nbsp;{t}Sign in{/t}</button>
 							{if $totp}
-								<a class="btn btn-default" href="?page=logout">{t}Abort{/t}</a>
+								<a class="btn btn-default" href="?page=logout">{t}Cancel{/t}</a>
 							{/if}
 							{if $forgot_password}
 								<a class="btn btn-default" href="?page=forgot">{t}Forgot password{/t}</a>
