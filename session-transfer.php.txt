@@ -85,6 +85,7 @@ $_SESSION['timezone'] = isset($_GET['timezone']) ? $_GET['timezone'] : 0;
 $_SESSION['username'] = $_GET['username'];
 $_SESSION['source'] = 'external';
 $_SESSION['access'] = isset($_POST['access']) ? $_POST['access'] : array('mail' => array($_GET['username']));
+$_SESSION['authenticated'] = true;
 die(json_encode(array('session' => session_id())));
 
 ?>
