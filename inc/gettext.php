@@ -53,6 +53,7 @@ $prefered_language = $prefered_language[0] . '_' . strtoupper($prefered_language
 
 if ($prefered_language != 'en_US')
 {
+	putenv('LC_ALL='.$prefered_language.'.UTF-8');
 	setlocale(LC_ALL, $prefered_language.'.UTF-8');
 	bind_textdomain_codeset('messages', 'UTF-8');
 	bindtextdomain('messages', 'locale/');
