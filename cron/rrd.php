@@ -1,6 +1,6 @@
 <?php
 if (!isset($_SERVER['argc']))
-        die('this file can only be run from command line');
+	die('this file can only be run from command line');
 
 define('BASE', dirname(__FILE__).'/..');
 require_once BASE.'/inc/core.php';
