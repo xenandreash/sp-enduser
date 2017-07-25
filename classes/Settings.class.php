@@ -38,8 +38,8 @@ class Settings
 	private $displayRateLimits = false;
 	private $displayDataStore = false;
 	private $displayUsers = false;
-	private $displayListener = array('mailserver:1' => "Inbound");
-	private $displayTransport = array('mailtransport:2' => "Internet");
+	private $displayListener = array('mailserver:inbound' => "Inbound");
+	private $displayTransport = array('mailtransport:outbound' => "Internet");
 	private $useDatabaseLog = false;
 	private $useDatabaseStats = false;
 	private $quarantineFilter = array();
