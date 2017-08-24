@@ -22,7 +22,7 @@ if (!Session::Get()->isAuthenticated() && (!isset($_GET['page']) || ($_GET['page
 }
 
 if ($version['update_required']) {
-	if (!Session::Get()->isAuthenticated()) {
+	if (Session::Get()->isAuthenticated()) {
 		session_destroy();
 		header('Location: ?page=login');
 		die();
