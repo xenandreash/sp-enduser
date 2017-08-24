@@ -60,16 +60,15 @@ class LDAPDatabase
 		$ldapuser = ldap_escape($username);
 		switch ($this->schema) {
 			case 'msexchange':
-				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(proxyAddresses=smtp:*))", array('proxyAddresses', 'memberOf'));
+				if (!empty($this->memberof)) {
+					$memberof = ldap_escape($this->memberof);
+					$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(memberOf=$memberof)(proxyAddresses=smtp:*))", array('proxyAddresses', 'memberOf'));
+				} else {
+					$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(proxyAddresses=smtp:*))", array('proxyAddresses'));
+				}
+
 				$entry = ldap_first_entry($ds, $rs);
 				if ($entry) {
-					if (!empty($this->memberof)) {
-						$memberof = ldap_get_values($ds, $entry, 'memberOf');
-
-						if (!in_array($this->memberof, $memberof))
-							return false;
-					}
-
 					foreach (ldap_get_values($ds, $entry, 'proxyAddresses') as $mail) {
 						if (!is_string($mail) || strcasecmp(substr($mail, 0, 5), 'smtp:') !== 0)
 							continue;
