@@ -10,7 +10,9 @@ $pagesize = array(25, 50, 100, 500, 1000);
 
 $total = null;
 $access = Session::Get()->getAccess();
-$search = $_GET['search'];
+$search = [];
+if (!empty($_GET['search'])) $search['recipient'] = $_GET['search'];
+if (!empty($_GET['level'])) $search['level'] = $_GET['level'];
 $in_access = $domain_access = array();
 foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => $v)
 	$in_access[':access'.$k] = $v;
@@ -20,8 +22,10 @@ $foundrows = $where = '';
 $wheres = array();
 if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
 	$foundrows = 'SQL_CALC_FOUND_ROWS';
-if ($search != '')
+if (isset($search['recipient']))
 	$wheres[] = 'access LIKE :search';
+if (isset($search['level']))
+	$wheres[] = 'settings = :level';
 if (count($access) != 0) {
 	$restrict = '(access IN ('.implode(',', array_keys($in_access)).')';
 	foreach (array_keys($domain_access) as $v)
@@ -36,8 +40,10 @@ $sql = "SELECT $foundrows * FROM spamsettings $where ORDER BY access ASC LIMIT :
 $statement = $dbh->prepare($sql);
 $statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-if ($search != '')
-	$statement->bindValue(':search', '%'.$search.'%');
+if (isset($search['recipient']))
+	$statement->bindValue(':search', '%'.$search['recipient'].'%');
+if (isset($search['level']))
+	$statement->bindValue(':level', json_encode(["level" => $search['level']]));
 foreach ($in_access as $k => $v)
 	$statement->bindValue($k, $v);
 foreach ($domain_access as $k => $v)
@@ -50,7 +56,8 @@ while ($row = $statement->fetch(PDO::FETCH_ASSOC))
 if ($offset > 0 and !count($result)) {
 	$redirect = $_SERVER['PHP_SELF'].'?page='.$_GET['page'];
 	if (isset($_GET['limit'])) $redirect .= "&limit=$limit";
-	if ($search) $redirect .= "&search=$search";
+	if (isset($search['recipient'])) $redirect .= "&search=".$search['recipient'];
+	if (isset($search['level'])) $redirect .= "&level=".$search['level'];
 	header("Location: $redirect");
 	die();
 }
@@ -64,8 +71,10 @@ if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite' || $dbh->getAttribute(
 		$total = count($result);
 	} else {
 		$total = $dbh->prepare("SELECT COUNT(*) FROM spamsettings $where;");
-		if ($search != '')
-			$total->bindValue(':search', '%'.$search.'%');
+		if (isset($search['recipient']))
+			$total->bindValue(':search', '%'.$search['recipient'].'%');
+		if (isset($search['level']))
+			$total->bindValue(':level', json_encode(["level" => $search['level']]));
 		foreach ($in_access as $k => $v)
 			$total->bindValue($k, $v);
 		foreach ($domain_access as $k => $v)
