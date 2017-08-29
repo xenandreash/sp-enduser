@@ -547,6 +547,8 @@ class Settings
 	 */
 	public function getGeoIP()
 	{
+		if (!class_exists("GeoIp2\Database\Reader"))
+			return false;
 		return $this->geoIP;
 	}
 
