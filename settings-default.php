@@ -223,3 +223,14 @@
 //$settings['pagename'] = "Halon log server";
 //$settings['logintext'] = "Some text you'd like to display on the login form";
 //$settings['forgottext'] = "Some text you'd like to display on the forgot form";
+
+/*
+ * Maxmind GEOIP2
+ * Dependencies:
+ * composer require geoip2/geoip2:~2.0
+ * composer require components/flag-icon-css
+ * Visit https://www.maxmind.com/ for more information
+ */
+
+//$settings['geoip'] = false;
+//$settings['geoip-database'] = ''; // download the country database at https://dev.maxmind.com/geoip/geoip2/geolite2/ and specify the path to it

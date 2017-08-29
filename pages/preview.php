@@ -153,6 +153,16 @@ if ($settings->getDisplayBWlist() && !empty($mail->msgfrom) && $mail->msgto != $
 	}
 }
 
+// geoip
+if ($settings->getGeoIP()) {
+	try {
+		$reader = new GeoIp2\Database\Reader($settings->getGeoIPDatabase());
+		$ipinfo = $reader->country($mail->msgfromserver);
+		$geoip['name'] = $ipinfo->country->name;
+		$geoip['isocode'] = strtolower($ipinfo->country->isoCode);
+	} catch(Exception $e) {}
+}
+
 $javascript[] = 'static/js/preview.js';
 $javascript[] = 'static/js/diff_match_patch.js';
 $javascript[] = 'static/js/diff.js';
@@ -180,6 +190,7 @@ $smarty->assign('show_html_link', '?'.http_build_query($f));
 
 $smarty->assign('mail', $mail);
 $smarty->assign('type', $type);
+if (isset($geoip)) $smarty->assign('geoip', $geoip);
 if ($header) {
 	$smarty->assign('header', json_encode($header));
 	$smarty->assign('headerdelta', json_encode($headerdelta));

@@ -9,6 +9,9 @@
 		<title>{$title|gettext|escape} | {$pagename|escape}</title>
 		<link rel="stylesheet" href="{$theme}">
 		<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css">
+		{if isset($geoip)}
+		<link rel="stylesheet" href="vendor/components/flag-icon-css/css/flag-icon.min.css">
+		{/if}
 		<link rel="stylesheet" href="static/css/styles.css">
 		<script src="static/js/jquery.min.js"></script>
 		{foreach $javascript as $js}<script src="{$js}"></script>{/foreach}

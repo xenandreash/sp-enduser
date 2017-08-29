@@ -46,6 +46,8 @@ class Settings
 	private $archiveFilter = array();
 	private $filterPattern = "{from} or {to}";
 	private $twoFactorAuth = false;
+	private $geoIP = false;
+	private $geoIPDatabase = null;
 	
 	private $digestToAll = false;
 	private $digestSecret = null;
@@ -110,7 +112,9 @@ class Settings
 		$this->extract($this->digestSecret, 'digest.secret');
 		$this->extract($this->sessionName, 'session-name');
 		$this->extract($this->twoFactorAuth, 'twofactorauth');
-		
+		$this->extract($this->geoIP, 'geoip');
+		$this->extract($this->geoIPDatabase, 'geoip-database');
+
 		foreach ($this->nodeCredentials as $id => $cred) {
 			$username = isset($cred['username']) ? $cred['username'] : null;
 			$password = isset($cred['password']) ? $cred['password'] : null;
@@ -536,6 +540,22 @@ class Settings
 		if (!isset($this->dbCredentials['dsn']))
 			return false;
 		return $this->twoFactorAuth;
+	}
+
+	/**
+	 * Returns whether or not geoip is enabled
+	 */
+	public function getGeoIP()
+	{
+		return $this->geoIP;
+	}
+
+	/**
+	 * Returns path to geoip database
+	 */
+	public function getGeoIPDatabase()
+	{
+		return $this->geoIPDatabase;
 	}
 
 	/**
