@@ -2,7 +2,7 @@
 
 if (!defined('UPDATE_IGUARD')) die('File not included');
 
-$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 $statement = $dbh->prepare('SELECT * FROM users_totp LIMIT 1;');
 if (!$statement || $statement->execute() === false) {
 	echo "Adding table users_totp... ";
