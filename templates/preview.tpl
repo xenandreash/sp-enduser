@@ -2,6 +2,10 @@
 <nav class="navbar navbar-default navbar-toolbar navbar-static-top hidden-xs">
 	<div class="container-fluid">
 		<ul class="nav navbar-nav">
+			{if $bwlist_settings.whitelist.show || $bwlist_settings.blacklist.show}
+			<input type="hidden" name="bwlist-from" id="bwlist-from" value="{$mail->msgfrom|escape}">
+			<input type="hidden" name="bwlist-to" id="bwlist-to" value="{$mail->msgto|escape}">
+			{/if}
 			{if $bwlist_settings.whitelist.show}
 			<li>
 				{if $bwlist_settings.whitelist.enabled}
@@ -238,10 +242,6 @@
 		<input type="hidden" name="action" id="action" value="">
 		<input type="hidden" name="referer" id="referer" value="{$referer|escape}">
 	</form>
-	{if $bwlist_settings.whitelist.show || $bwlist_settings.blacklist.show}
-	<input type="hidden" name="bwlist-from" id="bwlist-from" value="{$mail->msgfrom|escape}">
-	<input type="hidden" name="bwlist-to" id="bwlist-to" value="{$mail->msgto|escape}">
-	{/if}
 	{/if}
 </div>
 {include file='footer.tpl'}
