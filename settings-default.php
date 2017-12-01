@@ -184,7 +184,8 @@
 /*
  * The quarantine filter is used to restrict the end-user access to
  * only certain quarantines, in case you have multiple quarantines with
- * different purposes.
+ * different purposes. Note that you cannot configure a quarantine-filter
+ * when database-log is enabled
  */
 
 //$settings['quarantine-filter'][] = 'mailquarantine:1';
@@ -193,7 +194,8 @@
 /*
  * The archive filter is used to restrict the end-user access to
  * only certain archives (quarantines), in case you have multiple quarantines with
- * different purposes.
+ * different purposes. Note that you cannot configure a archive-filter
+ * when database-log is enabled
  */
 
 //$settings['archive-filter'][] = 'mailquarantine:3';
@@ -203,7 +205,8 @@
  * The default filter-pattern to use when creating additional
  * inbound/outbound restrictions are "{from} or {to}", however
  * in some cases it's necessary to know if the message is
- * inbound or outbound.
+ * inbound or outbound. Note that you cannot configure a
+ * filter-pattern when database-log is enabled
  */
 
 //$settings['filter-pattern'] = '{from} server=mailserver:outbound or {to} server=mailserver:inbound';

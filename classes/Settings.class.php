@@ -45,7 +45,7 @@ class Settings
 	private $useDatabaseStats = false;
 	private $quarantineFilter = array();
 	private $archiveFilter = array();
-	private $filterPattern = "{from} or {to}";
+	private $filterPattern = null;
 	private $twoFactorAuth = false;
 	private $geoIP = false;
 	private $geoIPDatabase = null;

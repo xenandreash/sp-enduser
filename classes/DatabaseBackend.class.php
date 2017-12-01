@@ -90,10 +90,13 @@ class DatabaseBackend extends Backend
 		$settings = Settings::Get();
 		$access = Session::Get()->getAccess();
 
+		if ($settings->getFilterPattern())
+			die('you cannot combine filter-pattern and local history');
 		if (count($settings->getQuarantineFilter()) > 0)
 			die('you cannot combine quarantine-filter and local history');
 		if (count($settings->getArchiveFilter()) > 0)
 			die('you cannot combine archive-filter and local history');
+
 		$filter = array();
 		$params = array();
 		$i = 0;
@@ -126,8 +129,12 @@ class DatabaseBackend extends Backend
 		$settings = Settings::Get();
 		$access = Session::Get()->getAccess();
 
-		if ($settings->getFilterPattern() === null)
-			throw new Exception('you cannot combine filter-pattern and local sql history');
+		if ($settings->getFilterPattern())
+			die('you cannot combine filter-pattern and local history');
+		if (count($settings->getQuarantineFilter()) > 0)
+			die('you cannot combine quarantine-filter and local history');
+		if (count($settings->getArchiveFilter()) > 0)
+			die('you cannot combine archive-filter and local history');
 
 		$params = $where['params'];
 		$i = 0;
