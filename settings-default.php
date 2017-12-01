@@ -206,7 +206,7 @@
  * inbound or outbound.
  */
 
-//$settings['filter-pattern'] = '{from} server=mailserver:2 or {to} server=mailserver:1';
+//$settings['filter-pattern'] = '{from} server=mailserver:outbound or {to} server=mailserver:inbound';
 
 /*
  * The rate limits to display on the "rate limit" page.
