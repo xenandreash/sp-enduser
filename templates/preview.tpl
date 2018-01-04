@@ -114,7 +114,7 @@
 						<dt>{t}Size{/t}</dt><dd class="wrap" title="{$mail->msgsize} bytes">{$mail->msgsize|format_size}</dd>
 						<dt>{t}Details{/t}</dt>
 						<dd>
-						{if $mail->msgaction == 'QUEUE'}
+						{if $mail->msgaction == 'QUEUE' && isset($has_nodes)}
 							{t retry=$mail->msgretries}In queue (retry %1){/t}<br><span class="text-muted">{$mail->msgerror|escape}</span>
 						{else}
 							{$mail->msgdescription|escape|emptyspace}
@@ -132,6 +132,57 @@
 		</div>
 		<div class="col-md-5">
 		{/if}
+			{if !empty($msg_mailflow)}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">{t}Mail flow{/t}</h3>
+				</div>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>{t}Status{/t}</th>
+							<th style="width: 150px">{t}Date{/t}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{foreach $msg_mailflow as $i}
+						{assign var="action" value=$i->action}
+						{if $i->action == "QUEUE" || $i->action == "QUARANTINE"}
+							{capture assign="queued"}1{/capture}
+						{else}
+							{capture assign="queued"}0{/capture}
+						{/if}
+						<tr>
+							<td>
+								<span class="fa-stack fa-fw" style="font-size: 9px;">
+									<i class="fa fa-square fa-stack-2x" style="color: {$action_colors.$action};"></i>
+									<i class="fa fa-lg fa-{$action_icons.$action} fa-stack-1x" style="color:#fff;"></i>
+								</span>
+								{$i->action}{if $i@last and $queued == 1}&nbsp;<i class="text-muted">{t}(Current{/t})</i>{/if}
+								{if !empty($i->details)}
+									<p title="{$i->details|escape|emptyspace}" style="white-space: normal; margin-top: 4px;"><small><span class="text-muted">{$i->details|escape|emptyspace}</span></small></p>
+								{/if}
+							</td>
+							<td>
+								<span title="{$i->ts0|date_format:'%Y-%m-%d %H:%M:%S'}">{$i->ts0|date_format:'%Y-%m-%d %H:%M:%S'}</span>
+							</td>
+						</tr>
+						{if !$i@last}
+						<tr>
+							<td class="active" colspan="2" style="padding-top: 3px; padding-bottom: 3px; font-size: 9px;">
+								<i class="fa fa-arrow-down fa-2x" style="color: #ccc;"></i>
+							</td>
+						</tr>
+						{else}
+						<tr>
+							<td colspan="2" style="height: 5px; padding: 0px; {if $queued == 1}background: repeating-linear-gradient(-45deg, {$action_colors.$action}, {$action_colors.$action} 10px, #fff 10px, #fff 20px);{else}background-color: {$action_colors.$action}{/if}"></td>
+						</tr>
+						{/if}
+						{/foreach}
+					</tbody>
+				</table>
+			</div>
+			{/if}
 			{if $scores}
 			<div class="panel panel-default">
 				<div class="panel-heading">

@@ -59,10 +59,10 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 if ($_GET['type'] == 'log') {
 	$dbh = $settings->getDatabase();
 	if (isset($_POST['userid'])) {
-		$statement = $dbh->prepare('INSERT INTO '.$settings->getMessagelogTable($_POST['userid']).' (userid, owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, msgsize, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:userid, :owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :msgsize, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
+		$statement = $dbh->prepare('INSERT INTO '.$settings->getMessagelogTable($_POST['userid']).' (userid, owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, msgsize, score_rpd, score_sa, scores, msgdescription, serialno, msgaction_log) VALUES (:userid, :owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :msgsize, :score_rpd, :score_sa, :scores, :msgdescription, :serialno, :msgactionlog);');
 		$statement->bindValue(':userid', $_POST['userid']);
 	} else {
-		$statement = $dbh->prepare('INSERT INTO '.$settings->getMessagelogTable($_POST['userid']).' (owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, msgsize, score_rpd, score_sa, scores, msgdescription, serialno) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :msgsize, :score_rpd, :score_sa, :scores, :msgdescription, :serialno);');
+		$statement = $dbh->prepare('INSERT INTO '.$settings->getMessagelogTable($_POST['userid']).' (owner, owner_domain, msgts, msgid, msgactionid, msgaction, msglistener, msgtransport, msgsasl, msgfromserver, msgfrom, msgfrom_domain, msgto, msgto_domain, msgsubject, msgsize, score_rpd, score_sa, scores, msgdescription, serialno, msgaction_log) VALUES (:owner, :ownerdomain, :msgts, :msgid, :msgactionid, :msgaction, :msglistener, :msgtransport, :msgsasl, :msgfromserver, :msgfrom, :msgfromdomain, :msgto, :msgtodomain, :msgsubject, :msgsize, :score_rpd, :score_sa, :scores, :msgdescription, :serialno, :msgactionlog);');
 	}
 	$statement->bindValue(':owner', $_POST['owner']);
 	$statement->bindValue(':ownerdomain', extract_domain($_POST['owner']));
@@ -97,6 +97,9 @@ if ($_GET['type'] == 'log') {
 	$scores['kav'] = $_POST['score_kav'];
 	$scores['clam'] = $_POST['score_clam'];
 	$statement->bindValue(':scores', json_encode($scores));
+
+	$ts0 = isset($_POST['msgts0']) ? $_POST['msgts0'] : time();
+	$statement->bindValue(':msgactionlog', json_encode(Array(['action' => $_POST['msgaction'], 'details' => $_POST['msgdescription'], 'ts0' => round($ts0)])));
 	$statement->execute();
 
 	// Database graphs
@@ -133,12 +136,50 @@ if ($_GET['type'] == 'log') {
 // Update message in local (SQL) history log
 if ($_GET['type'] == 'logupdate') {
 	$dbh = $settings->getDatabase();
-	$statement = $dbh->prepare('UPDATE '.$settings->getMessagelogTable($_POST['userid']).' SET msgaction = :msgaction, msgdescription = :msgdescription WHERE msgid = :msgid AND msgactionid = :msgactionid AND serialno = :serialno;');
+
+	if ($_POST['msgaction'] == '')
+		$msgaction = 'DELIVER';
+	else if ($_POST['msgaction'] == 'RETRY')
+		$msgaction = 'QUEUE';
+	else
+		$msgaction = $_POST['msgaction'];
+
+	$statement = $dbh->prepare('SELECT msgaction, msgdescription, msgaction_log FROM '.$settings->getMessagelogTable($_POST['userid']).' WHERE msgid = :msgid AND msgactionid = :msgactionid AND serialno = :serialno;');
 	$statement->bindValue(':msgid', $_POST['msgid']);
-	$statement->bindValue(':msgaction', $_POST['msgaction']);
+	$statement->bindValue(':msgactionid', $_POST['msgactionid']);
+	$statement->bindValue(':serialno', $_POST['serialno']);
+	$statement->execute();
+	if ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+		$msgactionlog = ($row['msgaction_log'] != null) ? json_decode($row['msgaction_log']) : [];
+
+		if ($msgaction != $row['msgaction']) {
+			if (isset($_POST['predelivery']) && $_POST['predelivery'] == true && $row['msgaction'] != 'QUEUE' && $msgaction != 'QUEUE') {
+				if (end($msgactionlog) != 'QUEUE') {
+					$logaction = [];
+					$logaction['action'] = 'QUEUE';
+					$logaction['details'] = '';
+					$logaction['ts0'] = isset($_POST['msgts0']) ? round($_POST['msgts0']) : time();
+					$msgactionlog[] = $logaction;
+				}
+			}
+
+			$logaction = [];
+			$logaction['action'] = $msgaction;
+			$logaction['details'] = $_POST['msgdescription'];
+			$logaction['ts0'] = isset($_POST['msgts0']) ? round($_POST['msgts0']) : time();
+			$msgactionlog[] = $logaction;
+		}
+	} else {
+		$msgactionlog = [];
+	}
+
+	$statement = $dbh->prepare('UPDATE '.$settings->getMessagelogTable($_POST['userid']).' SET msgaction = :msgaction, msgdescription = :msgdescription, msgaction_log = :msgaction_log WHERE msgid = :msgid AND msgactionid = :msgactionid AND serialno = :serialno;');
+	$statement->bindValue(':msgid', $_POST['msgid']);
+	$statement->bindValue(':msgaction', $msgaction);
 	$statement->bindValue(':msgdescription', $_POST['msgdescription']);
 	$statement->bindValue(':serialno', $_POST['serialno']);
 	$statement->bindValue(':msgactionid', $_POST['msgactionid']);
+	$statement->bindValue(':msgaction_log', json_encode($msgactionlog));
 	$statement->execute();
 	success_json(array('status'=>'success'));
 }

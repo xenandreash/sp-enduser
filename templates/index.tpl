@@ -246,6 +246,7 @@
 					<option>REJECT</option>
 					<option>DEFER</option>
 					<option>ERROR</option>
+					{if $source == 'log'}<option>BOUNCE</option>{/if}
 					{if $source == 'log'}<option>QUEUE</option>{/if}
 				</select></div>
 			</div>

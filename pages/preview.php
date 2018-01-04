@@ -11,6 +11,13 @@ if ($type == 'log') {
 	$mail = $dbBackend->getMail($id);
 	if (!$mail) die('Invalid mail');
 
+	// get mail flow from db (not available over soap)
+	$msgactionlog = isset($mail->msgaction_log) ? json_decode($mail->msgaction_log) : [];
+	foreach($msgactionlog as $i) {
+		if (isset($i->ts0))
+			$i->ts0 -= $_SESSION['timezone'] * 60;
+	}
+
 	// If in queue, quarantine or if text-log is enabled, get it from SOAP if possible (so that we get more info)
 	if ($mail->msgaction == 'QUEUE' || $mail->msgaction == 'QUARANTINE' || $settings->getDisplayTextlog() == true)
 		$node = $settings->getNodeBySerial($mail->serialno);
@@ -190,6 +197,7 @@ $smarty->assign('show_html_link', '?'.http_build_query($f));
 
 $smarty->assign('mail', $mail);
 $smarty->assign('type', $type);
+$smarty->assign('msg_mailflow', isset($msgactionlog) ? $msgactionlog : []);
 if (isset($geoip)) $smarty->assign('geoip', $geoip);
 if ($header) {
 	$smarty->assign('header', json_encode($header));
@@ -198,6 +206,8 @@ if ($header) {
 $smarty->assign('referer', isset($_POST['referer']) ? $_POST['referer'] : $_SERVER['HTTP_REFERER']);
 $smarty->assign('action_color', $action_colors[$mail->msgaction]);
 $smarty->assign('action_icon', $action_icons[$mail->msgaction]);
+$smarty->assign('action_colors', $action_colors);
+$smarty->assign('action_icons', $action_icons);
 $transports = $settings->getDisplayTransport();
 if (isset($transports[$mail->msgtransport])) $smarty->assign('transport', $transports[$mail->msgtransport]);
 $listeners = $settings->getDisplayListener();

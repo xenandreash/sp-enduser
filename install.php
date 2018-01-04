@@ -96,7 +96,7 @@ function createMessageLog(&$dbh, &$notes, $name)
 
 	$notes[] = 'Adding table '.$name;
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$dbh->exec('CREATE TABLE '.$name.' (id '.$serialtype.', '.$uuidcolumn.'userid '.$useridtype.' DEFAULT NULL, owner VARCHAR(300), owner_domain VARCHAR(300), msgts0 TIMESTAMP DEFAULT CURRENT_TIMESTAMP, msgts INT, msgid VARCHAR(100), msgactionid INT, msgaction VARCHAR(50), msglistener VARCHAR(100), msgtransport VARCHAR(100), msgsasl VARCHAR(300), msgfromserver VARCHAR(300), msgfrom VARCHAR(300), msgfrom_domain VARCHAR(300), msgto VARCHAR(300), msgto_domain VARCHAR(300), msgsubject TEXT, msgsize INTEGER, score_rpd NUMERIC(10,5), score_sa NUMERIC(10,5), scores TEXT, msgdescription TEXT, serialno VARCHAR(100));');
+	$dbh->exec('CREATE TABLE '.$name.' (id '.$serialtype.', '.$uuidcolumn.'userid '.$useridtype.' DEFAULT NULL, owner VARCHAR(300), owner_domain VARCHAR(300), msgts0 TIMESTAMP DEFAULT CURRENT_TIMESTAMP, msgts INT, msgid VARCHAR(100), msgactionid INT, msgaction VARCHAR(50), msglistener VARCHAR(100), msgtransport VARCHAR(100), msgsasl VARCHAR(300), msgfromserver VARCHAR(300), msgfrom VARCHAR(300), msgfrom_domain VARCHAR(300), msgto VARCHAR(300), msgto_domain VARCHAR(300), msgsubject TEXT, msgsize INTEGER, score_rpd NUMERIC(10,5), score_sa NUMERIC(10,5), scores TEXT, msgdescription TEXT, serialno VARCHAR(100), msgaction_log TEXT);');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_msgid               ON '.$name.'(msgid);');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_userid              ON '.$name.'(userid);');
 	$dbh->exec('CREATE INDEX '.$name.'_ind_owner               ON '.$name.'(owner);');
@@ -216,6 +216,19 @@ if (isset($dbCredentials['dsn'])) {
 			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$dbh->exec('CREATE TABLE users_totp (username VARCHAR(128), secret TEXT, PRIMARY KEY(username));');
 			$dbh->exec('UPDATE dbversion SET current = 2;');
+		}
+
+		/*
+			Version 3.php
+			Added msgaction_log column to messagelog
+		*/
+		$statement = $dbh->prepare('SELECT current FROM dbversion');
+		if ($statement && $statement->execute()) {
+			$result = $statement->fetch(PDO::FETCH_ASSOC);
+			if ($result['current'] < 3) {
+				$notes[] = 'Updating dbversion to ver. 3...';
+				$dbh->exec('UPDATE dbversion SET current = 3;');
+			}
 		}
 
 		if (!empty($notes))
