@@ -1,41 +1,41 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8\n"
 
-#: templates/header.tpl:37
-msgid "Black/whitelist"
-msgstr "Svart- och vitlista"
+#: templates/spam.tpl:105
+msgid "Disabled"
+msgstr "Ingen"
 
-#: templates/bwlist.tpl:36 templates/bwlist.tpl:143
-msgid "Action"
-msgstr "Åtgärd"
+#: templates/spam.tpl:106
+msgid "Low"
+msgstr "Låg"
 
-#: templates/bwlist.tpl:122
-msgid "Select action"
-msgstr "Välj åtgärd"
+#: templates/spam.tpl:107
+msgid "Medium"
+msgstr "Mellan"
 
-#: templates/bwlist.tpl:146
-msgid "Blacklist"
-msgstr "Svartlista"
+#: templates/spam.tpl:108
+msgid "High"
+msgstr "Hög"
 
-#: templates/bwlist.tpl:147
-msgid "Whitelist"
-msgstr "Vitlista"
+#: templates/header.tpl:40 templates/spam.tpl:14
+msgid "Spam settings"
+msgstr "Spaminställningar"
 
-#: templates/bwlist.tpl:37 templates/bwlist.tpl:152
-msgid "Sender"
-msgstr "Avsändare"
+#: templates/spam.tpl:48 templates/spam.tpl:112
+msgid "Level"
+msgstr "Nivå"
 
-#: templates/bwlist.tpl:25
-msgid "Search for..."
-msgstr "Sök efter..."
+#: templates/index.tpl:22 templates/index.tpl:46
+msgid "All"
+msgstr "Alla"
 
 #: templates/bwlist.tpl:38 templates/bwlist.tpl:158
 msgid "For recipient"
 msgstr "För mottagare"
 
-#: templates/bwlist.tpl:64 templates/bwlist.tpl:83 templates/bwlist.tpl:103
-msgid "Remove"
-msgstr "Ta bort"
+#: templates/bwlist.tpl:25
+msgid "Search for..."
+msgstr "Sök efter..."
 
 #: templates/bwlist.tpl:72 templates/bwlist.tpl:79 templates/bwlist.tpl:92
 #: templates/bwlist.tpl:99
@@ -46,21 +46,21 @@ msgstr "alla"
 msgid "Edit"
 msgstr "Ändra"
 
-#: templates/bwlist.tpl:109
-msgid "No black/whitelist"
-msgstr "Ingen svart- eller vitlista"
+#: templates/bwlist.tpl:64 templates/bwlist.tpl:83 templates/bwlist.tpl:103
+msgid "Remove"
+msgstr "Ta bort"
+
+#: templates/spam.tpl:67
+msgid "No spam settings"
+msgstr "Inga spaminställningar"
 
 #: templates/bwlist.tpl:185
 msgid "Add"
 msgstr "Lägg till"
 
-#: templates/bwlist.tpl:180
-msgid ""
-"Sender may be an IP address, an e-mail address, a domain name or a wildcard "
-"domain name starting with a dot (eg. .co.uk)."
-msgstr ""
-"Avsändaren kan vara en IP-adress, en e-post adress, ett domännamn eller ett "
-"wildcard-domännamn (t.ex. .co.uk)."
+#: templates/spam.tpl:104
+msgid "Select level"
+msgstr "Välj nivå"
 
 #: templates/bwlist.tpl:164
 msgid "Select all"
@@ -78,115 +78,6 @@ msgstr "Spara"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: templates/datastore.tpl:7 templates/header.tpl:49
-msgid "Data store"
-msgstr "Datasamlingar"
-
-#: templates/datastore.tpl:22 templates/datastore.tpl:46
-#: templates/datastore.tpl:62 templates/datastore.tpl:93
-msgid "Namespace"
-msgstr "Namnrymd"
-
-#: templates/datastore.tpl:28 templates/datastore.tpl:47
-#: templates/datastore.tpl:63 templates/datastore.tpl:98
-msgid "Key"
-msgstr "Nyckel"
-
-#: templates/datastore.tpl:34 templates/datastore.tpl:48
-#: templates/datastore.tpl:64 templates/datastore.tpl:103
-msgid "Value"
-msgstr "Värde"
-
-#: templates/datastore.tpl:75
-msgid "No items"
-msgstr "Inga objekt"
-
-#: templates/forgot.tpl:66
-msgid "Reset password"
-msgstr "Återställ lösenord"
-
-#: templates/forgot.mail.tpl:3
-msgid ""
-"You have requested to reset your password on <a href=\"%1\">%1</a>. Click "
-"the link to reset your password."
-msgstr ""
-"Du har begärt att återställa lösenordet för <a href=\"%1\">%1</a>. Klicka på "
-"länken nedan för att återställa ditt lösenord."
-
-#: templates/forgot.mail.tpl:9
-msgid ""
-"Important! If you didn't request a new password, ignore and delete this "
-"message. Another user might have typed your email by mistake."
-msgstr ""
-"Viktigt! Om du inte har begärt att återställa lösenordet, bortse från och ta "
-"bort detta meddelandet. En annan användare kan ha skrivit in din e-"
-"postadress av misstag."
-
-#: templates/forgot.tpl:59
-msgid "E-mail"
-msgstr "E-post"
-
-#: templates/forgot.tpl:31
-msgid "Token"
-msgstr "Koden"
-
-#: templates/index.tpl:252
-msgid "IP"
-msgstr "IP"
-
-#: templates/forgot.tpl:51
-msgid "Create password"
-msgstr "Skapa lösenord"
-
-#: templates/login.tpl:6 templates/login.tpl:31
-msgid "Sign in"
-msgstr "Logga in"
-
-#: templates/forgot.tpl:26
-msgid "Choose a new password."
-msgstr "Välj ett nytt lösenord."
-
-#: templates/forgot.tpl:29
-msgid "Enter the token you received in your inbox, and choose a new password."
-msgstr ""
-"Skriv in koden som du fick till din inkorg, och välj ett nytt lösenord."
-
-#: templates/login.tpl:24
-msgid "Password"
-msgstr "Lösenord"
-
-#: templates/forgot.tpl:44
-msgid "Repeat password"
-msgstr "Upprepa lösenordet"
-
-#: templates/user.tpl:41
-msgid "Change password"
-msgstr "Ändra lösenord"
-
-#: templates/header.tpl:35
-msgid "Messages"
-msgstr "Meddelanden"
-
-#: templates/header.tpl:40 templates/spam.tpl:14
-msgid "Spam settings"
-msgstr "Spaminställningar"
-
-#: templates/stats.tpl:1
-msgid "Statistics"
-msgstr "Statistik"
-
-#: templates/header.tpl:47
-msgid "Rate limit"
-msgstr "Hastighetsbegränsningar"
-
-#: templates/header.tpl:55
-msgid "Users"
-msgstr "Användare"
-
-#: templates/header.tpl:45
-msgid "Sign out"
-msgstr "Logga ut"
-
 #: templates/index.tpl:19 templates/index.tpl:43
 msgid "History"
 msgstr "Historik"
@@ -202,10 +93,6 @@ msgstr "Karantän"
 #: templates/index.tpl:24 templates/index.tpl:134
 msgid "Archive"
 msgstr "Arkiv"
-
-#: templates/index.tpl:22 templates/index.tpl:46
-msgid "All"
-msgstr "Alla"
 
 #: templates/index.tpl:59 templates/index.tpl:205
 msgid "Search filter"
@@ -303,6 +190,10 @@ msgstr ""
 "Ännu fler sökargument kan ges och finns dokumenterade på <a href=\"%1\">sök "
 "filter</a> sidan."
 
+#: templates/bwlist.tpl:36 templates/bwlist.tpl:143
+msgid "Action"
+msgstr "Åtgärd"
+
 #: templates/index.tpl:238 templates/index.tpl:243 templates/index.tpl:248
 #: templates/index.tpl:253 templates/index.tpl:258 templates/index.tpl:263
 msgid "is"
@@ -324,6 +215,10 @@ msgstr "ID"
 #: templates/index.tpl:258 templates/index.tpl:263
 msgid "contains"
 msgstr "innehåller"
+
+#: templates/index.tpl:252
+msgid "IP"
+msgstr "IP"
 
 #: templates/login.tpl:18
 msgid "Username"
@@ -357,26 +252,6 @@ msgstr "Inkludera rubriker"
 msgid "Export"
 msgstr "Exportera"
 
-#: templates/user.tpl:102
-msgid "Two-factor authentication"
-msgstr "Tvåfaktorsautentisering"
-
-#: templates/login.tpl:19
-msgid "Authentication"
-msgstr "Autentisering"
-
-#: templates/user.tpl:21 templates/user.tpl:53
-msgid "Two-factor token"
-msgstr "Tvåfaktorskod"
-
-#: templates/login.tpl:46
-msgid "Verify"
-msgstr "Verifiera"
-
-#: templates/login.tpl:33
-msgid "Forgot password"
-msgstr "Glömt lösenordet"
-
 #: templates/maintenance.tpl:6
 msgid "Maintenance"
 msgstr "Underhåll av sidan"
@@ -389,17 +264,17 @@ msgstr "Uppdatering krävs, var vänlig och kör följande kommando på servern.
 msgid "Refresh"
 msgstr "Uppdatera"
 
-#: templates/bwlist.tpl:129
-msgid "Previous"
-msgstr "Föregående"
-
-#: templates/bwlist.tpl:130
-msgid "Next"
-msgstr "Nästa"
+#: templates/bwlist.tpl:147
+msgid "Whitelist"
+msgstr "Vitlista"
 
 #: templates/preview.tpl:10 templates/preview.tpl:57
 msgid "Whitelisted"
 msgstr "Vitlistad"
+
+#: templates/bwlist.tpl:146
+msgid "Blacklist"
+msgstr "Svartlista"
 
 #: templates/preview.tpl:19 templates/preview.tpl:66
 msgid "Blacklisted"
@@ -452,6 +327,14 @@ msgstr "Användare"
 #: templates/preview.tpl:72
 msgid "Destination"
 msgstr "Destination"
+
+#: templates/preview.tpl:138
+msgid "Mail flow"
+msgstr "E-postflöde"
+
+#: templates/preview.tpl:161
+msgid "Current"
+msgstr "Nuvarande"
 
 #: templates/preview.tpl:85
 msgid "Engine"
@@ -509,54 +392,33 @@ msgstr "Borttagna"
 msgid "Headers"
 msgstr "Brevhuvuden"
 
-#: templates/rates.tpl:29
-msgid "Entry"
-msgstr "Inlägg"
+#: templates/user.tpl:102
+msgid "Two-factor authentication"
+msgstr "Tvåfaktorsautentisering"
 
-#: templates/rates.tpl:30
-msgid "Count"
-msgstr "Träffar"
+#: templates/login.tpl:6 templates/login.tpl:31
+msgid "Sign in"
+msgstr "Logga in"
 
-#: templates/stats.tpl:35
-msgid "Loading..."
-msgstr "Laddar..."
+#: templates/login.tpl:19
+msgid "Authentication"
+msgstr "Autentisering"
 
-#: templates/rates.tpl:56
-msgid "Clear"
-msgstr "Rensa"
+#: templates/user.tpl:21 templates/user.tpl:53
+msgid "Two-factor token"
+msgstr "Tvåfaktorskod"
 
-#: templates/spam.tpl:105
-msgid "Disabled"
-msgstr "Ingen"
+#: templates/login.tpl:24
+msgid "Password"
+msgstr "Lösenord"
 
-#: templates/spam.tpl:106
-msgid "Low"
-msgstr "Låg"
+#: templates/login.tpl:46
+msgid "Verify"
+msgstr "Verifiera"
 
-#: templates/spam.tpl:107
-msgid "Medium"
-msgstr "Mellan"
-
-#: templates/spam.tpl:108
-msgid "High"
-msgstr "Hög"
-
-#: templates/spam.tpl:48 templates/spam.tpl:112
-msgid "Level"
-msgstr "Nivå"
-
-#: templates/spam.tpl:67
-msgid "No spam settings"
-msgstr "Inga spaminställningar"
-
-#: templates/spam.tpl:104
-msgid "Select level"
-msgstr "Välj nivå"
-
-#: templates/stats.tpl:18
-msgid ""
-"Because you have more than 5 domains, you need to choose them specifically."
-msgstr "Eftersom du har fler än 5 domäner måste du lägga till dom manuellt."
+#: templates/login.tpl:33
+msgid "Forgot password"
+msgstr "Glömt lösenordet"
 
 #: templates/user.tpl:1
 msgid "Account"
@@ -650,6 +512,10 @@ msgstr ""
 "Hjälper dig att skydda ditt konto med en engångskod som genereras av din "
 "mobiltelefon som sedan används vid inloggning."
 
+#: templates/user.tpl:41
+msgid "Change password"
+msgstr "Ändra lösenord"
+
 #: templates/user.tpl:45
 msgid "Password changed"
 msgstr "Lösenordet är ändrat"
@@ -682,6 +548,62 @@ msgstr "Ändra"
 msgid ""
 "You are authenticated externally, so password changes are not done here."
 msgstr "Du är autentiserad externt, så lösenordet kan inte ändras här."
+
+#: templates/datastore.tpl:7 templates/header.tpl:49
+msgid "Data store"
+msgstr "Datasamlingar"
+
+#: templates/datastore.tpl:22 templates/datastore.tpl:46
+#: templates/datastore.tpl:62 templates/datastore.tpl:93
+msgid "Namespace"
+msgstr "Namnrymd"
+
+#: templates/datastore.tpl:28 templates/datastore.tpl:47
+#: templates/datastore.tpl:63 templates/datastore.tpl:98
+msgid "Key"
+msgstr "Nyckel"
+
+#: templates/datastore.tpl:34 templates/datastore.tpl:48
+#: templates/datastore.tpl:64 templates/datastore.tpl:103
+msgid "Value"
+msgstr "Värde"
+
+#: templates/datastore.tpl:75
+msgid "No items"
+msgstr "Inga objekt"
+
+#: templates/rates.tpl:29
+msgid "Entry"
+msgstr "Inlägg"
+
+#: templates/rates.tpl:30
+msgid "Count"
+msgstr "Träffar"
+
+#: templates/stats.tpl:35
+msgid "Loading..."
+msgstr "Laddar..."
+
+#: templates/rates.tpl:56
+msgid "Clear"
+msgstr "Rensa"
+
+#: templates/bwlist.tpl:129
+msgid "Previous"
+msgstr "Föregående"
+
+#: templates/bwlist.tpl:130
+msgid "Next"
+msgstr "Nästa"
+
+#: templates/stats.tpl:1
+msgid "Statistics"
+msgstr "Statistik"
+
+#: templates/stats.tpl:18
+msgid ""
+"Because you have more than 5 domains, you need to choose them specifically."
+msgstr "Eftersom du har fler än 5 domäner måste du lägga till dom manuellt."
 
 #: templates/users.tpl:7
 msgid "Database users"
@@ -727,6 +649,92 @@ msgstr "Redigera rättighet"
 #: templates/users.tpl:174
 msgid "existing permission(s)"
 msgstr "befintliga rättighet(er)"
+
+#: templates/header.tpl:35
+msgid "Messages"
+msgstr "Meddelanden"
+
+#: templates/header.tpl:37
+msgid "Black/whitelist"
+msgstr "Svart- och vitlista"
+
+#: templates/header.tpl:47
+msgid "Rate limit"
+msgstr "Hastighetsbegränsningar"
+
+#: templates/header.tpl:55
+msgid "Users"
+msgstr "Användare"
+
+#: templates/header.tpl:45
+msgid "Sign out"
+msgstr "Logga ut"
+
+#: templates/bwlist.tpl:122
+msgid "Select action"
+msgstr "Välj åtgärd"
+
+#: templates/bwlist.tpl:37 templates/bwlist.tpl:152
+msgid "Sender"
+msgstr "Avsändare"
+
+#: templates/bwlist.tpl:109
+msgid "No black/whitelist"
+msgstr "Ingen svart- eller vitlista"
+
+#: templates/bwlist.tpl:180
+msgid ""
+"Sender may be an IP address, an e-mail address, a domain name or a wildcard "
+"domain name starting with a dot (eg. .co.uk)."
+msgstr ""
+"Avsändaren kan vara en IP-adress, en e-post adress, ett domännamn eller ett "
+"wildcard-domännamn (t.ex. .co.uk)."
+
+#: templates/forgot.tpl:51
+msgid "Create password"
+msgstr "Skapa lösenord"
+
+#: templates/forgot.tpl:66
+msgid "Reset password"
+msgstr "Återställ lösenord"
+
+#: templates/forgot.tpl:26
+msgid "Choose a new password."
+msgstr "Välj ett nytt lösenord."
+
+#: templates/forgot.tpl:29
+msgid "Enter the token you received in your inbox, and choose a new password."
+msgstr ""
+"Skriv in koden som du fick till din inkorg, och välj ett nytt lösenord."
+
+#: templates/forgot.tpl:31
+msgid "Token"
+msgstr "Koden"
+
+#: templates/forgot.tpl:44
+msgid "Repeat password"
+msgstr "Upprepa lösenordet"
+
+#: templates/forgot.tpl:59
+msgid "E-mail"
+msgstr "E-post"
+
+#: templates/forgot.mail.tpl:3
+msgid ""
+"You have requested to reset your password on <a href=\"%1\">%1</a>. Click "
+"the link to reset your password."
+msgstr ""
+"Du har begärt att återställa lösenordet för <a href=\"%1\">%1</a>. Klicka på "
+"länken nedan för att återställa ditt lösenord."
+
+#: templates/forgot.mail.tpl:9
+msgid ""
+"Important! If you didn't request a new password, ignore and delete this "
+"message. Another user might have typed your email by mistake."
+msgstr ""
+"Viktigt! Om du inte har begärt att återställa lösenordet, bortse från och ta "
+"bort detta meddelandet. En annan användare kan ha skrivit in din e-"
+"postadress av misstag."
 
 #: templates/user.tpl:23
 msgid "Enable Two-factor Authentication"

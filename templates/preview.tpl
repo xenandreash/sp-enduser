@@ -158,7 +158,7 @@
 									<i class="fa fa-square fa-stack-2x" style="color: {$action_colors.$action};"></i>
 									<i class="fa fa-lg fa-{$action_icons.$action} fa-stack-1x" style="color:#fff;"></i>
 								</span>
-								{$i->action}{if $i@last and $queued == 1}&nbsp;<i class="text-muted">{t}(Current{/t})</i>{/if}
+								{$i->action}{if $i@last and $queued == 1}&nbsp;<i class="text-muted">({t}Current{/t})</i>{/if}
 								{if !empty($i->details)}
 									<p title="{$i->details|escape|emptyspace}" style="white-space: normal; margin-top: 4px;"><small><span class="text-muted">{$i->details|escape|emptyspace}</span></small></p>
 								{/if}
