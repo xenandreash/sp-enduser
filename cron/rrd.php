@@ -18,7 +18,7 @@ if (!$fp || !flock($fp, LOCK_EX | LOCK_NB))
 $q = $dbh->query('SELECT SUM(reject) AS reject, SUM(deliver) AS deliver, direction, domain FROM stat GROUP BY direction, domain;');
 while ($row = $q->fetch(PDO::FETCH_ASSOC))
 {
-	$graph = $settings->getGraphPath().'/'.$row['domain'].(($row['direction'] == 'outbound') ? '-outbound.rrd' : '.rrd');
+	$graph = $settings->getGraphPath().'/'.sanitize_domain($row['domain']).(($row['direction'] == 'outbound') ? '-outbound.rrd' : '.rrd');
 	$r = halon_rrd_create($graph, array('reject', 'deliver'));
 	if (!$r) {
 		echo rrd_error()."\n";

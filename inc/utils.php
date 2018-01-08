@@ -207,3 +207,14 @@ function extract_domain($address)
 {
 	return strpos($address, '@') !== false ? substr($address, strrpos($address, '@') + 1) : $address;
 }
+
+function sanitize_domain($domain)
+{
+	$d = preg_replace('/[^a-z0-9\.\-]/i', '', $domain);
+	if ($d != $domain)
+		$d .= '--'.substr(sha1($domain), 0, 8);
+	else
+		$d = $domain;
+
+	return $d;
+}

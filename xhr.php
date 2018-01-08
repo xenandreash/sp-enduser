@@ -330,7 +330,7 @@ if ($_POST['page'] == 'stats')
 				die(json_encode(array('error' => 'Insufficient permissions')));
 
 			$data = array();
-			$data[] = base64_encode(file_get_contents($settings->getGraphPath().'/'.$_POST['domain'].(($_POST['direction'] == 'outbound') ? '-outbound.rrd' : '.rrd')));
+			$data[] = base64_encode(file_get_contents($settings->getGraphPath().'/'.sanitize_domain($_POST['domain']).(($_POST['direction'] == 'outbound') ? '-outbound.rrd' : '.rrd')));
 			die(json_encode($data));
 		} else {
 			if (!Session::Get()->checkAccessDomain($_POST['domain']))
