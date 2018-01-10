@@ -253,7 +253,7 @@ class NodeBackend extends Backend
 			}
 		}
 
-		$pattern = $settings->getFilterPattern() ?? '{from} or {to}';
+		$pattern = $settings->getFilterPattern() ? $settings->getFilterpattern() : '{from} or {to}';
 
 		$filter = "";
 		if (is_array($access['domain'])) {
