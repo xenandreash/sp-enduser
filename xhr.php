@@ -555,4 +555,29 @@ if ($_POST['page'] == 'users')
 	}
 }
 
+if ($_POST['page'] == 'totp')
+{
+	if (!Session::Get()->checkAccessAll())
+		die(json_encode(array('error' => 'Insufficient permissions')));
+
+	if (!$settings->getTwoFactorAuth())
+		die(json_encode(array('error' => "The setting twofactorauth isn't enabled")));
+
+	$dbh = $settings->getDatabase();
+
+	if ($_POST['list'] == 'remove') {
+		if (empty($_POST['username']))
+			die(json_encode(['error' => 'Missing values.']));
+
+		try {
+			$statement = $dbh->prepare('DELETE FROM users_totp WHERE username = :username;');
+			$statement->execute([':username' => $_POST['username']]);
+		} catch (PDOException $e) {
+			die(json_encode(['error' => 'Database error']));
+		}
+
+		die(json_encode(['status' => 'ok']));
+	}
+}
+
 die(json_encode(array('error' => 'unsupported request')));

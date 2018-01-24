@@ -77,6 +77,12 @@ switch (@$_GET['page'])
 	case 'users':
 		require_once BASE.'/pages/users.php';
 	break;
+	case 'totp':
+		require_once BASE.'/pages/totp.php';
+	break;
+	case 'apiscript':
+		require_once BASE.'/pages/apiscript.php';
+	break;
 	default:
 	case 'index':
 		require_once BASE.'/pages/index.php';

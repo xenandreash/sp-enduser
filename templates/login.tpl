@@ -19,7 +19,7 @@
 						<label for="username" class="control-label col-sm-3">{t}Authentication{/t}</label>
 						<div class="col-sm-9">
 							<div class="input-group">
-								<span class="input-group-addon"><i class="fa fa-mobile" aria-hidden="true"></i></span>
+								<span class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></span>
 								<input type="text" class="totp-transition form-control" name="totp_verify_key" id="totp_verify_key" placeholder="{t}Two-factor token{/t}" pattern="[0-9]{literal}{6}{/literal}" autocomplete="off" required autofocus="autofocus">
 							</div>
 						</div>

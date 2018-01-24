@@ -37,4 +37,9 @@ if ((Session::Get()->checkAccessAll()
 if (Session::Get()->checkAccessAll() && $settings->getDisplayUsers() && !Session::Get()->checkDisabledFeature('display-users'))
 	$smarty->assign('feature_users', true);
 
+if (Session::Get()->checkAccessAll() && $settings->getTwoFactorAuth()) $smarty->assign('feature_totp', true);
+
+$smarty->assign('feature_dblog', $settings->getUseDatabaseLog());
+$smarty->assign('is_superadmin', Session::Get()->checkAccessAll());
+
 if (isset($body_class)) $smarty->assign('body_class', $body_class);

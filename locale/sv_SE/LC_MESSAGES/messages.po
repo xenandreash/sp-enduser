@@ -264,6 +264,22 @@ msgstr "Uppdatering krävs, var vänlig och kör följande kommando på servern.
 msgid "Refresh"
 msgstr "Uppdatera"
 
+#: templates/totp.tpl:6
+msgid "Manage two-factor authentication"
+msgstr "Hantera tvåfaktorsautentisering"
+
+#: templates/totp.tpl:39
+msgid "No username with two-factor authentication found."
+msgstr "Hittade inga användare med tvåfaktorsautentisering."
+
+#: templates/totp.tpl:56
+msgid "Remove two-factor authentication"
+msgstr "Ta bort tvåfaktorsautentisering"
+
+#: templates/totp.tpl:58
+msgid "No username selected."
+msgstr "Ingen användare vald."
+
 #: templates/bwlist.tpl:147
 msgid "Whitelist"
 msgstr "Vitlista"
@@ -658,17 +674,155 @@ msgstr "Meddelanden"
 msgid "Black/whitelist"
 msgstr "Svart- och vitlista"
 
+#: templates/header.tpl:57
+msgid "Admin tools"
+msgstr "Administratörsverktyg"
+
+#: templates/header.tpl:62
+msgid "User management"
+msgstr "Användarhantering"
+
+#: templates/header.tpl:70
+msgid "Miscellaneous"
+msgstr "Övrigt"
+
 #: templates/header.tpl:47
 msgid "Rate limit"
 msgstr "Hastighetsbegränsningar"
 
-#: templates/header.tpl:55
-msgid "Users"
-msgstr "Användare"
+#: templates/header.tpl:77
+msgid "Integration"
+msgstr "Systemintegration"
 
 #: templates/header.tpl:45
 msgid "Sign out"
 msgstr "Logga ut"
+
+#: templates/apiscript.tpl:5
+msgid "Halon node integration"
+msgstr "Systemintegration"
+
+#: templates/apiscript.tpl:10
+msgid "Scripts"
+msgstr "Fler skript"
+
+#: templates/apiscript.tpl:14
+msgid "API authentication"
+msgstr "API-autentiseringsskript"
+
+#: templates/apiscript.tpl:71
+msgid "History log"
+msgstr "Loggning av historik"
+
+#: templates/apiscript.tpl:49
+msgid "Blacklist and whitelist"
+msgstr "Svart- och vitlista"
+
+#: templates/apiscript.tpl:65
+msgid "Data store settings"
+msgstr "Inställningar för datasamlingar"
+
+#: templates/apiscript.tpl:83
+msgid "Automatic user creation"
+msgstr "Skapa användare automatiskt"
+
+#: templates/apiscript.tpl:50
+msgid ""
+"Used to lookup against the blacklist and whitelist on the Enduser (with a "
+"cache). The function should be called before spam checks."
+msgstr ""
+"Används för att göra uppslag mot svart- och vitlistan i Enduser (med cachade "
+"uppslag). Funktionen ska användas innan man kör anti-spam."
+
+#: templates/apiscript.tpl:51 templates/apiscript.tpl:61
+#: templates/apiscript.tpl:67 templates/apiscript.tpl:73
+#: templates/apiscript.tpl:85
+msgid "This feature is not enabled under the settings.php file!"
+msgstr "Den här funktionen är inte aktiverad i settings.php filen!"
+
+#: templates/apiscript.tpl:54
+msgid "ScanBWList with per-user check"
+msgstr "ScanBWList med uppslag per användare"
+
+#: templates/apiscript.tpl:55
+msgid ""
+"This implementation is suboptimal as it queries each $sender and $recipient "
+"for the black/white list. It's not necessary to cache these as cache hits "
+"would be close to none."
+msgstr ""
+"Denna implementering är suboptimal eftersom den frågar varje $sender och "
+"$recipient efter svart- och vitlistan. Det är inte nödvändigt att använda "
+"cache för detta då den inte har så stor nytta."
+
+#: templates/apiscript.tpl:60
+msgid "If you want to fetch the spam settings from the End-user interface."
+msgstr "Om man vill hämta spaminställningar från End-user gränssnittet."
+
+#: templates/apiscript.tpl:66
+msgid ""
+"If you want to fetch the datastore settings from the End-user interface."
+msgstr ""
+"Om man vill hämta inställningar för datasamlingar från End-user gränssnittet."
+
+#: templates/apiscript.tpl:72
+msgid ""
+"There's a limit to how many messages can stored in a Halon database, for "
+"performance reasons. In order to store large volumes of email history we "
+"encourage the use of the end user interface's built-in history log feature. "
+"Simply append the following script to the Halon nodes' DATA flow, to push "
+"logging information to the End-user."
+msgstr ""
+"Av prestandaskäl så har man satt en gräns hur många meddelanden man kan "
+"lagra i en Halon databas. Om man behöver lagra längre så uppmuntrar vi "
+"att man istället gör det mot End-user databasen. Lägg till följande skript "
+"under DATA flödet i Halon för att börja logga mot End-user."
+
+#: templates/apiscript.tpl:76
+msgid ""
+"The code above could be placed in a virtual text file, and included in the "
+"top of the script. Please note that the \"owner\" field should probably be "
+"changed to $sender instead of $recipient for outbound traffic. For delivery "
+"status updates, the following script should be called from (again, "
+"preferably by including code from a virtual text file) in the Post-delivery "
+"flow."
+msgstr ""
+"Ovanstående kod kan placeras i en virtuell fil för att sedan inkluderas i "
+"början av ett skript. Man bör ändra \"owner\" fältet till $sender istället "
+"för $recipient för utgående trafik. För att få leveransstatus så ska "
+"följande skript läggas in i Post-delivery genom t.ex. en virtuell fil."
+
+#: templates/apiscript.tpl:79
+msgid "Removing old logs"
+msgstr "Ta bort gamla loggrader"
+
+#: templates/apiscript.tpl:80
+msgid ""
+"When using the history log feature you should also edit the crontab file to "
+"periodically remove old logs from the database. You do that by typing "
+"crontab -e in the terminal and add the following line at the bottom:"
+msgstr ""
+"Lägg in detta i filen för crontab för att kontinuerligt ta bort gamla "
+"loggrader i databasen."
+
+#: templates/apiscript.tpl:84
+msgid ""
+"If you want users to be automatically created when a message is received, "
+"add the following script to your data flow."
+msgstr ""
+"Om man vill att användare ska skapas automatiskt när ett meddelande läggs "
+"i karantän, lägg då till följande skript i DATA flödet."
+
+#: templates/apiscript.tpl:89
+msgid "API authentication script"
+msgstr "API-autentiseringsskript"
+
+#: templates/apiscript.tpl:90
+msgid ""
+"This is a sample authentication script (API script) with all currently "
+"enabled features, to be used on your Halon node."
+msgstr ""
+"Detta är ett exempel på autentiseringsskript (API-skript) med alla "
+"aktiverade funktioner som kan läggas in i Halon noden."
 
 #: templates/bwlist.tpl:122
 msgid "Select action"
@@ -735,6 +889,10 @@ msgstr ""
 "Viktigt! Om du inte har begärt att återställa lösenordet, bortse från och ta "
 "bort detta meddelandet. En annan användare kan ha skrivit in din e-"
 "postadress av misstag."
+
+#: templates/header.tpl:55
+msgid "Users"
+msgstr "Användare"
 
 #: templates/user.tpl:23
 msgid "Enable Two-factor Authentication"

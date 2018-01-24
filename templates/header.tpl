@@ -19,7 +19,7 @@
 	</head>
 	<body class="{$body_class}">
 	{if $authenticated}
-		<nav class="navbar navbar-inverse navbar-static-top">
+		<nav class="navbar navbar-inverse navbar-static-top" style="z-index: 1001">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
@@ -48,14 +48,35 @@
 						{if $feature_stats}
 							{if $page_active=="stats"}<li class="active">{else}<li>{/if}<a href="?page=stats"><i class="fa fa-pie-chart"></i>&nbsp;{t}Statistics{/t}</a></li>
 						{/if}
-						{if $feature_datastore}
+						{if $feature_datastore and !$is_superadmin}
 							{if $page_active=="datastore"}<li class="active">{else}<li>{/if}<a href="?page=datastore"><i class="fa fa-database"></i>&nbsp;{t}Data store{/t}</a></li>
 						{/if}
-						{if $feature_rates}
-							{if $page_active=="rates"}<li class="active">{else}<li>{/if}<a href="?page=rates"><i class="fa fa-tachometer"></i>&nbsp;{t}Rate limit{/t}</a></li>
-						{/if}
-						{if $feature_users}
-							{if $page_active=="users"}<li class="active">{else}<li>{/if}<a href="?page=users"><i class="fa fa-users"></i>&nbsp;{t}Users{/t}</a></li>
+						{if $is_superadmin}
+						<li class="dropdown">
+							<a class="dropdown-toggle" role="button" id="dropdownToolMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-wrench"></i> {t}Admin tools{/t}
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="dropdownToolMenu">
+								{if $feature_users or $feature_totp}
+									<li class="dropdown-header">{t}User management{/t}</li>
+									{if $feature_users}
+										{if $page_active=="users"}<li class="active">{else}<li>{/if}<a href="?page=users"><i class="fa fa-users fa-fw"></i>&nbsp;{t}Database users{/t}</a></li>
+									{/if}
+									{if $feature_totp}
+										{if $page_active=="totp"}<li class="active">{else}<li>{/if}<a href="?page=totp"><i class="fa fa-lock fa-fw"></i>&nbsp;{t}Two-factor authentication{/t}</a></li>
+									{/if}
+								{/if}
+								<li class="dropdown-header">{t}Miscellaneous{/t}</li>
+								{if $feature_datastore}
+									{if $page_active=="datastore"}<li class="active">{else}<li>{/if}<a href="?page=datastore"><i class="fa fa-database fa-fw"></i>&nbsp;{t}Data store{/t}</a></li>
+								{/if}
+								{if $feature_rates}
+									{if $page_active=="rates"}<li class="active">{else}<li>{/if}<a href="?page=rates"><i class="fa fa-tachometer fa-fw"></i>&nbsp;{t}Rate limit{/t}</a></li>
+								{/if}
+								{if $page_active=="apiscript"}<li class="active">{else}<li>{/if}<a href="?page=apiscript"><i class="fa fa-link fa-fw"></i>&nbsp;{t}Integration{/t}</a></li>
+							</ul>
+						</li>
 						{/if}
 					</ul>
 					<ul class="nav navbar-nav navbar-right" style="padding-right: 10px;">
