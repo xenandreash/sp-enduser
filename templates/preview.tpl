@@ -28,7 +28,7 @@
 		<ul class="nav navbar-nav navbar-right">
 			{if isset($node)}
 				{if $support_log}
-					<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
+					<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}&query={$support_log_query}"><i class="fa fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
 				{/if}
 				{if $type == 'queue' || $type == 'archive'}
 					{if ! in_array('preview-mail-body', $disabled_features)}<li><a href="?page=download&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>{/if}
@@ -50,7 +50,7 @@
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{t}Actions{/t} <span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					{if $support_log}
-						<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-fw fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
+						<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}&query={$support_log_query}"><i class="fa fa-fw fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
 					{/if}
 					{if $bwlist_settings.whitelist.show}
 					<li>

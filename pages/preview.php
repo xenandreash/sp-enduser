@@ -177,7 +177,10 @@ $javascript[] = 'static/js/diff.js';
 require_once BASE.'/inc/smarty.php';
 
 if ($settings->getDisplayBWlist()) $smarty->assign('bwlist_settings', $bwlist_settings);
-if ($settings->getDisplayTextlog() && $node && $mail->msgid) $smarty->assign('support_log', true);
+if ($settings->getDisplayTextlog() && $node && $mail->msgid) {
+	$smarty->assign('support_log', true);
+	$smarty->assign('support_log_query', urlencode($_SERVER['QUERY_STRING']));
+}
 if ($settings->getDisplayScores()) $smarty->assign('scores', history_parse_scores($mail));
 if ($node) $smarty->assign('node', $node->getId());
 if ($attachments) $smarty->assign('attachments', $attachments);

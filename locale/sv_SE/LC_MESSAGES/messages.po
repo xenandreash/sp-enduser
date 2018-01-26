@@ -773,9 +773,9 @@ msgid ""
 "logging information to the End-user."
 msgstr ""
 "Av prestandaskäl så har man satt en gräns hur många meddelanden man kan "
-"lagra i en Halon databas. Om man behöver lagra längre så uppmuntrar vi "
-"att man istället gör det mot End-user databasen. Lägg till följande skript "
-"under DATA flödet i Halon för att börja logga mot End-user."
+"lagra i en Halon databas. Om man behöver lagra längre så uppmuntrar vi att "
+"man istället gör det mot End-user databasen. Lägg till följande skript under "
+"DATA flödet i Halon för att börja logga mot End-user."
 
 #: templates/apiscript.tpl:76
 msgid ""
@@ -809,8 +809,8 @@ msgid ""
 "If you want users to be automatically created when a message is received, "
 "add the following script to your data flow."
 msgstr ""
-"Om man vill att användare ska skapas automatiskt när ett meddelande läggs "
-"i karantän, lägg då till följande skript i DATA flödet."
+"Om man vill att användare ska skapas automatiskt när ett meddelande läggs i "
+"karantän, lägg då till följande skript i DATA flödet."
 
 #: templates/apiscript.tpl:89
 msgid "API authentication script"
@@ -872,6 +872,10 @@ msgstr "Upprepa lösenordet"
 #: templates/forgot.tpl:59
 msgid "E-mail"
 msgstr "E-post"
+
+#: templates/log.tpl:7
+msgid "Back to preview"
+msgstr "Tillbaka till förhandsgranskning"
 
 #: templates/forgot.mail.tpl:3
 msgid ""

@@ -67,5 +67,6 @@ require_once BASE.'/inc/smarty.php';
 
 $smarty->assign('id', json_encode($cmd_id->result));
 $smarty->assign('node', json_encode($node->getId()));
+if (isset($_GET['query'])) $smarty->assign('preview_query', urldecode($_GET['query']));
 
 $smarty->display('log.tpl');
