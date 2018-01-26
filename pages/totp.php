@@ -10,7 +10,7 @@ $dbh = $settings->getDatabase();
 $javascript[] = 'static/js/totp.js';
 
 $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
-$limit = isset($_GET['limit']) ? intval($_GET['limit']) : 100;
+$limit = isset($_GET['limit']) ? intval($_GET['limit']) : 25;
 $pagesize = array(25, 50, 100, 500, 1000);
 
 $total = null;
