@@ -78,7 +78,7 @@
 					{if $access_domain}
 						{t}domains:{/t}</p>
 						<ul>
-							{foreach $access_domain as $access} 
+							{foreach $access_domain as $access}
 								<li>{$access|escape}</li>
 							{/foreach}
 						</ul>
@@ -89,7 +89,7 @@
 						{t}users:{/t}</p>
 					{/if}
 					<ul>
-						{foreach $access_mail as $access} 
+						{foreach $access_mail as $access}
 							<li>{$access|escape}</li>
 						{/foreach}
 					</ul>

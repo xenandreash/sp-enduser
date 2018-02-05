@@ -49,7 +49,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 		{
 			$_SESSION = array_merge($_SESSION, $result);
 
-			if ($settings->getTwoFactorAuth() && Session::Get()->getSecretKey($_SESSION['username'])) 
+			if ($settings->getTwoFactorAuth() && Session::Get()->getSecretKey($_SESSION['username']))
 				$_SESSION['authenticated'] = 'totp';
 			else
 				$_SESSION['authenticated'] = true;

@@ -37,4 +37,4 @@ function API_update($old, $new)
 	if (is_array(json_decode($new)))
 		return $new;
 	return $old;
-} 
+}

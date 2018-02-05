@@ -12,7 +12,7 @@ class Session
 	private $soap_username = null;
 	private $soap_password = null;
 	private $disabled_features = null;
-	
+
 	/**
 	 * Returns a shared Session instance.
 	 */
@@ -23,7 +23,7 @@ class Session
 			$inst = new Session();
 		return $inst;
 	}
-	
+
 	/**
 	 * Private constructor; use Session::Get().
 	 */
@@ -32,14 +32,14 @@ class Session
 		$session_name = Settings::Get()->getSessionName();
 		if ($session_name)
 			session_name($session_name);
-		
+
 		session_start();
-		
+
 		$this->authenticated = $_SESSION['authenticated'];
 		$this->username = $_SESSION['username'];
 		$this->source = $_SESSION['source'];
 		$this->access = $_SESSION['access'];
-		
+
 		if(isset($_SESSION['soap_username']))
 			$this->soap_username = $_SESSION['soap_username'];
 		if(isset($_SESSION['soap_password']))
@@ -55,10 +55,10 @@ class Session
 	{
 		return $this->authenticated === true;
 	}
-	
+
 	/**
 	 * Returns the user's username.
-	 * 
+	 *
 	 * What exactly this means is a bit dependent on the configured
 	 * authentication methods - it may be basically anything, but should be
 	 * written out as-is.
@@ -67,12 +67,12 @@ class Session
 	{
 		return $this->username;
 	}
-	
+
 	/**
 	 * Returns the user's authentication source.
-	 * 
+	 *
 	 * This can be one of:
-	 * 
+	 *
 	 *   - account:  A local account defined in settings.php
 	 *   - smtp:     Login accepted by an SMTP server
 	 *   - ldap:     Login accepted by an LDAP server
@@ -83,18 +83,18 @@ class Session
 	{
 		return $this->source;
 	}
-	
+
 	/**
 	 * Returns the user's access parameters (permissions).
-	 * 
+	 *
 	 * This is an array with several keys that, if given, restrict the user to
 	 * only the given realms. An empty array means no access.
-	 * 
+	 *
 	 * Possible keys:
-	 * 
+	 *
 	 *   - mail: Can only see records involving the given email address(es)
 	 *   - domain: Can only see records involving the given domain(s)
-	 * 
+	 *
 	 * @param $key The key to retrieve, or NULL for the whole array
 	 */
 	public function getAccess($key=NULL)
@@ -161,17 +161,17 @@ class Session
 
 	/**
 	 * Returns the user's own SOAP username, if there is one.
-	 * 
+	 *
 	 * This is currently only used with server authentication.
 	 */
 	public function getSOAPUsername()
 	{
 		return $this->soap_username;
 	}
-	
+
 	/**
 	 * Returns the user's own SOAP password, if there is one.
-	 * 
+	 *
 	 * This is currently only used with server authentication.
 	 */
 	public function getSOAPPassword()
@@ -188,9 +188,9 @@ class Session
 	}
 
 	/**
-	 * Two-factor authentication - Returns a users secret key if there is one 
+	 * Two-factor authentication - Returns a users secret key if there is one
 	 */
-	public function getSecretKey($username) 
+	public function getSecretKey($username)
 	{
 		global $settings;
 

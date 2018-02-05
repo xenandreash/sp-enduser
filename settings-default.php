@@ -8,12 +8,12 @@
 /*
  * System "nodes" are the most important directives; they specify where
  * your Halon mail gateway(s) are, and how to access it/them.
- * 
+ *
  * If you are planning on using authentication methods other than the default
  * 'server' mode (which authenticates users directly against the server), you
  * need to specify a username and password that will be used to access the
  * server for non-server users. Otherwise, this can and should be omitted.
- * 
+ *
  * It might be a good idea to read about authentication scripts on our wiki, to
  * create specific access rights so that if this end-user web is compromised,
  * your gateways are not. In some cases, even read-only access is good enough
@@ -140,7 +140,7 @@
 /*
  * Authentication is probably the second most important configuration
  * directive, as it specifies how end-users should identify themselves.
- * 
+ *
  * You can use the following types:
  *  - LDAP, against for example an Exchange server
  *  - SMTP (SASL), against a mail server, if the username is an e-mail
@@ -148,7 +148,7 @@
  *  - Local accounts, statically configured in this file (with access rights).
  *    Use lower case letters when manually adding an access level.
  *  - Server account, authorized against an account on the nodes themselves.
- * 
+ *
  * If no authorization methods are specified, 'server' is assumed.
  */
 
@@ -220,7 +220,7 @@
 //		'name' => 'Outbound spammers',		// Name to show in UI
 //		'ns' => 'outbound-spammers',		// Namespace
 //		'count_min' => 10,			// Minimum count required for entry to show
-//		'count_limit' => 100,			// At which number the limit is exceeded 
+//		'count_limit' => 100,			// At which number the limit is exceeded
 //		'action' => 'DEFER',			// Action taken if limit is exceeded
 //		'search_filter' => 'from=$entry',	// Search filter for the "messages" page
 //		'node' => 0,				// Index of the node in $settings['nodes'] on which to run the query

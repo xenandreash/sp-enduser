@@ -27,7 +27,7 @@ class LDAPDatabase
 	public function check($username, $password)
 	{
 		// If username and password are not specified,
-		// an anonymous bind is attempted. 
+		// an anonymous bind is attempted.
 		if ($username == "" || $password == "")
 			return false;
 
@@ -38,7 +38,7 @@ class LDAPDatabase
 		if (!$ds)
 			return false;
 		ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
-		
+
 		foreach ($this->options as $k => $v)
 			ldap_set_option($ds, $k, $v);
 
@@ -103,7 +103,7 @@ class LDAPDatabase
 
 		if (empty($access['mail']) and !$authed)
 			return false;
-	
+
 		$result = array();
 		$result['username'] = $username;
 		$result['source'] = 'ldap';

@@ -10,6 +10,6 @@ $logdata = [
 	"msgts0" => time()
 ];
 
-if ($retry > 0) $logdata["msgdescription"] .= " (retry $retry/$retries)"; 
+if ($retry > 0) $logdata["msgdescription"] .= " (retry $retry/$retries)";
 http($triggerurl . "&type=logupdate",
-	["timeout" => 10, "background" => true, "background_hash" => hash($messageid), "background_retry_count" => 1, "ssl_default_ca" => true], [], $logdata); 
+	["timeout" => 10, "background" => true, "background_hash" => hash($messageid), "background_retry_count" => 1, "ssl_default_ca" => true], [], $logdata);

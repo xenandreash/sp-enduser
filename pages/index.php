@@ -300,7 +300,7 @@ if (isset($_GET['exportcsv'])) {
 				$csv_mail[] = gettext('Archive');
 			elseif ($mail['mail']->msgaction == 'QUEUE')
 				$csv_mail[] = str_replace('%1', $mail['mail']->msgretries, gettext('In queue (retry %1)')).' '.$mail['description'];
-			else 
+			else
 				$csv_mail[] = $mail['description'];
 		}
 		if ($csv_export['date'])
@@ -314,7 +314,7 @@ if (isset($_GET['exportcsv'])) {
 	die();
 }
 
-$paging = array(); 
+$paging = array();
 foreach ($param as $type => $nodes) {
 	foreach ($nodes as $node => $args) {
 		if ($args['offset'] > 0) {
