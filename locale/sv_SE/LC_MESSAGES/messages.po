@@ -777,19 +777,19 @@ msgstr ""
 "man istället gör det mot End-user databasen. Lägg till följande skript under "
 "DATA flödet i Halon för att börja logga mot End-user."
 
-#: templates/apiscript.tpl:76
+#: templates/apiscript.tpl:53
 msgid ""
 "The code above could be placed in a virtual text file, and included in the "
-"top of the script. Please note that the \"owner\" field should probably be "
-"changed to $sender instead of $recipient for outbound traffic. For delivery "
-"status updates, the following script should be called from (again, "
+"top of the script. Please note that the \"direction\" field should probably "
+"be changed to \"outbound\" instead of \"inbound\" for outbound traffic. For "
+"delivery status updates, the following script should be called from (again, "
 "preferably by including code from a virtual text file) in the Post-delivery "
 "flow."
 msgstr ""
 "Ovanstående kod kan placeras i en virtuell fil för att sedan inkluderas i "
-"början av ett skript. Man bör ändra \"owner\" fältet till $sender istället "
-"för $recipient för utgående trafik. För att få leveransstatus så ska "
-"följande skript läggas in i Post-delivery genom t.ex. en virtuell fil."
+"början av ett skript. Man bör ändra \"direction\" fältet till \"outbound\" "
+"istället för \"inbound\" för utgående trafik. För att få leveransstatus så "
+"ska följande skript läggas in i Post-delivery genom t.ex. en virtuell fil."
 
 #: templates/apiscript.tpl:79
 msgid "Removing old logs"

@@ -7,7 +7,8 @@ $logdata = [
 	"msgsasl" => $saslusername,
 	"msgsubject" => GetHeader("subject"),
 	"msgsize" => MIME("0")->getSize(),
-	"msgts0" => time()
+	"msgts0" => time(),
+    "direction" => "inbound"
 ];
 
 function sendlog($action, $desc) {
@@ -17,7 +18,7 @@ function sendlog($action, $desc) {
 		"msgdescription" => $desc,
 		"msgts" => timelocal(),
 		"msgactionid" => $actionid,
-		"owner" => $recipient,
+        "owner" => ($logdata["direction"] == "outbound") ? $sender : $recipient,
 		"msgtransport" => $transportid,
 		"msgfromserver" => $senderip,
 		"msgfrom" => $sender,

@@ -50,7 +50,7 @@
 				{if !$feature_dblog}<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-triangle"></i>&nbsp;{t}This feature is not enabled under the settings.php file!{/t}</div>{/if}
 				<div class="pre-header">Data context</div>
 				<pre class="pre-body">{include file='scripts/hsl_logging.tpl'}</pre>
-				<p>{t}The code above could be placed in a virtual text file, and included in the top of the script. Please note that the "owner" field should probably be changed to $sender instead of $recipient for outbound traffic. For delivery status updates, the following script should be called from (again, preferably by including code from a virtual text file) in the Post-delivery flow.{/t}</p>
+				<p>{t}The code above could be placed in a virtual text file, and included in the top of the script. Please note that the "direction" field should probably be changed to "outbound" instead of "inbound" for outbound traffic. For delivery status updates, the following script should be called from (again, preferably by including code from a virtual text file) in the Post-delivery flow.{/t}</p>
 				<div class="pre-header">Post-delivery context</div>
 				<pre class="pre-body">{include file='scripts/hsl_loggingpost.tpl'}</pre>
 				<h4 style="margin-top: 20px">{t}Removing old logs{/t}</h4>
