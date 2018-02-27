@@ -288,14 +288,15 @@
 			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">{t}Subject{/t}</label>
-				<div class="col-sm-2"><select class="form-control" id="query_subject_op"><option value="=">{t}is{/t}</option><option value="~" selected>{t}contains{/t}</option></select></div>
+				<div class="col-sm-2"><select class="form-control" id="query_subject_op"><option value="~" selected>{t}contains{/t}</option><option value="=">{t}is{/t}</option></select></div>
 				<div class="col-sm-8"><input type="text" class="form-control" id="query_subject" placeholder=""></div>
 			</div>
 		</form>
 	</div>
 	<div class="modal-footer">
+		<button type="button" class="btn btn-default pull-left" id="btn_query_clear"><i class="fa fa-times"></i>&nbsp;{t}Clear all{/t}</button>
 		<button type="button" class="btn btn-default" data-dismiss="modal">{t}Close{/t}</button>
-		<button type="button" class="btn btn-primary" onclick="$('#dosearch').click()">{t}Search{/t}</button>
+		<button type="button" class="btn btn-primary" onclick="$('#dosearch').click()"><i class="fa fa-search"></i>&nbsp;{t}Search{/t}</button>
 	</div>
 	</div></div></div>
 

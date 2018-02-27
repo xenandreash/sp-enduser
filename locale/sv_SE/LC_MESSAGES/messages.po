@@ -224,6 +224,10 @@ msgstr "IP"
 msgid "Username"
 msgstr "Användarnamn"
 
+#: templates/index.tpl:297
+msgid "Clear all"
+msgstr "Rensa allt"
+
 #: templates/index.tpl:269
 msgid "Close"
 msgstr "Stäng"
