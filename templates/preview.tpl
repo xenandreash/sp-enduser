@@ -137,9 +137,10 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">{t}Mail flow{/t}</h3>
 				</div>
-				<table class="table">
+				<table class="table table-fixed table-striped">
 					<thead>
 						<tr>
+							<th>{t}Action{/t}</th>
 							<th>{t}Status{/t}</th>
 							<th style="width: 150px">{t}Date{/t}</th>
 						</tr>
@@ -159,9 +160,9 @@
 									<i class="fa fa-lg fa-{$action_icons.$action} fa-stack-1x" style="color:#fff;"></i>
 								</span>
 								{$i->action}{if $i@last and $queued == 1}&nbsp;<i class="text-muted">({t}Current{/t})</i>{/if}
-								{if !empty($i->details)}
-									<p title="{$i->details|escape|emptyspace}" style="white-space: normal; margin-top: 4px;"><small><span class="text-muted">{$i->details|escape|emptyspace}</span></small></p>
-								{/if}
+							</td>
+							<td>
+								<span class="text-muted" title="{$i->details|escape|emptyspace}">{$i->details|escape|emptyspace}</span>
 							</td>
 							<td>
 								<span title="{$i->ts0|date_format:'%Y-%m-%d %H:%M:%S'}">{$i->ts0|date_format:'%Y-%m-%d %H:%M:%S'}</span>
@@ -169,13 +170,13 @@
 						</tr>
 						{if !$i@last}
 						<tr>
-							<td class="active" colspan="2" style="padding-top: 3px; padding-bottom: 3px; font-size: 9px;">
-								<i class="fa fa-arrow-down fa-2x" style="color: #ccc;"></i>
+							<td colspan="3" style="padding-top: 1px; padding-bottom: 1px;">
+								<i class="fa fa-arrow-down fa-fw"></i>
 							</td>
 						</tr>
 						{else}
 						<tr>
-							<td colspan="2" style="height: 5px; padding: 0px; {if $queued == 1}background: repeating-linear-gradient(-45deg, {$action_colors.$action}, {$action_colors.$action} 10px, #fff 10px, #fff 20px);{else}background-color: {$action_colors.$action}{/if}"></td>
+							<td colspan="3" style="height: 3px; padding: 0px; {if $queued == 1}background: repeating-linear-gradient(-45deg, {$action_colors.$action}, {$action_colors.$action} 10px, #fff 10px, #fff 20px);{else}background-color: {$action_colors.$action}{/if}"></td>
 						</tr>
 						{/if}
 						{/foreach}
