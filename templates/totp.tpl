@@ -1,5 +1,5 @@
 {include file='header.tpl' title='Manage users two-factor authentication'}
-<div class="container">
+<div class="container-fluid">
 	<div id="items-view" class="col-md-7 col-lg-8">
 		<div class="panel panel-default">
 			<div class="panel-heading">

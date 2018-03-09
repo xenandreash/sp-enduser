@@ -702,13 +702,9 @@ msgstr "Systemintegration"
 msgid "Sign out"
 msgstr "Logga ut"
 
-#: templates/apiscript.tpl:5
-msgid "Halon node integration"
-msgstr "Systemintegration"
-
-#: templates/apiscript.tpl:10
-msgid "Scripts"
-msgstr "Fler skript"
+#: templates/apiscript.tpl:7
+msgid "Halon integration"
+msgstr "Halon-integration"
 
 #: templates/apiscript.tpl:14
 msgid "API authentication"
@@ -729,6 +725,10 @@ msgstr "Inställningar för datasamlingar"
 #: templates/apiscript.tpl:83
 msgid "Automatic user creation"
 msgstr "Skapa användare automatiskt"
+
+#: templates/apiscript.tpl:89
+msgid "API authentication script"
+msgstr "API-autentiseringsskript"
 
 #: templates/apiscript.tpl:50
 msgid ""
@@ -815,10 +815,6 @@ msgid ""
 msgstr ""
 "Om man vill att användare ska skapas automatiskt när ett meddelande läggs i "
 "karantän, lägg då till följande skript i DATA flödet."
-
-#: templates/apiscript.tpl:89
-msgid "API authentication script"
-msgstr "API-autentiseringsskript"
 
 #: templates/apiscript.tpl:90
 msgid ""
