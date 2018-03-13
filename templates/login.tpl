@@ -7,7 +7,10 @@
 			</div>
 			<div class="panel-body">
 				{if $error}
-					<div class="alert alert-danger">{$error|escape}</div>
+					<div class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<i class="fa fa-exclamation-circle" aria-hidden="true"></i> {$error|escape}
+					</div>
 				{/if}
 				{if $login_text}
 					<p>{$login_text}</p><hr>

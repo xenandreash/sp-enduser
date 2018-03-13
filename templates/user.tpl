@@ -2,20 +2,26 @@
 {include file='header.tpl' title=$title page_active='user'}
 <div class="container">
 	{if $settings_totp_enabled and $totp_enable and !$totp_success}
-	<div class="col-md-7">
+	<div class="col-md-offset-3 col-md-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">{t}Enable two-factor authentication{/t}</h3>
 			</div>
 			<div class="panel-body">
+				{if $totp_error}
+					<div class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<i class="fa fa-exclamation-circle" aria-hidden="true"></i> {t}Verification failed. Please try again.{/t}
+					</div>
+				{/if}
 				<form class="form-horizontal" method="post" action="?page=user&totp_enable=true">
 				<p>{t}Please scan the image with Google Authenticator or add it manually by entering this secret key:{/t} <strong>{$totp_secret}</strong></p>
 				<div class="alert alert-info">
 					<i class="fa fa-info-circle" aria-hidden="true"></i> {t}It's strongly recommended that you save this secret key in case you need to recover your two-factor authentication.{/t}
 				</div>
-				{if $totp_error}
-					<div class="alert alert-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {t}Verification failed. Please try again.{/t}</div>
-				{/if}
+				<div class="well well-sm text-center" style="background-color: #fff">
+					{$totp_qr_svg}
+				</div>
 				<p>{t}Now enter a 6-digit token to verify and enable two-factor authentication.{/t}</p>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></span>
@@ -29,15 +35,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-5">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<p class="text-center">
-					{$totp_qr_svg}
-				</p>
-			</div>
-		</div>
-	</div>
 	{else if $settings_totp_enabled and $totp_disable and !$totp_disable_success}
 	<div class="col-md-offset-3 col-md-6">
 		<div class="panel panel-default">
@@ -47,7 +44,10 @@
 			<div class="panel-body">
 				<form class="form-horizontal" method="post" action="?page=user&totp_disable=true">
 				{if $totp_error}
-					<div class="alert alert-danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {t}Verification failed. Please try again.{/t}</div>
+					<div class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<i class="fa fa-exclamation-circle" aria-hidden="true"></i> {t}Verification failed. Please try again.{/t}
+					</div>
 				{/if}
 				<p>{t}To disable two-factor authentication please enter a key 6-digit token.{/t}</p>
 				<div class="input-group">

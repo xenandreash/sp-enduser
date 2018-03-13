@@ -37,6 +37,7 @@ function generateQRSvg($google2fa, $issuer, $user, $secret)
 	$renderer = new BaconQrCode\Renderer\Image\Svg();
 	$renderer->setWidth(256);
 	$renderer->setHeight(256);
+	$renderer->setBackgroundColor(new BaconQrCode\Renderer\Color\Rgb(255,255,255));
 
 	$writer = new BaconQrCode\Writer($renderer);
 
