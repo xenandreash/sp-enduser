@@ -74,7 +74,7 @@
 								{if $feature_rates}
 									{if $page_active=="rates"}<li class="active">{else}<li>{/if}<a href="?page=rates"><i class="fa fa-tachometer fa-fw"></i>&nbsp;{t}Rate limit{/t}</a></li>
 								{/if}
-								{if $page_active=="apiscript"}<li class="active">{else}<li>{/if}<a href="?page=apiscript"><i class="fa fa-link fa-fw"></i>&nbsp;{t}Integration{/t}</a></li>
+								{if $page_active=="apiscript"}<li class="active">{else}<li>{/if}<a href="?page=apiscript"><i class="fa fa-cogs fa-fw"></i>&nbsp;{t}Integration{/t}</a></li>
 							</ul>
 						</li>
 						{/if}

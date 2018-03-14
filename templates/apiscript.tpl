@@ -8,15 +8,15 @@
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu" aria-labelledby="dropdownIntegrationMenu">
-					<li><a href="?page={$page_active}&script=api">{t}API authentication{/t}</a></li>
+					{if $show_script == "api"}<li class="active">{else}<li>{/if}<a href="?page={$page_active}&script=api">{t}API authentication{/t}</a></li>
 					<li role="separator" class="divider"></li>
-					<li><a href="?page={$page_active}&script=history">{t}History log{/t}</a></li>
+					{if $show_script == "history"}<li class="active">{else}<li>{/if}<a href="?page={$page_active}&script=history">{t}History log{/t}</a></li>
 					<li role="separator" class="divider"></li>
-					<li><a href="?page={$page_active}&script=bwlist">{t}Blacklist and whitelist{/t}</a></li>
-					<li><a href="?page={$page_active}&script=datastore">{t}Data store settings{/t}</a></li>
-					<li><a href="?page={$page_active}&script=spam">{t}Spam settings{/t}</a></li>
+					{if $show_script == "bwlist"}<li class="active">{else}<li>{/if}<a href="?page={$page_active}&script=bwlist">{t}Blacklist and whitelist{/t}</a></li>
+					{if $show_script == "datastore"}<li class="active">{else}<li>{/if}<a href="?page={$page_active}&script=datastore">{t}Data store settings{/t}</a></li>
+					{if $show_script == "spam"}<li class="active">{else}<li>{/if}<a href="?page={$page_active}&script=spam">{t}Spam settings{/t}</a></li>
 					<li role="separator" class="divider"></li>
-					<li><a href="?page={$page_active}&script=usercreation">{t}Automatic user creation{/t}</a></li>
+					{if $show_script == "usercreation"}<li class="active">{else}<li>{/if}<a href="?page={$page_active}&script=usercreation">{t}Automatic user creation{/t}</a></li>
 				</ul>
 			</li>
 		</ul>

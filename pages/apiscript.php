@@ -6,7 +6,7 @@ if (!Session::Get()->checkAccessAll())
 require_once BASE.'/inc/smarty.php';
 require_once BASE.'/inc/utils/hsl.inc.php';
 
-$smarty->assign('show_script', $_GET['script']);
+$smarty->assign('show_script', isset($_GET['script']) ? $_GET['script'] : "api");
 $smarty->assign('hsl_script', hsl_script());
 $smarty->assign('page_active', $_GET['page']);
 
