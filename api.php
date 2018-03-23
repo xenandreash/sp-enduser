@@ -80,7 +80,7 @@ if ($_GET['type'] == 'log') {
 	$statement->bindValue(':msgtodomain', extract_domain($_POST['msgto']));
 	$statement->bindValue(':msgsubject', $_POST['msgsubject']);
 	$statement->bindValue(':msgsize', $_POST['msgsize']);
-	$statement->bindValue(':msgdescription', $_POST['msgdescription']);
+	$statement->bindValue(':msgdescription', is_array($_POST['msgdescription']) ? implode('|', $_POST['msgdescription']) : $_POST['msgdescription']);
 	$statement->bindValue(':serialno', $_POST['serialno']);
 	if (isset($_POST['score_rpd']))
 		$statement->bindValue(':score_rpd', $_POST['score_rpd']);

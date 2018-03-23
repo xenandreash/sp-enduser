@@ -14,6 +14,7 @@ if ($type == 'log') {
 	// get mail flow from db (not available over soap)
 	$msgactionlog = isset($mail->msgaction_log) ? json_decode($mail->msgaction_log) : [];
 	foreach($msgactionlog as $i) {
+		$i->details = is_array($i->details) ? implode('|', $i->details) : $i->details; 
 		if (isset($i->ts0))
 			$i->ts0 -= $_SESSION['timezone'] * 60;
 	}
