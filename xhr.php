@@ -336,7 +336,13 @@ if ($_POST['page'] == 'stats')
 			if (!Session::Get()->checkAccessDomain($_POST['domain']))
 				die(json_encode(array('error' => 'Insufficient permissions')));
 
-			$listener = 'mailserver:1';
+			$listener = 'mailserver:inbound';
+			$listeners = $settings->getDisplayListener();
+			foreach ($listeners as $k => $v) {
+				if ($v === 'Inbound') {
+					$listener = $k;
+				}
+			}
 			$listener = str_replace(':', '-', $listener);
 			$domain = $_POST['domain'];
 			$data = array();
@@ -374,13 +380,19 @@ if ($_POST['page'] == 'stats')
 		} else {
 			if (!Session::Get()->checkAccessDomain($_POST['domain']))
 				die(json_encode(array('error' => 'Insufficient permissions')));
-			$listener = 'mailserver:1';
+			$listener = 'mailserver:inbound';
+			$listeners = $settings->getDisplayListener();
+			foreach ($listeners as $k => $v) {
+				if ($v === 'Inbound') {
+					$listener = $k;
+				}
+			}
 			$keyname = 'mail:action:';
 			$stats = array();
 			$since = null;
 			foreach ($settings->getNodes() as $node) {
 				try {
-					$ss = $node->soap()->statList(array('key1' => $keyname.'%', 'key2' => $inbound, 'key3' => $_POST['domain'], 'offset' => 0, 'limit' => 10))->result->item;
+					$ss = $node->soap()->statList(array('key1' => $keyname.'%', 'key2' => $listener, 'key3' => $_POST['domain'], 'offset' => 0, 'limit' => 10))->result->item;
 					if (!is_array($ss))
 						continue;
 					foreach ($ss as $s) {
