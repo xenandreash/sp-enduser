@@ -24,6 +24,19 @@
 				{/if}
 			</li>
 			{/if}
+			{if $reportfp or $reportfn}
+			<li class="dropdown">
+				<a class="dropdown-toggle" role="button" id="dropdownSpamMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="fa fa-ban"></i> {t}Spam classification{/t}
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dropdownSpamMenu">
+					{if $reportfp}<li><a href="{$smarty.server.REQUEST_URI}&report=1&reporttype=fp">{t}Report blocked email (FP){/t}</a></li>{/if}
+					{if $reportfpfile}<li><a href="{$smarty.server.REQUEST_URI}&report=1&reporttype=fp&file=1">{t}Report blocked email (FP) with email body{/t}</a></li>{/if}
+					{if $reportfn}<li><a href="{$smarty.server.REQUEST_URI}&report=1&reporttype=fn&file=1">{t}Report spam (FN){/t}</a></li>{/if}
+				</ul>
+			</li>
+			{/if}
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			{if isset($node)}
@@ -53,22 +66,28 @@
 						<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}&query={$support_log_query}"><i class="fa fa-fw fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
 					{/if}
 					{if $bwlist_settings.whitelist.show}
-					<li>
-						{if $bwlist_settings.whitelist.enabled}
-							<a data-action="whitelist"><i class="fa fa-fw fa-check" style="color:green"></i>&nbsp;{t}Whitelist{/t}</a>
-						{else}
-							<a href="#"><i class="fa fa-fw fa-check" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Whitelisted{/t}</span></a>
-						{/if}
-					</li>
+						<li>
+							{if $bwlist_settings.whitelist.enabled}
+								<a data-action="whitelist"><i class="fa fa-fw fa-check" style="color:green"></i>&nbsp;{t}Whitelist{/t}</a>
+							{else}
+								<a href="#"><i class="fa fa-fw fa-check" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Whitelisted{/t}</span></a>
+							{/if}
+						</li>
 					{/if}
 					{if $bwlist_settings.blacklist.show}
-					<li>
-						{if $bwlist_settings.blacklist.enabled}
-							<a data-action="blacklist"><i class="fa fa-fw fa-ban" style="color:red"></i>&nbsp;{t}Blacklist{/t}</a>
-						{else}
-							<a href="#"><i class="fa fa-fw fa-ban" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Blacklisted{/t}</span></a>
-						{/if}
-					</li>
+						<li>
+							{if $bwlist_settings.blacklist.enabled}
+								<a data-action="blacklist"><i class="fa fa-fw fa-ban" style="color:red"></i>&nbsp;{t}Blacklist{/t}</a>
+							{else}
+								<a href="#"><i class="fa fa-fw fa-ban" style="color:lightgrey"></i>&nbsp;<span style="color: lightgrey">{t}Blacklisted{/t}</span></a>
+							{/if}
+						</li>
+					{/if}
+					{if $reportfp or $reportfn}
+						<li class="divider"></li>
+						{if $reportfp}<li><a href="{$smarty.server.REQUEST_URI}&report=1&reporttype=fp"><i class="fa fa-check-circle-o fa-fw"></i> {t}Report blocked email (FP){/t}</a></li>{/if}
+						{if $reportfpfile}<li><a href="{$smarty.server.REQUEST_URI}&report=1&reporttype=fp&file=1"><i class="fa fa-check-circle-o fa-fw"></i> {t}Report blocked email (FP) with email body{/t}</a></li>{/if}
+						{if $reportfn}<li><a href="{$smarty.server.REQUEST_URI}&report=1&reporttype=fn&file=1"><i class="fa fa-ban fa-fw"></i> {t}Report spam (FN){/t}</a></li>{/if}
 					{/if}
 					{if $type == 'queue' || $type == 'archive'}
 						<li class="divider"></li>

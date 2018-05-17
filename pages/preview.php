@@ -177,6 +177,46 @@ $javascript[] = 'static/js/diff.js';
 
 require_once BASE.'/inc/smarty.php';
 
+$reportfp = $reportfpbody = $reportfn = false;
+
+if (Session::Get()->checkAccessAll()) {
+	$scores = history_parse_scores($mail);
+	if (isset($scores['rpd']['score'])) {
+		if ($scores['rpd']['score'] === 'Bulk' || $scores['rpd']['score'] === 'Spam') {
+			$reportfp = true;
+			if ($type === 'queue')
+				$reportfpfile = true;
+		} 
+		if ($scores['rpd']['score'] !== 'Spam' && $type === 'queue')
+			$reportfn = true;
+	}
+	if (isset($_GET['report'])) {
+		$reportdata = [];
+		$reporttype = ($_GET['reporttype'] == 'fn') ? 'fn' : 'fp';
+
+		$reportvalid = false;
+		if ($reporttype == 'fp' && ($reportfp || $reportfpfile))
+			$reportvalid = true;
+		if ($reporttype == 'fn' && $reportfn)
+			$reportvalid = true;
+
+		if ($reportvalid) {
+			if ($reporttype == 'fp' && $reportfp)
+				$reportdata['refid'] = isset($scores['rpd']['text']) ? $scores['rpd']['text'] : '';
+			if (isset($_GET['file']) && ($type == 'queue' || $type == 'archive'))
+				$reportdata['file'] = $mail->msgpath;
+			if (!empty($reportdata)) {
+				$reportdata['type'] = $reporttype;
+				require_once BASE.'/pages/report.php';
+				die();
+			}
+		}
+	}
+}
+
+$smarty->assign('reportfp', $reportfp);
+$smarty->assign('reportfpfile', $reportfpfile);
+$smarty->assign('reportfn', $reportfn);
 if ($settings->getDisplayBWlist()) $smarty->assign('bwlist_settings', $bwlist_settings);
 if ($settings->getDisplayTextlog() && $node && $mail->msgid) {
 	$smarty->assign('support_log', true);

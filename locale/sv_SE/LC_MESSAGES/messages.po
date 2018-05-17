@@ -300,6 +300,22 @@ msgstr "Svartlista"
 msgid "Blacklisted"
 msgstr "Svartlistad"
 
+#: templates/preview.tpl:30
+msgid "Spam classification"
+msgstr "Spam klassificering"
+
+#: templates/preview.tpl:34 templates/preview.tpl:88
+msgid "Report blocked email (FP)"
+msgstr "Rapportera blockerat mail (FP)"
+
+#: templates/preview.tpl:35 templates/preview.tpl:89
+msgid "Report blocked email (FP) with email body"
+msgstr "Rapportera blockerat mail (FP) med innehåll"
+
+#: templates/preview.tpl:36 templates/preview.tpl:90
+msgid "Report spam (FN)"
+msgstr "Rapportera spam (FN)"
+
 #: templates/preview.tpl:10 templates/preview.tpl:31
 msgid "Text log"
 msgstr "Textlogg"
@@ -448,6 +464,10 @@ msgstr "Konto"
 msgid "Enable two-factor authentication"
 msgstr "Aktivera tvåfaktorsautentisering"
 
+#: templates/user.tpl:17 templates/user.tpl:49
+msgid "Verification failed. Please try again."
+msgstr "Verifieringen misslyckades. Försök igen."
+
 #: templates/user.tpl:12
 msgid ""
 "Please scan the image with Google Authenticator or add it manually by "
@@ -463,10 +483,6 @@ msgid ""
 msgstr ""
 "Det är starkt rekommenderat att du sparar ner den hemliga koden ifall du "
 "behöver återställa tvåfaktorsautentiseringen."
-
-#: templates/user.tpl:17 templates/user.tpl:49
-msgid "Verification failed. Please try again."
-msgstr "Verifieringen misslyckades. Försök igen."
 
 #: templates/user.tpl:19
 msgid ""
