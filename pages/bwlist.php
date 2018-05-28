@@ -116,8 +116,13 @@ if ($total) {
 
 // For users with many access levels; print them more condensed
 $result2 = array();
-foreach ($result as $row)
-	$result2[$row['type']][$row['value']][] = $row['access'];
+foreach ($result as $row) {
+	$i = 0;
+	if (isset($result2[$row['type']][$row['value']]))
+		$i = count($result2[$row['type']][$row['value']]['accesses']);
+	$result2[$row['type']][$row['value']]['accesses'][$i] = $row['access'];
+	$result2[$row['type']][$row['value']]['comments'][$i] = $row['comment'];
+}
 
 $javascript[] = 'static/js/bwlist.js';
 

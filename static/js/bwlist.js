@@ -1,11 +1,39 @@
 $(document).ready(function() {
 	$('#type').focus();
+	$('[data-toggle="popover"]').popover({
+		delay: {
+			show: "200",
+			hide: "100"
+		 }
+	});
 
 	$('#link-add').click(function() {
 		$('#btn-cancel').click();
 		$('html, body').animate({
 			scrollTop: $('#side-panel').offset().top - 100
 		}, 0);
+	});
+
+	$('#enable-comment').click(function() {
+		if ($(this).prop('checked'))
+			$('#comment').focus();
+	});
+
+	$('#enable-comment').change(function() {
+		if ($(this).prop('checked')) {
+			if ($('#comment').val()) {
+				$('#comment-group').hide();
+				$('#comment').appendTo('#comment-field');
+			}
+			$('#comment').prop('disabled', false);
+			if (!$('#comment').val())
+				$('#comment').prop('placeholder', $('#comment-default').val());
+		} else {
+			$('#comment-group').show();
+			$('#comment').appendTo('#comment-group');
+			$('#comment').prop('disabled', true);
+			$('#comment').prop('placeholder', '');
+		}
 	});
 
 	$('.item').click(function() {
@@ -22,6 +50,11 @@ $(document).ready(function() {
 
 		$('#action').val('edit');
 		$('#value').val($(this).data('value')).focus();
+		$('#comment').val($(this).data('comment'));
+		if ($(this).data('comment'))
+			$('#enable-comment').prop('checked', true).change();
+		else
+			$('#enable-comment').prop('checked', false).change();
 		$('#edit-id').val($(this).attr('id'));
 		$('#edit-recipient').text($(this).closest('tr').children('.item-access').text());
 		$('#type>option:eq(' + (types[type] + 1) +')').prop('selected', true);
@@ -43,6 +76,8 @@ $(document).ready(function() {
 
 		$('#action').val('add');
 		$('#value').val(null);
+		$('#comment').val(null);
+		$('#enable-comment').prop('checked', false).change();
 		$('#edit-id').val(null);
 		$('#edit-recipient').text(null);
 		$('#type>option:eq("0")').prop('selected', true);
@@ -79,6 +114,13 @@ $(document).ready(function() {
 			"value": $("#value").val(),
 			"type": $("#type").val()
 		};
+
+		if ($('#enable-comment').prop('checked')) {
+			if (!$("#comment").val())
+				post["comment"] = $("#comment").attr("placeholder");
+			else
+				post["comment"] = $("#comment").val();
+		}
 
 		if ($('#action').val() == 'add')
 			post["access"] = $('#bwlist_add input[type="checkbox"].recipient:checked, #bwlist_add input[type="text"].recipient, #bwlist_add input[type="hidden"].recipient').map(function(){return $(this).val();}).get();

@@ -212,7 +212,7 @@ if (isset($dbCredentials['dsn'])) {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 		$statement = $dbh->prepare('SELECT * FROM users_totp LIMIT 1;');
 		if (!$statement || $statement->execute() === false) {
-			$notes[] = 'Adding table users_totp... ';
+			$notes[] = 'Adding table users_totp';
 			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$dbh->exec('CREATE TABLE users_totp (username VARCHAR(128), secret TEXT, PRIMARY KEY(username));');
 			$dbh->exec('UPDATE dbversion SET current = 2;');
@@ -226,9 +226,21 @@ if (isset($dbCredentials['dsn'])) {
 		if ($statement && $statement->execute()) {
 			$result = $statement->fetch(PDO::FETCH_ASSOC);
 			if ($result['current'] < 3) {
-				$notes[] = 'Updating dbversion to ver. 3...';
+				$notes[] = 'Updating dbversion to ver. 3';
 				$dbh->exec('UPDATE dbversion SET current = 3;');
 			}
+		}
+
+		/*
+			Version 4.php
+		*/
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+		$statement = $dbh->prepare('SELECT comment FROM bwlist');
+		if (!$statement || $statement->execute() === false) {
+			$notes[] = 'Adding column comment to bwlist';
+			$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$dbh->exec('ALTER TABLE bwlist ADD COLUMN comment VARCHAR(255);');
+			$dbh->exec('UPDATE dbversion SET current = 4;');
 		}
 
 		if (!empty($notes))

@@ -44,6 +44,7 @@ if ($_POST['page'] == 'bwlist')
 		if (substr($value, 0, 2) == '*@') $value = substr($value, 2);
 
 		$type = $_POST['type'];
+		$comment = isset($_POST['comment']) ? $_POST['comment'] : null;
 
 		if ($_POST['list'] == 'edit') {
 			$old_value = strtolower(trim($_POST['old_value']));
@@ -71,12 +72,12 @@ if ($_POST['page'] == 'bwlist')
 
 			if ($type == 'whitelist' || $type == 'blacklist') {
 				if ($_POST['list'] == 'add') {
-					$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value) VALUES(:access, :type, :value);");
-					$statement->execute(array(':access' => strtolower($access), ':type' => $type, ':value' => $value));
+					$statement = $dbh->prepare("INSERT INTO bwlist (access, type, value, comment) VALUES(:access, :type, :value, :comment);");
+					$statement->execute(array(':access' => strtolower($access), ':type' => $type, ':value' => $value, ':comment' => $comment));
 				}
 				if ($_POST['list'] == 'edit') {
-					$statement = $dbh->prepare("UPDATE bwlist SET type = :type, value = :value WHERE access = :access AND value = :old_value and type = :old_type;");
-					$statement->execute(array(':access' => strtolower($access), ':type' => $type, ':value' => $value, ':old_value' => $old_value, ':old_type' => $old_type));
+					$statement = $dbh->prepare("UPDATE bwlist SET type = :type, value = :value, comment = :comment WHERE access = :access AND value = :old_value and type = :old_type;");
+					$statement->execute(array(':access' => strtolower($access), ':type' => $type, ':value' => $value, ':comment' => $comment, ':old_value' => $old_value, ':old_type' => $old_type));
 				}
 				$added = true;
 			} else
