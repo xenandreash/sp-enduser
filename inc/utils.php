@@ -34,7 +34,7 @@ function history_parse_scores($mail)
 			$ret['kav']['score'] = $res;
 			$ret['kav']['text'] = $text;
 		}
-		if ($score->first == 3) {
+		if ($score->first == 3 || $score->first == 5) {
 			$ret['rpd']['name'] = 'CYREN';
 			$ret['rpd']['score'] = $rpd[$num];
 			$ret['rpd']['text'] = $text;
