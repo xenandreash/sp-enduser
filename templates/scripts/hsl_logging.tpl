@@ -43,7 +43,12 @@ function Defer(...$args) {
 }
 function ScanRPD(...$args) {
 	global $logdata;
-	$logdata += [ "score_rpd" => builtin ScanRPD(), "score_rpd_refid" => builtin ScanRPD([ "refid" => true ]) ];
+	$outbound = $args[0]["outbound"] ?? false;
+	$logdata += [
+		"score_rpd" => builtin ScanRPD([ "outbound" => $outbound ]),
+		"score_rpd_refid" => builtin ScanRPD([ "outbound" => $outbound, "refid" => true ]),
+		"score_rpdav" => builtin ScanRPD([ "outbound" => $outbound, "extended_result" => true ])["virus_score"]
+	];
 	return builtin ScanRPD(...$args);
 }
 function ScanSA(...$args) {
@@ -60,11 +65,6 @@ function ScanCLAM(...$args) {
 	global $logdata;
 	$logdata += [ "score_clam" => builtin ScanCLAM() ? : "" ];
 	return builtin ScanCLAM(...$args);
-}
-function ScanRPDAV(...$args) {
-	global $logdata;
-	$logdata += [ "score_rpdav" => builtin ScanRPDAV() ];
-	return builtin ScanRPDAV(...$args);
 }
 function Quarantine(...$args) {
 	$msg = isset($args[1]["reason"]) ? $args[1]["reason"] : "";
