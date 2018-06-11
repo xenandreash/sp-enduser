@@ -126,6 +126,12 @@
  * 'display-listener' and 'display-transport' settings. If it matches
  * a listener that is labeled 'Outbound' or a transport that is labeled 'Internet'
  * it will be stored as outbound, otherwise it will be stored as inbound.
+ * You should also edit the crontab file to periodically generate RRD graphs.
+ * You do that by typing crontab -e in the terminal and add the following line at the bottom
+ * 
+ *     * * * * * /usr/bin/php /var/www/html/sp-enduser/cron.php.txt rrd
+ * 
+ * where the path should be the directory that you installed the end-user to.
  */
 //$settings['database-stats'] = false;
 
