@@ -6,7 +6,7 @@ function Datastore($query)
 				"update_function" => API_update,
 				"namespace" => "Datastore",
 			]
-			http($triggerurl . "&type=datastore&$query", ["timeout" => 10, "ssl_default_ca" => true]);
+			http($triggerurl . "&type=datastore&$query", ["timeout" => 10, "tls_default_ca" => true]);
 	$list = json_decode($data);
 	if (!is_array($list))
 		return -1;

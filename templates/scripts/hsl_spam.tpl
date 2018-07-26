@@ -8,7 +8,7 @@ function SpamSettings()
 				"update_function" => API_update,
 				"namespace" => "SpamSettings",
 			]
-			http($triggerurl . "&type=spamsettings", ["timeout" => 10, "ssl_default_ca" => true]);
+			http($triggerurl . "&type=spamsettings", ["timeout" => 10, "tls_default_ca" => true]);
 	$list = json_decode($data);
 	if (!is_array($list))
 		return 0;

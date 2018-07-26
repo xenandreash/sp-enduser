@@ -8,7 +8,7 @@ function ScanBWList()
 				"update_function" => API_update,
 				"namespace" => "ScanBWList",
 			]
-			http($triggerurl . "&type=bwlist", ["timeout" => 10, "ssl_default_ca" => true]);
+			http($triggerurl . "&type=bwlist", ["timeout" => 10, "tls_default_ca" => true]);
 	$list = json_decode($data);
 	if (!is_array($list))
 		return 50;

@@ -25,7 +25,7 @@ function sendlog($action, $desc) {
 		"msgto" => $recipient
 	];
 	http($triggerurl . "&type=log",
-		["timeout" => 10, "background" => true, "background_hash" => hash($messageid), "background_retry_count" => 1, "ssl_default_ca" => true], [], $logdata);
+		["timeout" => 10, "background" => true, "background_hash" => hash($messageid), "background_retry_count" => 1, "tls_default_ca" => true], [], $logdata);
 }
 function Reject(...$args) {
 	$msg = isset($args[0]) ? $args[0] : "";
