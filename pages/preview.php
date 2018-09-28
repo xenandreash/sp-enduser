@@ -4,6 +4,7 @@ if (!defined('SP_ENDUSER')) die('File not included');
 $id = preg_replace('/[^0-9]/', '', $_GET['id']);
 $type = $_GET['type'];
 $node = null;
+$showoriginal = isset($_GET['original']);
 
 if ($type == 'log') {
 	// Log = database backend
@@ -103,7 +104,7 @@ if ($type == 'queue' || $type == 'archive') {
 		$command[] = '-t';
 	$command[] = $mail->msgpath;
 	$command[] = $uniq;
-	if ($mail->msgdeltapath)
+	if ($mail->msgdeltapath && !$showoriginal)
 		$command[] = $mail->msgdeltapath;
 	$data = soap_exec($command, $client);
 	$data = str_replace("\r\n", "\n", $data);
@@ -230,6 +231,15 @@ if ($encode) $smarty->assign('encode', $encode);
 if ($_GET['preview'] == 'text') $smarty->assign('show_text', true);
 
 $smarty->assign('use_iframe', $_SESSION['useiframe']);
+
+$f = $_GET;
+$f['original'] = true;
+$smarty->assign('show_original_link', '?'.http_build_query($f));
+
+$f = $_GET;
+unset($f['original']);
+$smarty->assign('show_modified_link', '?'.http_build_query($f));
+$smarty->assign('show_original', $showoriginal);
 
 $f = $_GET;
 $f['preview'] = 'text';

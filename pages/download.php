@@ -17,19 +17,27 @@ if (!$mail)
 	die('No mail found');
 $client = $nodeBackend->soap();
 
-header('Content-Disposition: attachment; filename='.$mail->msgid.'.txt');
+$filename = $mail->msgid;
+if ($_GET['original'] == '1')
+	$filename .= '_org';
 
-$file = $mail->msgpath;
+header('Content-Disposition: attachment; filename='.$filename.'.txt');
+
+$file = $mail->id;
 $read = 10000;
 $offset = 0;
 try {
 	while (true) {
-		$result = $client->fileRead(array('file' => $file, 'offset' => $offset, 'size' => $read));
-		echo $result->data;
+		$result = $client->mailQueueDownload(array('id' => $file, 'offset' => $offset, 'size' => $read, 'original' => $_GET['original'] == '1'));
+
+		$data = base64_decode($result->data);
+		echo $data;
 		flush();
-		if ($result->size < $read)
+
+		$size = strlen($data);
+		if ($size < $read)
 			break;
-		$offset = $result->offset;
+		$offset += $size;
 	}
 } catch (SoapFault $f) {
 	echo "Error: ".$f->faultstring;

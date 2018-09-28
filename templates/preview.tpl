@@ -44,7 +44,19 @@
 					<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}&query={$support_log_query}"><i class="fa fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
 				{/if}
 				{if $type == 'queue' || $type == 'archive'}
-					{if ! in_array('preview-mail-body', $disabled_features)}<li><a href="?page=download&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>{/if}
+					{if ! in_array('preview-mail-body', $disabled_features)}
+						{if ! in_array('preview-mail-body-delta', $disabled_features)}
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-download"></i>&nbsp;Download <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="?page=download&id={$mail->id}&node={$node}">{t}Modified{/t}</a></li>
+									<li><a href="?page=download&original=1&id={$mail->id}&node={$node}">{t}Original{/t}</a></li>
+								</ul>
+							</li>
+						{else}
+							<li><a href="?page=download&id={$mail->id}&node={$node}&type={$type}"><i class="fa fa-download"></i>&nbsp;{t}Download{/t}</a></li>
+						{/if}
+					{/if}
 					<li class="divider"></li>
 					<li><a data-action="delete"><i class="fa fa-trash-o"></i>&nbsp;{t}Delete{/t}</a></li>
 					<li><a data-action="bounce"><i class="fa fa-mail-reply"></i>&nbsp;{t}Bounce{/t}</a></li>
@@ -90,8 +102,11 @@
 						{if $reportfn}<li><a href="{$smarty.server.REQUEST_URI}&report=1&reporttype=fn&file=1"><i class="fa fa-ban fa-fw"></i> {t}Report spam (FN){/t}</a></li>{/if}
 					{/if}
 					{if $type == 'queue' || $type == 'archive'}
-						<li class="divider"></li>
-						<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-fw fa-download"></i>&nbsp;{t}Download{/t}</a></li>
+						{if ! in_array('preview-mail-body', $disabled_features)}
+							<li class="divider"></li>
+							<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-fw fa-download"></i>&nbsp;{t}Download{/t}</a></li>
+							{if ! in_array('preview-mail-body-delta', $disabled_features)}<li><a href="?page=download&original=1&id={$mail->id}&node={$node}"><i class="fa fa-fw fa-download"></i>&nbsp;{t}Download original{/t}</a></li>{/if}
+						{/if}
 						<li class="divider"></li>
 						<li><a data-action="delete"><i class="fa fa-fw fa-trash-o"></i>&nbsp;{t}Delete{/t}</a></li>
 						<li><a data-action="bounce"><i class="fa fa-fw fa-mail-reply"></i>&nbsp;{t}Bounce{/t}</a></li>
@@ -237,6 +252,15 @@
 		<div class="col-md-7 col-md-pull-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">
+					{if ! in_array('preview-mail-body', $disabled_features) and ! in_array('preview-mail-body-delta', $disabled_features)}
+					<div class="pull-right">
+						{if !$show_original}
+							<a href="{$show_original_link}">Show original</a>
+						{else}
+							<a href="{$show_modified_link}">Show modified</a>
+						{/if}
+					</div>
+					{/if}
 					<h3 class="panel-title" style="white-space: nowrap;">{if $mail->msgsubject}{$mail->msgsubject|escape}{else}<span class="text-muted">{t}No Subject{/t}</span>{/if}</h3>
 				</div>
 				{if in_array('preview-mail-body', $disabled_features)}
