@@ -6,6 +6,9 @@ header('Content-type: text/plain');
 if (Session::Get()->checkDisabledFeature('preview-mail-body'))
 	die('Permission denied');
 
+if ($_GET['original'] == '1' && Session::Get()->checkDisabledFeature('preview-mail-body-original'))
+	die('Permission denied');
+
 $id = preg_replace('/[^0-9]/', '', $_GET['id']);
 
 $nodeBackend = new NodeBackend($settings->getNode($_GET['node']));

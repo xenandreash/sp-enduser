@@ -90,8 +90,13 @@ foreach ($result as $row) {
 	$result2[$row['username']] = array();
 	$row_accesses = explode(',', $row['accesses']);
 	foreach ($row_accesses as $row_access) {
-		if ($row_access != "") $result2[$row['username']][] = $row_access;
+		if ($row_access != "") $result2[$row['username']]['accesses'][] = $row_access;
 	}
+	$statement = $dbh->prepare('SELECT feature FROM users_disabled_features WHERE username = :username;');
+	$statement->execute([':username' => $row['username']]);
+	$result2[$row['username']]['features'] = [];
+	while ($row2 = $statement->fetch(PDO::FETCH_ASSOC))
+		$result2[$row['username']]['features'][] = $row2['feature'];
 }
 
 $javascript[] = 'static/js/users.js';

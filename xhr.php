@@ -454,6 +454,8 @@ if ($_POST['page'] == 'users')
 		}
 	}
 
+	$features = ['preview-mail-body', 'preview-mail-body-original', 'preview-textlog', 'display-users'];
+
 	if ($_POST['list'] == 'add-user')
 	{
 		if (empty($_POST['username']) || empty($_POST['password_1']) || empty($_POST['password_2']))
@@ -472,6 +474,16 @@ if ($_POST['page'] == 'users')
 		try {
 			$statement = $dbh->prepare('INSERT INTO users (username, password) VALUES (:username, :password);');
 			$statement->execute(array(':username' => $_POST['username'], ':password' => $password));
+
+			if (isset($_POST['disabled_features'])) {
+				foreach ($_POST['disabled_features'] as $feature) {
+					if (in_array($feature, $features)) {
+						$statement = $dbh->prepare('INSERT INTO users_disabled_features (username, feature) VALUES (:username, :feature);');
+						$statement->execute([':username' => $_POST['username'], ':feature' => $feature]);
+					}
+				}
+			}
+
 			if (is_array($_POST['access'])) {
 				foreach ($_POST['access'] as $access) {
 					$type = (strpos($access, '@')) ? 'mail' : 'domain';
@@ -505,11 +517,27 @@ if ($_POST['page'] == 'users')
 			if ($_POST['username'] != $_POST['old_username']) {
 				$statement = $dbh->prepare('UPDATE users SET username = :username WHERE username = :old_username;');
 				$statement->execute(array(':username' => $_POST['username'], ':old_username' => $_POST['old_username']));
+
+				$statement = $dbh->prepare('UPDATE users_disabled_features SET username = :username WHERE username = :old_username;');
+				$statement->execute([':username' => $_POST['username'], ':old_username' => $_POST['old_username']]);
 			}
 			if (!empty($password)) {
 				$statement = $dbh->prepare('UPDATE users SET password = :password WHERE username = :username;');
 				$statement->execute(array(':username' => $_POST['username'], ':password' => $password));
 			}
+
+			$disabled_features = isset($_POST['disabled_features']) ? $_POST['disabled_features'] : [];
+			$old_disabled_features = isset($_POST['old_disabled_features']) ? $_POST['old_disabled_features'] : [];
+			foreach ($features as $feature) {
+				if (in_array($feature, $disabled_features) && !in_array($feature, $old_disabled_features)) {
+					$statement = $dbh->prepare('INSERT INTO users_disabled_features (username, feature) VALUES (:username, :feature);');
+					$statement->execute([':username' => $_POST['username'], ':feature' => $feature]);
+				} else if (!in_array($feature, $disabled_features) && in_array($feature, $old_disabled_features)) {
+					$statement = $dbh->prepare('DELETE FROM users_disabled_features WHERE username = :username && feature = :feature;');
+					$statement->execute([':username' => $_POST['username'], ':feature' => $feature]);
+				}
+			}
+
 			if (is_array($_POST['access'])) {
 				foreach ($_POST['access'] as $access) {
 					$type = (strpos($access, '@')) ? 'mail' : 'domain';
@@ -548,6 +576,8 @@ if ($_POST['page'] == 'users')
 			try {
 				$statement = $dbh->prepare('DELETE FROM users WHERE username = :username;');
 				$statement->execute(array(':username' => $_POST['username']));
+				$statement = $dbh->prepare('DELETE FROM users_disabled_features WHERE username = :username;');
+				$statement->execute([':username' => $_POST['username']]);
 			} catch (PDOException $e) {
 				die(json_encode(array('error' => 'Database error')));
 			}

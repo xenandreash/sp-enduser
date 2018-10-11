@@ -1,6 +1,7 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
-if (!$settings->getDisplayTextlog()) die("The setting display-textlog isn't enabled");
+if (!$settings->getDisplayTextlog() || Session::Get()->checkDisabledFeature('preview-textlog'))
+	die("The setting display-textlog isn't enabled");
 
 if (isset($_GET['ajax']))
 {

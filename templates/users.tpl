@@ -38,17 +38,17 @@
 					</tr>
 				</thead>
 				<tbody>
-				{foreach from=$items key=value item=accesses}
-					{if count($accesses) > 0}
+				{foreach from=$items key=value item=data}
+					{if count($data.accesses) > 0}
 						{$item_id = $item_id + 1}
 						{$toggle_id = $toggle_id + 1}
-						<tr id="item-{$item_id}" data-toggle="{$toggle_id}" data-value="{$value|escape}" data-access="{implode(',', $accesses)|escape}">
+						<tr id="item-{$item_id}" data-toggle="{$toggle_id}" data-value="{$value|escape}" data-access="{implode(',', $data.accesses)|escape}" data-disabled-features="{implode(',', $data.features)|escape}">
 							<td class="toggle hidden-xs">{$value|escape}</td>
-							<td class="toggle hidden-xs"><span class="badge">{count($accesses)}</span></td>
+							<td class="toggle hidden-xs"><span class="badge">{count($data.accesses)}</span></td>
 							<td class="toggle visible-xs">
 								<dl class="dl-horizontal dl-horizontal-xs">
 									<dt>{t}Username{/t}</dt><dd>{$value|escape}</dd>
-									<dt>{t}Permissions{/t}</dt><dd><span class="badge">{count($accesses)}</span></dd>
+									<dt>{t}Permissions{/t}</dt><dd><span class="badge">{count($data.accesses)}</span></dd>
 								</dl>
 							</td>
 							<td class="toggle" style="width: 30px; vertical-align: middle">
@@ -61,7 +61,7 @@
 								<a class="item-delete" title="{t}Remove{/t}"><i class="fa fa-remove"></i></a>
 							</td>
 						</tr>
-						{foreach $accesses as $access}
+						{foreach $data.accesses as $access}
 						{$item_id = $item_id + 1}
 						<tr id="item-{$item_id}" data-value="{$value|escape}" data-access="{$access|escape}" style="display: none;" class="edit-access item item-hidden hidden-{$toggle_id} info">
 							<td class="item-value hidden-xs">{$value|escape}</td>
@@ -82,7 +82,7 @@
 						{/foreach}
 					{else}
 						{$item_id = $item_id + 1}
-						<tr id="item-{$item_id}" data-value="{$value|escape}" data-access="" class="edit-user item">
+						<tr id="item-{$item_id}" data-value="{$value|escape}" data-access="" class="edit-user item"  data-disabled-features="{implode(',', $data.features)|escape}">
 							<td class="item-value hidden-xs">{$value|escape}</td>
 							<td class="item-access hidden-xs"><span class="text-muted">{t}No restrictions{/t}</span></td>
 							<td class="visible-xs">
@@ -134,6 +134,38 @@
 					<div id="repeat-password-group" class="form-group hidden-edit-user hidden-edit-access">
 						<div class="col-md-offset-3 col-md-9">
 							<input id="password-2" type="password" class="form-control" placeholder="{t}Repeat new password{/t}">
+						</div>
+					</div>
+					<div class="form-group hidden-edit-access">
+						<label class="control-label col-md-3">{t}Features{/t}</label>
+						<div class="col-md-9">
+							<div class="checkbox">
+								<label>
+									<input id="all-features" type="checkbox" checked> {t}All features{/t}
+								</label>
+							</div>
+							<div id="select-features" class="hidden">
+								<div class="checkbox">
+									<label>
+										<input id="feature-preview-mail-body" type="checkbox"> {t}Preview mail body{/t}
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input id="feature-preview-mail-body-original" type="checkbox" disabled> {t}Preview original mail body{/t}
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input id="feature-preview-textlog" type="checkbox"> {t}Text log{/t}
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input id="feature-display-users" type="checkbox"> {t}Manage database users{/t}
+									</label>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="form-group">

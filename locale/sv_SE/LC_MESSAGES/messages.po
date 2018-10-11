@@ -320,6 +320,14 @@ msgstr "Rapportera spam (FN)"
 msgid "Text log"
 msgstr "Textlogg"
 
+#: templates/preview.tpl:52
+msgid "Modified"
+msgstr "Modifierad"
+
+#: templates/preview.tpl:53
+msgid "Original"
+msgstr "Original"
+
 #: templates/preview.tpl:13 templates/preview.tpl:34
 msgid "Download"
 msgstr "Ladda ner"
@@ -339,6 +347,10 @@ msgstr "Släpp"
 #: templates/preview.tpl:17 templates/preview.tpl:38
 msgid "Retry"
 msgstr "Försök igen"
+
+#: templates/preview.tpl:108
+msgid "Download original"
+msgstr "Ladda ner original"
 
 #: templates/preview.tpl:51 templates/preview.tpl:63
 msgid "Details"
@@ -662,6 +674,26 @@ msgstr "Lägg till användare"
 msgid "E.g. email address"
 msgstr "T.ex. e-mailadress"
 
+#: templates/users.tpl:140
+msgid "Features"
+msgstr "Funktioner"
+
+#: templates/users.tpl:144
+msgid "All features"
+msgstr "Alla funktioner"
+
+#: templates/users.tpl:150
+msgid "Preview mail body"
+msgstr "Förhandsgranska brev"
+
+#: templates/users.tpl:155
+msgid "Preview original mail body"
+msgstr "Förhandsgranska original brev"
+
+#: templates/users.tpl:165
+msgid "Manage database users"
+msgstr "Hantera databasanvändare"
+
 #: templates/users.tpl:141
 msgid "Permission"
 msgstr "Rättighet"
@@ -847,6 +879,11 @@ msgstr "Välj åtgärd"
 #: templates/bwlist.tpl:37 templates/bwlist.tpl:152
 msgid "Sender"
 msgstr "Avsändare"
+
+#: templates/bwlist.tpl:96 templates/bwlist.tpl:119 templates/bwlist.tpl:125
+#: templates/bwlist.tpl:175
+msgid "Comment"
+msgstr "Kommentar"
 
 #: templates/bwlist.tpl:109
 msgid "No black/whitelist"

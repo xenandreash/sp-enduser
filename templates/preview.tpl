@@ -40,12 +40,12 @@
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			{if isset($node)}
-				{if $support_log}
+				{if $support_log && ! in_array('preview-textlog', $disabled_features)}
 					<li><a href="?page=log&id={$mail->id}&node={$node}&type={$type}&query={$support_log_query}"><i class="fa fa-file-text-o"></i>&nbsp;{t}Text log{/t}</a></li>
 				{/if}
 				{if $type == 'queue' || $type == 'archive'}
 					{if ! in_array('preview-mail-body', $disabled_features)}
-						{if ! in_array('preview-mail-body-delta', $disabled_features)}
+						{if ! in_array('preview-mail-body-original', $disabled_features)}
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-download"></i>&nbsp;Download <span class="caret"></span></a>
 								<ul class="dropdown-menu">
@@ -105,7 +105,7 @@
 						{if ! in_array('preview-mail-body', $disabled_features)}
 							<li class="divider"></li>
 							<li><a href="?page=download&id={$mail->id}&node={$node}"><i class="fa fa-fw fa-download"></i>&nbsp;{t}Download{/t}</a></li>
-							{if ! in_array('preview-mail-body-delta', $disabled_features)}<li><a href="?page=download&original=1&id={$mail->id}&node={$node}"><i class="fa fa-fw fa-download"></i>&nbsp;{t}Download original{/t}</a></li>{/if}
+							{if ! in_array('preview-mail-body-original', $disabled_features)}<li><a href="?page=download&original=1&id={$mail->id}&node={$node}"><i class="fa fa-fw fa-download"></i>&nbsp;{t}Download original{/t}</a></li>{/if}
 						{/if}
 						<li class="divider"></li>
 						<li><a data-action="delete"><i class="fa fa-fw fa-trash-o"></i>&nbsp;{t}Delete{/t}</a></li>
@@ -252,7 +252,7 @@
 		<div class="col-md-7 col-md-pull-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					{if ! in_array('preview-mail-body', $disabled_features) and ! in_array('preview-mail-body-delta', $disabled_features)}
+					{if ! in_array('preview-mail-body', $disabled_features) and ! in_array('preview-mail-body-original', $disabled_features)}
 					<div class="pull-right">
 						{if !$show_original}
 							<a href="{$show_original_link}">Show original</a>
