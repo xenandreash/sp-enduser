@@ -20,10 +20,8 @@ foreach (array_merge((array)$access['mail'], (array)$access['domain']) as $k => 
 	$in_access[':access'.$k] = $v;
 foreach ((array)$access['domain'] as $k => $v)
 	$domain_access[':domain'.$k] = '%@'.$v;
-$foundrows = $where = '';
+$foundrows = $where = $accesswhere = '';
 $wheres = array();
-if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql')
-	$foundrows = 'SQL_CALC_FOUND_ROWS';
 if (isset($search['action']))
 	$wheres[] = 'type = :action';
 if (isset($search['sender']))
@@ -36,11 +34,12 @@ if (!Session::Get()->checkAccessAll()) {
 		$restrict .= ' OR access LIKE '.$v;
 	$restrict .= ')';
 	$wheres[] = $restrict;
+	$accesswhere = 'WHERE '.$restrict;
 }
 
 if (count($wheres))
 	$where = 'WHERE '.implode(' AND ', $wheres);
-$sql = "SELECT $foundrows * FROM bwlist $where ORDER BY type DESC, value ASC LIMIT :limit OFFSET :offset;";
+$sql = "SELECT bwA.* FROM bwlist bwA INNER JOIN (SELECT DISTINCT value, type FROM bwlist $where ORDER BY type DESC, value ASC LIMIT :limit OFFSET :offset) bwB ON bwA.value = bwB.value AND bwA.type = bwB.type $accesswhere ORDER BY bwA.type DESC, bwA.value ASC;";
 $statement = $dbh->prepare($sql);
 $statement->bindValue(':limit', (int)$limit + 1, PDO::PARAM_INT);
 $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
@@ -55,8 +54,14 @@ foreach ($in_access as $k => $v)
 foreach ($domain_access as $k => $v)
 	$statement->bindValue($k, $v);
 $statement->execute();
-while ($row = $statement->fetch(PDO::FETCH_ASSOC))
-	$result[] = $row;
+while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+	// For users with many access levels; print them more condensed
+	$i = 0;
+	if (isset($result[$row['type']][$row['value']]))
+		$i = count($result[$row['type']][$row['value']]['accesses']);
+	$result[$row['type']][$row['value']]['accesses'][$i] = $row['access'];
+	$result[$row['type']][$row['value']]['comments'][$i] = $row['comment'];
+}
 
 if ($offset > 0 and !count($result)) {
 	$redirect = $_SERVER['PHP_SELF'].'?page='.$_GET['page'];
@@ -68,32 +73,30 @@ if ($offset > 0 and !count($result)) {
 	die();
 }
 
-if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'mysql') {
-	$total = $dbh->query('SELECT FOUND_ROWS();');
+if ($offset == 0 && count($result['whitelist']) + count($result['blacklist']) < $limit + 1) {
+	$total = count($result['whitelist']) + count($result['blacklist']);
+} else {
+	$total = $dbh->prepare("SELECT COUNT(DISTINCT value, type) FROM bwlist $where;");
+	if (isset($search['action']))
+		$total->bindValue(':action', $search['action']);
+	if (isset($search['sender']))
+		$total->bindValue(':sender', '%'.$search['sender'].'%');
+	if (isset($search['recipient']))
+		$total->bindValue(':recipient', '%'.$search['recipient'].'%');
+	foreach ($in_access as $k => $v)
+		$total->bindValue($k, $v);
+	foreach ($domain_access as $k => $v)
+		$total->bindValue($k, $v);
+	$total->execute();
 	$total = (int)$total->fetchColumn();
 }
-if ($dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'sqlite' || $dbh->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql') {
-	if ($offset == 0 && count($result) < $limit + 1) {
-		$total = count($result);
-	} else {
-		$total = $dbh->prepare("SELECT COUNT(*) FROM bwlist $where;");
-		if (isset($search['action']))
-			$total->bindValue(':action', $search['action']);
-		if (isset($search['sender']))
-			$total->bindValue(':sender', '%'.$search['sender'].'%');
-		if (isset($search['recipient']))
-			$total->bindValue(':recipient', '%'.$search['recipient'].'%');
-		foreach ($in_access as $k => $v)
-			$total->bindValue($k, $v);
-		foreach ($domain_access as $k => $v)
-			$total->bindValue($k, $v);
-		$total->execute();
-		$total = (int)$total->fetchColumn();
-	}
+$pagemore = count($result['whitelist']) + count($result['blacklist']) > $limit;
+if ($pagemore) {
+	if (count($result['whitelist']) > $limit)
+		array_pop($result['whitelist']);
+	else
+		array_pop($result['blacklist']);
 }
-$pagemore = count($result) > $limit;
-if ($pagemore)
-	array_pop($result);
 if ($total) {
 	$currpage = intval($offset/$limit);
 	$lastpage = intval(($total-1)/$limit);
@@ -114,16 +117,6 @@ if ($total) {
 	}
 }
 
-// For users with many access levels; print them more condensed
-$result2 = array();
-foreach ($result as $row) {
-	$i = 0;
-	if (isset($result2[$row['type']][$row['value']]))
-		$i = count($result2[$row['type']][$row['value']]['accesses']);
-	$result2[$row['type']][$row['value']]['accesses'][$i] = $row['access'];
-	$result2[$row['type']][$row['value']]['comments'][$i] = $row['comment'];
-}
-
 $javascript[] = 'static/js/bwlist.js';
 
 require_once BASE.'/inc/smarty.php';
@@ -134,7 +127,7 @@ $access = array();
 foreach (Session::Get()->getAccess() as $a)
 	$access = array_merge($access, $a);
 $smarty->assign('useraccess', $access);
-$smarty->assign('items', $result2);
+$smarty->assign('items', $result);
 if ($total) $smarty->assign('total', $total);
 if ($pages) $smarty->assign('pages', $pages);
 $smarty->assign('currpage', $currpage);
