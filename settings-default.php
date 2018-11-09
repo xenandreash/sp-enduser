@@ -102,6 +102,10 @@
  */
 //$settings['database-log'] = false;
 
+//$settings['display-log-queue'] = true;
+//$settings['display-log-quarantine'] = true;
+//$settings['display-log-archive'] = false;
+
 /**
  * Log entries stored in the central database server can be cleaned up periodically
  * based on one of two criteria

@@ -90,12 +90,20 @@ $search = isset($_GET['search']) ? hql_transform($_GET['search']) : '';
 $size = isset($_GET['size']) ? intval($_GET['size']) : 50;
 $size = $size > 5000 ? 5000 : $size;
 $source = isset($_GET['source']) ? $_GET['source'] : $settings->getDefaultSource();
+$logsource = isset($_GET['logsource']) ? $_GET['logsource'] : 'log';
 
 // Select box arrays
 $pagesize = array(50, 100, 500, 1000, 5000);
 $sources = array();
-if ($settings->getUseDatabaseLog())
+if ($settings->getUseDatabaseLog()) {
 	$sources += array('log' => 'Log');
+	if ($settings->getDisplayLogQueue())
+		$sources += array('queue' => 'Queue');
+	if ($settings->getDisplayLogQuarantine())
+		$sources += array('quarantine' => 'Quarantine');
+	if ($settings->getDisplayLogArchive())
+		$sources += array('archive' => 'Archive');
+}
 if ($settings->getDisplayHistory())
 	$sources += array('history' => 'History');
 if ($nodeBackend->isValid() && $settings->getDisplayQueue())
@@ -108,7 +116,7 @@ if ($nodeBackend->isValid() && $settings->getDisplayAll())
 	$sources += array('all' => 'All');
 
 // Make sure a real, not disabled source is selected
-if (!array_key_exists($source, $sources))
+if (!array_key_exists($source, $sources) || ($settings->getUseDatabaseLog() && !array_key_exists($logsource, $sources)))
 	die("Invalid source");
 
 $queries = array();
@@ -118,6 +126,13 @@ if ($source == 'quarantine' || $source == 'archive')
 	$queries[] = 'action=QUARANTINE';
 if ($search != '')
 	$queries[] = $search;
+// db logging source filter
+if ($logsource == 'quarantine')
+	$queries[] = 'action=QUARANTINE';
+else if ($logsource == 'queue')
+	$queries[] = 'action=QUEUE';
+else if ($logsource == 'archive')
+	$queries[] = 'action=ARCHIVE';
 $real_search = implode(' && ', $queries);
 
 // Initial settings
@@ -189,6 +204,8 @@ require_once BASE.'/inc/smarty.php';
 $smarty->assign('source_name', $sources[$source]);
 $smarty->assign('source', $source);
 $smarty->assign('sources', array_keys($sources));
+$smarty->assign('logsource_name', $sources[$logsource]);
+$smarty->assign('logsource', $logsource);
 $smarty->assign('search', $search);
 $smarty->assign('size', $size);
 $smarty->assign('errors', $errors);

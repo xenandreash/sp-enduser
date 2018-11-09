@@ -32,6 +32,9 @@ class Settings
 	private $displayQueue = true;
 	private $displayQuarantine = true;
 	private $displayArchive = false;
+	private $displayLogQueue = true;
+	private $displayLogQuarantine = true;
+	private $displayLogArchive = false;
 	private $displayAll = true;
 	private $displayBWList = true;
 	private $displaySpamSettings = false;
@@ -99,6 +102,9 @@ class Settings
 		$this->extract($this->displayQueue, 'display-queue');
 		$this->extract($this->displayQuarantine, 'display-quarantine');
 		$this->extract($this->displayArchive, 'display-archive');
+		$this->extract($this->displayLogQueue, 'display-log-queue');
+		$this->extract($this->displayLogQuarantine, 'display-log-quarantine');
+		$this->extract($this->displayLogArchive, 'display-log-archive');
 		$this->extract($this->displayAll, 'display-all');
 		$this->extract($this->displayBWList, 'display-bwlist');
 		$this->extract($this->displaySpamSettings, 'display-spamsettings');
@@ -473,6 +479,36 @@ class Settings
 	public function getUseDatabaseLog()
 	{
 		return $this->useDatabaseLog;
+	}
+
+	/**
+	 * Returns whether the Quarantine source option should be displayed in database logging mode.
+	 */
+	public function getDisplayLogQueue()
+	{
+		if (!$this->getUseDatabaseLog())
+			return false;
+		return $this->displayLogQueue;
+	}
+
+	/**
+	 * Returns whether the Quarantine source option should be displayed in database logging mode.
+	 */
+	public function getDisplayLogQuarantine()
+	{
+		if (!$this->getUseDatabaseLog())
+			return false;
+		return $this->displayLogQuarantine;
+	}
+
+	/**
+	 * Returns whether the Archive source option should be displayed in database logging mode.
+	 */
+	public function getDisplayLogArchive()
+	{
+		if (!$this->getUseDatabaseLog())
+			return false;
+		return $this->displayLogArchive;
 	}
 
 	/**

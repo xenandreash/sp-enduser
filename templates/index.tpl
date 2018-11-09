@@ -13,16 +13,17 @@
 			</div>
 			{else}
 			<div class="btn-group">
-				<a href="#" class="btn-link navbar-btn btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="text-transform:none;">{t}{$source_name}{/t}&nbsp;<span class="caret"></span></a>
+				<a href="#" class="btn-link navbar-btn btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="text-transform:none;">{t}{if $source == 'log'}{$logsource_name}{else}{$source_name}{/if}{/t}&nbsp;<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					{foreach $sources as $name}
 					<li>
-						<a href="?page=index&source={$name}&search={$search|escape}&size={$size}">
+						<a href="?page=index&{if $source == 'log'}logsource={$name}{else}source={$name}{/if}&search={$search|escape}&size={$size}">
 							{if $name == 'history'}{t}History{/t}
 							{elseif $name == 'queue'}{t}Queue{/t}
 							{elseif $name == 'quarantine'}{t}Quarantine{/t}
 							{elseif $name == 'archive'}{t}Archive{/t}
 							{elseif $name == 'all'}{t}All{/t}
+							{elseif $name == 'log'}{t}Log{/t}
 							{else}{$name}{/if}
 						</a>
 					</li>
@@ -35,6 +36,9 @@
 			<form class="navbar-form navbar-left" role="search">
 				<input type="hidden" name="page" value="index">
 				<input type="hidden" name="source" value="{$source}">
+				{if $source == 'log'}
+				<input type="hidden" name="logsource" value="{$logsource}">
+				{/if}
 				<div class="input-group">
 					<input type="search" class="form-control" size="40" placeholder="{t}Search for...{/t}" id="search" name="search" value="{$search|escape}">
 					<div class="input-group-btn">
@@ -200,6 +204,9 @@
 		<input type="hidden" name="size" value="{$size}">
 		<input type="hidden" name="search" value="{$search|escape}">
 		<input type="hidden" name="source" value="{$source}">
+		{if $source == 'log'}
+		<input type="hidden" name="logsource" value="{$logsource}">
+		{/if}
 		{foreach from=$paging key=name item=value}
 			<input type="hidden" name="{$name|escape}" value="{$value|escape}">
 		{/foreach}
@@ -210,7 +217,7 @@
 	</p>
 	<div class="btn-group" role="group" aria-label="Results per page">
 		{foreach $pagesizes as $pagesize}
-			<a class="btn btn-sm btn-default{if $size==$pagesize} active{/if}" href="?page=index&size={$pagesize}&source={$source}&search={$search|escape}">{$pagesize}</a>
+			<a class="btn btn-sm btn-default{if $size==$pagesize} active{/if}" href="?page=index&size={$pagesize}&{if $source == 'log'}logsource={$logsource}{else}source={$source}{/if}&search={$search|escape}">{$pagesize}</a>
 		{/foreach}
 	</div>
 	{if $errors}
@@ -308,6 +315,9 @@
 	<form class="form-horizontal" target="_blank">
 	<input type="hidden" name="page" value="index">
 	<input type="hidden" name="source" value="{$source}">
+	{if $source == 'log'}
+	<input type="hidden" name="logsource" value="{$logsource}">
+	{/if}
 	<input type="hidden" name="search" value="{$search|escape}">
 	<input type="hidden" name="exportcsv" value="true">
 	<div class="modal-body" id="export">
