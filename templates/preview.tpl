@@ -252,7 +252,7 @@
 		<div class="col-md-7 col-md-pull-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					{if ! in_array('preview-mail-body', $disabled_features) and ! in_array('preview-mail-body-original', $disabled_features)}
+					{if ! in_array('preview-mail-body', $disabled_features) and ! in_array('preview-mail-body-original', $disabled_features) and ($type == 'queue' || $type == 'archive')}
 					<div class="pull-right">
 						{if !$show_original}
 							<a href="{$show_original_link}">Show original</a>
