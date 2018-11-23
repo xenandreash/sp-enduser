@@ -102,6 +102,11 @@
  */
 //$settings['database-log'] = false;
 
+/*
+ * Option to have a separate view for queue, quarantine and archive under the
+ * messages page (only available in database mode, use display-queue e.g. for SOAP mode)
+ * The default `Log` view includes all types regardless of these settings
+ */
 //$settings['display-log-queue'] = true;
 //$settings['display-log-quarantine'] = true;
 //$settings['display-log-archive'] = false;
