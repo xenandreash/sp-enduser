@@ -36,21 +36,14 @@ $(document).ready(function() {
 				$('#btn-access').addClass('hidden');
 			}
 
+			$('[id^="feature-"]:checkbox').each(function() {
+				$(this).prop('checked', true).change();
+			});
 			if ($(this).closest('tr').data('disabled-features')) {
-				$('#all-features').prop('checked', false).change();
 				var features = $(this).closest('tr').data('disabled-features').split(',');
-				$('[id^="feature-"]:checkbox').each(function(idx, feature) {
-					$(this).prop('checked', true).change();
-				});
 				$.each(features, function(index, feature) {
-					if ($('#feature-' + feature).length) {
+					if ($('#feature-' + feature).length)
 						$('#feature-' + feature).prop('checked', false).change();
-					}
-				});
-			} else {
-				$('#all-features').prop('checked', true).change();
-				$('[id^="feature-"]:checkbox').each(function(idx, feature) {
-					$(this).prop('checked', false).change();
 				});
 			}
 			$('#value').focus();
@@ -88,11 +81,27 @@ $(document).ready(function() {
 		$('#password-1, #repeat-password-group').removeClass('hidden');
 	});
 
-	$('#all-features:checkbox').change(function() {
+	$('#all-preview-features:checkbox').change(function() {
 		if ($(this).is(':checked')) {
 			$('#select-features').addClass('hidden');
 		} else {
 			$('#select-features').removeClass('hidden');
+		}
+	});
+
+	$('[id^="feature-preview"]:checkbox').change(function() {
+		var checked = 0;
+		var boxes = 0;
+		$('[id^="feature-preview"]:checkbox').each(function() {
+			boxes++;
+			if ($(this).is(':checked'))
+				checked++;
+		});
+		if (boxes > 0) {
+			if (checked == boxes)
+				$('#all-preview-features').prop('checked', true).change();
+			else if ($('#all-preview-features').is(':checked'))
+				$('#all-preview-features').prop('checked', false).change();
 		}
 	});
 
@@ -155,7 +164,8 @@ $(document).ready(function() {
 		$('.visible-edit-access').addClass('hidden');
 		$('.hidden-edit-access').removeClass('hidden');
 
-		$('#all-features').prop('checked', true).change();
+		$('#all-preview-features').prop('checked', true).change();
+		$('#feature-display-users').prop('checked', false).change();
 
 		$('#value').focus();
 	});
@@ -173,17 +183,17 @@ $(document).ready(function() {
 			post["access"] = $('#item-form .accesses').map(function(){return $(this).val();}).get();
 			post["password_1"] = $('#password-1').val();
 			post["password_2"] = $('#password-2').val();
-			if (!$('#all-features').is(':checked')) {
-				post["disabled_features"] = Array();
+			post["disabled_features"] = Array();
+			if (!$('#all-preview-features').is(':checked')) {
 				if (!$('#feature-preview-mail-body').is(':checked'))
 					post["disabled_features"].push('preview-mail-body');
 				if (!$('#feature-preview-mail-body-original').is(':checked'))
 					post["disabled_features"].push('preview-mail-body-original');
 				if (!$('#feature-preview-textlog').is(':checked'))
 					post["disabled_features"].push('preview-textlog');
-				if (!$('#feature-display-users').is(':checked'))
-					post["disabled_features"].push('display-users');
 			}
+			if (!$('#feature-display-users').is(':checked'))
+				post["disabled_features"].push('display-users');
 			if ($('#action').val() == 'edit-user') {
 				post["old_username"] = $('#' + $('#edit-id').val()).data('value');
 				post["old_disabled_features"] = $('#' + $('#edit-id').val()).data('disabled-features').split(',');

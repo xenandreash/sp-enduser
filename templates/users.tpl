@@ -141,7 +141,7 @@
 						<div class="col-md-9">
 							<div class="checkbox">
 								<label>
-									<input id="all-features" type="checkbox" checked> {t}All features{/t}
+									<input id="all-preview-features" type="checkbox" checked> {t}All preview features{/t}
 								</label>
 							</div>
 							<div id="select-features" class="hidden">
@@ -160,11 +160,11 @@
 										<input id="feature-preview-textlog" type="checkbox"> {t}Text log{/t}
 									</label>
 								</div>
-								<div class="checkbox">
-									<label>
-										<input id="feature-display-users" type="checkbox"> {t}Manage database users{/t}
-									</label>
-								</div>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input id="feature-display-users" type="checkbox"> {t}Manage database users{/t}
+								</label>
 							</div>
 						</div>
 					</div>
