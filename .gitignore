@@ -8,3 +8,6 @@
 /enduser.db
 /settings.php
 /installed.txt
+
+# PHPStorm settings
+.idea
