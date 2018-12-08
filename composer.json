@@ -6,6 +6,19 @@
 		"components/font-awesome": "4.7.*",
 		"twbs/bootstrap": "^3.3",
 		"pragmarx/google2fa": "^2.0",
-		"bacon/bacon-qr-code": "~1.0"
+		"bacon/bacon-qr-code": "~1.0",
+		"ext-json": "*",
+		"ext-soap": "*",
+		"ext-gettext": "*"
+	},
+	"suggest": {
+		"ext-curl": "Needed for fast UI (ability to run searches in parallel)",
+		"ext-pdo": "Needed to access a database, which stores database users or blacklists/whitelists",
+		"ext-pdo-mysql": "Needed to access a MySQL database",
+		"ext-pdo-pqsql": "Needed to access a PostgreSQL database",
+		"ext-pdo-sqlite": "Needed to access a SQLite database file",
+		"ext-ldap": "Needed for LDAP access",
+		"ext-rrd": "Needed for graphs",
+		"ext-openssl": "Needed for cryptographically stronger random bytes"
 	}
 }
