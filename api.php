@@ -51,7 +51,7 @@ if ($_GET['type'] == 'trigger' && isset($_GET['recipient']) && $_GET['recipient'
 
 		mail2($recipient, $subject, chunk_split(base64_encode($body)), $headers);
 	}
-	// 'ok' response is checked by deprecated Quarantine implementaton
+	// 'ok' response is checked by deprecated Quarantine implementation
 	success_text('ok');
 }
 
@@ -214,7 +214,7 @@ if ($_GET['type'] == 'bwcheck' && (isset($_GET['senderip']) || isset($_GET['send
 			$whitelist[] = $row['value'];
 	}
 
-	// 'text' response is checked by deprecated ScanBWList implementaton
+	// 'text' response is checked by deprecated ScanBWList implementation
 	if (count($whitelist))
 		success_text('whitelist');
 	if (count($blacklist))

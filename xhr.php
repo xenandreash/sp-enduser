@@ -462,7 +462,7 @@ if ($_POST['page'] == 'users')
 			die(json_encode(array('error' => 'Missing values')));
 
 		if ($_POST['password_1']  != $_POST['password_2'])
-			die(json_encode(array('error' => "The passwords doesn't match")));
+			die(json_encode(array('error' => "The passwords don't match")));
 
 		if (is_array($_POST['access']))
 			foreach ($_POST['access'] as $access)
@@ -509,7 +509,7 @@ if ($_POST['page'] == 'users')
 
 		if (!empty($_POST['password_1']) and !empty($_POST['password_2'])) {
 			if ($_POST['password_1']  != $_POST['password_2'])
-				die(json_encode(array('error' => "The passwords doesn't match")));
+				die(json_encode(array('error' => "The passwords don't match")));
 			$password = password_hash($_POST['password_1'], PASSWORD_DEFAULT);
 		}
 

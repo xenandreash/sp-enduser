@@ -1,6 +1,6 @@
 <?php
 
-function prefered_language ($languages, $accept)
+function preferred_language ($languages, $accept)
 {
 	// HTTP_ACCEPT_LANGUAGE is defined in
 	// http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
@@ -47,14 +47,14 @@ function prefered_language ($languages, $accept)
 }
 
 $languages = array_merge(array('en-us'), array_map(function ($f) { return str_replace('_', '-', strtolower(basename($f))); }, glob('locale/*', GLOB_ONLYDIR)));
-$prefered_language = prefered_language($languages, $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-$prefered_language = explode('-', $prefered_language);
-$prefered_language = $prefered_language[0] . '_' . strtoupper($prefered_language[1]);
+$preferred_language = preferred_language($languages, $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+$preferred_language = explode('-', $preferred_language);
+$preferred_language = $preferred_language[0] . '_' . strtoupper($preferred_language[1]);
 
-if ($prefered_language != 'en_US')
+if ($preferred_language != 'en_US')
 {
-	putenv('LC_ALL='.$prefered_language.'.UTF-8');
-	setlocale(LC_ALL, $prefered_language.'.UTF-8');
+	putenv('LC_ALL='.$preferred_language.'.UTF-8');
+	setlocale(LC_ALL, $preferred_language.'.UTF-8');
 	bind_textdomain_codeset('messages', 'UTF-8');
 	bindtextdomain('messages', 'locale/');
 	textdomain('messages');

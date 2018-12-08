@@ -45,7 +45,7 @@ if (isset($_POST['reset']) && isset($_POST['token']) && isset($_POST['password']
 	else if ($row['reset_password_token'] === NULL || hash_hmac('sha256', $row['password'], $row['reset_password_token']) !== $_POST['token'])
 		$error = 'Invalid token';
 	else if ($_POST['password'] !== $_POST['password2'])
-		$error = 'The passwords doesn\'t match';
+		$error = 'The passwords don\'t match';
 	else if (!password_policy($_POST['password'], $error2))
 		$error = $error2;
 	if (!isset($error)) {	

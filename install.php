@@ -40,7 +40,7 @@ if (!in_array('dom', get_loaded_extensions())) {
 }
 if (!in_array('hash', get_loaded_extensions())) {
 ?>
-	<p><em>WARNING:</em> HASH extension is missing. Without it, we are unable to securily store passwords. <em>(Install the <code>php-hash</code> package.)</em></p>
+	<p><em>WARNING:</em> HASH extension is missing. Without it, we are unable to securely store passwords. <em>(Install the <code>php-hash</code> package.)</em></p>
 <?php
 }
 if (!in_array('gettext', get_loaded_extensions())) {

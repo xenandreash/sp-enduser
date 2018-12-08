@@ -35,7 +35,7 @@ if ($_GET['type'] == 'log')
 	$mail = $dbBackend->getMail($id);
 	if (!$mail) die('Invalid mail');
 
-	// Resolv SOAP node
+	// Resolve SOAP node
 	$node = $settings->getNodeBySerial($mail->serialno);
 	if (!$node) die('Unable to find SOAP node');
 	$args = array('searchlog', '-a', $mail->msgts, '--', $mail->msgid);

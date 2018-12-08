@@ -1,6 +1,6 @@
 <?php
 
-// Pendling Async SOAP requests
+// Pending Async SOAP requests
 $_soapRequests = array();
 $_soapResponses = array();
 
