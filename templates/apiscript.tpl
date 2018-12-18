@@ -44,7 +44,7 @@
 		<div class="panel-body">
 			{if $show_script == "bwlist"}
 				<p>{t}Used to lookup against the blacklist and whitelist on the Enduser (with a cache). The function should be called before spam checks.{/t}</p>
-				{if !$feature_bwlist}<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-triangle"></i>&nbsp;{t}This feature is not enabled under the settings.php file!{/t}</div>{/if}
+				{if !$feature_bwlist}<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-triangle"></i>&nbsp;<b>display-bwlist</b>&nbsp;{t}This feature is not enabled under the settings.php file!{/t}</div>{/if}
 				<div class="pre-header">Data context</div>
 				<pre class="pre-body">{include file='scripts/hsl_bwlist.tpl'}</pre>
 				<h4 style="margin-top: 20px">{t}ScanBWList with per-user check{/t}</h4>
@@ -53,17 +53,17 @@
 				<pre class="pre-body">{include file='scripts/hsl_bwlist_peruser.tpl'}</pre>
 			{else if $show_script == "spam"}
 				<p>{t}If you want to fetch the spam settings from the End-user interface.{/t}</p>
-				{if !$feature_spam}<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-triangle"></i>&nbsp;{t}This feature is not enabled under the settings.php file!{/t}</div>{/if}
+				{if !$feature_spam}<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-triangle"></i>&nbsp;<b>display-spamsettings</b>&nbsp;{t}This feature is not enabled under the settings.php file!{/t}</div>{/if}
 				<div class="pre-header">Data context</div>
 				<pre class="pre-body">{include file='scripts/hsl_spam.tpl'}</pre>
 			{else if $show_script == "datastore"}
 				<p>{t}If you want to fetch the datastore settings from the End-user interface.{/t}</p>
-				{if !$feature_datastore}<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-triangle"></i>&nbsp;{t}This feature is not enabled under the settings.php file!{/t}</div>{/if}
+				{if !$feature_datastore}<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-triangle"></i>&nbsp;<b>display-datastore</b>&nbsp;{t}This feature is not enabled under the settings.php file!{/t}</div>{/if}
 				<div class="pre-header">Data context</div>
 				<pre class="pre-body">{include file='scripts/hsl_datastore.tpl'}</pre>
 			{else if $show_script == "history"}
 				<p>{t}There's a limit to how many messages can stored in a Halon database, for performance reasons. In order to store large volumes of email history we encourage the use of the end user interface's built-in history log feature. Simply append the following script to the Halon nodes' DATA flow, to push logging information to the End-user.{/t}</p>
-				{if !$feature_dblog}<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-triangle"></i>&nbsp;{t}This feature is not enabled under the settings.php file!{/t}</div>{/if}
+				{if !$feature_dblog}<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-triangle"></i>&nbsp;<b>database-log</b>&nbsp;{t}This feature is not enabled under the settings.php file!{/t}</div>{/if}
 				<div class="pre-header">Data context</div>
 				<pre class="pre-body">{include file='scripts/hsl_logging.tpl'}</pre>
 				<p>{t}The code above could be placed in a virtual text file, and included in the top of the script. Please note that the "direction" field should probably be changed to "outbound" instead of "inbound" for outbound traffic. For delivery status updates, the following script should be called from (again, preferably by including code from a virtual text file) in the Post-delivery flow.{/t}</p>
@@ -74,7 +74,7 @@
 				<pre>0 * * * * /usr/bin/php /var/www/html/sp-enduser/cron.php.txt cleanmessagelog</pre>
 			{else if $show_script == "usercreation"}
 				<p>{t}If you want users to be automatically created when a message is received, add the following script to your data flow.{/t}</p>
-				{if !$feature_users}<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-triangle"></i>&nbsp;{t}This feature is not enabled under the settings.php file!{/t}</div>{/if}
+				{if !$feature_users}<div class="alert alert-warning" role="alert"><i class="fa fa-exclamation-triangle"></i>&nbsp;<b>display-users</b>&nbsp;</i>&nbsp;{t}This feature is not enabled under the settings.php file!{/t}</div>{/if}
 				<div class="pre-header">Data context</div>
 				<pre class="pre-body">{include file='scripts/hsl_usercreation.tpl'}</pre>
 			{else}
