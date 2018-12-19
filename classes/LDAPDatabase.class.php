@@ -88,6 +88,15 @@ class LDAPDatabase
 					$authed = true;
 				}
 			break;
+			case 'sasl':
+				$query = str_replace("\$ldapuser", $ldapuser, $this->query);
+				$rs = ldap_search($ds, $this->basedn, $query);
+				$entry = ldap_first_entry($ds, $rs);
+				if ($entry) {
+					$access = array('sasl' => array($username));
+					$authed = true;
+				}
+			break;
 			default:
 				$rs = ldap_search($ds, $this->basedn, "(&(userPrincipalName=$ldapuser)(mail=*))", array('mail'));
 				$entry = ldap_first_entry($ds, $rs);

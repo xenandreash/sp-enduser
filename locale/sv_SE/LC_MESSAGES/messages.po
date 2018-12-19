@@ -94,6 +94,10 @@ msgstr "Karantän"
 msgid "Archive"
 msgstr "Arkiv"
 
+#: templates/index.tpl:26
+msgid "Log"
+msgstr ""
+
 #: templates/index.tpl:59 templates/index.tpl:205
 msgid "Search filter"
 msgstr "Sökfilter"
@@ -530,21 +534,17 @@ msgstr ""
 "Du har inga begränsningar, och kan därför se meddelanden till och från alla "
 "domäner."
 
-#: templates/user.tpl:15
-msgid "You are authorized to view messages sent from/to the following"
-msgstr "Du har rättigheter att se brev från och till följande"
+#: templates/user.tpl:78
+msgid "Domains"
+msgstr "Domäner"
 
-#: templates/user.tpl:17
-msgid "domains:"
-msgstr "domäner:"
+#: templates/user.tpl:88
+msgid "E-mail addresses"
+msgstr "E-mail addresser"
 
-#: templates/user.tpl:24
-msgid "And the following users:"
-msgstr "Och följade användare:"
-
-#: templates/user.tpl:27
-msgid "users:"
-msgstr "användare:"
+#: templates/user.tpl:98
+msgid "SASL usernames"
+msgstr "SASL användare"
 
 #: templates/user.tpl:106
 msgid ""
@@ -679,8 +679,8 @@ msgid "Features"
 msgstr "Funktioner"
 
 #: templates/users.tpl:144
-msgid "All features"
-msgstr "Alla funktioner"
+msgid "All preview features"
+msgstr ""
 
 #: templates/users.tpl:150
 msgid "Preview mail body"
@@ -946,6 +946,26 @@ msgstr ""
 "Viktigt! Om du inte har begärt att återställa lösenordet, bortse från och ta "
 "bort detta meddelandet. En annan användare kan ha skrivit in din e-"
 "postadress av misstag."
+
+#: templates/user.tpl:15
+msgid "You are authorized to view messages sent from/to the following"
+msgstr "Du har rättigheter att se brev från och till följande"
+
+#: templates/user.tpl:17
+msgid "domains:"
+msgstr "domäner:"
+
+#: templates/user.tpl:24
+msgid "And the following users:"
+msgstr "Och följade användare:"
+
+#: templates/user.tpl:27
+msgid "users:"
+msgstr "användare:"
+
+#: templates/users.tpl:144
+msgid "All features"
+msgstr "Alla funktioner"
 
 #: templates/header.tpl:55
 msgid "Users"

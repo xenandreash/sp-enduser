@@ -271,6 +271,15 @@ class NodeBackend extends Backend
 				$filter .= str_replace(array('{from}', '{to}'), array("from=$mail", "to=$mail"), $pattern);
 			}
 		}
+
+		if (is_array($access['sasl'])) {
+			foreach ($access['sasl'] as $sasl) {
+				if ($filter != "")
+					$filter .= " or ";
+				$filter .= "sasl=$sasl";
+			}
+		}
+
 		return $globalfilter.($globalfilter?" && ":"").$filter;
 	}
 	public function getRate($args, &$errors = array())

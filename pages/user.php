@@ -104,6 +104,7 @@ $smarty->assign('settings_totp_enabled', $settings->getTwoFactorAuth());
 
 if (is_array($access['mail'])) $smarty->assign('access_mail', $access['mail']);
 if (is_array($access['domain'])) $smarty->assign('access_domain', $access['domain']);
+if (is_array($access['sasl'])) $smarty->assign('access_sasl', $access['sasl']);
 if ($changedPassword) $smarty->assign('password_changed', true);
 if (Session::Get()->getSource() == 'database') $smarty->assign('password_changeable', true);
 if ($error) $smarty->assign('error', $error);

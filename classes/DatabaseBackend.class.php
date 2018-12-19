@@ -160,6 +160,13 @@ class DatabaseBackend extends Backend
 				$params[':restrict'.$i] = $mail;
 			}
 		}
+		if (is_array($access['sasl'])) {
+			foreach ($access['sasl'] as $sasl) {
+				$i++;
+				$accesses[] = 'msgsasl = :restrict'.$i;
+				$params[':restrict'.$i] = $mail;
+			}
+		}
 		// no access? add special "full access" item
 		if (count($accesses) == 0)
 			$accesses[] = '';

@@ -68,31 +68,41 @@
 				<h3 class="panel-title">{t}Permissions{/t}</h3>
 			</div>
 			<div class="panel-body">
-				{if not $access_mail and not $access_domain}
+				{if not $access_mail and not $access_domain and not $access_sasl}
 					<p>
 						{t}You have no restrictions, you may view messages to/from any domain.{/t}
 					</p>
 				{else}
-					<p>
-					{t}You are authorized to view messages sent from/to the following{/t}
 					{if $access_domain}
-						{t}domains:{/t}</p>
-						<ul>
-							{foreach $access_domain as $access}
-								<li>{$access|escape}</li>
-							{/foreach}
-						</ul>
-						{if $access_mail}
-							<p>{t}And the following users:{/t}</p>
-						{/if}
-					{else}
-						{t}users:{/t}</p>
+						<p>
+							{t}Domains{/t}:</p>
+							<ul>
+								{foreach $access_domain as $access}
+									<li>{$access|escape}</li>
+								{/foreach}
+							</ul>
+						</p>
 					{/if}
-					<ul>
-						{foreach $access_mail as $access}
-							<li>{$access|escape}</li>
-						{/foreach}
-					</ul>
+					{if $access_mail}
+						<p>
+							{t}E-mail addresses{/t}:</p>
+							<ul>
+								{foreach $access_mail as $access}
+									<li>{$access|escape}</li>
+								{/foreach}
+							</ul>
+						</p>
+					{/if}
+					{if $access_sasl}
+						<p>
+							{t}SASL usernames{/t}:</p>
+							<ul>
+								{foreach $access_sasl as $sasl}
+									<li>{$sasl|escape}</li>
+								{/foreach}
+							</ul>
+						</p>
+					{/if}
 				{/if}
 			</div>
 		</div>
