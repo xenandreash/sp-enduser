@@ -9,7 +9,9 @@
 		"bacon/bacon-qr-code": "~1.0",
 		"ext-json": "*",
 		"ext-soap": "*",
-		"ext-gettext": "*"
+		"ext-gettext": "*",
+		"elasticsearch/elasticsearch": "~6.0",
+		"components/jquery": "^3.3"
 	},
 	"suggest": {
 		"ext-curl": "Needed for fast UI (ability to run searches in parallel)",
