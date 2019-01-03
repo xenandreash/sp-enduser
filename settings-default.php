@@ -153,6 +153,19 @@
 //$settings['stats-graph-path'] = '/path/to/rrd';
 
 /*
+ * Elasticsearch
+ * Enable if you want to use elasticsearch logging instead of database or SOAP
+ * For more information please check the following URLs
+ * https://support.halon.io/hc/en-us/articles/115005513365-Remote-logging-to-Elasticsearch
+ * https://github.com/halon/hsl-examples/tree/master/logging/elasticsearch
+ */
+//$settings['elasticsearch-log'] = false;
+//$settings['elasticsearch']['host'][] = '127.0.0.1:9200';
+//$settings['elasticsearch']['index']['name'] = 'halon-';
+//$settings['elasticsearch']['index']['rotate'] = '%Y-%m-%d';
+//$settings['elasticsearch']['index']['type'] = 'mail';
+
+/*
  * Authentication is probably the second most important configuration
  * directive, as it specifies how end-users should identify themselves.
  *

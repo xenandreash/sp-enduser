@@ -206,12 +206,12 @@ class Settings
 				return null;
 
 			$hosts = $this->elasticsearch['host'];
-			$index = $this->elasticsearch['index-prefix'];
-			$type = $this->elasticsearch['type'];
-			$dateformat = $this->elasticsearch['dateformat'];
+			$index = $this->elasticsearch['index']['name'];
+			$type = $this->elasticsearch['index']['type'];
+			$rotate = $this->elasticsearch['index']['rotate'];
 			$username = isset($this->elasticsearch['username']) ? $this->elasticsearch['username'] : null;
 			$password = isset($this->elasticsearch['password']) ? $this->elasticsearch['password'] : null;
-			$this->elasticsearchClient = new Elasticsearch($hosts, $index, $type, $dateformat, $username, $password);
+			$this->elasticsearchClient = new Elasticsearch($hosts, $index, $type, $rotate, $username, $password);
 		}
 		return $this->elasticsearchClient;
 	}

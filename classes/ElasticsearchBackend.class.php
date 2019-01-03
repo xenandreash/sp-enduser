@@ -3,20 +3,17 @@
 class ElasticsearchBackend extends Backend
 {
 	private $es = null;
-	private $dateformat;
+	private $rotate;
 
 	public function __construct($es)
 	{
 		$this->es = $es;
-		$this->dateformat = $this->es->getDateformat();
-		if (!in_array($this->es->getIndex().date($this->dateformat), Session::Get()->getElasticsearchIndices())) {
+		$this->rotate = $this->es->getRotate();
+		if (!in_array($this->es->getIndex().strftime($this->rotate, time()), Session::Get()->getElasticsearchIndices())) {
 			try {
 				$params = [
 					'index' => $this->es->getIndex().'*'
 				];
-				$indices = [];
-				foreach (array_keys($this->es->client()->indices()->get($params)) as $index)
-					$indices[] = $this->es->getIndex().date($this->dateformat);
 				Session::Get()->setElasticsearchIndices(array_keys($this->es->client()->indices()->get($params)));
 			} catch (Exception $e) { die($e->getMessage()); }
 		}
@@ -26,15 +23,15 @@ class ElasticsearchBackend extends Backend
 
 	public function supportsHistory() { return true; }
 
-	public function loadMailHistory($search, $size, $param, $indexRange, &$errors = array())
+	public function loadMailHistory($search, $size, $param, $index_range, &$errors = array())
 	{
 		$results = [];
 		$indices = [];
 
-		$start = new DateTime($indexRange['start']);
+		$start = new DateTime($index_range['start']);
 		if ($_SESSION['timezone'] < 0)
 			$start->modify('-1 day');
-		$end = new DateTime($indexRange['end']);
+		$end = new DateTime($index_range['end']);
 		if ($_SESSION['timezone'] > 0)
 			$end = $end->modify('+2 day');
 		else
@@ -42,7 +39,7 @@ class ElasticsearchBackend extends Backend
 		$interval = new DateInterval('P1D');
 		$daterange = new DatePeriod($start, $interval, $end);
 		foreach ($daterange as $date) {
-			$index = $this->es->getIndex().$date->format($this->dateformat);
+			$index = $this->es->getIndex().strftime($this->rotate, $date->getTimestamp());
 			if ($this->validIndex($index))
 				$indices[] = $index;
 		}
@@ -62,8 +59,8 @@ class ElasticsearchBackend extends Backend
 			$query['query'] = $q;
 			$query_must[] = ['query_string' => $query];
 		}
-		$range_start = new DateTime($indexRange['start']);
-		$range_end = new DateTime($indexRange['end']);
+		$range_start = new DateTime($index_range['start']);
+		$range_end = new DateTime($index_range['end']);
 		$range_end = $range_end->modify('+1 day');
 		$offset = isset($param[0]['offset']) ? $param[0]['offset'] : ($range_end->getTimestamp() + $_SESSION['timezone'] * 60) * 1000;
 		$query = [];

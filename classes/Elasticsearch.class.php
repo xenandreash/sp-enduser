@@ -9,7 +9,7 @@ class Elasticsearch
 	private $hosts;
 	private $index;
 	private $type;
-	private $dateformat;
+	private $rotate;
 	private $username;
 	private $password;
 	private $tls;
@@ -18,14 +18,14 @@ class Elasticsearch
 	public function client() { return $this->_client; }
 	public function getIndex() { return $this->index; }
 	public function getType() { return $this->type; }
-	public function getDateformat() { return $this->dateformat; }
+	public function getRotate() { return $this->rotate; }
 
-	public function __construct($hosts, $index, $type, $dateformat, $username = null, $password = null, $tls = [], $timeout = null)
+	public function __construct($hosts, $index, $type, $rotate, $username = null, $password = null, $tls = [], $timeout = null)
 	{
 		$this->hosts = $hosts;
 		$this->index = $index;
 		$this->type = $type;
-		$this->dateformat = $dateformat;
+		$this->rotate = $rotate;
 		$this->username = $username;
 		$this->password = $password;
 		$this->tls = $tls;
