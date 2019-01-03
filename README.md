@@ -1,4 +1,4 @@
-End-user web application for Halon's email gateway. Please read more on http://wiki.halon.se/End-user and http://halon.io
+End-user web application for Halon's email gateway. Please read more on https://halon.io
 
 Requirements
 ------------
@@ -16,6 +16,12 @@ Requirements
     * pdo
     * pdo-(database; mysql, pgsql, sqlite...)
     * rrd
+* [Composer](https://getcomposer.org)
+
+Installation
+------------
+1. Navigate to the directory you uploaded the files to and run `composer install` to install any dependencies
+2. Copy the `/settings-default.php` file to `/settings.php` and open it to configure the database settings
 
 Plugins
 -------
