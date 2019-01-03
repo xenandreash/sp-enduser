@@ -169,6 +169,12 @@ function hql_to_es($str) {
 				if (strpos($value, '%') === false)
 					$value = '*'.$value.'*';
 			}
+			if ($field == 'receivedtime')
+				$value = $value * 1000;
+			if ($type == '<')
+				$value = '<'.$value;
+			if ($type == '>')
+				$value = '>'.$value;
 			$filter .= $field.':('.$value.') ';
 			$ftok = 1;
 		} else die('unexpected token '.htmlspecialchars($p));

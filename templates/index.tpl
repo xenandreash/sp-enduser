@@ -295,18 +295,6 @@
 				</select></div>
 			</div>
 			{/if}
-			{if $source == 'es'}
-			<div class="form-group">
-				<label class="col-sm-2 control-label">{t}Time{/t}</label>
-				<label class="col-sm-2 control-label">{t}between{/t}</label>
-				<div class="col-sm-8"><input type="text" class="form-control" id="query_time_1" placeholder="hh:mm:ss"></div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label"></label>
-				<label class="col-sm-2 control-label">{t}and{/t}</label>
-				<div class="col-sm-8"><input type="text" class="form-control" id="query_time_2" placeholder="hh:mm:ss"></div>
-			</div>
-			{else}
 			<div class="form-group">
 				<label class="col-sm-2 control-label">{t}Date{/t}</label>
 				<label class="col-sm-2 control-label">{t}between{/t}</label>
@@ -317,7 +305,6 @@
 				<label class="col-sm-2 control-label">{t}and{/t}</label>
 				<div class="col-sm-8"><input type="datetime-local" class="form-control" id="query_date_2" placeholder="yyyy/mm/dd hh:mm:ss"></div>
 			</div>
-			{/if}
 			<div class="form-group">
 				<label class="col-sm-2 control-label">{t}ID{/t}</label>
 				<label class="col-sm-2 control-label">{t}is{/t}</label>
