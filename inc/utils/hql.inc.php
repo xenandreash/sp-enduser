@@ -133,6 +133,8 @@ function hql_to_es($str) {
 	$fields['sascore'] = 'sa';
 	$fields['time'] = 'receivedtime';
 
+	$lucenechars = preg_quote('+-&|!(){}[]^"~*?:\\');
+
 	preg_match_all('/\s*([a-z]+([=~><])("(\"|[^"])*?"|[^\s]*)|and|or|not|&&)\s*/', $str, $parts);
 	$parts = $parts[1]; // because of the regex above, index 1 contains what we want
 	$filter = '';
@@ -175,6 +177,7 @@ function hql_to_es($str) {
 				$value = '<'.$value;
 			if ($type == '>')
 				$value = '>'.$value;
+			$value = preg_replace_callback('/(['.$lucenechars.'])/', function($match) { return '\\'.$match[0]; }, $value);
 			$filter .= $field.':('.$value.') ';
 			$ftok = 1;
 		} else die('unexpected token '.htmlspecialchars($p));

@@ -63,22 +63,22 @@
 				<div class="form-group">
 					<div class="input-daterange input-group" id="datepicker">
 						<div class="input-group-btn">
-							<a class="btn btn-primary" id="interval"><span class="fa fa-calendar"></span></a>
+							<a class="btn btn-primary" id="range"><span class="fa fa-calendar"></span></a>
 						</div>
 						<input type="text" class="form-control" size="8" id="indexstart" name="start" value="{$index_start}">
 						<span class="input-group-addon">{t}to{/t}</span>
 						<input type="text" class="form-control" size="8" id="indexend" name="end" value="{$index_end}">
 						<div class="input-group-btn">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-							<ul id="suggest_range" class="dropdown-menu" role="menu">
-								<li><a href="#">{t}Today{/t}</a></li>
-								<li><a href="#">{t}This week{/t}</a></li>
-								<li><a href="#">{t}This month{/t}</a></li>
-								<li><a href="#">{t}This year{/t}</a></li>
+							<ul id="shortcut_range" class="dropdown-menu" role="menu">
+								<li><a href="#" data-range="1d">{t}Today{/t}</a></li>
+								<li><a href="#" data-range="1w">{t}This week{/t}</a></li>
+								<li><a href="#" data-range="1m">{t}This month{/t}</a></li>
+								<li><a href="#" data-range="1y">{t}This year{/t}</a></li>
 								<li class="divider"></li>
-								<li><a href="#">{t}Last 30 days{/t}</a></li>
-								<li><a href="#">{t}Last 60 days{/t}</a></li>
-								<li><a href="#">{t}Last 6 months{/t}</a></li>
+								<li><a href="#" data-range="30d">{t}Last 30 days{/t}</a></li>
+								<li><a href="#" data-range="60d">{t}Last 60 days{/t}</a></li>
+								<li><a href="#" data-range="6m">{t}Last 6 months{/t}</a></li>
 							</ul>
 						</div>
 					</div>

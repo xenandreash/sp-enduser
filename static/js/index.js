@@ -12,7 +12,6 @@ function datetime_to_obj(d) {
 
 $(document).ready(function() {
 	$('#search').focus();
-	initDatepicker();
 
 	$('[data-bulk-action]').parent('li').addClass('disabled');
 	$('[data-bulk-action]').click(function(e) {
@@ -209,37 +208,66 @@ $(document).ready(function() {
 		$("#search").val('');
 	});
 
-	$('#interval').click(function() {
+	$('#datepicker').datepicker({
+		format: 'yyyy-mm-dd',
+		todayHighlight: true,
+		autoclose: true,
+		weekStart: 1
+	});
+
+	$('#shortcut_range li a').on('click', function(event) {
+		event.preventDefault();
+		var range = $(this).data('range');
+		var today = new Date();
+		var oneday = 60 * 60 * 24 * 1000;
+		switch (range) {
+			case '1d':
+				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime()));
+				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				break;
+			case '1w':
+				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - oneday * (today.getDay() - 1)));
+				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				break;
+			case '1m':
+				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - oneday * (today.getDate() - 1)));
+				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				break;
+			case '1y':
+				var start = new Date(today.getFullYear(), 0, 1);
+				var diff = today - start;
+				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - diff));
+				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				break;
+			case '30d':
+				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - oneday * 30));
+				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				break;
+			case '60d':
+				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - oneday * 60));
+				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				break;
+			case '6m':
+				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - oneday * 180));
+				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				break;
+		}
+	});
+
+	$('#range').click(function() {
 		$('#indexstart').focus();
 	});
 
 });
 
-function initDatepicker() {
-	if ($('#datepicker').length) {
-		$.ajax({
-			type: 'POST',
-			url: '?xhr',
-			dataType: "json",
-			data: {
-				page: 'messages',
-				type: 'datepicker'
-			}
-		}).done(function(data) {
-			if (!data.error) {
-				var indices = data.indices.map(function(v) {
-					var d = v.split('-');
-					var utc_d = new Date(d[0], d[1] - 1, d[2]);
-					return utc_d.getTime();
-				});
-				$('#datepicker').datepicker({
-					format: "yyyy-mm-dd",
-					todayHighlight: true,
-					autoclose: true
-				});
-			}
-		});
-	}
+function getFormatDate(ts) {
+	var currentDate = new Date(ts);
+	var year = currentDate.getFullYear();
+	var month = currentDate.getMonth() + 1;
+	month = (month < 10) ? '0' + month : month;
+	var day = currentDate.getDate();
+	day = (day < 10) ? '0' + day : day;
+	return year + '-' + month + '-' + day;
 }
 
 function getSearchDate(ts = null) {
