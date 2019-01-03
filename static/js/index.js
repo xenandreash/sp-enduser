@@ -12,6 +12,8 @@ function datetime_to_obj(d) {
 
 $(document).ready(function() {
 	$('#search').focus();
+	initDatepicker();
+
 	$('[data-bulk-action]').parent('li').addClass('disabled');
 	$('[data-bulk-action]').click(function(e) {
 		var action = $(this).data('bulk-action');
@@ -206,7 +208,39 @@ $(document).ready(function() {
 		});
 		$("#search").val('');
 	});
+
+	$('#interval').click(function() {
+		$('#indexstart').focus();
+	});
+
 });
+
+function initDatepicker() {
+	if ($('#datepicker').length) {
+		$.ajax({
+			type: 'POST',
+			url: '?xhr',
+			dataType: "json",
+			data: {
+				page: 'messages',
+				type: 'datepicker'
+			}
+		}).done(function(data) {
+			if (!data.error) {
+				var indices = data.indices.map(function(v) {
+					var d = v.split('-');
+					var utc_d = new Date(d[0], d[1] - 1, d[2]);
+					return utc_d.getTime();
+				});
+				$('#datepicker').datepicker({
+					format: "yyyy-mm-dd",
+					todayHighlight: true,
+					autoclose: true
+				});
+			}
+		});
+	}
+}
 
 function getSearchDate(ts = null) {
 	if (ts == null) {

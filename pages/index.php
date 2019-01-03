@@ -69,7 +69,7 @@ $action_icons = array(
 	'DEFER' => 'clock-o',
 );
 
-function get_preview_link($m)
+function get_preview_link($m, $opts = [])
 {
 	return '?'.http_build_query(array(
 		'page' => 'preview',
@@ -78,12 +78,13 @@ function get_preview_link($m)
 		'msgid' => $m['data']->msgid,
 		'msgactionid' => $m['data']->msgactionid,
 		'type' => $m['type']
-	));
+	) + $opts);
 }
 
 // Backends
 $dbBackend = new DatabaseBackend($settings->getDatabase());
 $nodeBackend = new NodeBackend($settings->getNodes());
+$esBackend = new ElasticsearchBackend($settings->getElasticsearch());
 
 // Default values
 $search = isset($_GET['search']) ? hql_transform($_GET['search']) : '';
@@ -91,6 +92,18 @@ $size = isset($_GET['size']) ? intval($_GET['size']) : 50;
 $size = $size > 5000 ? 5000 : $size;
 $source = isset($_GET['source']) ? $_GET['source'] : $settings->getDefaultSource();
 $logsource = isset($_GET['logsource']) ? $_GET['logsource'] : 'log';
+
+// time partitioning
+$indexStart = isset($_GET['start']) ? $_GET['start'] : date("Y-m-d", strtotime("-1 week"));
+$indexEnd = isset($_GET['end']) ? $_GET['end'] : date("Y-m-d");
+
+$checkDate = explode("-", $indexStart);
+if (count($checkDate) != 3 || !checkDate($checkDate[1], $checkDate[2], $checkDate[0]))
+	$indexStart = date("Y-m-d", strtotime("-1 week"));
+
+$checkDate = explode("-", $indexEnd);
+if (count($checkDate) != 3 || !checkDate($checkDate[1], $checkDate[2], $checkDate[0]))
+	$indexEnd = date("Y-m-d");
 
 // Select box arrays
 $pagesize = array(50, 100, 500, 1000, 5000);
@@ -103,6 +116,9 @@ if ($settings->getUseDatabaseLog()) {
 		$sources += array('quarantine' => 'Quarantine');
 	if ($settings->getDisplayLogArchive())
 		$sources += array('archive' => 'Archive');
+}
+if ($settings->getUseElasticsearchLog()) {
+	$sources += ['es' => 'Elasticsearch'];
 }
 if ($settings->getDisplayHistory())
 	$sources += array('history' => 'History');
@@ -145,7 +161,7 @@ $errors = array();
 // Override offset with GET
 $totaloffset = 0;
 foreach ($_GET as $k => $v) {
-	if (!preg_match('/^(history|queue|log)offset(\d+)$/', $k, $m))
+	if (!preg_match('/^(history|queue|log|es)offset(\d+)$/', $k, $m))
 		continue;
 	if ($v < 1)
 		continue;
@@ -158,6 +174,10 @@ $cols = 7;
 
 if ($source == 'log') {
 	$results = $dbBackend->loadMailHistory($real_search, $size, $param['log'], $errors);
+	$timesort = merge_2d($timesort, $results);
+}
+if ($source == 'es') {
+	$results = $esBackend->loadMailHistory($real_search, $size, $param['es'], ['start' => $indexStart, 'end' => $indexEnd], $errors);	
 	$timesort = merge_2d($timesort, $results);
 }
 if (($source == 'history' || $source == 'all') && $settings->getDisplayHistory()) {
@@ -199,6 +219,7 @@ if ($c > $size)
 	$next_button = ''; // enable "next" page button
 
 $javascript[] = 'static/js/index.js';
+$javascript[] = 'static/bootstrap-datepicker/js/bootstrap-datepicker.min.js';
 require_once BASE.'/inc/smarty.php';
 
 $smarty->assign('source_name', $sources[$source]);
@@ -225,8 +246,14 @@ foreach ($timesort as $t) {
 		if ($m['type'] == 'archive') {
 			$m['data']->msgaction = 'ARCHIVE';
 		}
-		$param[$m['type']][$m['id']]['offset']++;
-		$preview = get_preview_link($m);
+		if ($m['type'] == 'es') {
+			$param[$m['type']][0]['offset'] = $m['receivedtime'];
+			$preview = get_preview_link($m, ['index' => $m['index']]);
+		}
+		else {
+			$param[$m['type']][$m['id']]['offset']++;
+			$preview = get_preview_link($m);
+		}
 		$td = $tr = '';
 		if ($m['type'] == 'queue' || $m['type'] == 'archive')
 			$td = 'data-href="'.htmlspecialchars($preview).'"';
@@ -339,7 +366,10 @@ foreach ($param as $type => $nodes) {
 		}
 	}
 }
-
+if ($settings->getUseElasticsearchLog()) {
+	$smarty->assign('index_start', $indexStart);
+	$smarty->assign('index_end', $indexEnd);
+}
 $smarty->assign('mails', $mails);
 $smarty->assign('prev_button', $prev_button);
 $smarty->assign('next_button', $next_button);

@@ -623,4 +623,14 @@ if ($_POST['page'] == 'totp')
 	}
 }
 
+if ($_POST['page'] == 'messages') {
+	if ($_POST['type'] == 'datepicker') {
+		if ($settings->getUseElasticsearchLog()) {
+			$indices = str_replace($settings->getElasticsearch()->getIndex(), '', Session::Get()->getElasticsearchIndices());
+			die(json_encode(['indices' => $indices]));
+		}
+		die(json_encode(array('error' => "The setting elasticsearch-log isn't enabled")));
+	}
+}
+
 die(json_encode(array('error' => 'unsupported request')));

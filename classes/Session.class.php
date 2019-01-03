@@ -13,6 +13,9 @@ class Session
 	private $soap_password = null;
 	private $disabled_features = null;
 
+	// elasticsearch
+	private $available_indices = [];
+
 	/**
 	 * Returns a shared Session instance.
 	 */
@@ -46,6 +49,9 @@ class Session
 			$this->soap_password = $_SESSION['soap_password'];
 		if(isset($_SESSION['disabled_features']))
 			$this->disabled_features = $_SESSION['disabled_features'];
+
+		if (isset($_SESSION['available_indices']))
+			$this->available_indices = $_SESSION['available_indices'];
 	}
 
 	/**
@@ -206,5 +212,22 @@ class Session
 			return false;
 		else
 			return $row['secret'];
+	}
+
+	/**
+	 * Cache available indices for Elasticsearch, only update if needed
+	 */
+	public function setElasticsearchIndices($indices)
+	{
+		$this->available_indices = $indices;
+		$_SESSION['available_indices'] = $indices;
+	}
+
+	/**
+	 * Returns current indices cache for Elasticsearch
+	 */
+	public function getElasticsearchIndices()
+	{
+		return $this->available_indices;
 	}
 }

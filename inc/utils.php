@@ -218,3 +218,41 @@ function sanitize_domain($domain)
 
 	return $d;
 }
+
+function es_mail_parser($m) {
+	$mail = [];
+	$mail['index'] = $m['_index'];
+	$mail['type'] = 'es';// $m['_type'];
+	$mail['receivedtime'] = $m['_source']['receivedtime'];
+	$mail['data'] = (object) [
+		'id' => $m['_id'],
+		'owner' => $m['_source']['owner'],
+		'ownerdomain' => $m['_source']['ownerdomain'],
+		'msgid' => $m['_source']['messageid'],
+		'msgaction' => $m['_source']['action'],
+		'msglistener' => $m['_source']['serverid'],
+		'msgtransport' => $m['_source']['transportid'],
+		'msgsasl' => $m['_source']['saslusername'],
+		'msgfromserver' => $m['_source']['senderip'],
+		'msgfrom' => $m['_source']['sender'],
+		'msgfromdomain' => $m['_source']['senderdomain'],
+		'msgto' => $m['_source']['recipient'],
+		'msgtodomain' => $m['_source']['recipientdomain'],
+		'msgsubject' => $m['_source']['subject'],
+		'msgsize' => $m['_source']['size'],
+		'msgdescription' => $m['_source']['reason'],
+		'msgactionid' => $m['_source']['actionid'],
+		'msgts0' => (int)substr($m['_source']['receivedtime'], 0, -3),
+		'serialno' => $m['_source']['serial'],
+		'score_rpd' => $m['_source']['score_rpd'],
+		'score_sa' => $m['_source']['scores']['sa'],
+		'scores' => [
+			'rpd' => $m['_source']['score_rpd_refid'],
+			'rpdav' => $m['_source']['scores']['rpdav'],
+			'sa' => $m['_source']['scores']['sa_rules'],
+			'kav' => $m['_source']['scores']['kav'],
+			'clam' => $m['_source']['scores']['clam']
+		]
+	];
+	return $mail;
+}

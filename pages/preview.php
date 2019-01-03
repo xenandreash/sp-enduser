@@ -1,8 +1,13 @@
 <?php
 if (!defined('SP_ENDUSER')) die('File not included');
 
-$id = preg_replace('/[^0-9]/', '', $_GET['id']);
+use Elasticsearch\ClientBuilder;
+
 $type = $_GET['type'];
+if ($type == 'es')
+	$id = $_GET['id'];
+else
+	$id = preg_replace('/[^0-9]/', '', $_GET['id']);
 $node = null;
 $showoriginal = isset($_GET['original']);
 
@@ -32,6 +37,12 @@ if ($type == 'log') {
 			$type = $node_type;
 		}
 	}
+} else if ($type == 'es' && isset($_GET['index']) && isset($_GET['id'])) {
+	$esBackend = new ElasticsearchBackend($settings->getElasticsearch());
+	$mail = $esBackend->getMail($_GET['index'], $_GET['id']);
+	if (!$mail)
+		die('Invalid mail');
+	// If in queue, quarantine, get it from SOAP if possible
 } else {
 	// Fetch data from SOAP
 	$node = $settings->getNode($_GET['node']);

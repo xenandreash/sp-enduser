@@ -53,6 +53,10 @@ class Settings
 	private $geoIP = false;
 	private $geoIPDatabase = null;
 
+	private $useElasticsearch = false;
+	private $elasticsearch = [];
+	private $elasticsearchClient = null;
+
 	private $databaseLogCleanType = 'count';
 	private $databaseLogCleanThreshold = 5000000;
 	
@@ -130,6 +134,9 @@ class Settings
 		$this->extract($this->geoIP, 'geoip');
 		$this->extract($this->geoIPDatabase, 'geoip-database');
 		$this->extract($this->graphPath, 'stats-graph-path');
+		
+		$this->extract($this->useElasticsearch, 'elasticsearch-log');
+		$this->extract($this->elasticsearch, 'elasticsearch');
 
 		foreach ($this->nodeCredentials as $id => $cred) {
 			$username = isset($cred['username']) ? $cred['username'] : null;
@@ -182,6 +189,31 @@ class Settings
 		}
 		
 		return $this->database;
+	}
+
+	public function getUseElasticsearchLog()
+	{
+		return $this->useElasticsearch;
+	}	
+
+	public function getElasticsearch()
+	{
+		if (!$this->getUseElasticsearchLog())
+			return null;
+
+		if (!$this->elasticsearchClient) {
+			if (!$this->elasticsearch)
+				return null;
+
+			$hosts = $this->elasticsearch['host'];
+			$index = $this->elasticsearch['index-prefix'];
+			$type = $this->elasticsearch['type'];
+			$dateformat = $this->elasticsearch['dateformat'];
+			$username = isset($this->elasticsearch['username']) ? $this->elasticsearch['username'] : null;
+			$password = isset($this->elasticsearch['password']) ? $this->elasticsearch['password'] : null;
+			$this->elasticsearchClient = new Elasticsearch($hosts, $index, $type, $dateformat, $username, $password);
+		}
+		return $this->elasticsearchClient;
 	}
 	
 	/**
@@ -324,6 +356,8 @@ class Settings
 	{
 		if ($this->getUseDatabaseLog())
 			return 'log';
+		if ($this->getUseElasticsearchLog())
+			return 'es';
 		return $this->defaultSource;
 	}
 
@@ -358,6 +392,8 @@ class Settings
 	{
 		if ($this->getUseDatabaseLog())
 			return false;
+		if ($this->getUseElasticsearchLog())
+			return false;
 		return $this->displayHistory;
 	}
 	
@@ -367,6 +403,8 @@ class Settings
 	public function getDisplayQueue()
 	{
 		if ($this->getUseDatabaseLog())
+			return false;
+		if ($this->getUseElasticsearchLog())
 			return false;
 		return $this->displayQueue;
 	}
@@ -378,6 +416,8 @@ class Settings
 	{
 		if ($this->getUseDatabaseLog())
 			return false;
+		if ($this->getUseElasticsearchLog())
+			return false;
 		return $this->displayQuarantine;
 	}
 
@@ -388,6 +428,8 @@ class Settings
 	{
 		if ($this->getUseDatabaseLog())
 			return false;
+		if ($this->getUseElasticsearchLog())
+			return false;
 		return $this->displayArchive;
 	}
 
@@ -397,6 +439,8 @@ class Settings
 	public function getDisplayAll()
 	{
 		if ($this->getUseDatabaseLog())
+			return false;
+		if ($this->getUseElasticsearchLog())
 			return false;
 		return $this->displayAll;
 	}
@@ -478,6 +522,8 @@ class Settings
 	 */
 	public function getUseDatabaseLog()
 	{
+		if ($this->getUseElasticsearchLog())
+			return false;
 		return $this->useDatabaseLog;
 	}
 

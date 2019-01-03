@@ -38,11 +38,17 @@
 				<input type="hidden" name="source" value="{$source}">
 				{if $source == 'log'}
 				<input type="hidden" name="logsource" value="{$logsource}">
+				{elseif  $source == 'es'}
+				<input type="hidden" name="size" value="{$size}">
 				{/if}
 				<div class="input-group">
 					<input type="search" class="form-control" size="40" placeholder="{t}Search for...{/t}" id="search" name="search" value="{$search|escape}">
 					<div class="input-group-btn">
+						{if $source == 'es'}
+						<a class="btn btn-primary" data-toggle="modal" data-target="#querybuilder"><span class="fa fa-filter" aria-hidden="true"></span></a>
+						{else}
 						<button class="btn btn-primary" id="dosearch"><span class="fa fa-search"></span></button>
+						{/if}
 						{if $search_domains}
 							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
 							<ul id="search_domain" class="dropdown-menu" role="menu">
@@ -53,10 +59,38 @@
 						{/if}
 					</div>
 				</div>
+				{if $source == 'es'}
+				<div class="form-group">
+					<div class="input-daterange input-group" id="datepicker">
+						<div class="input-group-btn">
+							<a class="btn btn-primary" id="interval"><span class="fa fa-calendar"></span></a>
+						</div>
+						<input type="text" class="form-control" size="8" id="indexstart" name="start" value="{$index_start}">
+						<span class="input-group-addon">{t}to{/t}</span>
+						<input type="text" class="form-control" size="8" id="indexend" name="end" value="{$index_end}">
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+							<ul id="suggest_range" class="dropdown-menu" role="menu">
+								<li><a href="#">{t}Today{/t}</a></li>
+								<li><a href="#">{t}This week{/t}</a></li>
+								<li><a href="#">{t}This month{/t}</a></li>
+								<li><a href="#">{t}This year{/t}</a></li>
+								<li class="divider"></li>
+								<li><a href="#">{t}Last 30 days{/t}</a></li>
+								<li><a href="#">{t}Last 60 days{/t}</a></li>
+								<li><a href="#">{t}Last 6 months{/t}</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<button class="btn btn-primary" id="dosearch"><span class="fa fa-search"></span></button>
+				{/if}
 			</form>
+			{if $source != 'es'}
 			<ul class="nav navbar-nav">
 				<li><a href="#" data-toggle="modal" data-target="#querybuilder"><span class="fa fa-filter" aria-hidden="true"></span> {t}Search filter{/t}</a></li>
 			</ul>
+			{/if}
 			{if $mailwithaction}
 			<ul class="nav navbar-nav navbar-left hidden-xs hidden-sm">
 				<li class="divider"></li>
@@ -206,6 +240,9 @@
 		<input type="hidden" name="source" value="{$source}">
 		{if $source == 'log'}
 		<input type="hidden" name="logsource" value="{$logsource}">
+		{elseif $source == 'es'}
+		<input type="hidden" name="start" value="{$index_start}">
+		<input type="hidden" name="end" value="{$index_end}">
 		{/if}
 		{foreach from=$paging key=name item=value}
 			<input type="hidden" name="{$name|escape}" value="{$value|escape}">
@@ -258,6 +295,18 @@
 				</select></div>
 			</div>
 			{/if}
+			{if $source == 'es'}
+			<div class="form-group">
+				<label class="col-sm-2 control-label">{t}Time{/t}</label>
+				<label class="col-sm-2 control-label">{t}between{/t}</label>
+				<div class="col-sm-8"><input type="text" class="form-control" id="query_time_1" placeholder="hh:mm:ss"></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"></label>
+				<label class="col-sm-2 control-label">{t}and{/t}</label>
+				<div class="col-sm-8"><input type="text" class="form-control" id="query_time_2" placeholder="hh:mm:ss"></div>
+			</div>
+			{else}
 			<div class="form-group">
 				<label class="col-sm-2 control-label">{t}Date{/t}</label>
 				<label class="col-sm-2 control-label">{t}between{/t}</label>
@@ -268,6 +317,7 @@
 				<label class="col-sm-2 control-label">{t}and{/t}</label>
 				<div class="col-sm-8"><input type="datetime-local" class="form-control" id="query_date_2" placeholder="yyyy/mm/dd hh:mm:ss"></div>
 			</div>
+			{/if}
 			<div class="form-group">
 				<label class="col-sm-2 control-label">{t}ID{/t}</label>
 				<label class="col-sm-2 control-label">{t}is{/t}</label>

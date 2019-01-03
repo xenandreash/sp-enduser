@@ -116,3 +116,63 @@ function hql_to_sql($str, $driver, $prefix = 'hql')
 	if ($str && !$filter) die('invalid query');
 	return array('filter' => $filter, 'params' => $params);
 }
+
+function hql_to_es($str) {
+	// allowed HQL fields, need to exist in messagelog table
+	$fields = [];
+	$fields['messageid'] = 'messageid';
+	$fields['from'] = 'sender';
+	$fields['to'] = 'recipient';
+	$fields['subject'] = 'subject';
+	$fields['ip'] = 'senderip';
+	$fields['action'] = 'action';
+	$fields['transport'] = 'transportid';
+	$fields['server'] = 'serverid';
+	$fields['sasl'] = 'saslusername';
+	$fields['rpdscore'] = 'score_rpd';
+	$fields['sascore'] = 'sa';
+	$fields['time'] = 'receivedtime';
+
+	preg_match_all('/\s*([a-z]+([=~><])("(\"|[^"])*?"|[^\s]*)|and|or|not|&&)\s*/', $str, $parts);
+	$parts = $parts[1]; // because of the regex above, index 1 contains what we want
+	$filter = '';
+	$params = array();
+	$i = 0;
+	$ftok = 0; // filter token
+	foreach ($parts as $p) {
+		if ($p == 'and') { if ($ftok != 1) die('no filter condition before and'); $filter .= 'AND '; $ftok = 0; }
+		else if ($p == '&&') { if ($ftok != 1) die('no filter condition before &&'); $filter = '(' . $filter . ') AND '; $ftok = 0; }
+		else if ($p == 'or') { if ($ftok != 1) die('no filter condition before or'); $filter .= 'OR '; $ftok = 0; }
+		else if ($p == 'not') { if ($ftok == 1) $filter .= 'AND '; $filter .= 'NOT '; $ftok = 0; }
+		else if (preg_match('/^([a-z]+)([=~><])(.*?)$/', $p, $m)) {
+			if ($ftok == 1) $filter .= 'AND ';
+			$i++;
+			list($tmp, $field, $type, $value) = $m;
+			// unescape
+			if ($value[0] == '"' && substr($value, -1) == '"') {
+				$value = substr($value, 1, strlen($value) -2);
+				$value = str_replace('\"', '"', $value);
+			}
+			if (!isset($fields[$field])) die('unknown field '.htmlspecialchars($field));
+			$field = $fields[$field];
+			// domain search from~%@
+			if ($field == 'sender' && substr($value, 0, 2) == '%@' && substr_count($value, '%') == 1) {
+				$field = 'senderdomain';
+				$value = substr($value, 2); // strip %@
+			}
+			// domain search to~%@
+			if ($field == 'recipient' && substr($value, 0, 2) == '%@' && substr_count($value, '%') == 1) {
+				$field = 'recipientdomain'; // strip %@
+				$value = substr($value, 2);
+			}
+			if ($type == '~') {
+				if (strpos($value, '%') === false)
+					$value = '*'.$value.'*';
+			}
+			$filter .= $field.':('.$value.') ';
+			$ftok = 1;
+		} else die('unexpected token '.htmlspecialchars($p));
+	}
+	if (($str && !$filter) || substr($filter, -3) == 'OR ') die('invalid query');
+	return $filter;
+}

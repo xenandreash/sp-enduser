@@ -9,11 +9,14 @@
 		<title>{$title|gettext|escape} | {$pagename|escape}</title>
 		<link rel="stylesheet" href="{$theme}">
 		<link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css">
+		{if $source == 'es'}
+		<link rel="stylesheet" href="static/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
+		{/if}
 		{if isset($geoip)}
 		<link rel="stylesheet" href="vendor/components/flag-icon-css/css/flag-icon.min.css">
 		{/if}
 		<link rel="stylesheet" href="static/css/styles.css">
-		<script src="static/js/jquery.min.js"></script>
+		<script src="vendor/components/jquery/jquery.min.js"></script>
 		{foreach $javascript as $js}<script src="{$js}"></script>{/foreach}
 		<script src="vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
 	</head>
