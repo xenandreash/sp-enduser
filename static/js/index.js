@@ -220,38 +220,43 @@ $(document).ready(function() {
 		var range = $(this).data('range');
 		var today = new Date();
 		var oneday = 60 * 60 * 24 * 1000;
+		var set_start = today.getTime();
+		var set_end = today.getTime();
 		switch (range) {
 			case '1d':
-				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime()));
-				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				set_start = today.getTime();
+				set_end = today.getTime();
 				break;
 			case '1w':
-				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - oneday * (today.getDay() - 1)));
-				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				set_start = today.getTime() - oneday * (today.getDay() - 1);
+				set_end = today.getTime();
 				break;
 			case '1m':
-				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - oneday * (today.getDate() - 1)));
-				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				set_start = today.getTime() - oneday * (today.getDate() - 1);
+				set_end = today.getTime();
 				break;
 			case '1y':
 				var start = new Date(today.getFullYear(), 0, 1);
 				var diff = today - start;
-				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - diff));
-				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				set_start = today.getTime() - diff;
+				set_end = today.getTime();
 				break;
 			case '30d':
-				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - oneday * 30));
-				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				set_start = today.getTime() - oneday * 30;
+				set_end = today.getTime();
 				break;
 			case '60d':
-				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - oneday * 60));
-				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				set_start = today.getTime() - oneday * 60;
+				set_end = today.getTime();
 				break;
 			case '6m':
-				$('#indexstart').datepicker('setDate', getFormatDate(today.getTime() - oneday * 180));
-				$('#indexend').datepicker('setDate', getFormatDate(today.getTime()));
+				set_start = today.getTime() - oneday * 180;
+				set_end = today.getTime();
 				break;
 		}
+
+		$('#indexstart').datepicker('setDate', getFormatDate(set_start));
+		$('#indexend').datepicker('setDate', getFormatDate(set_end));
 	});
 
 	$('#range').click(function() {
