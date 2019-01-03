@@ -240,19 +240,19 @@ function es_mail_parser($m) {
 		'msgtodomain' => $m['_source']['recipientdomain'],
 		'msgsubject' => $m['_source']['subject'],
 		'msgsize' => $m['_source']['size'],
-		'msgdescription' => $m['_source']['reason'],
+		'msgdescription' => $m['_source']['errormsg'],
 		'msgactionid' => $m['_source']['actionid'],
 		'msgts0' => (int)substr($m['_source']['receivedtime'], 0, -3),
 		'serialno' => $m['_source']['serial'],
 		'score_rpd' => $m['_source']['score_rpd'],
 		'score_sa' => $m['_source']['scores']['sa'],
-		'scores' => [
+		'scores' => json_encode([
 			'rpd' => $m['_source']['score_rpd_refid'],
 			'rpdav' => $m['_source']['scores']['rpdav'],
 			'sa' => $m['_source']['scores']['sa_rules'],
 			'kav' => $m['_source']['scores']['kav'],
 			'clam' => $m['_source']['scores']['clam']
-		]
+		])
 	];
 	return $mail;
 }
