@@ -94,16 +94,16 @@ $source = isset($_GET['source']) ? $_GET['source'] : $settings->getDefaultSource
 $logsource = isset($_GET['logsource']) ? $_GET['logsource'] : 'log';
 
 // time partitioning
-$indexStart = isset($_GET['start']) ? $_GET['start'] : date("Y-m-d", strtotime("-1 week"));
-$indexEnd = isset($_GET['end']) ? $_GET['end'] : date("Y-m-d");
+$index_start = isset($_GET['start']) ? $_GET['start'] : date("Y-m-d", strtotime("-1 week"));
+$index_end = isset($_GET['end']) ? $_GET['end'] : date("Y-m-d");
 
-$checkDate = explode("-", $indexStart);
-if (count($checkDate) != 3 || !checkDate($checkDate[1], $checkDate[2], $checkDate[0]))
-	$indexStart = date("Y-m-d", strtotime("-1 week"));
+$check_date = explode("-", $index_start);
+if (count($check_date) != 3 || !checkDate($check_date[1], $check_date[2], $check_date[0]))
+	$index_start = date("Y-m-d", strtotime("-1 week"));
 
-$checkDate = explode("-", $indexEnd);
-if (count($checkDate) != 3 || !checkDate($checkDate[1], $checkDate[2], $checkDate[0]))
-	$indexEnd = date("Y-m-d");
+$check_date = explode("-", $index_end);
+if (count($check_date) != 3 || !checkDate($check_date[1], $check_date[2], $check_date[0]))
+	$index_end = date("Y-m-d");
 
 // Select box arrays
 $pagesize = array(50, 100, 500, 1000, 5000);
@@ -177,7 +177,7 @@ if ($source == 'log') {
 	$timesort = merge_2d($timesort, $results);
 }
 if ($source == 'es') {
-	$results = $esBackend->loadMailHistory($real_search, $size, $param['es'], ['start' => $indexStart, 'end' => $indexEnd], $errors);	
+	$results = $esBackend->loadMailHistory($real_search, $size, $param['es'], ['start' => $index_start, 'end' => $index_end], $errors);	
 	$timesort = merge_2d($timesort, $results);
 }
 if (($source == 'history' || $source == 'all') && $settings->getDisplayHistory()) {
@@ -367,8 +367,8 @@ foreach ($param as $type => $nodes) {
 	}
 }
 if ($settings->getUseElasticsearchLog()) {
-	$smarty->assign('index_start', $indexStart);
-	$smarty->assign('index_end', $indexEnd);
+	$smarty->assign('index_start', $index_start);
+	$smarty->assign('index_end', $index_end);
 }
 $smarty->assign('mails', $mails);
 $smarty->assign('prev_button', $prev_button);
