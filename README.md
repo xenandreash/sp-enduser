@@ -4,18 +4,6 @@ Requirements
 ------------
 * PHP compatible web server (Apache, NGINX, IIS)
 * PHP (>=5.6) or HHVM
-* Recommended PHP modules
-    * curl
-    * openssl
-    * dom
-    * gettext
-    * hash
-    * session
-    * soap
-    * ldap
-    * pdo
-    * pdo-(database; mysql, pgsql, sqlite...)
-    * rrd
 * [Composer](https://getcomposer.org)
 
 Installation
