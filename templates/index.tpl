@@ -34,29 +34,31 @@
 		</div>
 		<div class="collapse navbar-collapse" id="toolbar-collapse">
 			<form class="navbar-form navbar-left" role="search">
-				<input type="hidden" name="page" value="index">
-				<input type="hidden" name="source" value="{$source}">
-				{if $source == 'log'}
-				<input type="hidden" name="logsource" value="{$logsource}">
-				{elseif  $source == 'es'}
-				<input type="hidden" name="size" value="{$size}">
-				{/if}
-				<div class="input-group">
-					<input type="search" class="form-control" size="40" placeholder="{t}Search for...{/t}" id="search" name="search" value="{$search|escape}">
-					<div class="input-group-btn">
-						{if $source == 'es'}
-						<a class="btn btn-primary" data-toggle="modal" data-target="#querybuilder"><span class="fa fa-filter" aria-hidden="true"></span></a>
-						{else}
-						<button class="btn btn-primary" id="dosearch"><span class="fa fa-search"></span></button>
-						{/if}
-						{if $search_domains}
-							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-							<ul id="search_domain" class="dropdown-menu" role="menu">
-							{foreach $search_domains as $domain}
-								<li><a href="#">{$domain|escape}</a></li>
-							{/foreach}
-							</ul>
-						{/if}
+				<div class="form-group">
+					<input type="hidden" name="page" value="index">
+					<input type="hidden" name="source" value="{$source}">
+					{if $source == 'log'}
+					<input type="hidden" name="logsource" value="{$logsource}">
+					{elseif  $source == 'es'}
+					<input type="hidden" name="size" value="{$size}">
+					{/if}
+					<div class="input-group">
+						<input type="search" class="form-control" size="40" placeholder="{t}Search for...{/t}" id="search" name="search" value="{$search|escape}">
+						<div class="input-group-btn">
+							{if $source == 'es'}
+							<a class="btn btn-primary" data-toggle="modal" data-target="#querybuilder"><span class="fa fa-filter" aria-hidden="true"></span></a>
+							{else}
+							<button class="btn btn-primary" id="dosearch"><span class="fa fa-search"></span></button>
+							{/if}
+							{if $search_domains}
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+								<ul id="search_domain" class="dropdown-menu dropdown-menu-right" role="menu">
+								{foreach $search_domains as $domain}
+									<li><a href="#">{$domain|escape}</a></li>
+								{/foreach}
+								</ul>
+							{/if}
+						</div>
 					</div>
 				</div>
 				{if $source == 'es'}
@@ -70,7 +72,7 @@
 						<input type="text" class="form-control" size="8" id="indexend" name="end" value="{$index_end}">
 						<div class="input-group-btn">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-							<ul id="shortcut_range" class="dropdown-menu" role="menu">
+							<ul id="shortcut_range" class="dropdown-menu dropdown-menu-right" role="menu">
 								<li><a href="#" data-range="1d">{t}Today{/t}</a></li>
 								<li><a href="#" data-range="1w">{t}This week{/t}</a></li>
 								<li><a href="#" data-range="1m">{t}This month{/t}</a></li>
@@ -83,7 +85,7 @@
 						</div>
 					</div>
 				</div>
-				<button class="btn btn-primary" id="dosearch"><span class="fa fa-search"></span></button>
+				<button class="btn btn-primary" id="dosearch"><span class="fa fa-search"></span><span class="visible-xs-inline"> {t}Search{/t}</span></button>
 				{/if}
 			</form>
 			{if $source != 'es'}

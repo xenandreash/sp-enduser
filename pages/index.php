@@ -117,9 +117,8 @@ if ($settings->getUseDatabaseLog()) {
 	if ($settings->getDisplayLogArchive())
 		$sources += array('archive' => 'Archive');
 }
-if ($settings->getUseElasticsearchLog()) {
-	$sources += ['es' => 'Elasticsearch'];
-}
+if ($settings->getUseElasticsearchLog())
+	$sources += ['es' => 'Log'];
 if ($settings->getDisplayHistory())
 	$sources += array('history' => 'History');
 if ($nodeBackend->isValid() && $settings->getDisplayQueue())
