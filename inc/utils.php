@@ -224,6 +224,7 @@ function es_mail_parser($m) {
 	$mail['index'] = $m['_index'];
 	$mail['type'] = 'es';// $m['_type'];
 	$mail['receivedtime'] = $m['_source']['receivedtime'];
+	$msgdescription = $m['_source']['reason'] ?: $m['_source']['errormsg'];
 	$mail['data'] = (object) [
 		'id' => $m['_id'],
 		'owner' => $m['_source']['owner'],
@@ -240,7 +241,7 @@ function es_mail_parser($m) {
 		'msgtodomain' => $m['_source']['recipientdomain'],
 		'msgsubject' => $m['_source']['subject'],
 		'msgsize' => $m['_source']['size'],
-		'msgdescription' => $m['_source']['errormsg'],
+		'msgdescription' => $msgdescription,
 		'msgactionid' => $m['_source']['actionid'],
 		'msgts0' => (int)substr($m['_source']['receivedtime'], 0, -3),
 		'serialno' => $m['_source']['serial'],

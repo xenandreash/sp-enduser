@@ -167,6 +167,7 @@ function hql_to_es($str) {
 				$field = 'recipientdomain'; // strip %@
 				$value = substr($value, 2);
 			}
+			$value = preg_replace_callback('/(['.$lucenechars.'])/', function($match) { return '\\'.$match[0]; }, $value);
 			if ($type == '~') {
 				if (strpos($value, '%') === false)
 					$value = '*'.$value.'*';
@@ -177,7 +178,6 @@ function hql_to_es($str) {
 				$value = '<'.$value;
 			if ($type == '>')
 				$value = '>'.$value;
-			$value = preg_replace_callback('/(['.$lucenechars.'])/', function($match) { return '\\'.$match[0]; }, $value);
 			$filter .= $field.':('.$value.') ';
 			$ftok = 1;
 		} else die('unexpected token '.htmlspecialchars($p));
