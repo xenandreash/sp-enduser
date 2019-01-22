@@ -239,7 +239,7 @@
 		<h4 class="modal-title">{t}Search filter{/t}</h4>
 	</div>
 	<div class="modal-body" id="query">
-		<p>{t escape=no url='http://wiki.halon.se/Search_filter'}Even more fields and operator types are documented on the <a href="%1">search filter</a> page.{/t}</p>
+		<p>{t escape=no url='https://docs.halon.io/go/disthistoryqueuesearch'}Even more fields and operator types are documented on the <a href="%1">search filter</a> page.{/t}</p>
 		<form class="form-horizontal">
 			{if $source != 'queue' and $source != 'quarantine'}
 			<div class="form-group">

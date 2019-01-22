@@ -97,8 +97,7 @@
 
 /*
  * Logs are normally read from the nodes directly, but for performance, you can
- * instead opt to configure your nodes to log to a central database server, as
- * described at: http://wiki.halon.se/End-user#History_log
+ * instead opt to configure your nodes to log to a central database server
  */
 //$settings['database-log'] = false;
 
@@ -129,8 +128,7 @@
 
 /*
  * Stats are normally read from the nodes directly, but for performance, you can
- * instead opt to configure your nodes to stat to a central database server, as
- * described at: http://wiki.halon.se/End-user#History_log
+ * instead opt to configure your nodes to stat to a central database server.
  * All database stats are stored either as inbound or outbound based on the
  * 'display-listener' and 'display-transport' settings. If it matches
  * a listener that is labeled 'Outbound' or a transport that is labeled 'Internet'
