@@ -8,8 +8,7 @@ function ScanBWList()
 				"update_function" => API_update,
 				"namespace" => "ScanBWList",
 			]
-			http($triggerurl . "&type=bwlist", ["timeout" => 10, "tls_default_ca" => true]);
-	$list = json_decode($data);
+			API_http_json($triggerurl . "&type=bwlist", ["timeout" => 10, "tls_default_ca" => true]);
 	if (!is_array($list))
 		return 50;
 	$blacklist = false;
@@ -34,16 +33,21 @@ function ScanBWList()
 	return 50;
 }
 
+function API_http_json(...$options)
+{
+	return json_decode(http(...$options));
+}
+
 function API_ttl($new)
 {
-	if (is_array(json_decode($new)))
+	if (is_array($new))
 		return 300;
 	return 60;
 }
 
 function API_update($old, $new)
 {
-	if (is_array(json_decode($new)))
+	if (is_array($new))
 		return $new;
 	return $old;
 }
