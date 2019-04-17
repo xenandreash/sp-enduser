@@ -3,7 +3,7 @@ $triggerurl = "http://end-user-url/api.php?api-key=badsecret";
 function ScanBWList()
 {
 	global $triggerurl, $senderip, $senderdomain, $sender, $recipientdomain, $recipient;
-	$data = cache [
+	$list = cache [
 				"ttl_function" => API_ttl,
 				"update_function" => API_update,
 				"namespace" => "ScanBWList",
@@ -33,9 +33,9 @@ function ScanBWList()
 	return 50;
 }
 
-function API_http_json(...$options)
+function API_http_json(...$arguments)
 {
-	return json_decode(http(...$options));
+	return json_decode(http(...$arguments));
 }
 
 function API_ttl($new)
